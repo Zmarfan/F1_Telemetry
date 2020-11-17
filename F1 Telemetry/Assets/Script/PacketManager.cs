@@ -35,11 +35,20 @@ public class PacketManager : MonoBehaviour
     /// </summary>
     Packet GetPacketType(Packet packet)
     {
-        PacketType packetType = (PacketType)packet.GetPacketIndex();
+        PacketType packetType = packet.GetPacketType();
 
         switch (packetType)
         {
-            case (PacketType.MOTION): { return new MotionPacket(packet.Data); }
+            case (PacketType.MOTION):               { return new MotionPacket(packet.Data); }
+            case (PacketType.SESSION):              { return new SessionPacket(packet.Data); }
+            case (PacketType.LAP_DATA):             { return new LapDataPacket(packet.Data); }
+            case (PacketType.EVENT):                { return new EventPacket(packet.Data); }
+            case (PacketType.PARTICIPANTS):         { return new ParticipantsPacket(packet.Data); }
+            case (PacketType.CAR_SETUPS):           { return new CarSetupPacket(packet.Data); }
+            case (PacketType.CAR_TELEMETRY):        { return new CarTelemetryPacket(packet.Data); }
+            case (PacketType.CAR_STATUS):           { return new CarStatusPacket(packet.Data); }
+            case (PacketType.FINAL_CLASSIFICATION): { return new FinalClassificationPacket(packet.Data); }
+            case (PacketType.LOBBY_INFO):           { return new LobbyInfoPacket(packet.Data); }
             default: { Debug.LogWarning("Packet type is not yet supported!"); return packet; }
         }
     }

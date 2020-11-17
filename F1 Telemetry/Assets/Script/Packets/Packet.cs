@@ -4,10 +4,12 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// Base Class 
+/// Base Class for packets, holds header variables shared by all packets and virtual functions for reading data in packet
 /// </summary>
 public class Packet
 {
+    private readonly int PACKET_ID_INDEX = 5;
+
     public byte[] Data { get; protected set; }
 
     public PacketFormat PacketFormat { get; protected set; }     //Game release year
@@ -25,35 +27,46 @@ public class Packet
     {
         byte[] copyData = new byte[data.Length];
 
+        //Copy data as to not mix upp references -> keep data secured
         for (int i = 0; i < data.Length; i++)
             copyData[i] = data[i];
 
         this.Data = copyData;
     }
 
-    public int GetPacketIndex()
+    /// <summary>
+    /// Returns packet-type of current packet
+    /// </summary>
+    public PacketType GetPacketType()
     {
         ByteManager manager = new ByteManager(Data);
-        byte id = manager.GetByteAt(5);
-        return id;
+        byte id = manager.GetByteAt(PACKET_ID_INDEX);
+        return (PacketType)id;
     }
 
+    /// <summary>
+    /// Reads data and set variables, can be overriden by inherited classes (other packet types).
+    /// Base packet class read Packet Header only
+    /// </summary>
     public virtual void LoadBytes()
     {
         ByteManager manager = new ByteManager(Data);
 
-        PacketFormat = GetPacketFormat(manager.GetBytes(2));
+        PacketFormat = GetPacketFormat(manager.GetBytes(sizeof(ushort)));
         GameMajorVersion = manager.GetByte();
         GameMinorVersion = manager.GetByte();
         PacketVersion = manager.GetByte();
         PacketID = manager.GetByte();
-        SessionUniqueID = BitConverter.ToUInt64(manager.GetBytes(8), 0);
-        SessionTime = BitConverter.ToSingle(manager.GetBytes(4), 0);
-        FrameID = BitConverter.ToUInt32(manager.GetBytes(4), 0);
+        SessionUniqueID = BitConverter.ToUInt64(manager.GetBytes(sizeof(long)), 0);
+        SessionTime = BitConverter.ToSingle(manager.GetBytes(sizeof(float)), 0);
+        FrameID = BitConverter.ToUInt32(manager.GetBytes(sizeof(uint)), 0);
         PlayerCarIndex = manager.GetByte();
         SecondaryPlayerCarIndex = manager.GetByte();
     }
 
+    /// <summary>
+    /// What game is this packet from? (Only using F1 2020 though)
+    /// </summary>
     PacketFormat GetPacketFormat(byte[] data)
     {
         ushort packetFormat = BitConverter.ToUInt16(data, 0);

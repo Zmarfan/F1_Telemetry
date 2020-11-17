@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Different types of packets sent by F1 2020
+/// </summary>
 public enum PacketType
 {
     MOTION,

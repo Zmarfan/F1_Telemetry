@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MotionPacket : Packet
 {
@@ -9,6 +7,6 @@ public class MotionPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM MOTION!");
+        Debug.Log("I AM MOTION_PACKET!");
     }
 }
