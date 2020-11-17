@@ -3,12 +3,6 @@ using System;
 
 public class SessionPacket : Packet
 {
-    public static int MARSHALZONE_DATA_INDEX = 43;  //Start index of first instance of MarshalZone[]
-    public static int MARSHALZONE_DATA_SIZE = 5;   //Size in bytes of entire data struct of MarshalZone
-    public static int WEATHER_FORECAST_SAMPLE_DATA_INDEX = 131;  //Start index of first instance of WeatherForecastSamples[]
-    public static int WEATHER_FORECAST_SAMPLE_DATA_SIZE = 5;   //Size in bytes of entire data struct of WeatherForecastSample
-    public readonly int STATEMENT_TRUE = 1;
-
     public Weather Weather { get; protected set; }                                   //Current weather right now
     public sbyte TrackTemperature { get; protected set; }
     public sbyte AirTemperature { get; protected set; }
@@ -58,12 +52,14 @@ public class SessionPacket : Packet
 
         MarshalZones = new MarshalZone[NumberOfMarshalZones];
 
+        int MarshalZoneDataIndex = manager.CurrentIndex;
+
         //Read all instances of MarshalZone[] in the data -> It's all linear so we only need to know
         //Length in bytes of each entry and what index entry 0 has to loop through entire array
         for (int i = 0; i < MarshalZones.Length; i++)
         {
             //Find startindex for current ParticipantData
-            int offsetIndex = MARSHALZONE_DATA_INDEX + MARSHALZONE_DATA_SIZE * i;
+            int offsetIndex = MarshalZoneDataIndex + MarshalZone.SIZE * i;
             manager.SetNewIndex(offsetIndex);
 
             MarshalZones[i].zoneStart = BitConverter.ToSingle(manager.GetBytes(sizeof(float)), 0);
@@ -77,12 +73,14 @@ public class SessionPacket : Packet
 
         WeatherForecastSamples = new WeatherForecastSample[NumberWeatherForeCastSamples];
 
+        int WeatherForecastSampleDataIndex = manager.CurrentIndex;
+
         //Read all instances of WeatherForecastSamples[] in the data -> It's all linear so we only need to know
         //Length in bytes of each entry and what index entry 0 has to loop through entire array
         for (int i = 0; i < WeatherForecastSamples.Length; i++)
         {
             //Find startindex for current ParticipantData
-            int offsetIndex = WEATHER_FORECAST_SAMPLE_DATA_INDEX + WEATHER_FORECAST_SAMPLE_DATA_SIZE * i;
+            int offsetIndex = WeatherForecastSampleDataIndex + WeatherForecastSample.SIZE * i;
             manager.SetNewIndex(offsetIndex);
 
             WeatherForecastSamples[i].sessionType = (SessionType)manager.GetByte();
@@ -101,6 +99,17 @@ public struct MarshalZone
 {
     public float zoneStart;   //Fraction (0..1) of way through the lap the marshal zone starts 
     public ZoneFlag zoneFlag; //Flag status in zone at the moment
+
+    /// <summary>
+    /// Size in bytes of an instance of MarshalZone in data
+    /// </summary>
+    public static int SIZE
+    {
+        get
+        {
+            return sizeof(float) + sizeof(byte); //Enums are made from only one byte of data
+        }
+    }
 }
 
 /// <summary>
@@ -113,4 +122,15 @@ public struct WeatherForecastSample
     public Weather weather;
     public sbyte trackTemperature;
     public sbyte airTemperature;
+
+    /// <summary>
+    /// Size in bytes of an instance of WeatherForecastSample in data
+    /// </summary>
+    public static int SIZE
+    {
+        get
+        {
+            return sizeof(byte) * 5; //Enums are made from only one byte of data (sbyte and byte are both 1 byte big)
+        }
+    }
 }
