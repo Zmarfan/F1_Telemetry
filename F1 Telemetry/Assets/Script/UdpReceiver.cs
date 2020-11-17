@@ -13,8 +13,9 @@ public struct UdpState
 public class UdpReceiver : MonoBehaviour
 {
     static readonly int PORT = 20777;
+    static byte[] _data;
 
-    static bool messageReceived = false;
+    static bool _messageReceived = false;
 
     void Awake()
     {
@@ -25,18 +26,26 @@ public class UdpReceiver : MonoBehaviour
         state.client = client;
         state.endpoint = endpoint;
 
-        Debug.Log("Trying to connect!");
-
-        client.BeginReceive(new AsyncCallback(ReceiveCallback), state);
-
-        StartCoroutine(Waiting());
+        StartCoroutine(Listening(state, client));
     }
 
-    IEnumerator Waiting()
+    IEnumerator Listening(UdpState state, UdpClient client)
     {
-        while (!messageReceived)
+        Debug.Log("Start listening for incoming messages!");
+
+        while (true)
         {
-            Debug.Log("Waiting for message");
+            client.BeginReceive(new AsyncCallback(ReceiveCallback), state);
+
+            do
+            {
+                yield return new WaitForEndOfFrame();
+                Debug.Log("Waiting for incoming message!");
+            } while (!_messageReceived);
+
+            PacketManager.AddPacket(new Packet(_data));
+
+            _messageReceived = false;
             yield return new WaitForEndOfFrame();
         }
     }
@@ -46,15 +55,7 @@ public class UdpReceiver : MonoBehaviour
         UdpClient client = ((UdpState)(ar.AsyncState)).client;
         IPEndPoint endpoint = ((UdpState)(ar.AsyncState)).endpoint;
 
-        byte[] receiveBytes = client.EndReceive(ar, ref endpoint);
-
-        ByteManager manager = new ByteManager(receiveBytes);
-        byte[] messageData = manager.GetBytes(2);
-
-        ushort message = BitConverter.ToUInt16(messageData, 0);
-
-        Debug.Log(message);
-
-        messageReceived = true;
+        _data = client.EndReceive(ar, ref endpoint);
+        _messageReceived = true;
     }
 }

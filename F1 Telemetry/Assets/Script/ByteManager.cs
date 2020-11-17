@@ -38,5 +38,14 @@ public class ByteManager
         return returnBytes;
     }
 
-
+    /// <summary>
+    /// Returns the next byte in data and moves along data one step
+    /// </summary>
+    /// <returns></returns>
+    public byte GetByte()
+    {
+        byte returnByte = _data[_index];
+        _index++;
+        return returnByte;
+    }
 }
