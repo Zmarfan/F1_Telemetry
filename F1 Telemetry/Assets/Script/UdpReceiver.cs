@@ -36,12 +36,12 @@ public class UdpReceiver : MonoBehaviour
         while (true)
         {
             client.BeginReceive(new AsyncCallback(ReceiveCallback), state);
-
-            do
+ 
+            while (!_messageReceived)
             {
-                yield return new WaitForEndOfFrame();
                 Debug.Log("Waiting for incoming message!");
-            } while (!_messageReceived);
+                yield return new WaitForEndOfFrame();
+            }
 
             PacketManager.AddPacket(new Packet(_data));
 

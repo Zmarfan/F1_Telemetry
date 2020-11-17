@@ -15,13 +15,10 @@ public class ByteManager
     /// </summary>
     public ByteManager(byte[] data, int startIndex = 0)
     {
-        if (startIndex < 0)
-            throw new System.IndexOutOfRangeException("startIndex must be a non negative integer!");
-        if (startIndex >= data.Length)
-            throw new System.IndexOutOfRangeException("startIndex exceeds data length");
-
         this._data = data;
         this._index = startIndex;
+
+        CheckIndexValidity(startIndex);
     }
 
     /// <summary>
@@ -47,5 +44,19 @@ public class ByteManager
         byte returnByte = _data[_index];
         _index++;
         return returnByte;
+    }
+
+    public byte GetByteAt(int index)
+    {
+        CheckIndexValidity(index);
+        return _data[index];
+    }
+
+    void CheckIndexValidity(int index)
+    {
+        if (index < 0)
+            throw new System.IndexOutOfRangeException("startIndex must be a non negative integer!");
+        if (index >= _data.Length)
+            throw new System.IndexOutOfRangeException("startIndex exceeds data length");
     }
 }

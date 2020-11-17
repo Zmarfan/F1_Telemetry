@@ -1,0 +1,14 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MotionPacket : Packet
+{
+    public MotionPacket(byte[] data) : base(data) { }
+
+    public override void LoadBytes()
+    {
+        base.LoadBytes();
+        Debug.Log("I AM MOTION!");
+    }
+}

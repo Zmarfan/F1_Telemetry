@@ -8,7 +8,7 @@ using System;
 /// </summary>
 public class Packet
 {
-    protected byte[] _data;
+    public byte[] Data { get; protected set; }
 
     public PacketFormat PacketFormat { get; protected set; }     //Game release year
     public byte GameMajorVersion { get; protected set; }         //X.00
@@ -28,12 +28,19 @@ public class Packet
         for (int i = 0; i < data.Length; i++)
             copyData[i] = data[i];
 
-        this._data = copyData;
+        this.Data = copyData;
+    }
+
+    public int GetPacketIndex()
+    {
+        ByteManager manager = new ByteManager(Data);
+        byte id = manager.GetByteAt(5);
+        return id;
     }
 
     public virtual void LoadBytes()
     {
-        ByteManager manager = new ByteManager(_data);
+        ByteManager manager = new ByteManager(Data);
 
         PacketFormat = GetPacketFormat(manager.GetBytes(2));
         GameMajorVersion = manager.GetByte();
@@ -45,8 +52,6 @@ public class Packet
         FrameID = BitConverter.ToUInt32(manager.GetBytes(4), 0);
         PlayerCarIndex = manager.GetByte();
         SecondaryPlayerCarIndex = manager.GetByte();
-
-        Debug.Log(PacketID);
     }
 
     PacketFormat GetPacketFormat(byte[] data)
