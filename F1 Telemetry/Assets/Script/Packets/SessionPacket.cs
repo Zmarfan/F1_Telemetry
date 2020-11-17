@@ -91,36 +91,6 @@ public class SessionPacket : Packet
             WeatherForecastSamples[i].trackTemperature = (sbyte)manager.GetByte();
             WeatherForecastSamples[i].airTemperature = (sbyte)manager.GetByte();
         }
-
-        Debug.Log("Weather: " + Weather);
-        Debug.Log("Track Temp: " + TrackTemperature);
-        Debug.Log("Air Temp: " + AirTemperature);
-        Debug.Log("Total laps: " + TotalLaps);
-        Debug.Log("Track Length: " + TrackLength);
-        Debug.Log("Session Type: " + SessionType);
-        Debug.Log("Track: " + Track);
-        Debug.Log("Formula: " + Formula);
-        Debug.Log("Session Time Left: " + SessionTimeLeft);
-        Debug.Log("Session Duration: " + SessionDuration);
-        Debug.Log("Pit speed limit: " + PitSpeedLimit);
-        Debug.Log("Game paused: " + GamePaused);
-        Debug.Log("Specating: " + IsSpectating);
-        Debug.Log("Spectator Car Index: " + SpectatorCarIndex);
-        Debug.Log("SLI PRO: " + SliProNativeSupport);
-        Debug.Log("Number of Marshal Zones: " + NumberOfMarshalZones);
-
-        for (int i = 0; i < MarshalZones.Length; i++)
-            Debug.Log("Marshal zone: " + i + ", ZoneStart: " + MarshalZones[i].zoneStart + ", ZoneFlag: " + MarshalZones[i].zoneFlag);
-
-        Debug.Log("Safety Car status: " + SafetyCarStatus);
-        Debug.Log("Is Online: " + IsOnline);
-        Debug.Log("NumberOfWeatherForecast samples: " + NumberWeatherForeCastSamples);
-
-        for (int i = 0; i < WeatherForecastSamples.Length; i++)
-        {
-            Debug.Log("Forecast " + i + ", SessionType: " + WeatherForecastSamples[i].sessionType + ", TimeOffset: " + WeatherForecastSamples[i].timeOffset);
-            Debug.Log("Weather: " + WeatherForecastSamples[i].weather + ", Track temp: " + WeatherForecastSamples[i].trackTemperature + ", Air temp: " + WeatherForecastSamples[i].airTemperature);
-        }  
     }
 }
 
