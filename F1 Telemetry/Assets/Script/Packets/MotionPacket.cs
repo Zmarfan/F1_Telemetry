@@ -7,6 +7,5 @@ public class MotionPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM MOTION_PACKET!");
     }
 }

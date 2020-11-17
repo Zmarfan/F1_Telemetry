@@ -7,6 +7,5 @@ public class FinalClassificationPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM FINAL_CLASSIFICATION_PACKET!");
     }
 }

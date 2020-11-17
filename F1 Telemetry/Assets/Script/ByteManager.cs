@@ -22,10 +22,26 @@ public class ByteManager
     }
 
     /// <summary>
+    /// Returns the index manager is currently at
+    /// </summary>
+    public int CurrentIndex { get { return _index; } }
+
+    /// <summary>
+    /// Sets a new index for an existing manager
+    /// </summary>
+    public void SetNewIndex(int newIndex)
+    {
+        CheckIndexValidity(newIndex);
+        _index = newIndex;
+    }
+
+    /// <summary>
     /// Traverses data forward with amountOfBytes bytes and return those bytes
     /// </summary>
     public byte[] GetBytes(int amountOfBytes)
     {
+        CheckIndexValidity(_index + amountOfBytes);
+
         byte[] returnBytes = new byte[amountOfBytes];
 
         for (int i = 0; i < amountOfBytes; i++)
@@ -41,6 +57,8 @@ public class ByteManager
     /// <returns></returns>
     public byte GetByte()
     {
+        CheckIndexValidity(_index + 1);
+
         byte returnByte = _data[_index];
         _index++;
         return returnByte;

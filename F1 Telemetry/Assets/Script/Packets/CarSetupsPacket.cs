@@ -7,6 +7,6 @@ public class CarSetupPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM CAR_SETUP_PACKET!");
+        //Debug.Log("I AM CAR_SETUP_PACKET!");
     }
 }

@@ -8,7 +8,8 @@ using System;
 /// </summary>
 public class Packet
 {
-    private readonly int PACKET_ID_INDEX = 5;
+    protected readonly int PACKET_ID_INDEX = 5;
+    protected readonly int MOVE_PAST_HEADER_INDEX = 24;
 
     public byte[] Data { get; protected set; }
 

@@ -7,6 +7,5 @@ public class EventPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM EVENT_PACKET!");
     }
 }

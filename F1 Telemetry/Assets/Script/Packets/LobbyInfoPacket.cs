@@ -7,6 +7,5 @@ public class LobbyInfoPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM LOBBY_INFO_PACKET!");
     }
 }

@@ -7,6 +7,5 @@ public class LapDataPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        Debug.Log("I AM LAP_DATA!");
     }
 }
