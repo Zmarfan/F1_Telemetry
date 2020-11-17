@@ -3,8 +3,6 @@ using System.Net.Sockets;
 using UnityEngine;
 using System.Collections;
 using System;
-using System.Text;
-using System.Threading;
 
 public struct UdpState
 {
@@ -49,13 +47,11 @@ public class UdpReceiver : MonoBehaviour
         IPEndPoint endpoint = ((UdpState)(ar.AsyncState)).endpoint;
 
         byte[] receiveBytes = client.EndReceive(ar, ref endpoint);
-        //string receiveString = Encoding.BigEndianUnicode.GetString(receiveBytes);
 
-        byte[] packetFormat = new byte[2];
-        packetFormat[0] = receiveBytes[0];
-        packetFormat[1] = receiveBytes[1];
+        ByteManager manager = new ByteManager(receiveBytes);
+        byte[] messageData = manager.GetBytes(2);
 
-        ushort message = BitConverter.ToUInt16(packetFormat, 0);
+        ushort message = BitConverter.ToUInt16(messageData, 0);
 
         Debug.Log(message);
 
