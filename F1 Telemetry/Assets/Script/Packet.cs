@@ -10,9 +10,16 @@ public class Packet
 {
     protected byte[] _data;
 
-    public PacketFormat PacketFormat { get; protected set; }
-    public byte GameMajorVersion { get; protected set; } 
-    public byte GameMinorVersion { get; protected set; }
+    public PacketFormat PacketFormat { get; protected set; }     //Game release year
+    public byte GameMajorVersion { get; protected set; }         //X.00
+    public byte GameMinorVersion { get; protected set; }         //1.XX
+    public byte PacketVersion { get; protected set; }            
+    public byte PacketID { get; protected set; }                 //What type of package is this? Identifier
+    public ulong SessionUniqueID { get; protected set; }         
+    public float SessionTime { get; protected set; }             //Total uptime of session
+    public uint FrameID { get; protected set; }                  // Identifier for the frame the data was retrieved on
+    public byte PlayerCarIndex { get; protected set; }           // Index of player's car in the array
+    public byte SecondaryPlayerCarIndex { get; protected set; }  //Index of secondary player's car in the array (splitscreen) -> 255 if no secondary player
 
     public Packet(byte[] data)
     {
@@ -31,7 +38,15 @@ public class Packet
         PacketFormat = GetPacketFormat(manager.GetBytes(2));
         GameMajorVersion = manager.GetByte();
         GameMinorVersion = manager.GetByte();
-        Debug.Log(GameMajorVersion + "." + GameMinorVersion);
+        PacketVersion = manager.GetByte();
+        PacketID = manager.GetByte();
+        SessionUniqueID = BitConverter.ToUInt64(manager.GetBytes(8), 0);
+        SessionTime = BitConverter.ToSingle(manager.GetBytes(4), 0);
+        FrameID = BitConverter.ToUInt32(manager.GetBytes(4), 0);
+        PlayerCarIndex = manager.GetByte();
+        SecondaryPlayerCarIndex = manager.GetByte();
+
+        Debug.Log(PacketID);
     }
 
     PacketFormat GetPacketFormat(byte[] data)
