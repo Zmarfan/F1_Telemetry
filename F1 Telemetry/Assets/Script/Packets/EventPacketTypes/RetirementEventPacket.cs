@@ -13,7 +13,7 @@ public class RetirementEventPacket : EventPacket
     {
         base.LoadBytes();
 
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER, "Retirement Event Packet");
         VehicleIndex = manager.GetByte();
     }
 }

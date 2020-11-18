@@ -15,9 +15,9 @@ public class SpeedTrapEventPacket : EventPacket
     {
         base.LoadBytes();
 
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER, "Speed trap event packet");
 
         VehicleIndex = manager.GetByte();
-        Speed = BitConverter.ToSingle(manager.GetBytes(sizeof(float)), 0);
+        Speed = manager.GetFloat();
     }
 }

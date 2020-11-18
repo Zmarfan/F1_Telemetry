@@ -35,23 +35,23 @@ public class SessionPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Session packet");
 
         Weather = (Weather)manager.GetByte();
-        TrackTemperature = (sbyte)manager.GetByte();
-        AirTemperature = (sbyte)manager.GetByte();
+        TrackTemperature = manager.GetSignedByte();
+        AirTemperature = manager.GetSignedByte();
         TotalLaps = manager.GetByte();
-        TrackLength = BitConverter.ToUInt16(manager.GetBytes(sizeof(ushort)), 0);
+        TrackLength = manager.GetUnsignedShort();
         SessionType = (SessionType)manager.GetByte();
-        Track = (Track)((sbyte)manager.GetByte()); //Needs to be converted to sbyte first since -1 is a possible value
+        Track = (Track)manager.GetSignedByte();
         Formula = (Formula)manager.GetByte();
-        SessionTimeLeft = BitConverter.ToUInt16(manager.GetBytes(sizeof(ushort)), 0);
-        SessionDuration = BitConverter.ToUInt16(manager.GetBytes(sizeof(ushort)), 0);
+        SessionTimeLeft = manager.GetUnsignedShort();
+        SessionDuration = manager.GetUnsignedShort();
         PitSpeedLimit = manager.GetByte();
-        GamePaused = manager.GetByte() == STATEMENT_TRUE;
-        IsSpectating = manager.GetByte() == STATEMENT_TRUE;
+        GamePaused = manager.GetBool();
+        IsSpectating = manager.GetBool();
         SpectatorCarIndex = manager.GetByte();
-        SliProNativeSupport = manager.GetByte() == STATEMENT_TRUE;
+        SliProNativeSupport = manager.GetBool();
         NumberOfMarshalZones = manager.GetByte();
 
         MarshalZones = new MarshalZone[NumberOfMarshalZones];
@@ -66,13 +66,13 @@ public class SessionPacket : Packet
             int offsetIndex = MarshalZoneDataIndex + MarshalZone.SIZE * i;
             manager.SetNewIndex(offsetIndex);
 
-            MarshalZones[i].zoneStart = BitConverter.ToSingle(manager.GetBytes(sizeof(float)), 0);
-            MarshalZones[i].zoneFlag = (ZoneFlag)((sbyte)manager.GetByte());  //Needs to be converted to sbyte first since -1 is a possible value
+            MarshalZones[i].zoneStart = manager.GetFloat();
+            MarshalZones[i].zoneFlag = (ZoneFlag)manager.GetSignedByte();
         }
         //manager will now have moved past struct array
 
         SafetyCarStatus = (SafetyCarStatus)manager.GetByte();
-        IsOnline = manager.GetByte() == STATEMENT_TRUE;
+        IsOnline = manager.GetBool();
         NumberWeatherForeCastSamples = manager.GetByte();
 
         WeatherForecastSamples = new WeatherForecastSample[NumberWeatherForeCastSamples];
@@ -90,8 +90,8 @@ public class SessionPacket : Packet
             WeatherForecastSamples[i].sessionType = (SessionType)manager.GetByte();
             WeatherForecastSamples[i].timeOffset = manager.GetByte();
             WeatherForecastSamples[i].weather = (Weather)manager.GetByte();
-            WeatherForecastSamples[i].trackTemperature = (sbyte)manager.GetByte();
-            WeatherForecastSamples[i].airTemperature = (sbyte)manager.GetByte();
+            WeatherForecastSamples[i].trackTemperature = manager.GetSignedByte();
+            WeatherForecastSamples[i].airTemperature = manager.GetSignedByte();
         }
     }
 }

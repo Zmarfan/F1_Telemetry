@@ -13,7 +13,7 @@ public class RaceWinnerEventPacket : EventPacket
     {
         base.LoadBytes();
 
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER, "Race winner packet");
         VehicleIndex = manager.GetByte();
     }
 }

@@ -18,7 +18,7 @@ public class ParticipantsPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Participation packet");
 
         NumberOfActiveCars = manager.GetByte();
         AllParticipantData = new ParticipantData[NumberOfActiveCars];
@@ -38,8 +38,8 @@ public class ParticipantsPacket : Packet
             AllParticipantData[i].team = (Team)manager.GetByte();
             AllParticipantData[i].raceNumber = manager.GetByte();
             AllParticipantData[i].nationality = (Nationality)manager.GetByte();
-            AllParticipantData[i].name = Encoding.UTF8.GetString(manager.GetBytes(ParticipantData.AMOUNT_OF_CHARS_IN_NAME));
-            AllParticipantData[i].publicTelemetry = manager.GetByte() == STATEMENT_TRUE;
+            AllParticipantData[i].name = manager.GetString(ParticipantData.AMOUNT_OF_CHARS_IN_NAME);
+            AllParticipantData[i].publicTelemetry = manager.GetBool();
         }
     }
 }

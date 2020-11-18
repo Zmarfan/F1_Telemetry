@@ -40,9 +40,9 @@ public class EventPacket : Packet
     /// </summary>
     public static EventType EventPacketType(byte[] data)
     {
-        ByteManager manager = new ByteManager(data, MOVE_PAST_HEADER_INDEX);
+        ByteManager manager = new ByteManager(data, MOVE_PAST_HEADER_INDEX, "Eventpacket");
 
-        string eventStringCode = Encoding.UTF8.GetString(manager.GetBytes(EVENT_TYPE_BYTE_SIZE));
+        string eventStringCode = manager.GetString(EVENT_TYPE_BYTE_SIZE);
 
         switch (eventStringCode)
         {

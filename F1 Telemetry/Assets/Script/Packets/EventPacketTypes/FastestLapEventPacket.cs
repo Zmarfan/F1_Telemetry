@@ -16,9 +16,9 @@ public class FastestLapEventPacket : EventPacket
     {
         base.LoadBytes();
 
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER, "Fastest lap packet");
 
         VehicleIndex = manager.GetByte();
-        LapTime = BitConverter.ToSingle(manager.GetBytes(sizeof(float)), 0);
+        LapTime = manager.GetFloat();
     }
 }

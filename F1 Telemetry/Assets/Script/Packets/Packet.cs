@@ -8,7 +8,6 @@ using System;
 /// </summary>
 public class Packet
 {
-    public readonly int STATEMENT_TRUE = 1;
     protected static readonly int PACKET_ID_INDEX = 5;
     protected static readonly int MOVE_PAST_HEADER_INDEX = 24;
 
@@ -35,7 +34,7 @@ public class Packet
     /// </summary>
     public static PacketType GetPacketType(byte[] data)
     {
-        ByteManager manager = new ByteManager(data);
+        ByteManager manager = new ByteManager(data, 0, "Get packet type");
         byte id = manager.GetByteAt(PACKET_ID_INDEX);
         return (PacketType)id;
     }
@@ -46,34 +45,17 @@ public class Packet
     /// </summary>
     public virtual void LoadBytes()
     {
-        ByteManager manager = new ByteManager(Data);
+        ByteManager manager = new ByteManager(Data, 0, "Header packet");
 
-        PacketFormat = GetPacketFormat(manager.GetBytes(sizeof(ushort)));
+        PacketFormat = (PacketFormat)manager.GetUnsignedShort(); //Will return 2020 which will be turned to F1_2020 enum
         GameMajorVersion = manager.GetByte();
         GameMinorVersion = manager.GetByte();
         PacketVersion = manager.GetByte();
         PacketID = manager.GetByte();
-        SessionUniqueID = BitConverter.ToUInt64(manager.GetBytes(sizeof(long)), 0);
-        SessionTime = BitConverter.ToSingle(manager.GetBytes(sizeof(float)), 0);
-        FrameID = BitConverter.ToUInt32(manager.GetBytes(sizeof(uint)), 0);
+        SessionUniqueID = manager.GetUnsignedLong();
+        SessionTime = manager.GetFloat();
+        FrameID = manager.GetUnsignedInt();
         PlayerCarIndex = manager.GetByte();
         SecondaryPlayerCarIndex = manager.GetByte();
-    }
-
-    /// <summary>
-    /// What game is this packet from? (Only using F1 2020 though)
-    /// </summary>
-    PacketFormat GetPacketFormat(byte[] data)
-    {
-        ushort packetFormat = BitConverter.ToUInt16(data, 0);
-
-        switch (packetFormat)
-        {
-            case (2017): { return PacketFormat.F1_2017; }
-            case (2018): { return PacketFormat.F1_2018; }
-            case (2019): { return PacketFormat.F1_2019; }
-            case (2020): { return PacketFormat.F1_2020; }
-            default: return PacketFormat.UNKNOWN;
-        }
     }
 }

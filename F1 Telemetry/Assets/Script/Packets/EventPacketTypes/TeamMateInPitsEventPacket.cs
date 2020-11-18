@@ -13,7 +13,7 @@ public class TeamMateInPitsEventPacket : EventPacket
     {
         base.LoadBytes();
 
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER);
+        ByteManager manager = new ByteManager(Data, MOVE_PAST_EVENT_HEADER, "Team mate in pits event packet");
         VehicleIndex = manager.GetByte();
     }
 }
