@@ -56,16 +56,9 @@ public class SessionPacket : Packet
 
         MarshalZones = new MarshalZone[NumberOfMarshalZones];
 
-        int MarshalZoneDataIndex = manager.CurrentIndex;
-
-        //Read all instances of MarshalZone[] in the data -> It's all linear so we only need to know
-        //Length in bytes of each entry and what index entry 0 has to loop through entire array
+        //Read all instances of MarshalZone[] in the data -> It's all linear
         for (int i = 0; i < MarshalZones.Length; i++)
         {
-            //Find startindex for current ParticipantData
-            int offsetIndex = MarshalZoneDataIndex + MarshalZone.SIZE * i;
-            manager.SetNewIndex(offsetIndex);
-
             MarshalZones[i].zoneStart = manager.GetFloat();
             MarshalZones[i].zoneFlag = (ZoneFlag)manager.GetSignedByte();
         }
@@ -77,16 +70,9 @@ public class SessionPacket : Packet
 
         WeatherForecastSamples = new WeatherForecastSample[NumberWeatherForeCastSamples];
 
-        int WeatherForecastSampleDataIndex = manager.CurrentIndex;
-
-        //Read all instances of WeatherForecastSamples[] in the data -> It's all linear so we only need to know
-        //Length in bytes of each entry and what index entry 0 has to loop through entire array
+        //Read all instances of WeatherForecastSamples[] in the data -> It's all linear
         for (int i = 0; i < WeatherForecastSamples.Length; i++)
         {
-            //Find startindex for current ParticipantData
-            int offsetIndex = WeatherForecastSampleDataIndex + WeatherForecastSample.SIZE * i;
-            manager.SetNewIndex(offsetIndex);
-
             WeatherForecastSamples[i].sessionType = (SessionType)manager.GetByte();
             WeatherForecastSamples[i].timeOffset = manager.GetByte();
             WeatherForecastSamples[i].weather = (Weather)manager.GetByte();
@@ -103,17 +89,6 @@ public struct MarshalZone
 {
     public float zoneStart;   //Fraction (0..1) of way through the lap the marshal zone starts 
     public ZoneFlag zoneFlag; //Flag status in zone at the moment
-
-    /// <summary>
-    /// Size in bytes of an instance of MarshalZone in data
-    /// </summary>
-    public static int SIZE
-    {
-        get
-        {
-            return sizeof(float) + sizeof(byte); //Enums are made from only one byte of data
-        }
-    }
 }
 
 /// <summary>
@@ -126,15 +101,4 @@ public struct WeatherForecastSample
     public Weather weather;
     public sbyte trackTemperature;
     public sbyte airTemperature;
-
-    /// <summary>
-    /// Size in bytes of an instance of WeatherForecastSample in data
-    /// </summary>
-    public static int SIZE
-    {
-        get
-        {
-            return sizeof(byte) * 5; //Enums are made from only one byte of data (sbyte and byte are both 1 byte big)
-        }
-    }
 }

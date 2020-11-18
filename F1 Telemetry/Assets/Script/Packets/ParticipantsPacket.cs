@@ -23,16 +23,9 @@ public class ParticipantsPacket : Packet
         NumberOfActiveCars = manager.GetByte();
         AllParticipantData = new ParticipantData[NumberOfActiveCars];
 
-        int participantDataIndex = manager.CurrentIndex;
-
-        //Read all instances of ParticipantData[] in the data -> It's all linear so we only need to know
-        //Length in bytes of each entry and what index entry 0 has to loop through entire array
+        //Read all instances of ParticipantData[] in the data -> It's all linear
         for (int i = 0; i < AllParticipantData.Length; i++)
         {
-            //Find startindex for current ParticipantData
-            int offsetIndex = participantDataIndex + ParticipantData.SIZE * i;
-            manager.SetNewIndex(offsetIndex);
-
             AllParticipantData[i].AIControlled = (ControlledStatus)manager.GetByte();
             AllParticipantData[i].driverID = manager.GetByte();
             AllParticipantData[i].team = (Team)manager.GetByte();
@@ -56,17 +49,6 @@ public struct ParticipantData
     public Nationality nationality;
     public string name;
     public bool publicTelemetry;
-
-    /// <summary>
-    /// Size in bytes of an instance of ParticipantData in data
-    /// </summary>
-    public static int SIZE
-    {
-        get
-        {
-            return sizeof(byte) * 5 + AMOUNT_OF_CHARS_IN_NAME + sizeof(bool); //Enums are made from only one byte of data
-        }
-    }
 
     public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in ParticipantData / Packet
 }
