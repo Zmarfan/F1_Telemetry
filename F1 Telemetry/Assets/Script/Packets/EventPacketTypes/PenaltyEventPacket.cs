@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 /// <summary>
 /// This packet gives details of Penalty event.
 /// Packet sent when event occurs
@@ -9,7 +10,7 @@ public class PenaltyEventPacket : EventPacket
     public InfringementType InfringementType { get; private set; }
     public byte VehicleIndex { get; private set; }
     public byte OtherVehicleIndex { get; private set; }             //Vehicle Index of the other car involved in incident
-    public byte Time { get; private set; }                          //Either time gained, or time spent doing action. In seconds!
+    public byte Time { get; private set; }                          //Either time gained, or time spent doing action. In seconds! (255 if not relevant)
     public byte LapNumber { get; private set; }                     //Lap the penalty occurred on
     public byte PlacesGained { get; private set; }      
 

@@ -155,7 +155,7 @@ public class ByteManager
     {
         if (index < 0)
             throw new System.IndexOutOfRangeException(_debugData + ", startIndex must be a non negative integer!");
-        if (index >= _data.Length)
+        if (index > _data.Length)
             throw new System.IndexOutOfRangeException(_debugData + ", startIndex exceeds data length");
     }
 }
