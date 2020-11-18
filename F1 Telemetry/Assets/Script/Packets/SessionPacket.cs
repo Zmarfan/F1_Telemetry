@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System;
 
+/// <summary>
+/// The session packet includes details about the current session in progress. 
+/// 2 packets per second.
+/// </summary>
 public class SessionPacket : Packet
 {
     public Weather Weather { get; protected set; }                                   //Current weather right now

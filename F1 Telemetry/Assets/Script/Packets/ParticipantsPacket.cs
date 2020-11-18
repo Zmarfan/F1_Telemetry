@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Text;
 
+/// <summary>
+/// This is a list of participants in the race. If controlled by AI -> name is driver name, online, name -> steam 
+/// 1 packet every 5 seconds
+/// </summary>
 public class ParticipantsPacket : Packet
 {
     public byte NumberOfActiveCars { get; protected set; }
@@ -64,5 +68,5 @@ public struct ParticipantData
         }
     }
 
-    public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name
+    public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in packet
 }

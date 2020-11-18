@@ -42,14 +42,36 @@ public class PacketManager : MonoBehaviour
             case (PacketType.MOTION):               { return new MotionPacket(packet.Data); }
             case (PacketType.SESSION):              { return new SessionPacket(packet.Data); }
             case (PacketType.LAP_DATA):             { return new LapDataPacket(packet.Data); }
-            case (PacketType.EVENT):                { return new EventPacket(packet.Data); }
             case (PacketType.PARTICIPANTS):         { return new ParticipantsPacket(packet.Data); }
             case (PacketType.CAR_SETUPS):           { return new CarSetupPacket(packet.Data); }
             case (PacketType.CAR_TELEMETRY):        { return new CarTelemetryPacket(packet.Data); }
             case (PacketType.CAR_STATUS):           { return new CarStatusPacket(packet.Data); }
             case (PacketType.FINAL_CLASSIFICATION): { return new FinalClassificationPacket(packet.Data); }
             case (PacketType.LOBBY_INFO):           { return new LobbyInfoPacket(packet.Data); }
-            default: { Debug.LogWarning("Packet type is not yet supported!"); return packet; }
+            case (PacketType.EVENT):
+                {
+                    EventPacket eventBase = new EventPacket(packet.Data);
+                    EventType eventType = eventBase.EventPacketType();
+
+                    switch (eventType)
+                    {
+                        //return eventBase if nothing more needs to be known than the event occured!
+                        case EventType.Session_Started:        { return eventBase; } 
+                        case EventType.Session_Ended:          { return eventBase; } 
+                        case EventType.DRS_Enabled:            { return eventBase; }
+                        case EventType.DRS_Disabled:           { return eventBase; }
+                        case EventType.Chequered_Flag:         { return eventBase; }
+
+                        case EventType.Fastest_Lap:            { return new FastestLapEventPacket(packet.Data); }
+                        case EventType.Retirement:             { return new RetirementEventPacket(packet.Data); }
+                        case EventType.Team_Mate_In_Pits:      { return new TeamMateInPitsEventPacket(packet.Data); }
+                        case EventType.Race_Winner:            { return new RaceWinnerEventPacket(packet.Data); }
+                        case EventType.Penalty_Issued:         { return new PenaltyEventPacket(packet.Data); }
+                        case EventType.Speed_Trap_Triggered:   { return new SpeedTrapEventPacket(packet.Data); }
+                        default: { throw new System.Exception("There exist no such eventype: " + eventType); }
+                    }
+                }
+            default: { throw new System.Exception("There exist no such packet type: " + packetType); }
         }
     }
 }
