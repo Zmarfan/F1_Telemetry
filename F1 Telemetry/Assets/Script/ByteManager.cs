@@ -10,7 +10,7 @@ public class ByteManager
 
     byte[] _data;
     int _index;
-    string _debugData;
+    string _debugData; //Only used for debugging purposes
 
     /// <summary>
     /// Input data data and index to start reading that data from
