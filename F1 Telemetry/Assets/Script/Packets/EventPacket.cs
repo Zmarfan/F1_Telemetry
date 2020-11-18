@@ -28,15 +28,16 @@ public class EventPacket : Packet
     public override void LoadBytes()
     {
         base.LoadBytes();
-        EventType = EventPacketType();
+        //This has already been done with this data but is done again to keep structure across all packets
+        EventType = EventPacketType(Data);
     }
 
     /// <summary>
     /// Identifies what type of even packet this is and returns that type
     /// </summary>
-    public EventType EventPacketType()
+    public static EventType EventPacketType(byte[] data)
     {
-        ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX);
+        ByteManager manager = new ByteManager(data, MOVE_PAST_HEADER_INDEX);
 
         string eventStringCode = Encoding.UTF8.GetString(manager.GetBytes(EVENT_TYPE_BYTE_SIZE));
 

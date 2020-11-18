@@ -9,8 +9,8 @@ using System;
 public class Packet
 {
     public readonly int STATEMENT_TRUE = 1;
-    protected readonly int PACKET_ID_INDEX = 5;
-    protected readonly int MOVE_PAST_HEADER_INDEX = 24;
+    protected static readonly int PACKET_ID_INDEX = 5;
+    protected static readonly int MOVE_PAST_HEADER_INDEX = 24;
 
     public byte[] Data { get; protected set; }
 
@@ -27,21 +27,15 @@ public class Packet
 
     public Packet(byte[] data)
     {
-        byte[] copyData = new byte[data.Length];
-
-        //Copy data as to not mix upp references -> keep data secured
-        for (int i = 0; i < data.Length; i++)
-            copyData[i] = data[i];
-
-        this.Data = copyData;
+        this.Data = data;
     }
 
     /// <summary>
     /// Returns packet-type of current packet
     /// </summary>
-    public PacketType GetPacketType()
+    public static PacketType GetPacketType(byte[] data)
     {
-        ByteManager manager = new ByteManager(Data);
+        ByteManager manager = new ByteManager(data);
         byte id = manager.GetByteAt(PACKET_ID_INDEX);
         return (PacketType)id;
     }
