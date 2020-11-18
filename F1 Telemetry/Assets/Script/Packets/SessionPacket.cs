@@ -7,27 +7,27 @@ using System;
 /// </summary>
 public class SessionPacket : Packet
 {
-    public Weather Weather { get; protected set; }                                   //Current weather right now
-    public sbyte TrackTemperature { get; protected set; }
-    public sbyte AirTemperature { get; protected set; }
-    public byte TotalLaps { get; protected set; }                                    //Total laps in the race
-    public ushort TrackLength { get; protected set; }                                //Track length in metres
-    public SessionType SessionType { get; protected set; }                           //Q1/Race/Time-trial etc
-    public Track Track { get; protected set; }                                       
-    public Formula Formula { get; protected set; }                                   //What type of cars in the session
-    public ushort SessionTimeLeft { get; protected set; }                            
-    public ushort SessionDuration { get; protected set; }                            
-    public byte PitSpeedLimit { get; protected set; }                                //In km/h
-    public bool GamePaused { get; protected set; }                                   //Represented by a "byte" guessing 0 -> not paused, 1 -> paused 
-    public bool IsSpectating { get; protected set; }                                 //Represented by a "byte" guessing 0 -> not spectating, 1 -> spectating
-    public byte SpectatorCarIndex { get; protected set; }                            //255 if not spectating
-    public bool SliProNativeSupport { get; protected set; }                          //Whether or not SLI Pro is supported, Represented by a "byte" guessing 0 -> not supported, 1 -> supported
-    public byte NumberOfMarshalZones { get; protected set; }                         
-    public MarshalZone[] MarshalZones { get; protected set; }                        //Info about marshal zones (flag and position in lap)
-    public SafetyCarStatus SafetyCarStatus { get; protected set; }                   //Is SC out and what type?
-    public bool IsOnline { get; protected set; }                                     
-    public byte NumberWeatherForeCastSamples { get; protected set; }                 //Number of weather samples to follow
-    public WeatherForecastSample[] WeatherForecastSamples { get; protected set; }
+    public Weather Weather { get; private set; }                                   //Current weather right now
+    public sbyte TrackTemperature { get; private set; }
+    public sbyte AirTemperature { get; private set; }
+    public byte TotalLaps { get; private set; }                                    //Total laps in the race
+    public ushort TrackLength { get; private set; }                                //Track length in metres
+    public SessionType SessionType { get; private set; }                           //Q1/Race/Time-trial etc
+    public Track Track { get; private set; }                                       
+    public Formula Formula { get; private set; }                                   //What type of cars in the session
+    public ushort SessionTimeLeft { get; private set; }                            
+    public ushort SessionDuration { get; private set; }                            
+    public byte PitSpeedLimit { get; private set; }                                //In km/h
+    public bool GamePaused { get; private set; }                                   //Represented by a "byte" guessing 0 -> not paused, 1 -> paused 
+    public bool IsSpectating { get; private set; }                                 //Represented by a "byte" guessing 0 -> not spectating, 1 -> spectating
+    public byte SpectatorCarIndex { get; private set; }                            //255 if not spectating
+    public bool SliProNativeSupport { get; private set; }                          //Whether or not SLI Pro is supported, Represented by a "byte" guessing 0 -> not supported, 1 -> supported
+    public byte NumberOfMarshalZones { get; private set; }                         
+    public MarshalZone[] MarshalZones { get; private set; }                        //Info about marshal zones (flag and position in lap)
+    public SafetyCarStatus SafetyCarStatus { get; private set; }                   //Is SC out and what type?
+    public bool IsOnline { get; private set; }                                     
+    public byte NumberWeatherForeCastSamples { get; private set; }                 //Number of weather samples to follow
+    public WeatherForecastSample[] WeatherForecastSamples { get; private set; }
 
 
     public SessionPacket(byte[] data) : base(data) { }

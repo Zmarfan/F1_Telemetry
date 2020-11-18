@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using UnityEngine;
 
 /// <summary>
 /// This packet gives details of events that happen during the course of a session.
@@ -6,9 +7,11 @@
 /// </summary>
 public class EventPacket : Packet
 {
-    public EventType EventType  { get; protected set; }
+    public EventType EventType  { get; private set; }
 
-    public static readonly int EVENT_TYPE_BYTE_SIZE = 4;
+    protected static readonly int EVENT_TYPE_BYTE_SIZE = 4;
+    protected static readonly int MOVE_PAST_EVENT_HEADER = 28;
+
     #region Event String Codes
     public const string SESSION_STARTED =      "SSTA";
     public const string SESSION_ENDED =        "SEND";

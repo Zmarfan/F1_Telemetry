@@ -7,8 +7,8 @@ using System.Text;
 /// </summary>
 public class ParticipantsPacket : Packet
 {
-    public byte NumberOfActiveCars { get; protected set; }
-    public ParticipantData[] AllParticipantData { get; protected set; }
+    public byte NumberOfActiveCars { get; private set; }
+    public ParticipantData[] AllParticipantData { get; private set; }
 
     public ParticipantsPacket(byte[] data) : base(data) { }
 
@@ -68,5 +68,5 @@ public struct ParticipantData
         }
     }
 
-    public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in packet
+    public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in ParticipantData / Packet
 }

@@ -14,16 +14,16 @@ public class Packet
 
     public byte[] Data { get; protected set; }
 
-    public PacketFormat PacketFormat { get; protected set; }     //Game release year
-    public byte GameMajorVersion { get; protected set; }         //X.00
-    public byte GameMinorVersion { get; protected set; }         //1.XX
-    public byte PacketVersion { get; protected set; }            
-    public byte PacketID { get; protected set; }                 //What type of package is this? Identifier
-    public ulong SessionUniqueID { get; protected set; }         
-    public float SessionTime { get; protected set; }             //Total uptime of session
-    public uint FrameID { get; protected set; }                  // Identifier for the frame the data was retrieved on
-    public byte PlayerCarIndex { get; protected set; }           // Index of player's car in the array
-    public byte SecondaryPlayerCarIndex { get; protected set; }  //Index of secondary player's car in the array (splitscreen) -> 255 if no secondary player
+    public PacketFormat PacketFormat { get; private set; }     //Game release year
+    public byte GameMajorVersion { get; private set; }         //X.00
+    public byte GameMinorVersion { get; private set; }         //1.XX
+    public byte PacketVersion { get; private set; }            
+    public byte PacketID { get; private set; }                 //What type of package is this? Identifier
+    public ulong SessionUniqueID { get; private set; }         
+    public float SessionTime { get; private set; }             //Total uptime of session
+    public uint FrameID { get; private set; }                  // Identifier for the frame the data was retrieved on
+    public byte PlayerCarIndex { get; private set; }           // Index of player's car in the array
+    public byte SecondaryPlayerCarIndex { get; private set; }  //Index of secondary player's car in the array (splitscreen) -> 255 if no secondary player
 
     public Packet(byte[] data)
     {

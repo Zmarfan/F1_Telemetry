@@ -10,12 +10,16 @@ public struct UdpState
     public IPEndPoint endpoint;
 }
 
+/// <summary>
+/// Receiver of UDP packets sent from F1 2020 by codemasters into port 20777.
+/// After receive -> transmit data to PacketManager that handles it further.
+/// </summary>
 public class UdpReceiver : MonoBehaviour
 {
-    static readonly int PORT = 20777;
-    static byte[] _data;
+    static readonly int PORT = 20777;     //Entry port for data from the game
+    static byte[] _data;                  //the variable where data from the game is temp stored from each packet
 
-    static bool _messageReceived = false;
+    static bool _messageReceived = false; //Makes sure we only read data when new data has come in
 
     void Awake()
     {
@@ -29,14 +33,19 @@ public class UdpReceiver : MonoBehaviour
         StartCoroutine(Listening(state, client));
     }
 
+    /// <summary>
+    /// Loop which listens, receives and transmits further data
+    /// </summary>
     IEnumerator Listening(UdpState state, UdpClient client)
     {
         Debug.Log("Start listening for incoming messages!");
 
         while (true)
         {
+            //Start listening for new data
             client.BeginReceive(new AsyncCallback(ReceiveCallback), state);
  
+            //Waits until new data has arrived
             while (!_messageReceived)
             {
                 Debug.Log("Waiting for incoming message!");
