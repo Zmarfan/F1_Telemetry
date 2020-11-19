@@ -37,7 +37,7 @@ public class PacketManager : MonoBehaviour
     {
         //Id what type of packet this is
         PacketType packetType = Packet.GetPacketType(data);
-        Debug.Log(packetType);
+
         switch (packetType)
         {
             case (PacketType.MOTION):               { return new MotionPacket(data); }

@@ -13,7 +13,7 @@ public class ByteManager
     string _debugData; //Only used for debugging purposes
 
     /// <summary>
-    /// Input data data and index to start reading that data from
+    /// Input data data and index to start reading that data from (DebugData is only just that, leave blank if not debugging)
     /// </summary>
     public ByteManager(byte[] data, int startIndex = 0, string debugData = "")
     {
