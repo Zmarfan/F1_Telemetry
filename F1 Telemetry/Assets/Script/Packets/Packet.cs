@@ -10,6 +10,7 @@ public class Packet
 {
     protected static readonly int PACKET_ID_INDEX = 5;
     protected static readonly int MOVE_PAST_HEADER_INDEX = 24;
+    protected readonly int MAX_AMOUNT_OF_CARS = 22;
 
     public byte[] Data { get; protected set; }
 

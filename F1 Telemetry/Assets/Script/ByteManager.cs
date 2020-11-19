@@ -122,6 +122,19 @@ public class ByteManager
     }
 
     /// <summary>
+    /// Returns the next (length * 4) bytes as float[] in data and moves along data (length * 4) step
+    /// </summary>
+    public float[] GetFloatArray(int length)
+    {
+        float[] returnArray = new float[length];
+
+        for (int i = 0; i < returnArray.Length; i++)
+            returnArray[i] = GetFloat();
+
+        return returnArray;
+    }
+
+    /// <summary>
     /// Returns the next 8 bytes as ulong in data and moves along data eight step
     /// </summary>
     public ulong GetUnsignedLong()

@@ -6,8 +6,6 @@
 /// </summary>
 public class LapDataPacket : Packet
 {
-    private readonly int MAX_AMOUNT_OF_CARS = 22;
-
     /// <summary>
     /// An array of 22 instances -> If there are less than 22 cars there will be junk values in some instances
     ///Make sure to access via index known to be valid!
