@@ -135,6 +135,19 @@ public class ByteManager
     }
 
     /// <summary>
+    /// Returns the next (length * 2) bytes as ushort[] in data and moves along data (length * 2) step
+    /// </summary>
+    public ushort[] GetUnsignedShortArray(int length)
+    {
+        ushort[] returnArray = new ushort[length];
+
+        for (int i = 0; i < returnArray.Length; i++)
+            returnArray[i] = GetUnsignedShort();
+
+        return returnArray;
+    }
+
+    /// <summary>
     /// Returns the next 8 bytes as ulong in data and moves along data eight step
     /// </summary>
     public ulong GetUnsignedLong()

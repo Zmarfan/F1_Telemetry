@@ -47,10 +47,7 @@ public class UdpReceiver : MonoBehaviour
  
             //Waits until new data has arrived
             while (!_messageReceived)
-            {
-                Debug.Log("Waiting for incoming message!");
                 yield return new WaitForEndOfFrame();
-            }
             //When data is received it's stored in _data variable!
 
             byte[] copyData = new byte[_data.Length];
