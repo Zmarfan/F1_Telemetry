@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ZoneFlag
+public enum ERSDeploymentMode
 {
-    UNKNOWN = -1,
     None,
-    Green,
-    Blue,
-    Yellow,
-    Red
+    Medium,
+    Overtake,
+    Hotlap
 }

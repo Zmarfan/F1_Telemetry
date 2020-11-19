@@ -60,7 +60,7 @@ public class SessionPacket : Packet
         for (int i = 0; i < MarshalZones.Length; i++)
         {
             MarshalZones[i].zoneStart = manager.GetFloat();
-            MarshalZones[i].zoneFlag = manager.GetEnumFromSignedByte<ZoneFlag>();
+            MarshalZones[i].zoneFlag = manager.GetEnumFromSignedByte<Flag>();
         }
         //manager will now have moved past struct array
 
@@ -88,7 +88,7 @@ public class SessionPacket : Packet
 public struct MarshalZone
 {
     public float zoneStart;   //Fraction (0..1) of way through the lap the marshal zone starts 
-    public ZoneFlag zoneFlag; //Flag status in zone at the moment
+    public Flag zoneFlag; //Flag status in zone at the moment
 }
 
 /// <summary>

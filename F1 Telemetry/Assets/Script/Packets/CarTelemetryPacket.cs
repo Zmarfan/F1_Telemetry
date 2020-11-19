@@ -10,8 +10,8 @@ public class CarTelemetryPacket : Packet
     /// Will have 22 instances but only active cars will have valid setups. Rest is junk values.
     /// </summary>
     public CarTelemetryData[] AllCarTelemetryData { get; private set; }
-    public uint ButtonStatus { get; private set; }                        //Bit flags specifying which buttons are being pressed
-    public MFDPanelType MFDPanelType { get; private set; }                //TEST
+    public uint ButtonStatus { get; private set; }                        //Bit flags specifying which buttons are being pressed "work on more"
+    public MFDPanelType MFDPanelType { get; private set; }                
     public MFDPanelType MFDPanelTypeSecondaryPlayer { get; private set; }
     public sbyte SuggestedGear { get; private set; }                       //0 -> no gear suggestion activated
 
