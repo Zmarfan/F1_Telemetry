@@ -60,5 +60,5 @@ public enum Team
     Benetton_1995,
     Ferrari_2000,
     Jordan_1991,
-    My_Team = 255
+    My_Team_Or_Unknown = 255
 }

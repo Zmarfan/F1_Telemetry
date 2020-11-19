@@ -23,14 +23,17 @@ public class LobbyInfoPacket : Packet
         for (int i = 0; i < AllLobbyInfoData.Length; i++)
         {
             AllLobbyInfoData[i].AIControlled = manager.GetBool();
-            AllLobbyInfoData[i].team = (Team)manager.GetByte();
-            AllLobbyInfoData[i].nationality = (Nationality)manager.GetByte();
+            AllLobbyInfoData[i].team = manager.GetEnumFromByte<Team>();
+            AllLobbyInfoData[i].nationality = manager.GetEnumFromByte<Nationality>();
             AllLobbyInfoData[i].name = manager.GetString(LobbyInfoData.AMOUNT_OF_CHARS_IN_NAME);
-            AllLobbyInfoData[i].readyStatus = (ReadyStatus)manager.GetByte();
+            AllLobbyInfoData[i].readyStatus = manager.GetEnumFromByte<ReadyStatus>();
         }
     }
 }
 
+/// <summary>
+/// Holds LobbyInfoData for one driver in the race
+/// </summary>
 public struct LobbyInfoData
 {
     public bool AIControlled; //True if car is controlled by AI

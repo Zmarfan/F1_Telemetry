@@ -35,9 +35,8 @@ public class Packet
     /// </summary>
     public static PacketType GetPacketType(byte[] data)
     {
-        ByteManager manager = new ByteManager(data, 0, "Get packet type");
-        byte id = manager.GetByteAt(PACKET_ID_INDEX);
-        return (PacketType)id;
+        ByteManager manager = new ByteManager(data, PACKET_ID_INDEX, "Get packet type");
+        return manager.GetEnumFromByte<PacketType>();
     }
 
     /// <summary>

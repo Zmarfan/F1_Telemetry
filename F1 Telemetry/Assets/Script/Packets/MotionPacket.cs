@@ -84,6 +84,9 @@ public class MotionPacket : Packet
     }
 }
 
+/// <summary>
+/// Holds CarMotionData for one driver in the race
+/// </summary>
 public struct CarMotionData
 {
     public float worldPositionX;

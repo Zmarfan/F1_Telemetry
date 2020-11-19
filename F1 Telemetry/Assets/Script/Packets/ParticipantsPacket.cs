@@ -26,11 +26,11 @@ public class ParticipantsPacket : Packet
         //Read all instances of ParticipantData[] in the data -> It's all linear
         for (int i = 0; i < AllParticipantData.Length; i++)
         {
-            AllParticipantData[i].AIControlled = (ControlledStatus)manager.GetByte();
+            AllParticipantData[i].AIControlled = manager.GetEnumFromByte<ControlledStatus>();
             AllParticipantData[i].driverID = manager.GetByte();
-            AllParticipantData[i].team = (Team)manager.GetByte();
+            AllParticipantData[i].team = manager.GetEnumFromByte<Team>();
             AllParticipantData[i].raceNumber = manager.GetByte();
-            AllParticipantData[i].nationality = (Nationality)manager.GetByte();
+            AllParticipantData[i].nationality = manager.GetEnumFromByte<Nationality>();
             AllParticipantData[i].name = manager.GetString(ParticipantData.AMOUNT_OF_CHARS_IN_NAME);
             AllParticipantData[i].publicTelemetry = manager.GetBool();
         }

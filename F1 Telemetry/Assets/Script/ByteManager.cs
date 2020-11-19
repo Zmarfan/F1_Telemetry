@@ -143,6 +143,14 @@ public class ByteManager
     }
 
     /// <summary>
+    /// Returns the next 8 bytes as double in data and moves along data eight step
+    /// </summary>
+    public double GetDouble()
+    {
+        return BitConverter.ToDouble(GetBytes(sizeof(double)), 0);
+    }
+
+    /// <summary>
     /// Returns the next "stringLength" bytes as string in data and moves along data stringLength step
     /// </summary>
     public string GetString(int stringLength)
@@ -157,6 +165,48 @@ public class ByteManager
     public bool GetBool()
     {
         return GetByte() == STATEMENT_TRUE;
+    }
+
+    /// <summary>
+    /// Returns the next 1 byte as T in data and moves along data 1 step => Only use for known type conversions from byte -> T
+    /// </summary>
+    public T GetEnumFromByte<T>()
+    {
+        return (T)Enum.ToObject(typeof(T), GetByte());
+    }
+
+    /// <summary>
+    /// Returns the next 1 sbyte as T in data and moves along data 1 step => Only use for known type conversions from byte -> T
+    /// </summary>
+    public T GetEnumFromSignedByte<T>()
+    {
+        return (T)Enum.ToObject(typeof(T), GetSignedByte());
+    }
+
+    /// <summary>
+    /// Returns the next length bytes as T[] in data and moves along data length step => Only use for known type conversions from byte -> T
+    /// </summary>
+    public T[] GetEnumArrayFromBytes<T>(int length)
+    {
+        T[] returnArray = new T[length];
+
+        for (int i = 0; i < returnArray.Length; i++)
+            returnArray[i] = GetEnumFromByte<T>();
+
+        return returnArray;
+    }
+
+    /// <summary>
+    /// Returns the next length sbytes as T[] in data and moves along data length step => Only use for known type conversions from byte -> T
+    /// </summary>
+    public T[] GetEnumArrayFromSignedBytes<T>(int length)
+    {
+        T[] returnArray = new T[length];
+
+        for (int i = 0; i < returnArray.Length; i++)
+            returnArray[i] = GetEnumFromSignedByte<T>();
+
+        return returnArray;
     }
 
     #endregion

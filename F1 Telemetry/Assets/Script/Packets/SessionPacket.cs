@@ -37,14 +37,14 @@ public class SessionPacket : Packet
         base.LoadBytes();
         ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Session packet");
 
-        Weather = (Weather)manager.GetByte();
+        Weather = manager.GetEnumFromByte<Weather>();
         TrackTemperature = manager.GetSignedByte();
         AirTemperature = manager.GetSignedByte();
         TotalLaps = manager.GetByte();
         TrackLength = manager.GetUnsignedShort();
-        SessionType = (SessionType)manager.GetByte();
-        Track = (Track)manager.GetSignedByte();
-        Formula = (Formula)manager.GetByte();
+        SessionType = manager.GetEnumFromByte<SessionType>();
+        Track = manager.GetEnumFromByte<Track>();
+        Formula = manager.GetEnumFromByte<Formula>();
         SessionTimeLeft = manager.GetUnsignedShort();
         SessionDuration = manager.GetUnsignedShort();
         PitSpeedLimit = manager.GetByte();
@@ -60,7 +60,7 @@ public class SessionPacket : Packet
         for (int i = 0; i < MarshalZones.Length; i++)
         {
             MarshalZones[i].zoneStart = manager.GetFloat();
-            MarshalZones[i].zoneFlag = (ZoneFlag)manager.GetSignedByte();
+            MarshalZones[i].zoneFlag = manager.GetEnumFromSignedByte<ZoneFlag>();
         }
         //manager will now have moved past struct array
 
@@ -73,9 +73,9 @@ public class SessionPacket : Packet
         //Read all instances of WeatherForecastSamples[] in the data -> It's all linear
         for (int i = 0; i < WeatherForecastSamples.Length; i++)
         {
-            WeatherForecastSamples[i].sessionType = (SessionType)manager.GetByte();
+            WeatherForecastSamples[i].sessionType = manager.GetEnumFromByte<SessionType>();
             WeatherForecastSamples[i].timeOffset = manager.GetByte();
-            WeatherForecastSamples[i].weather = (Weather)manager.GetByte();
+            WeatherForecastSamples[i].weather = manager.GetEnumFromByte<Weather>();
             WeatherForecastSamples[i].trackTemperature = manager.GetSignedByte();
             WeatherForecastSamples[i].airTemperature = manager.GetSignedByte();
         }

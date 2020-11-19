@@ -51,17 +51,20 @@ public class LapDataPacket : Packet
             LapData[i].safetyCarDelta = manager.GetFloat();
             LapData[i].carPosition = manager.GetByte();
             LapData[i].currentLapNumber = manager.GetByte();
-            LapData[i].pitStatus = (PitStatus)manager.GetByte();
+            LapData[i].pitStatus = manager.GetEnumFromByte<PitStatus>();
             LapData[i].currentSector = manager.GetByte();
             LapData[i].currentLapInvalid = manager.GetBool();
             LapData[i].totalPenalties = manager.GetByte();
             LapData[i].gridPosition = manager.GetByte();
-            LapData[i].driverStatus = (DriverStatus)manager.GetByte();
-            LapData[i].resultStatus = (ResultStatus)manager.GetByte();
+            LapData[i].driverStatus = manager.GetEnumFromByte<DriverStatus>();
+            LapData[i].resultStatus = manager.GetEnumFromByte<ResultStatus>();
         }
     }
 }
 
+/// <summary>
+/// Holds LapData for one driver in the race
+/// </summary>
 public struct LapData
 {
     //Lap data
