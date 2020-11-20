@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// This packet details Car status for all the cars in the race.
@@ -55,54 +57,54 @@ public class CarStatusPacket : Packet
             AllCarStatusData[i].ERSHarvestedThisLapMGUH = manager.GetFloat();
             AllCarStatusData[i].ERSDeployedThisLap = manager.GetFloat();
         }
-
-        Debug.Log("ERS Deployed this lap: " + AllCarStatusData[PlayerCarIndex].PercentageOfERSDeployedThisLap + ", ERS Saved this lap: " + AllCarStatusData[PlayerCarIndex].PercentageOfERSHarvestedThisLap + ", ERS effective saved this lap: " + AllCarStatusData[PlayerCarIndex].EffectivePercentageOFERSHarvestedThisLap);
     }
 }
 
 /// <summary>
 /// Holds CarStatusData for one driver in the race.
+/// Restricted variables are not accessable if Player hasn't allowed so.
 /// </summary>
 public struct CarStatusData
 {
     public TractionControlType tractionControl;
-    public bool ABS;                               //True if using ABS
-    public FuelMix fuelMix;                        
-    public byte frontBrakeBias;                    //percentage
-    public bool pitLimiterStatus;                  //True if on
-    public float fuelInTank;                       //Current fuel mass
-    public float fuelCapacity;                     
-    public float fuelRemainingLaps;                //Value on MFD
-    public ushort maxRPM;                          //point of rev limiter
-    public ushort idleRPM;                         
-    public byte maxGears;                          
-    public bool DRSAllowed;                        //True if allowed
-                                                   
-    public ushort DRSActivationDistance;           //0 => DRS not available, < 0 distance in metres
-    public byte[] tyreWear;                        //Tyre wear percentage
-    public ActualTyreCompound actualTyreCompound;
-    public VisualTyreCompound visualTyreCompound;
-    public byte tyreAgeInLaps;
-    public byte[] tyreDamage;                      //Tyre damage percentage
-    public byte frontLeftWingDamage;               //Percentage
-    public byte frontRightWingDamage;              //Percentage
-    public byte rearWingDamage;                    //Percentage
+    public bool ABS;                                         //True if using ABS
+    public FuelMix fuelMix;//Restricted                                             
+    public byte frontBrakeBias;//Restricted                  //percentage
+    public bool pitLimiterStatus;                            //True if on
+    public float fuelInTank;//Restricted                     //Current fuel mass
+    public float fuelCapacity;//Restricted                                          
+    public float fuelRemainingLaps;//Restricted              //Value on MFD
+    public ushort maxRPM;                                    //point of rev limiter
+    public ushort idleRPM;                                   
+    public byte maxGears;                                    
+    public bool DRSAllowed;                                  //True if allowed
+                                                             
+    public ushort DRSActivationDistance;                     //0 => DRS not available, < 0 distance in metres
+    public byte[] tyreWear;//Restricted                      //Tyre wear percentage
+    public ActualTyreCompound actualTyreCompound;            
+    public VisualTyreCompound visualTyreCompound;            
+    public byte tyreAgeInLaps;//Restricted                   
+    public byte[] tyreDamage;//Restricted                    //Tyre damage percentage
+    public byte frontLeftWingDamage;//Restricted             //Percentage
+    public byte frontRightWingDamage;//Restricted            //Percentage
+    public byte rearWingDamage;//Restricted                  //Percentage
 
-    public bool DRSFault;                        //True if faulty
-    public byte engineDamage;                    //Percentage
-    public byte gearBoxDamage;                   //Percentage
-    public Flag vehicleFIAFlag;                  
-    public float ERSStoreEnergy;                 //Stored in Joules (Experiment)
-    public ERSDeploymentMode ERSDeploymentMode;
-    public float ERSHarvestedThisLapMGUK;        //MGU-K is Motor Generator Unit - Kinetic -> energy through braking  | Joules
-    public float ERSHarvestedThisLapMGUH;        //MGU-H is Motor Generator Unit - Heat -> energy through being | Joules
-    public float ERSDeployedThisLap;             //Joules
+    public bool DRSFault;                                    //True if faulty
+    public byte engineDamage;//Restricted                    //Percentage
+    public byte gearBoxDamage;//Restricted                   //Percentage
+    public Flag vehicleFIAFlag;                               
+    public float ERSStoreEnergy;//Restricted                 //Stored in Joules (Experiment)
+    public ERSDeploymentMode ERSDeploymentMode;//Restricted
+    public float ERSHarvestedThisLapMGUK;//Restricted        //MGU-K is Motor Generator Unit - Kinetic -> energy through braking  | Joules
+    public float ERSHarvestedThisLapMGUH;//Restricted        //MGU-H is Motor Generator Unit - Heat -> energy through being | Joules
+    public float ERSDeployedThisLap; //Restricted            //Joules
 
     public static readonly float MAX_ERS_IN_JOULES = 4000000f;
 
-    public int PercentageOfERSRemaining { get { return (int)((ERSStoreEnergy / MAX_ERS_IN_JOULES) * 100); } }
-    public int PercentageOfERSDeployedThisLap { get { return (int)((ERSDeployedThisLap / MAX_ERS_IN_JOULES) * 100); } }
-    public int PercentageOfERSHarvestedThisLap { get { return (int)(((ERSHarvestedThisLapMGUK + ERSHarvestedThisLapMGUH) / MAX_ERS_IN_JOULES) * 100); } }
-
+    //Restricted
+    public int PercentageOfERSRemaining { get { return (int)(ERSStoreEnergy / MAX_ERS_IN_JOULES * 100); } }
+    public int PercentageOfERSDeployedThisLap { get { return (int)(ERSDeployedThisLap / MAX_ERS_IN_JOULES * 100); } }
+    public int PercentageOfERSHarvestedThisLap { get { return (int)((ERSHarvestedThisLapMGUK + ERSHarvestedThisLapMGUH) / MAX_ERS_IN_JOULES * 100); } }
     public int EffectivePercentageOFERSHarvestedThisLap { get { return PercentageOfERSHarvestedThisLap - PercentageOfERSDeployedThisLap; } }
 }
+
