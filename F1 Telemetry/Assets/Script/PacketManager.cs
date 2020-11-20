@@ -18,16 +18,64 @@ public class PacketManager : MonoBehaviour
     {
         //Handle all the packets that have come in since last frame
         while (_dataPackets.Count > 0)
-            HandlePackage(_dataPackets.Dequeue());
+            ReadPacket(_dataPackets.Dequeue());
     }
 
     /// <summary>
     /// Identifies packet type by data header and handles it ackoringly -> Read data from header and transmits it further
     /// </summary>
-    void HandlePackage(byte[] packetData)
+    void ReadPacket(byte[] packetData)
     {
         Packet packet = GetPacketType(packetData);
         packet.LoadBytes();
+        //HandlePacket(packet);
+    }
+
+    void HandlePacket(Packet packet)
+    {
+        switch ((PacketType)packet.PacketID)
+        {
+            case PacketType.MOTION:
+                {
+                    Participants.SetMotionPacket((MotionPacket)packet);
+                    break;
+                }
+            case PacketType.SESSION:
+                break;
+            case PacketType.LAP_DATA:
+                {
+                    Participants.SetLapData((LapDataPacket)packet);
+                    break;
+                }
+            case PacketType.EVENT:
+                break;
+            case PacketType.PARTICIPANTS:
+                {
+                    Participants.SetParticipantsPacket((ParticipantsPacket)packet);
+                    break;
+                }
+            case PacketType.CAR_SETUPS:
+                {
+                    Participants.SetCarSetupData((CarSetupPacket)packet);
+                    break;
+                }
+            case PacketType.CAR_TELEMETRY:
+                {
+                    Participants.SetTelemetryData((CarTelemetryPacket)packet);
+                    break;
+                }
+            case PacketType.CAR_STATUS:
+                {
+                    Participants.SetCarStatusData((CarStatusPacket)packet);
+                    break;
+                }
+            case PacketType.FINAL_CLASSIFICATION:
+                break;
+            case PacketType.LOBBY_INFO:
+                break;
+            default:
+                break;
+        }
     }
 
     /// <summary>

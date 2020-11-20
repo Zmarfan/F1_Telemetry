@@ -72,6 +72,9 @@ public static class RaceNames
         //Get second word (surname) if available, otherwise take first word (firstName / Username for multiplayer)
         string initials = words.Length > 1 ? words[1] : words[0];
 
-        return initials.Substring(0, INITIAL_LENGTH).ToUpper();
+        if (initials.Length > INITIAL_LENGTH)
+            return initials.Substring(0, INITIAL_LENGTH).ToUpper();
+        else
+            return initials.ToUpper();
     }
 }

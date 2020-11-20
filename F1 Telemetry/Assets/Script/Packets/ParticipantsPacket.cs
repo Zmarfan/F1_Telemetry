@@ -22,7 +22,7 @@ public class ParticipantsPacket : Packet
         ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Participation packet");
 
         NumberOfActiveCars = manager.GetByte();
-        AllParticipantData = new ParticipantData[NumberOfActiveCars];
+        AllParticipantData = new ParticipantData[MAX_AMOUNT_OF_CARS];
 
         //Read all instances of ParticipantData[] in the data -> It's all linear
         for (int i = 0; i < AllParticipantData.Length; i++)
@@ -39,10 +39,6 @@ public class ParticipantsPacket : Packet
             AllParticipantData[i].driverFullName = RaceNames.GetNameFromNumber(AllParticipantData[i].raceNumber);
             AllParticipantData[i].driverInitial = RaceNames.GetDriverInitials(AllParticipantData[i].raceNumber);
             AllParticipantData[i].teamColor = TeamColor.GetColorByTeam(AllParticipantData[i].team);
-
-            ParticipantData test = AllParticipantData[i];
-
-            Debug.Log(test.driverFullName + " = " + test.driverInitial + ", " + test.teamColor.ToString());
         }
     }
 }
