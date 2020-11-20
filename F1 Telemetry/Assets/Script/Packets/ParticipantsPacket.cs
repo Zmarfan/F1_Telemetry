@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Text;
+using System;
 
 /// <summary>
 /// This is a list of participants in the race. If controlled by AI -> name is driver name, online, name -> steam 
@@ -33,6 +34,15 @@ public class ParticipantsPacket : Packet
             AllParticipantData[i].nationality = manager.GetEnumFromByte<Nationality>();
             AllParticipantData[i].name = manager.GetString(ParticipantData.AMOUNT_OF_CHARS_IN_NAME);
             AllParticipantData[i].publicTelemetry = manager.GetBool();
+
+            //Added calculated data not present in packet from f1 2020
+            AllParticipantData[i].driverFullName = RaceNames.GetNameFromNumber(AllParticipantData[i].raceNumber);
+            AllParticipantData[i].driverInitial = RaceNames.GetDriverInitials(AllParticipantData[i].raceNumber);
+            AllParticipantData[i].teamColor = TeamColor.GetColorByTeam(AllParticipantData[i].team);
+
+            ParticipantData test = AllParticipantData[i];
+
+            Debug.Log(test.driverFullName + " = " + test.driverInitial + ", " + test.teamColor.ToString());
         }
     }
 }
@@ -43,12 +53,17 @@ public class ParticipantsPacket : Packet
 public struct ParticipantData
 {
     public ControlledStatus AIControlled;
-    public byte driverID; //100 if player
+    public byte driverID;                  //100 if player
     public Team team;
     public byte raceNumber;
     public Nationality nationality;
-    public string name;
-    public bool publicTelemetry;
+    public string name;                    //last name for AI, Player for players, (not to be used, good for debugging though)
+    public bool publicTelemetry;           //true if it is public
+
+    //Added calculated data
+    public string driverFullName;          //First and last name of driver based on raceNumber
+    public string driverInitial;           //Three letters shown in standings
+    public F1_Telemetry.Color teamColor;   //Own struct for color for expandability instead of Unity Color.
 
     public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in ParticipantData / Packet
 }
