@@ -43,7 +43,7 @@ public class ParticipantsPacket : Packet
 public struct ParticipantData
 {
     public ControlledStatus AIControlled;
-    public byte driverID;
+    public byte driverID; //100 if player
     public Team team;
     public byte raceNumber;
     public Nationality nationality;

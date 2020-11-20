@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//Lines of code so far: 2095
 public class PacketManager : MonoBehaviour
 {
     static Queue<byte[]> _dataPackets = new Queue<byte[]>(); //Queue of all packets received since last frame

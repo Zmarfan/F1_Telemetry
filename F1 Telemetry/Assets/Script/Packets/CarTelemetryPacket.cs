@@ -97,6 +97,7 @@ public struct ButtonStatus
     /// </summary>
     void AddInputType(uint data, ButtonInputTypes type)
     {
+        //Each type has an integer value which matches AND of data for that input
         inputDictionary.Add(type, (data & (int)type) == (int)type);
     }
 
