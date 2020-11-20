@@ -5,20 +5,29 @@ using UnityEngine.UI;
 
 public class DriverTemplate : MonoBehaviour
 {
-    [SerializeField] Image _positionImage;
-    [SerializeField] Transform _fastestLap;
-    [SerializeField] Text _positionText;
-    [SerializeField] Image _teamColorImage;
+    [SerializeField] Image _positionImage;  //The white image under position number -> flashes red/green during overtakes
+    [SerializeField] Transform _fastestLap; //transform for fastest lap image, deactivated on default
+    [SerializeField] Text _positionText;    //Only used on init on Awake, never changes
+    [SerializeField] Image _teamColorImage; 
     [SerializeField] Text _initialsText;
-    [SerializeField] Text _timeText;
+    [SerializeField] Text _timeText;        //Time text, different depending on interval/to leader -> not yet implemented
 
-    //The position of this template
-    int _position = 0;
-    Timer _colorTimer;
+    
+    int _position = 0;         //The position of this template -> static never changes
+    Timer _colorTimer;         //Timer for how long the positionImage shall flash
     bool _resetColor = false;
 
     private void Update()
     {
+        UpdateColor();
+    }
+
+    /// <summary>
+    /// Makes sure color goes back to white after set time
+    /// </summary>
+    void UpdateColor()
+    {
+        //colorTimer needs to be created from TimingScreen before we can use it
         if (_colorTimer != null && _resetColor)
         {
             _colorTimer.Time += Time.deltaTime;
@@ -42,6 +51,9 @@ public class DriverTemplate : MonoBehaviour
         _positionText.text = _position.ToString();
     }
 
+    /// <summary>
+    /// Only called on start of a race
+    /// </summary>
     public void SetActive(bool state)
     {
         transform.gameObject.SetActive(state);
@@ -55,9 +67,13 @@ public class DriverTemplate : MonoBehaviour
         _fastestLap.gameObject.SetActive(state);
     }
 
-    public void UpdatePositionColor(int oldPosition)
+    /// <summary>
+    /// Called when a overtake just happened. Depending on if driver went up or down the color differ
+    /// </summary>
+    /// <param name="oldPosition"></param>
+    public void UpdatePositionColor(int oldPosition, Color movedUpColor, Color movedDownColor)
     {
-        Color color = oldPosition < _position ? Color.red : Color.green;
+        Color color = oldPosition < _position ? movedDownColor : movedUpColor;
         _positionImage.color = color;
         _resetColor = true;
     }

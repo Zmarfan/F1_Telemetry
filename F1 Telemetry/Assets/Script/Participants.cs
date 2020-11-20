@@ -10,11 +10,14 @@ public static class Participants
     //RESET ALL VALUES HERE WHEN ENDING SESSION
 
     static DriverData _data = new DriverData();
-    static Dictionary<int, bool> _validVehicleIndexChecker;
+    static Dictionary<int, bool> _validVehicleIndexChecker; //All the cars with true have valid values in their data, rest in junk
 
-    public static DriverData Data { get { return _data; } }
-    public static int ActiveDrivers { get; private set; }
+    public static DriverData Data { get { return _data; } } //All data for every single car
+    public static int ActiveDrivers { get; private set; }   //Amount of drivers actually competing
 
+    /// <summary>
+    /// Only read data when it's actually there
+    /// </summary>
     public static bool ReadyToReadFrom
     {
         get
@@ -40,6 +43,8 @@ public static class Participants
     {
         ActiveDrivers = data.NumberOfActiveCars;
         _data.ParticipantData = data.AllParticipantData;
+        //Every 5s the dictionary will refresh to make sure lobby is correct
+        InitValidVehicleIndexChecker();
     }
 
     /// <summary>
@@ -82,16 +87,18 @@ public static class Participants
         _data.CarSetup = data.AllCarSetups;
     }
 
+    /// <summary>
+    /// Reset dictionary so correct drivers are in there, called every 5s for safety
+    /// </summary>
     static void InitValidVehicleIndexChecker()
     {
         _validVehicleIndexChecker = new Dictionary<int, bool>();
 
         for (int i = 0; i < _data.LapData.Length; i++)
         {
+            //The data can be considered junk if ResultStatus in LapData is "Inactive" or "Invalid"
             if (!(_data.LapData[i].resultStatus == ResultStatus.Inactive || _data.LapData[i].resultStatus == ResultStatus.Invalid))
-            {
                 _validVehicleIndexChecker.Add(i, true);
-            }
             else
                 _validVehicleIndexChecker.Add(i, false);
         }
