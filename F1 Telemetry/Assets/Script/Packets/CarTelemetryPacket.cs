@@ -49,8 +49,6 @@ public class CarTelemetryPacket : Packet
         MFDPanelType = manager.GetEnumFromByte<MFDPanelType>();
         MFDPanelTypeSecondaryPlayer = manager.GetEnumFromByte<MFDPanelType>();
         SuggestedGear = manager.GetSignedByte();
-
-        Debug.Log(ButtonStatus.GetInput(ButtonInputTypes.A_Button));
     }
 }
 

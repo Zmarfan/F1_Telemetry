@@ -5,11 +5,47 @@ using UnityEngine.UI;
 
 public class DriverTemplate : MonoBehaviour
 {
+    [SerializeField] Image _positionImage;
     [SerializeField] Transform _fastestLap;
     [SerializeField] Text _positionText;
     [SerializeField] Image _teamColorImage;
     [SerializeField] Text _initialsText;
     [SerializeField] Text _timeText;
+
+    //The position of this template
+    int _position = 0;
+    Timer _colorTimer;
+    bool _resetColor = false;
+
+    private void Update()
+    {
+        if (_colorTimer != null && _resetColor)
+        {
+            _colorTimer.Time += Time.deltaTime;
+
+            if (_colorTimer.Expired())
+            {
+                _resetColor = false;
+                _colorTimer.Reset();
+                _positionImage.color = Color.white;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called when first creating the template. Sets position based on index.
+    /// </summary>
+    public void Init(int initPosition, float colorDuration)
+    {
+        _position = initPosition;
+        _colorTimer = new Timer(colorDuration);
+        _positionText.text = _position.ToString();
+    }
+
+    public void SetActive(bool state)
+    {
+        transform.gameObject.SetActive(state);
+    }
 
     /// <summary>
     /// Activate/Deactivate fastest lap symbol next to player in timestandings
@@ -19,12 +55,11 @@ public class DriverTemplate : MonoBehaviour
         _fastestLap.gameObject.SetActive(state);
     }
 
-    /// <summary>
-    /// Sets the driver positionText to position
-    /// </summary>
-    public void SetPosition(int position)
+    public void UpdatePositionColor(int oldPosition)
     {
-        _positionText.text = position.ToString();
+        Color color = oldPosition < _position ? Color.red : Color.green;
+        _positionImage.color = color;
+        _resetColor = true;
     }
 
     /// <summary>

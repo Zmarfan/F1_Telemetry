@@ -28,7 +28,7 @@ public class PacketManager : MonoBehaviour
     {
         Packet packet = GetPacketType(packetData);
         packet.LoadBytes();
-        //HandlePacket(packet);
+        HandlePacket(packet);
     }
 
     void HandlePacket(Packet packet)

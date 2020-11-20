@@ -629,6 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d36b0cbe48775a448ad5858a307dcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _positionImage: {fileID: 9086443390403546158}
   _fastestLap: {fileID: 5280073912783022751}
   _positionText: {fileID: 6877397316858991093}
   _teamColorImage: {fileID: 6409337864330994578}
