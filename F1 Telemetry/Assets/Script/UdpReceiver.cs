@@ -22,23 +22,27 @@ public class UdpReceiver : MonoBehaviour
         thread.Start();
     }
 
+    /// <summary>
+    /// Thread which listens on port and sends packets to PacketManager
+    /// </summary>
     private void ThreadMethod()
     {
         udp = new UdpClient(PORT);
         while (true)
         {
             IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            byte[] data = udp.Receive(ref remoteIpEndPoint);
+            byte[] data = udp.Receive(ref remoteIpEndPoint); //Receive data from port
 
-            lock (_lockObject)
+            lock (_lockObject) //Locking the data does nothing of value right now but is good practice :3
             {
                 _returnData = data;
 
-                byte[] copyData = new byte[_returnData.Length];
                 //Copy data as to not mix up references -> keep data secured
+                byte[] copyData = new byte[_returnData.Length];
                 for (int i = 0; i < _returnData.Length; i++)
                     copyData[i] = _returnData[i];
 
+                //Sends data packet to PacketManager for further processing
                 PacketManager.AddPacketData(_returnData);
             }
         }

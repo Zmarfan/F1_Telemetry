@@ -14,6 +14,12 @@ public static class RaceNames
 
     static Dictionary<byte, string> namesByRaceNumber = new Dictionary<byte, string>()
     {
+        //2
+
+        /////
+        { 2, "iwasborntolose" }, //ADDED
+        /////
+
         { 3, "Daniel Ricciardo" },
         { 4, "Lando Norris" },
         { 5, "Sebastian Vettel" },
@@ -24,28 +30,112 @@ public static class RaceNames
         { 10, "Pierre Gasly" },
         { 11, "Sergio Pérez" },
         //12 - 15
+
+        /////
+        { 12, "Elias1337" }, //ADDED
+        /////
+
+        /////
+        { 14, "PRL Faikoways" }, //ADDED
+        /////
+
+        /////
+        { 15, "KingWunder" }, //ADDED
+        /////
+
         { 16, "Charles Leclerc" },
         { 17, "Jules Bianchi" },
         { 18, "Lance Stroll" },
         //19
         { 20, "Kevin Magnussen" },
         //21 - 22
+
+        /////
+        { 21, "PRL Marijn" }, //ADDED
+        /////
+
+        /////
+        { 22, "M4RCC" }, //ADDED
+        /////
+
         { 23, "Alexander Albon" },
         //24 - 25
+
+        /////
+        { 24, "MR-" }, //ADDED
+        /////
+
         { 26, "Daniil Kvyat" },
         //27 - 30
+
+        /////
+        { 27, "Stolly" }, //ADDED
+        /////
+
+        /////
+        { 28, "BlinkdeVinkje" }, //ADDED
+        /////
+
+        /////
+        { 30, "PRL Tekashi" }, //ADDED
+        /////
+
         { 31, "Esteban Ocon" },
         //32
         { 33, "Max Verstappen" },
         //34 - 43
+
+        /////
+        { 34, "PRL daBurLs" }, //ADDED
+        /////
+
+        /////
+        { 42, "PRL | Pierre" }, //ADDED
+        /////
+
+        /////
+        { 43, "TrueDoe" }, //ADDED
+        /////
+
         { 44, "Lewis Hamilton" },
         //45 - 54
         { 55, "Carlos Sainz Jr." },
         //56 - 62
+
+        /////
+        { 57, "PRL Winston" }, //ADDED
+        /////
+
         { 63, "George Russell" },
         //64 - 76
+
+        /////
+        { 64, "Psylexx" }, //ADDED
+        /////
+
+        /////
+        { 67, "Svenna" }, //ADDED
+        /////
+
+        /////
+        { 69, "PRL Fysq" }, //ADDED
+        /////
+
         { 77, "Valtteri Bottas" },
         //78 - 98
+
+        /////
+        { 82, "Lord_Zmarfan" }, //ADDED
+        /////
+
+        /////
+        { 93, "Robbie Van" }, //ADDED
+        /////
+
+        /////
+        { 98, "Akhatal" }, //ADDED
+        /////
+
         { 99, "Antonio Giovinazzi" },
     };
 
