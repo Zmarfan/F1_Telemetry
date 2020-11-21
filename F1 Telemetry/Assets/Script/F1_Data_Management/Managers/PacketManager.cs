@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace F1_Data_Management
 {
-    public class PacketManager : MonoBehaviour
+    public class PacketManager
     {
         static Queue<byte[]> _dataPackets = new Queue<byte[]>(); //Queue of all packets received since last frame
 
@@ -15,7 +15,19 @@ namespace F1_Data_Management
             _dataPackets.Enqueue(data);
         }
 
-        private void Update()
+        /// <summary>
+        /// Empty queue of packets and resets all data storage.
+        /// </summary>
+        public static void Reset()
+        {
+            _dataPackets.Clear();
+            Participants.Clear();
+        }
+
+        /// <summary>
+        /// Reads and handles all collectedPackets since this function was last called. UdpReceiver must be activated to have packets receive here.
+        /// </summary>
+        public static void ReadCollectedPackets()
         {
             //Handle all the packets that have come in since last frame
             while (_dataPackets.Count > 0)
@@ -25,14 +37,14 @@ namespace F1_Data_Management
         /// <summary>
         /// Identifies packet type by data header and handles it ackoringly -> Read data from header and transmits it further
         /// </summary>
-        void ReadPacket(byte[] packetData)
+        static void ReadPacket(byte[] packetData)
         {
             Packet packet = GetPacketType(packetData);
             packet.LoadBytes();
             HandlePacket(packet);
         }
 
-        void HandlePacket(Packet packet)
+        static void HandlePacket(Packet packet)
         {
             switch ((PacketType)packet.PacketID)
             {
@@ -82,7 +94,7 @@ namespace F1_Data_Management
         /// <summary>
         /// Id what type of packet it is and convert it to that typ of package
         /// </summary>
-        Packet GetPacketType(byte[] data)
+        static Packet GetPacketType(byte[] data)
         {
             //Id what type of packet this is
             PacketType packetType = Packet.GetPacketType(data);

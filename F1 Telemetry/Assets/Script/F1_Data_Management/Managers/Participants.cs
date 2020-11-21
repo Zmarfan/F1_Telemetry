@@ -7,8 +7,6 @@ namespace F1_Data_Management
     /// </summary>
     public static class Participants
     {
-        //RESET ALL VALUES HERE WHEN ENDING SESSION
-
         static DriverData _data = new DriverData();
         static Dictionary<int, bool> _validVehicleIndexChecker; //All the cars with true have valid values in their data, rest in junk
 
@@ -28,7 +26,7 @@ namespace F1_Data_Management
         }
 
         /// <summary>
-        /// Amount of drivers actually competing -> Indexes can fall outside this value! Don't use for indexing!
+        /// Amount of drivers actually competing -> Indexes can fall outside this value! Don't use for indexing! 0 if not in use
         /// </summary>
         public static int ActiveDrivers { get; private set; }
 
@@ -45,10 +43,25 @@ namespace F1_Data_Management
         }
 
         /// <summary>
+        /// Clear Data and don't allow to read the empty data.
+        /// </summary>
+        public static void Clear()
+        {
+            _data = new DriverData();
+            _validVehicleIndexChecker = null;
+            ActiveDrivers = 0;
+        }
+
+        /// <summary>
         /// Returns true wether or not the index of a car actually contains valid data. False means it's junk data and should be disregarded.
         /// </summary>
         public static bool ValidIndex(int index)
         {
+            if (_data.LapData == null)
+                throw new System.Exception("Don't attempt to access ValidIndex if the data isn't ready to be read yet! Test with ReadyToReadFrom");
+            if (index < 0 || index > Packet.MAX_AMOUNT_OF_CARS)
+                throw new System.Exception(index + " is not a valid index! Only index within range 0 - " + Packet.MAX_AMOUNT_OF_CARS + " is a valid index!");
+
             //Init vehicleIndexChecker -> done once / if new people join lobby
             if (_validVehicleIndexChecker == null || !_validVehicleIndexChecker.ContainsKey(index))
                 InitValidVehicleIndexChecker();
@@ -64,8 +77,10 @@ namespace F1_Data_Management
         {
             ActiveDrivers = data.NumberOfActiveCars;
             _data.ParticipantData = data.AllParticipantData;
+
             //Every 5s the dictionary will refresh to make sure lobby car indexes are correct
-            InitValidVehicleIndexChecker();
+            if (_data.LapData != null)
+                InitValidVehicleIndexChecker();
         }
 
         /// <summary>

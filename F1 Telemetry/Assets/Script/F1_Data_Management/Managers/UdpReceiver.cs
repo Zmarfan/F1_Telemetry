@@ -9,25 +9,40 @@ namespace F1_Data_Management
     /// Receiver of UDP packets sent from F1 2020 by codemasters into port 20777.
     /// After receive -> transmit data to PacketManager that handles it further.
     /// </summary>
-    public class UdpReceiver : MonoBehaviour
+    public class UdpReceiver
     {
         static readonly int PORT = 20777;     //Entry port for data from the game
         static UdpClient udp;
-        Thread thread;
+        static Thread thread;
 
         static readonly object _lockObject = new object();
-        byte[] _returnData;
+        static byte[] _returnData;
 
-        private void Start()
+        public static bool CurrentlyListening { get; private set; } = false;
+
+        /// <summary>
+        /// Starts process of listening for Packets from F1 2020 and then processing and storing the data.
+        /// </summary>
+        public static void StartListening()
         {
+            CurrentlyListening = true;
             thread = new Thread(new ThreadStart(ThreadMethod));
             thread.Start();
         }
 
         /// <summary>
+        /// Stops process of listening for Packets from F1 2020 and then processing and storing the data.
+        /// </summary>
+        public static void StopListening()
+        {
+            CurrentlyListening = false;
+            thread.Abort();
+        }
+
+        /// <summary>
         /// Thread which listens on port and sends packets to PacketManager
         /// </summary>
-        private void ThreadMethod()
+        static void ThreadMethod()
         {
             udp = new UdpClient(PORT);
             while (true)
