@@ -57,4 +57,9 @@ public class Timer
     {
         return _time / _duration;
     }
+
+    public float InverseRatio()
+    {
+        return 1.0f - (_time / _duration);
+    }
 }

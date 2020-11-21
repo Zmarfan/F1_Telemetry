@@ -50,8 +50,6 @@ namespace F1_Data_Management
             MFDPanelType = manager.GetEnumFromByte<MFDPanelType>();
             MFDPanelTypeSecondaryPlayer = manager.GetEnumFromByte<MFDPanelType>();
             SuggestedGear = manager.GetSignedByte();
-
-            UnityEngine.Debug.Log(ButtonStatus.GetInput(ButtonInputTypes.A_Button));
         }
     }
 

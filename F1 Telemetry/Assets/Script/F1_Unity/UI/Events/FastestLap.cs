@@ -9,10 +9,8 @@ namespace F1_Unity
     /// <summary>
     /// Display fastest lap information
     /// </summary>
-    public class FastestLap : MonoBehaviour
+    public class FastestLap : EventBase
     {
-        static readonly int MINUTE = 60;
-
         [Header("Settings")]
 
         [SerializeField, Range(0.01f, 10f)] float _showTime = 8f;
@@ -27,7 +25,7 @@ namespace F1_Unity
         [SerializeField] Text _time;
         [SerializeField] Image _teamImage;
 
-        [SerializeField] Sprite[] _teamSprites; //They are in same order as Team enum -> last one is for everything other than 10 main teams
+        [SerializeField] Sprite[] _teamSprites;   //They are in same order as Team enum -> last one is for everything other than 10 main teams
 
         Timer _fadeTimer;
         bool _fadingIn = true;
@@ -42,8 +40,18 @@ namespace F1_Unity
         /// <summary>
         /// Init fastest lap with correct settings. time in seconds is converted to display format
         /// </summary>
-        public void Init(string fullName, float time, Team team)
+        public override void Init(Packet packet)
         {
+            //This should never be possible but here as a safe guard
+            if (!Participants.ReadyToReadFrom)
+                Destroy(this.gameObject);
+
+            //Cast to correct type
+            FastestLapEventPacket fastestLapPacket = (FastestLapEventPacket)packet;
+            string fullName = RaceNames.GetNameFromNumber(Participants.Data.ParticipantData[fastestLapPacket.VehicleIndex].raceNumber);
+            Team team = Participants.Data.ParticipantData[fastestLapPacket.VehicleIndex].team;
+            float time = fastestLapPacket.LapTime;
+
             //Correct position relative to anchor
             GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
 
@@ -120,7 +128,7 @@ namespace F1_Unity
                     _canvasGroup.alpha = _fadeTimer.Ratio();
                 //Fade out to black
                 else
-                    _canvasGroup.alpha = 1.0f - _fadeTimer.Ratio();
+                    _canvasGroup.alpha = _fadeTimer.InverseRatio();
             }
             //Destroy when faded out
             else if (!_fadingIn)

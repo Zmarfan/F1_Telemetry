@@ -48,46 +48,40 @@ namespace F1_Data_Management
         {
             switch ((PacketType)packet.PacketID)
             {
-                case PacketType.MOTION:
-                    {
-                        Participants.SetMotionPacket((MotionPacket)packet);
-                        break;
-                    }
-                case PacketType.SESSION:
-                    break;
-                case PacketType.LAP_DATA:
-                    {
-                        Participants.SetLapData((LapDataPacket)packet);
-                        break;
-                    }
+                case PacketType.MOTION: { Participants.SetMotionPacket((MotionPacket)packet); break; }
+                case PacketType.SESSION: { break; }
+                case PacketType.LAP_DATA: { Participants.SetLapData((LapDataPacket)packet); break; }
                 case PacketType.EVENT:
-                    break;
-                case PacketType.PARTICIPANTS:
                     {
-                        Participants.SetParticipantsPacket((ParticipantsPacket)packet);
+                        //Id what type of event packet this is
+                        EventType eventType = EventPacket.EventPacketType(packet.Data);
+
+                        switch (eventType)
+                        {
+                            //return base class EventPacket if nothing more needs to be known than the event occured!
+                            case EventType.Session_Started: { break; }
+                            case EventType.Session_Ended: { break; }
+                            case EventType.DRS_Enabled: { break; }
+                            case EventType.DRS_Disabled: { break; }
+                            case EventType.Chequered_Flag: { break; }
+
+                            case EventType.Fastest_Lap: { EventManager.InvokeFastestLapEvent(packet); break; }
+                            case EventType.Retirement: { break; }
+                            case EventType.Team_Mate_In_Pits: { break; }
+                            case EventType.Race_Winner: { break; }
+                            case EventType.Penalty_Issued: { break; }
+                            case EventType.Speed_Trap_Triggered: { break; }
+                            default: { throw new System.Exception("There is no handle support for this event: " + eventType); }
+                        }
                         break;
                     }
-                case PacketType.CAR_SETUPS:
-                    {
-                        Participants.SetCarSetupData((CarSetupPacket)packet);
-                        break;
-                    }
-                case PacketType.CAR_TELEMETRY:
-                    {
-                        Participants.SetTelemetryData((CarTelemetryPacket)packet);
-                        break;
-                    }
-                case PacketType.CAR_STATUS:
-                    {
-                        Participants.SetCarStatusData((CarStatusPacket)packet);
-                        break;
-                    }
-                case PacketType.FINAL_CLASSIFICATION:
-                    break;
-                case PacketType.LOBBY_INFO:
-                    break;
-                default:
-                    break;
+                case PacketType.PARTICIPANTS: { Participants.SetParticipantsPacket((ParticipantsPacket)packet); break; }
+                case PacketType.CAR_SETUPS: { Participants.SetCarSetupData((CarSetupPacket)packet); break; }
+                case PacketType.CAR_TELEMETRY: { Participants.SetTelemetryData((CarTelemetryPacket)packet); break; }
+                case PacketType.CAR_STATUS: { Participants.SetCarStatusData((CarStatusPacket)packet); break; }
+                case PacketType.FINAL_CLASSIFICATION: { break; };
+                case PacketType.LOBBY_INFO: { break; };
+                default: { throw new System.Exception("There is no handle support for this packet: " + (PacketType)packet.PacketID); }
             }
         }
 
