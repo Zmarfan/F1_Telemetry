@@ -1,29 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace F1_Data_Management
 {
+
     /// <summary>
     /// Holds participant data to be reached from entire project. Entry point for outside scripts to gain access to F1 UDP data for all cars.
     /// </summary>
     public static class Participants
     {
-        static DriverData _data = new DriverData();
-        static Dictionary<int, bool> _validVehicleIndexChecker; //All the cars with true have valid values in their data, rest in junk
+        public const int MAX_AMOUNT_OF_CARS = 22;
 
-        /// <summary>
-        /// Data for all cars in the session (and junk values)
-        /// </summary>
-        public static DriverData Data
-        {
-            get
-            {
-                //ReadyToReadFrom should be read outside of Participants before trying to read values
-                if (ReadyToReadFrom)
-                    return _data;
-                else
-                    throw new System.Exception("Make sure that Participants.ReadyToReadFrom returns true before accessing Data! It's not ready yet!");
-            }
-        }
+        static DriverData[] _data = new DriverData[MAX_AMOUNT_OF_CARS];
+        static bool _participantDataReady = false;
+        static bool _motionDataReady = false;
+        static bool _lapDataReady = false;
+        static bool _telemetryDataReady = false;
+        static bool _carStatusDataReady = false;
+        static bool _carSetupDataReady = false;
 
         /// <summary>
         /// Amount of drivers actually competing -> Indexes can fall outside this value! Don't use for indexing! 0 if not in use
@@ -33,42 +27,68 @@ namespace F1_Data_Management
         /// <summary>
         /// Only read data when it's actually there
         /// </summary>
-        public static bool ReadyToReadFrom
-        {
-            get
-            {
-                //Only allow access to data if it's ready to read from
-                return _data.LapData != null && _data.MotionData != null && _data.ParticipantData != null && _data.StatusData != null && _data.TelemetryData != null;
-            }
-        }
+        public static bool ReadyToReadFrom { get { return _participantDataReady && _motionDataReady && _lapDataReady && _telemetryDataReady && _carStatusDataReady && _carSetupDataReady; } }
+
+        #region Helpers
 
         /// <summary>
         /// Clear Data and don't allow to read the empty data.
         /// </summary>
         public static void Clear()
         {
-            _data = new DriverData();
-            _validVehicleIndexChecker = null;
+            _data = new DriverData[MAX_AMOUNT_OF_CARS];
             ActiveDrivers = 0;
+            _participantDataReady = false;
+            _motionDataReady = false;
+            _lapDataReady = false;
+            _telemetryDataReady = false;
+            _carStatusDataReady = false;
+            _carSetupDataReady = false;
         }
 
         /// <summary>
         /// Returns true wether or not the index of a car actually contains valid data. False means it's junk data and should be disregarded.
         /// </summary>
-        public static bool ValidIndex(int index)
+        static bool ContainsData(int index)
         {
-            if (_data.LapData == null)
-                throw new System.Exception("Don't attempt to access ValidIndex if the data isn't ready to be read yet! Test with ReadyToReadFrom");
-            if (index < 0 || index > Packet.MAX_AMOUNT_OF_CARS)
-                throw new System.Exception(index + " is not a valid index! Only index within range 0 - " + Packet.MAX_AMOUNT_OF_CARS + " is a valid index!");
-
-            //Init vehicleIndexChecker -> done once / if new people join lobby
-            if (_validVehicleIndexChecker == null || !_validVehicleIndexChecker.ContainsKey(index))
-                InitValidVehicleIndexChecker();
-
-            //Valid index return true, invalid false
-            return _validVehicleIndexChecker[index];
+            return !(_data[index].LapData.resultStatus == ResultStatus.Invalid || _data[index].LapData.resultStatus == ResultStatus.Inactive);
         }
+
+        /// <summary>
+        /// Is index within correct ranges to be able to read carData?
+        /// </summary>
+        static bool ValidIndex(int index)
+        {
+            return index >= 0 && index < MAX_AMOUNT_OF_CARS;
+        }
+
+        /// <summary>
+        /// Used by member functions to check if data is ready to read from.
+        /// </summary>
+        static void CheckIfReadyToRead()
+        {
+            if (!ReadyToReadFrom)
+                throw new System.Exception("Make sure data is ready to read from first! Check with ReadyToReadFrom");
+        }
+
+        #endregion
+
+        #region Get functions
+
+        /// <summary>
+        /// Attempt to read data for vehicle. validData indicates if data returned is valid data.
+        /// </summary>
+        public static DriverData ReadCarData(int vehicleIndex, out bool validData)
+        {
+            CheckIfReadyToRead();
+            if (!ValidIndex(vehicleIndex))
+                throw new System.Exception("Make sure vehicleIndex is between values 0 and " + MAX_AMOUNT_OF_CARS);
+
+            validData = ContainsData(vehicleIndex);
+            return _data[vehicleIndex];
+        }
+
+        #endregion
 
         #region SetData
 
@@ -77,29 +97,10 @@ namespace F1_Data_Management
         /// </summary>
         public static void SetParticipantsPacket(ParticipantsPacket data)
         {
+            _participantDataReady = true;
             ActiveDrivers = data.NumberOfActiveCars;
-            _data.ParticipantData = data.AllParticipantData;
-
-            //Every 5s the dictionary will refresh to make sure lobby car indexes are correct
-            if (_data.LapData != null)
-                InitValidVehicleIndexChecker();
-        }
-
-        /// <summary>
-        /// Reset dictionary so correct drivers are in there, called every 5s for safety
-        /// </summary>
-        static void InitValidVehicleIndexChecker()
-        {
-            _validVehicleIndexChecker = new Dictionary<int, bool>();
-
-            for (int i = 0; i < _data.LapData.Length; i++)
-            {
-                //The data can be considered junk if ResultStatus in LapData is "Inactive" or "Invalid"
-                if (!(_data.LapData[i].resultStatus == ResultStatus.Inactive || _data.LapData[i].resultStatus == ResultStatus.Invalid))
-                    _validVehicleIndexChecker.Add(i, true);
-                else
-                    _validVehicleIndexChecker.Add(i, false);
-            }
+            for (int i = 0; i < _data.Length; i++)
+                _data[i].ParticipantData = data.AllParticipantData[i];
         }
 
         /// <summary>
@@ -108,7 +109,9 @@ namespace F1_Data_Management
         /// </summary>
         public static void SetMotionPacket(MotionPacket data)
         {
-            _data.MotionData = data.AllCarMotionData;
+            _motionDataReady = true;
+            for (int i = 0; i < _data.Length; i++)
+                _data[i].MotionData = data.AllCarMotionData[i];
         }
 
         /// <summary>
@@ -117,7 +120,9 @@ namespace F1_Data_Management
         /// </summary>
         public static void SetLapData(LapDataPacket data)
         {
-            _data.LapData = data.LapData;
+            _lapDataReady = true;
+            for (int i = 0; i < _data.Length; i++)
+                _data[i].LapData = data.LapData[i];
         }
 
         /// <summary>
@@ -126,7 +131,9 @@ namespace F1_Data_Management
         /// </summary>
         public static void SetTelemetryData(CarTelemetryPacket data)
         {
-            _data.TelemetryData = data.AllCarTelemetryData;
+            _telemetryDataReady = true;
+            for (int i = 0; i < _data.Length; i++)
+                _data[i].TelemetryData = data.AllCarTelemetryData[i];
         }
 
         /// <summary>
@@ -135,7 +142,9 @@ namespace F1_Data_Management
         /// </summary>
         public static void SetCarStatusData(CarStatusPacket data)
         {
-            _data.StatusData = data.AllCarStatusData;
+            _carStatusDataReady = true;
+            for (int i = 0; i < _data.Length; i++)
+                _data[i].StatusData = data.AllCarStatusData[i];
         }
 
         /// <summary>
@@ -144,22 +153,24 @@ namespace F1_Data_Management
         /// </summary>
         public static void SetCarSetupData(CarSetupPacket data)
         {
-            _data.CarSetup = data.AllCarSetups;
+            _carSetupDataReady = true;
+            for (int i = 0; i < _data.Length; i++)
+                _data[i].CarSetup = data.AllCarSetups[i];
         }
 
         #endregion
     }
 
     /// <summary>
-    /// Holds data about every driver
+    /// Holds all data for one driver.
     /// </summary>
     public struct DriverData
     {
-        public ParticipantData[] ParticipantData { get; set; }
-        public CarMotionData[] MotionData { get; set; }
-        public LapData[] LapData { get; set; }
-        public CarTelemetryData[] TelemetryData { get; set; }
-        public CarStatusData[] StatusData { get; set; }
-        public CarSetup[] CarSetup { get; set; }
+        public ParticipantData ParticipantData { get; set; }
+        public CarMotionData MotionData { get; set; }
+        public LapData LapData { get; set; }
+        public CarTelemetryData TelemetryData { get; set; }
+        public CarStatusData StatusData { get; set; }
+        public CarSetup CarSetup { get; set; }
     }
 }

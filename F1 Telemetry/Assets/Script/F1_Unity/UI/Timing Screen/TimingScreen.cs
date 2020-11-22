@@ -40,21 +40,21 @@ namespace F1_Unity
         /// </summary>
         void InitDrivers()
         {
+            //Values are now initiated
+            _initValues = false;
+
             _driverPosition = new Dictionary<byte, int>();
 
-            for (int i = 0; i < Participants.Data.ParticipantData.Length; i++)
+            for (int i = 0; i < Participants.MAX_AMOUNT_OF_CARS; i++)
             {
-                //Values are now initiated
-                _initValues = false;
-
-                ParticipantData participantData = Participants.Data.ParticipantData[i];
-                LapData lapData = Participants.Data.LapData[i];
+                bool validDriver;
+                DriverData driverData = Participants.ReadCarData(i, out validDriver);
 
                 //Init everyone with gaining a position on start!
                 //Flash green then to white
                 //Only add valid drivers to the grid
-                if (Participants.ValidIndex(i))
-                    _driverPosition.Add(participantData.driverID, lapData.carPosition + 1);
+                if (validDriver)
+                    _driverPosition.Add(driverData.ParticipantData.driverID, driverData.LapData.carPosition + 1);
 
                 //Only enable so many positions in time standing as there are active drivers
                 //If they DNF/DSQ later they will only gray out, not be removed
@@ -86,32 +86,35 @@ namespace F1_Unity
         void DoTimingScreen()
         {
             //Loop through all drivers
-            for (int i = 0; i < Participants.Data.LapData.Length; i++)
+            for (int i = 0; i < Participants.MAX_AMOUNT_OF_CARS; i++)
             {
+                bool validDriver;
+                DriverData driverData = Participants.ReadCarData(i, out validDriver);
+
                 //Skip the drivers that have no valid index -> junk data
-                if (!Participants.ValidIndex(i))
+                if (!validDriver)
                     continue;
 
-                LapData lapData = Participants.Data.LapData[i];
-                ParticipantData participantData = Participants.Data.ParticipantData[i];
+                byte driverID = driverData.ParticipantData.driverID;
+                byte carPosition = driverData.LapData.carPosition;
 
                 //If this driver doesn't exist, it has just joined the session, recalculate everything!
-                if (!_driverPosition.ContainsKey(participantData.driverID))
+                if (!_driverPosition.ContainsKey(driverID))
                     InitDrivers();
 
                 //Drivers position has changed! Update!
-                if (_driverPosition[participantData.driverID] != lapData.carPosition)
+                if (_driverPosition[driverID] != carPosition)
                 {
-                    int positionIndex = lapData.carPosition - 1; //Index in array is always one less than position
+                    int positionIndex = carPosition - 1; //Index in array is always one less than position
 
-                    _driverTemplates[positionIndex].SetInitials(participantData.driverInitial); //Set initals for that position
+                    _driverTemplates[positionIndex].SetInitials(driverData.ParticipantData.driverInitial); //Set initals for that position
 
                     //Change color wether driver GAINED or LOST to this position -> compare old position with this one
-                    _driverTemplates[positionIndex].UpdatePositionColor(_driverPosition[participantData.driverID], _movedUpColor, _movedDownColor);
-                    _driverTemplates[positionIndex].SetTeamColor(participantData.teamColor); //Set team color
+                    _driverTemplates[positionIndex].UpdatePositionColor(_driverPosition[driverID], _movedUpColor, _movedDownColor);
+                    _driverTemplates[positionIndex].SetTeamColor(driverData.ParticipantData.teamColor); //Set team color
 
                     //save this position to compare in future
-                    _driverPosition[participantData.driverID] = lapData.carPosition;
+                    _driverPosition[driverID] = carPosition;
                 }
             }
         }

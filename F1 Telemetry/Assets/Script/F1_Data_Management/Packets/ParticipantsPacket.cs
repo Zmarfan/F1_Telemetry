@@ -20,7 +20,7 @@
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Participation packet");
 
             NumberOfActiveCars = manager.GetByte();
-            AllParticipantData = new ParticipantData[MAX_AMOUNT_OF_CARS];
+            AllParticipantData = new ParticipantData[Participants.MAX_AMOUNT_OF_CARS];
 
             //Read all instances of ParticipantData[] in the data -> It's all linear
             for (int i = 0; i < AllParticipantData.Length; i++)

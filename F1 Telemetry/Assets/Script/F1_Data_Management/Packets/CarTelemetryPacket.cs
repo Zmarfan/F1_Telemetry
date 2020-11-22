@@ -25,7 +25,7 @@ namespace F1_Data_Management
             base.LoadBytes();
 
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Car Telemetry Packet");
-            AllCarTelemetryData = new CarTelemetryData[MAX_AMOUNT_OF_CARS];
+            AllCarTelemetryData = new CarTelemetryData[Participants.MAX_AMOUNT_OF_CARS];
 
             for (int i = 0; i < AllCarTelemetryData.Length; i++)
             {

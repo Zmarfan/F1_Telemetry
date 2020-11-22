@@ -18,7 +18,7 @@
             base.LoadBytes();
 
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Car Status Data Packet");
-            AllCarStatusData = new CarStatusData[MAX_AMOUNT_OF_CARS];
+            AllCarStatusData = new CarStatusData[Participants.MAX_AMOUNT_OF_CARS];
 
             for (int i = 0; i < AllCarStatusData.Length; i++)
             {

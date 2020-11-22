@@ -30,8 +30,19 @@ namespace F1_Unity
 
             //Cast to correct type
             FastestLapEventPacket fastestLapPacket = (FastestLapEventPacket)packet;
-            string fullName = RaceNames.GetNameFromNumber(Participants.Data.ParticipantData[fastestLapPacket.VehicleIndex].raceNumber);
-            Team team = Participants.Data.ParticipantData[fastestLapPacket.VehicleIndex].team;
+
+            bool status;
+            DriverData data = Participants.ReadCarData(fastestLapPacket.VehicleIndex, out status);
+            string fullName = string.Empty;
+            Team team = Team.My_Team_Or_Unknown;
+
+            //If data is valid (99.99 % of the time it is valid but hey for that 0.01 boi :3)
+            if (status)
+            {
+                fullName = RaceNames.GetNameFromNumber(data.ParticipantData.raceNumber);
+                team = data.ParticipantData.team;
+            }
+            
             float time = fastestLapPacket.LapTime;
 
             InitTime(time);

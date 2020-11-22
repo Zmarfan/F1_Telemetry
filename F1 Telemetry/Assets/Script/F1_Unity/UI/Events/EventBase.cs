@@ -22,7 +22,7 @@ namespace F1_Unity
 
         private void Awake()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
+            _canvasGroup = GetComponentInChildren<CanvasGroup>();
 
             _fadeTimer = new Timer(_fadeTime);
             _showTimer = new Timer(_showTime);

@@ -20,11 +20,11 @@
 
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Lap Data Packet");
 
-            LapData = new LapData[MAX_AMOUNT_OF_CARS];
+            LapData = new LapData[Participants.MAX_AMOUNT_OF_CARS];
 
             //This will loop and assign as if there was 22 cars in the race!
             //If there are less cars than 22, these instances will be filled with junk values!
-            for (int i = 0; i < MAX_AMOUNT_OF_CARS; i++)
+            for (int i = 0; i < Participants.MAX_AMOUNT_OF_CARS; i++)
             {
                 LapData[i].lastLapTime = manager.GetFloat();
                 LapData[i].currentLapTime = manager.GetFloat();
