@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 663051093}
   - component: {fileID: 663051092}
+  - component: {fileID: 663051094}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -166,6 +167,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &663051094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663051091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4850279e165624088da7ec91fa7475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 1511909863}
+  _fastestLapPrefab: {fileID: 1100837755855285560, guid: f1be508da186e7842b7e398b8532aefa, type: 3}
+  _drsEnabledPrefab: {fileID: 4137811850501173954, guid: d10bf282355264b4ca3fe8f6e6e03956, type: 3}
+  _drsDisabledPrefab: {fileID: 4137811850501173954, guid: 6f6610a507a1d9745abf01694e8060ba, type: 3}
 --- !u!224 &894337361 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4683069805508572732, guid: 0f157171c6d26814d893d57108e9c06b, type: 3}

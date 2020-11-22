@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace F1_Data_Management
 {
@@ -59,18 +58,18 @@ namespace F1_Data_Management
                         switch (eventType)
                         {
                             //return base class EventPacket if nothing more needs to be known than the event occured!
-                            case EventType.Session_Started: { break; }
-                            case EventType.Session_Ended: { break; }
-                            case EventType.DRS_Enabled: { break; }
-                            case EventType.DRS_Disabled: { break; }
-                            case EventType.Chequered_Flag: { break; }
+                            case EventType.Session_Started: { EventManager.InvokeSessionStartedEvent(packet); break; }
+                            case EventType.Session_Ended: { EventManager.InvokeSessionEndedEvent(packet); break; }
+                            case EventType.DRS_Enabled: { EventManager.InvokeDRSEnabledEvent(packet); break; }
+                            case EventType.DRS_Disabled: { EventManager.InvokeDRSDisabledEvent(packet); break; }
+                            case EventType.Chequered_Flag: { EventManager.InvokeChequeredFlagEvent(packet); break; }
 
                             case EventType.Fastest_Lap: { EventManager.InvokeFastestLapEvent(packet); break; }
-                            case EventType.Retirement: { break; }
-                            case EventType.Team_Mate_In_Pits: { break; }
-                            case EventType.Race_Winner: { break; }
-                            case EventType.Penalty_Issued: { break; }
-                            case EventType.Speed_Trap_Triggered: { break; }
+                            case EventType.Retirement: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
+                            case EventType.Team_Mate_In_Pits: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
+                            case EventType.Race_Winner: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
+                            case EventType.Penalty_Issued: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
+                            case EventType.Speed_Trap_Triggered: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
                             default: { throw new System.Exception("There is no handle support for this event: " + eventType); }
                         }
                         break;

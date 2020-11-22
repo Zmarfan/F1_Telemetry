@@ -70,6 +70,8 @@ namespace F1_Data_Management
             return _validVehicleIndexChecker[index];
         }
 
+        #region SetData
+
         /// <summary>
         /// Called every 5s from PacketManager to refresh data
         /// </summary>
@@ -81,6 +83,23 @@ namespace F1_Data_Management
             //Every 5s the dictionary will refresh to make sure lobby car indexes are correct
             if (_data.LapData != null)
                 InitValidVehicleIndexChecker();
+        }
+
+        /// <summary>
+        /// Reset dictionary so correct drivers are in there, called every 5s for safety
+        /// </summary>
+        static void InitValidVehicleIndexChecker()
+        {
+            _validVehicleIndexChecker = new Dictionary<int, bool>();
+
+            for (int i = 0; i < _data.LapData.Length; i++)
+            {
+                //The data can be considered junk if ResultStatus in LapData is "Inactive" or "Invalid"
+                if (!(_data.LapData[i].resultStatus == ResultStatus.Inactive || _data.LapData[i].resultStatus == ResultStatus.Invalid))
+                    _validVehicleIndexChecker.Add(i, true);
+                else
+                    _validVehicleIndexChecker.Add(i, false);
+            }
         }
 
         /// <summary>
@@ -128,22 +147,7 @@ namespace F1_Data_Management
             _data.CarSetup = data.AllCarSetups;
         }
 
-        /// <summary>
-        /// Reset dictionary so correct drivers are in there, called every 5s for safety
-        /// </summary>
-        static void InitValidVehicleIndexChecker()
-        {
-            _validVehicleIndexChecker = new Dictionary<int, bool>();
-
-            for (int i = 0; i < _data.LapData.Length; i++)
-            {
-                //The data can be considered junk if ResultStatus in LapData is "Inactive" or "Invalid"
-                if (!(_data.LapData[i].resultStatus == ResultStatus.Inactive || _data.LapData[i].resultStatus == ResultStatus.Invalid))
-                    _validVehicleIndexChecker.Add(i, true);
-                else
-                    _validVehicleIndexChecker.Add(i, false);
-            }
-        }
+        #endregion
     }
 
     /// <summary>

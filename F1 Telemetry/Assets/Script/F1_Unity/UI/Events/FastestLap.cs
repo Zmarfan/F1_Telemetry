@@ -11,14 +11,8 @@ namespace F1_Unity
     /// </summary>
     public class FastestLap : EventBase
     {
-        [Header("Settings")]
-
-        [SerializeField, Range(0.01f, 10f)] float _showTime = 8f;
-        [SerializeField, Range(0.01f, 10f)] float _fadeTime = 0.5f;
-
         [Header("Drop")]
 
-        [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField] Text _firstNameText;
         [SerializeField] Text _SecondNameText;
         [SerializeField] Text _oneNameText;       //Off by default
@@ -27,33 +21,18 @@ namespace F1_Unity
 
         [SerializeField] Sprite[] _teamSprites;   //They are in same order as Team enum -> last one is for everything other than 10 main teams
 
-        Timer _fadeTimer;
-        bool _fadingIn = true;
-        Timer _showTimer;
-
-        private void Awake()
-        {
-            _fadeTimer = new Timer(_fadeTime);
-            _showTimer = new Timer(_showTime);
-        }
-
         /// <summary>
         /// Init fastest lap with correct settings. time in seconds is converted to display format
         /// </summary>
         public override void Init(Packet packet)
         {
-            //This should never be possible but here as a safe guard
-            if (!Participants.ReadyToReadFrom)
-                Destroy(this.gameObject);
+            base.Init(packet);
 
             //Cast to correct type
             FastestLapEventPacket fastestLapPacket = (FastestLapEventPacket)packet;
             string fullName = RaceNames.GetNameFromNumber(Participants.Data.ParticipantData[fastestLapPacket.VehicleIndex].raceNumber);
             Team team = Participants.Data.ParticipantData[fastestLapPacket.VehicleIndex].team;
             float time = fastestLapPacket.LapTime;
-
-            //Correct position relative to anchor
-            GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
 
             InitTime(time);
             InitName(fullName);
@@ -106,43 +85,6 @@ namespace F1_Unity
                 _SecondNameText.enabled = false;
                 _oneNameText.enabled = true;
                 _oneNameText.text = fullName.ToUpper();
-            }
-        }
-
-        private void Update()
-        {
-            Showing();
-        }
-
-        /// <summary>
-        /// Controls how fastest lap fades in and out and then removes
-        /// </summary>
-        void Showing()
-        {
-            _fadeTimer.Time += Time.deltaTime;
-
-            if (!_fadeTimer.Expired())
-            {
-                //Fade in from black
-                if (_fadingIn)
-                    _canvasGroup.alpha = _fadeTimer.Ratio();
-                //Fade out to black
-                else
-                    _canvasGroup.alpha = _fadeTimer.InverseRatio();
-            }
-            //Destroy when faded out
-            else if (!_fadingIn)
-                Destroy(this.gameObject);
-            //Have up for a bit of time
-            else
-            {
-                _showTimer.Time += Time.deltaTime;
-
-                if (_showTimer.Expired())
-                {
-                    _fadingIn = false;
-                    _fadeTimer.Reset();
-                }
             }
         }
     }

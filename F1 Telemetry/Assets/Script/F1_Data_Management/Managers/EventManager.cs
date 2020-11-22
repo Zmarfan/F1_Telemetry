@@ -8,6 +8,7 @@
     public class EventManager
     {
         #region Events
+        //Complex Events
         /// <summary>
         /// Invoked on fastest lap event. Returns Packet which can be cast to FastestLapEventPacket.
         /// </summary>
@@ -32,6 +33,27 @@
         /// Invoked on Teammate in pits event. Returns Packet which can be cast to TeamMateInPitsEventPacket.
         /// </summary>
         public static event EventOccour TeamMateInPitsEvent;
+        //Easy Events
+        /// <summary>
+        /// Invoked on DRS enabled event. Returns Packet which can be cast to EventPacket.
+        /// </summary>
+        public static event EventOccour DRSEnabledEvent;
+        /// <summary>
+        /// Invoked on DRS disabled event. Returns Packet which can be cast to EventPacket.
+        /// </summary>
+        public static event EventOccour DRSDisabledEvent;
+        /// <summary>
+        /// Invoked on Chequered flag event. When leader is about to finish the race. Returns Packet which can be cast to EventPacket.
+        /// </summary>
+        public static event EventOccour ChequeredFlagEvent;
+        /// <summary>
+        /// Invoked on Session started event. Returns Packet which can be cast to EventPacket.
+        /// </summary>
+        public static event EventOccour SessionStartedEvent;
+        /// <summary>
+        /// Invoked on Session ended event. Returns Packet which can be cast to EventPacket.
+        /// </summary>
+        public static event EventOccour SessionEndedEvent;
         #endregion
 
         #region Invokers
@@ -81,6 +103,46 @@
         public static void InvokeTeamMateInPitsEvent(Packet packet)
         {
             TeamMateInPitsEvent?.Invoke(packet);
+        }
+
+        /// <summary>
+        /// Called from PacketManager when DRS enabled event occour.
+        /// </summary>
+        public static void InvokeDRSEnabledEvent(Packet packet)
+        {
+            DRSEnabledEvent?.Invoke(packet);
+        }
+
+        /// <summary>
+        /// Called from PacketManager when DRS disabled event occour.
+        /// </summary>
+        public static void InvokeDRSDisabledEvent(Packet packet)
+        {
+            DRSDisabledEvent?.Invoke(packet);
+        }
+
+        /// <summary>
+        /// Called from PacketManager when leader is about to cross the finish line for last lap.
+        /// </summary>
+        public static void InvokeChequeredFlagEvent(Packet packet)
+        {
+            ChequeredFlagEvent?.Invoke(packet);
+        }
+
+        /// <summary>
+        /// Called from PacketManager when session starts.
+        /// </summary>
+        public static void InvokeSessionStartedEvent(Packet packet)
+        {
+            SessionStartedEvent?.Invoke(packet);
+        }
+
+        /// <summary>
+        /// Called from PacketManager when session ends.
+        /// </summary>
+        public static void InvokeSessionEndedEvent(Packet packet)
+        {
+            SessionEndedEvent?.Invoke(packet);
         }
 
         #endregion

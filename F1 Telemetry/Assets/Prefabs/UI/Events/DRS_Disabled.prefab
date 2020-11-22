@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: DRS ENABLED
+  m_Text: DRS Disabled
 --- !u!1 &2294501903661818364
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +201,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2932838147673840108}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -214,8 +214,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7201924231412175873}
+  - component: {fileID: 5373009214951515648}
   m_Layer: 5
-  m_Name: Race Control Message
+  m_Name: DRS_Disabled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,6 +242,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &5373009214951515648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dc2563d3f136fc4890eb29d9ddefd46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showTime: 4
+  _fadeTime: 0.5
+  _canvasGroup: {fileID: 4182913167844052371}
 --- !u!1 &5953077568743867499
 GameObject:
   m_ObjectHideFlags: 0
