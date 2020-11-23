@@ -10,6 +10,7 @@ public class UnityEventManager : MonoBehaviour
     [SerializeField] GameObject _drsEnabledPrefab;
     [SerializeField] GameObject _drsDisabledPrefab;
     [SerializeField] GameObject _chequeredFlagPrefab;
+    [SerializeField] GameObject _penaltyPrefab;
 
     //Events that are waiting to be triggered but can't activate yet
     Queue<EventBase> _waitingEvents = new Queue<EventBase>();
@@ -21,6 +22,7 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.DRSEnabledEvent += DRSEnabledEvent;
         GameManager.F1Info.DRSDisabledEvent += DRSDisabledEvent;
         GameManager.F1Info.ChequeredFlagEvent += ChequeredFlagEvent;
+        GameManager.F1Info.PenaltyEvent += PenaltyEvent;
     }
 
     private void OnDisable()
@@ -29,6 +31,7 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.DRSEnabledEvent -= DRSEnabledEvent;
         GameManager.F1Info.DRSDisabledEvent -= DRSDisabledEvent;
         GameManager.F1Info.ChequeredFlagEvent -= ChequeredFlagEvent;
+        GameManager.F1Info.PenaltyEvent -= PenaltyEvent;
     }
 
     /// <summary>
@@ -112,6 +115,24 @@ public class UnityEventManager : MonoBehaviour
     void ChequeredFlagEvent(Packet packet)
     {
         EventBase thisEvent = SpawnEventPrefab(_chequeredFlagPrefab, packet);
+        AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when Penalty event occour. Spawns penalty prefab.
+    /// </summary>
+    void PenaltyEvent(Packet packet)
+    {
+        PenaltyEventPacket penaltyPacket = (PenaltyEventPacket)packet;
+        PenaltyType t = penaltyPacket.PenaltyType;
+
+        //No need to react to all these kinds of penalties
+        if (t == PenaltyType.Penalty_Reminder || t == PenaltyType.Warning || t == PenaltyType.This_And_Next_Lap_Invalidated || t == PenaltyType.This_And_Next_Lap_Invalidated_Without_Reason ||
+            t == PenaltyType.This_And_Previous_Lap_Invalidated || t == PenaltyType.This_And_Previous_Lap_Invalidated_Without_Reason || t == PenaltyType.This_Lap_Invalidated ||
+            t == PenaltyType.This_Lap_Invalidated_Without_Reason)
+            return;
+
+        EventBase thisEvent = SpawnEventPrefab(_penaltyPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 

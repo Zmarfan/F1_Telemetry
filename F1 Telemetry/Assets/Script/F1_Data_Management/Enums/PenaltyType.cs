@@ -10,7 +10,7 @@
         Warning,
         Disqualified,
         Removed_From_Formation_Lap,
-        Parked_Too_Long_Timer,
+        Parked_Too_Long,
         Tyre_Regulations,
         This_Lap_Invalidated,
         This_And_Next_Lap_Invalidated,

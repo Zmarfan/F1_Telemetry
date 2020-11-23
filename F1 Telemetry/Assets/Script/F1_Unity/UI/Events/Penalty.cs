@@ -3,18 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Text;
 
 namespace F1_Unity
 {
     public class Penalty : EventBase
     {
         [Header("Drop")]
-
-        //Holds types to react to, use last if unsure -> testing required
-        [SerializeField] string _defaultPenaltyString;
-        [SerializeField] List<PenaltyString> _penaltyToString;
-        [SerializeField] string _defaultOffenceString;
-        [SerializeField] List<OffenceString> _offenceToString;
 
         [SerializeField] Text _penaltyTypeText;
         [SerializeField] Text _infringementTypeText;
@@ -42,6 +37,7 @@ namespace F1_Unity
             InitName(fullName);
             InitPenalty(penaltyPacket.PenaltyType);
             InitOffence(penaltyPacket.InfringementType);
+            InitAmount(penaltyPacket.Time);
         }
 
         /// <summary>
@@ -77,16 +73,23 @@ namespace F1_Unity
         /// </summary>
         void InitPenalty(PenaltyType type)
         {
-            List<PenaltyString> matches = _penaltyToString.Where(item => item._penaltyType.Contains(type)).ToList();
-            //If there exist match (should only be one -> use first found)
-            if (matches.Count > 0)
-                _penaltyTypeText.text = matches[0]._showName;
-            else
+            string[] words = type.ToString().Split(new char[] { '_' });
+            //Up to this index should be first row
+            int middleIndex = words.Length > 1 ? words.Length / 2 : words.Length;
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < middleIndex; i++)
             {
-                //Set to standard text and return warning
-                Debug.LogWarning("There exist no support for this penalty type in: " + this.ToString());
-                _penaltyTypeText.text = _defaultPenaltyString;
+                builder.Append(words[i].ToUpper());
+                builder.Append(' ');
             }
+            builder.Append('\n');
+            for (int i = middleIndex; i < words.Length; i++)
+            {
+                builder.Append(words[i].ToUpper());
+                builder.Append(' ');
+            }
+            
+            _penaltyTypeText.text = builder.ToString();
         }
 
         /// <summary>
@@ -94,16 +97,19 @@ namespace F1_Unity
         /// </summary>
         void InitOffence(InfringementType type)
         {
-            List<OffenceString> matches = _offenceToString.Where(item => item._offenceType.Contains(type)).ToList();
-            //If there exist match (should only be one -> use first found)
-            if (matches.Count > 0)
-                _infringementTypeText.text = matches[0]._showName;
+            string text = type.ToString().Replace('_', ' ').ToUpper();
+            _infringementTypeText.text = text;
+        }
+
+        /// <summary>
+        /// Sets the amount of seconds received if any. Remove that part if zero seconds added.
+        /// </summary>
+        void InitAmount(byte seconds)
+        {
+            if (seconds == byte.MaxValue)
+                _secondsHolder.gameObject.SetActive(false);
             else
-            {
-                //Set to standard text and return warning
-                Debug.LogWarning("There exist no support for this penalty type in: " + this.ToString());
-                _infringementTypeText.text = _defaultOffenceString;
-            }
+                _penaltyAmountText.text = "+" + seconds;
         }
     }
 
