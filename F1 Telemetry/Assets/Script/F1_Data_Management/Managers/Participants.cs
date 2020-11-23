@@ -7,36 +7,34 @@ namespace F1_Data_Management
     /// <summary>
     /// Holds participant data to be reached from entire project. Entry point for outside scripts to gain access to F1 UDP data for all cars.
     /// </summary>
-    public static class Participants
+    public class Participants
     {
-        public const int MAX_AMOUNT_OF_CARS = 22;
-
-        static DriverData[] _data = new DriverData[MAX_AMOUNT_OF_CARS];
-        static bool _participantDataReady = false;
-        static bool _motionDataReady = false;
-        static bool _lapDataReady = false;
-        static bool _telemetryDataReady = false;
-        static bool _carStatusDataReady = false;
-        static bool _carSetupDataReady = false;
+        DriverData[] _data = new DriverData[F1Info.MAX_AMOUNT_OF_CARS];
+        bool _participantDataReady = false;
+        bool _motionDataReady = false;
+        bool _lapDataReady = false;
+        bool _telemetryDataReady = false;
+        bool _carStatusDataReady = false;
+        bool _carSetupDataReady = false;
 
         /// <summary>
         /// Amount of drivers actually competing -> Indexes can fall outside this value! Don't use for indexing! 0 if not in use
         /// </summary>
-        public static int ActiveDrivers { get; private set; }
+        public int ActiveDrivers { get; private set; }
 
         /// <summary>
         /// Only read data when it's actually there
         /// </summary>
-        public static bool ReadyToReadFrom { get { return _participantDataReady && _motionDataReady && _lapDataReady && _telemetryDataReady && _carStatusDataReady && _carSetupDataReady; } }
+        public bool ReadyToReadFrom { get { return _participantDataReady && _motionDataReady && _lapDataReady && _telemetryDataReady && _carStatusDataReady && _carSetupDataReady; } }
 
         #region Helpers
 
         /// <summary>
         /// Clear Data and don't allow to read the empty data.
         /// </summary>
-        public static void Clear()
+        public void Clear()
         {
-            _data = new DriverData[MAX_AMOUNT_OF_CARS];
+            _data = new DriverData[F1Info.MAX_AMOUNT_OF_CARS];
             ActiveDrivers = 0;
             _participantDataReady = false;
             _motionDataReady = false;
@@ -49,7 +47,7 @@ namespace F1_Data_Management
         /// <summary>
         /// Returns true wether or not the index of a car actually contains valid data. False means it's junk data and should be disregarded.
         /// </summary>
-        static bool ContainsData(int index)
+        bool ContainsData(int index)
         {
             return !(_data[index].LapData.resultStatus == ResultStatus.Invalid || _data[index].LapData.resultStatus == ResultStatus.Inactive);
         }
@@ -57,15 +55,15 @@ namespace F1_Data_Management
         /// <summary>
         /// Is index within correct ranges to be able to read carData?
         /// </summary>
-        static bool ValidIndex(int index)
+        bool ValidIndex(int index)
         {
-            return index >= 0 && index < MAX_AMOUNT_OF_CARS;
+            return index >= 0 && index < F1Info.MAX_AMOUNT_OF_CARS;
         }
 
         /// <summary>
         /// Used by member functions to check if data is ready to read from.
         /// </summary>
-        static void CheckIfReadyToRead()
+        void CheckIfReadyToRead()
         {
             if (!ReadyToReadFrom)
                 throw new System.Exception("Make sure data is ready to read from first! Check with ReadyToReadFrom");
@@ -78,11 +76,11 @@ namespace F1_Data_Management
         /// <summary>
         /// Attempt to read data for vehicle. validData indicates if data returned is valid data.
         /// </summary>
-        public static DriverData ReadCarData(int vehicleIndex, out bool validData)
+        public DriverData ReadCarData(int vehicleIndex, out bool validData)
         {
             CheckIfReadyToRead();
             if (!ValidIndex(vehicleIndex))
-                throw new System.Exception("Make sure vehicleIndex is between values 0 and " + MAX_AMOUNT_OF_CARS);
+                throw new System.Exception("Make sure vehicleIndex is between values 0 and " + F1Info.MAX_AMOUNT_OF_CARS);
 
             validData = ContainsData(vehicleIndex);
             return _data[vehicleIndex];
@@ -95,7 +93,7 @@ namespace F1_Data_Management
         /// <summary>
         /// Called every 5s from PacketManager to refresh data
         /// </summary>
-        public static void SetParticipantsPacket(ParticipantsPacket data)
+        public void SetParticipantsPacket(ParticipantsPacket data)
         {
             _participantDataReady = true;
             ActiveDrivers = data.NumberOfActiveCars;
@@ -107,7 +105,7 @@ namespace F1_Data_Management
         /// Called 2 times per second from PacketManager to refresh data.
         /// <para>Only to be called from PackatManager to refresh data.</para>
         /// </summary>
-        public static void SetMotionPacket(MotionPacket data)
+        public void SetMotionPacket(MotionPacket data)
         {
             _motionDataReady = true;
             for (int i = 0; i < _data.Length; i++)
@@ -118,7 +116,7 @@ namespace F1_Data_Management
         /// Called often from PacketManager to refresh data
         ///<para>Only to be called from PackatManager to refresh data.</para>
         /// </summary>
-        public static void SetLapData(LapDataPacket data)
+        public void SetLapData(LapDataPacket data)
         {
             _lapDataReady = true;
             for (int i = 0; i < _data.Length; i++)
@@ -129,7 +127,7 @@ namespace F1_Data_Management
         /// Called often from PacketManager to refresh data
         /// <para>Only to be called from PackatManager to refresh data.</para>
         /// </summary>
-        public static void SetTelemetryData(CarTelemetryPacket data)
+        public void SetTelemetryData(CarTelemetryPacket data)
         {
             _telemetryDataReady = true;
             for (int i = 0; i < _data.Length; i++)
@@ -140,7 +138,7 @@ namespace F1_Data_Management
         /// Called often from PacketManager to refresh data
         /// <para>Only to be called from PackatManager to refresh data.</para>
         /// </summary>
-        public static void SetCarStatusData(CarStatusPacket data)
+        public void SetCarStatusData(CarStatusPacket data)
         {
             _carStatusDataReady = true;
             for (int i = 0; i < _data.Length; i++)
@@ -151,7 +149,7 @@ namespace F1_Data_Management
         /// Called 2 times every second from PacketManager to refresh data
         /// <para>Only to be called from PackatManager to refresh data.</para>
         /// </summary>
-        public static void SetCarSetupData(CarSetupPacket data)
+        public void SetCarSetupData(CarSetupPacket data)
         {
             _carSetupDataReady = true;
             for (int i = 0; i < _data.Length; i++)

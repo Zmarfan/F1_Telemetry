@@ -31,7 +31,7 @@ namespace F1_Unity
         public virtual void Init(Packet packet)
         {
             //This should never be possible but here as a safe guard
-            if (!Participants.ReadyToReadFrom)
+            if (!GameManager.F1Info.ReadyToReadFrom)
                 End();
 
             //Correct position relative to anchor

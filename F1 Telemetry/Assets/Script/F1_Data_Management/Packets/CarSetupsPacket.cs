@@ -18,7 +18,7 @@
             base.LoadBytes();
 
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Car Setup Packet");
-            AllCarSetups = new CarSetup[Participants.MAX_AMOUNT_OF_CARS];
+            AllCarSetups = new CarSetup[F1Info.MAX_AMOUNT_OF_CARS];
 
             for (int i = 0; i < AllCarSetups.Length; i++)
             {

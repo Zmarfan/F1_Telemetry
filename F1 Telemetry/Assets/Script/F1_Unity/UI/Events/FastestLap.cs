@@ -32,7 +32,7 @@ namespace F1_Unity
             FastestLapEventPacket fastestLapPacket = (FastestLapEventPacket)packet;
 
             bool status;
-            DriverData data = Participants.ReadCarData(fastestLapPacket.VehicleIndex, out status);
+            DriverData data = GameManager.F1Info.ReadCarData(fastestLapPacket.VehicleIndex, out status);
             string fullName = string.Empty;
             Team team = Team.My_Team_Or_Unknown;
 

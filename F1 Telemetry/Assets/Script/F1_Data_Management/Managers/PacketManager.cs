@@ -4,12 +4,21 @@ namespace F1_Data_Management
 {
     public class PacketManager
     {
-        static Queue<byte[]> _dataPackets = new Queue<byte[]>(); //Queue of all packets received since last frame
+        Participants _participants;
+        EventManager _eventManager;
+
+        Queue<byte[]> _dataPackets = new Queue<byte[]>(); //Queue of all packets received since last frame
+
+        public PacketManager(Participants participants, EventManager eventManager)
+        {
+            _participants = participants;
+            _eventManager = eventManager;
+        }
 
         /// <summary>
         /// Add a packet to the queue that will be processed next frame
         /// </summary>
-        public static void AddPacketData(byte[] data)
+        public void AddPacketData(byte[] data)
         {
             _dataPackets.Enqueue(data);
         }
@@ -17,16 +26,15 @@ namespace F1_Data_Management
         /// <summary>
         /// Empty queue of packets and resets all data storage.
         /// </summary>
-        public static void Reset()
+        public void Reset()
         {
             _dataPackets.Clear();
-            Participants.Clear();
         }
 
         /// <summary>
         /// Reads and handles all collectedPackets since this function was last called. UdpReceiver must be activated to have packets receive here.
         /// </summary>
-        public static void ReadCollectedPackets()
+        public void ReadCollectedPackets()
         {
             //Handle all the packets that have come in since last frame
             while (_dataPackets.Count > 0)
@@ -36,20 +44,26 @@ namespace F1_Data_Management
         /// <summary>
         /// Identifies packet type by data header and handles it ackoringly -> Read data from header and transmits it further
         /// </summary>
-        static void ReadPacket(byte[] packetData)
+        void ReadPacket(byte[] packetData)
         {
             Packet packet = GetPacketType(packetData);
             packet.LoadBytes();
             HandlePacket(packet);
         }
 
-        static void HandlePacket(Packet packet)
+        void HandlePacket(Packet packet)
         {
             switch ((PacketType)packet.PacketID)
             {
-                case PacketType.MOTION: { Participants.SetMotionPacket((MotionPacket)packet); break; }
+                case PacketType.MOTION: { _participants.SetMotionPacket((MotionPacket)packet); break; }
                 case PacketType.SESSION: { break; }
-                case PacketType.LAP_DATA: { Participants.SetLapData((LapDataPacket)packet); break; }
+                case PacketType.LAP_DATA: { _participants.SetLapData((LapDataPacket)packet); break; }
+                case PacketType.PARTICIPANTS: { _participants.SetParticipantsPacket((ParticipantsPacket)packet); break; }
+                case PacketType.CAR_SETUPS: { _participants.SetCarSetupData((CarSetupPacket)packet); break; }
+                case PacketType.CAR_TELEMETRY: { _participants.SetTelemetryData((CarTelemetryPacket)packet); break; }
+                case PacketType.CAR_STATUS: { _participants.SetCarStatusData((CarStatusPacket)packet); break; }
+                case PacketType.FINAL_CLASSIFICATION: { break; };
+                case PacketType.LOBBY_INFO: { break; };
                 case PacketType.EVENT:
                     {
                         //Id what type of event packet this is
@@ -58,13 +72,13 @@ namespace F1_Data_Management
                         switch (eventType)
                         {
                             //return base class EventPacket if nothing more needs to be known than the event occured!
-                            case EventType.Session_Started: { EventManager.InvokeSessionStartedEvent(packet); break; }
-                            case EventType.Session_Ended: { EventManager.InvokeSessionEndedEvent(packet); break; }
-                            case EventType.DRS_Enabled: { EventManager.InvokeDRSEnabledEvent(packet); break; }
-                            case EventType.DRS_Disabled: { EventManager.InvokeDRSDisabledEvent(packet); break; }
-                            case EventType.Chequered_Flag: { EventManager.InvokeChequeredFlagEvent(packet); break; }
+                            case EventType.Session_Started: { _eventManager.InvokeSessionStartedEvent(packet); break; }
+                            case EventType.Session_Ended: { _eventManager.InvokeSessionEndedEvent(packet); break; }
+                            case EventType.DRS_Enabled: { _eventManager.InvokeDRSEnabledEvent(packet); break; }
+                            case EventType.DRS_Disabled: { _eventManager.InvokeDRSDisabledEvent(packet); break; }
+                            case EventType.Chequered_Flag: { _eventManager.InvokeChequeredFlagEvent(packet); break; }
 
-                            case EventType.Fastest_Lap: { EventManager.InvokeFastestLapEvent(packet); break; }
+                            case EventType.Fastest_Lap: { _eventManager.InvokeFastestLapEvent(packet); break; }
                             case EventType.Retirement: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
                             case EventType.Team_Mate_In_Pits: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
                             case EventType.Race_Winner: { UnityEngine.Debug.LogWarning("No implemented reaction to this event!"); break; }
@@ -74,12 +88,6 @@ namespace F1_Data_Management
                         }
                         break;
                     }
-                case PacketType.PARTICIPANTS: { Participants.SetParticipantsPacket((ParticipantsPacket)packet); break; }
-                case PacketType.CAR_SETUPS: { Participants.SetCarSetupData((CarSetupPacket)packet); break; }
-                case PacketType.CAR_TELEMETRY: { Participants.SetTelemetryData((CarTelemetryPacket)packet); break; }
-                case PacketType.CAR_STATUS: { Participants.SetCarStatusData((CarStatusPacket)packet); break; }
-                case PacketType.FINAL_CLASSIFICATION: { break; };
-                case PacketType.LOBBY_INFO: { break; };
                 default: { throw new System.Exception("There is no handle support for this packet: " + (PacketType)packet.PacketID); }
             }
         }
@@ -87,7 +95,7 @@ namespace F1_Data_Management
         /// <summary>
         /// Id what type of packet it is and convert it to that typ of package
         /// </summary>
-        static Packet GetPacketType(byte[] data)
+        Packet GetPacketType(byte[] data)
         {
             //Id what type of packet this is
             PacketType packetType = Packet.GetPacketType(data);

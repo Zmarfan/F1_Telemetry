@@ -35,10 +35,10 @@
 
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Motion Packet");
 
-            AllCarMotionData = new CarMotionData[Participants.MAX_AMOUNT_OF_CARS];
+            AllCarMotionData = new CarMotionData[F1Info.MAX_AMOUNT_OF_CARS];
             //This will loop and assign as if there was 22 cars in the race!
             //If there are less cars than 22, these instances will be filled with junk values!
-            for (int i = 0; i < Participants.MAX_AMOUNT_OF_CARS; i++)
+            for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
                 AllCarMotionData[i].worldPositionX = manager.GetFloat();
                 AllCarMotionData[i].worldPositionY = manager.GetFloat();

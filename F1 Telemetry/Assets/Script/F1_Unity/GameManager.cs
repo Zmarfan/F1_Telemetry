@@ -4,15 +4,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     GameManager _singleton;
+    public static F1Info F1Info { get; private set; } = new F1Info();
 
     private void Awake()
     {
         if (_singleton == null)
+        {
             _singleton = this;
+            StartListeningOnGame();
+        }
         else
-            Destroy(this.gameObject);
-
-        StartListeningOnGame();
+            Destroy(this.gameObject);    
     }
 
     /// <summary>
@@ -21,7 +23,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void StartListeningOnGame()
     {
-        UdpReceiver.StartListening();
+        F1Info.Start();
     }
 
     /// <summary>
@@ -29,8 +31,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void StopListeningOnGame()
     {
-        UdpReceiver.StopListening();
-        PacketManager.Reset();
+        F1Info.Reset();
     }
 
     private void Update()
@@ -43,6 +44,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void ReadCollectPackets()
     {
-        PacketManager.ReadCollectedPackets();
+        F1Info.ReadCollectedPackets();
     }
 }

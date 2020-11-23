@@ -11,44 +11,52 @@ namespace F1_Data_Management
     /// </summary>
     public class UdpReceiver
     {
-        static readonly int PORT = 20777;     //Entry port for data from the game
-        static UdpClient udp;
-        static Thread thread;
+        PacketManager _packetManager;
 
-        static readonly object _lockObject = new object();
-        static byte[] _returnData;
+        readonly int _port = 20777;     //Entry port for data from the game 20777
+        UdpClient _udp;
+        Thread _thread;
 
-        public static bool CurrentlyListening { get; private set; } = false;
+        readonly object _lockObject = new object();
+        byte[] _returnData;
+
+        public bool CurrentlyListening { get; private set; } = false;
+
+        public UdpReceiver(PacketManager packetManager, int portNumber = 20777)
+        {
+            _packetManager = packetManager;
+            _port = portNumber;
+        }
 
         /// <summary>
         /// Starts process of listening for Packets from F1 2020 and then processing and storing the data.
         /// </summary>
-        public static void StartListening()
+        public void StartListening()
         {
             CurrentlyListening = true;
-            thread = new Thread(new ThreadStart(ThreadMethod));
-            thread.Start();
+            _thread = new Thread(new ThreadStart(ThreadMethod));
+            _thread.Start();
         }
 
         /// <summary>
         /// Stops process of listening for Packets from F1 2020 and then processing and storing the data.
         /// </summary>
-        public static void StopListening()
+        public void StopListening()
         {
             CurrentlyListening = false;
-            thread.Abort();
+            _thread.Abort();
         }
 
         /// <summary>
         /// Thread which listens on port and sends packets to PacketManager
         /// </summary>
-        static void ThreadMethod()
+        void ThreadMethod()
         {
-            udp = new UdpClient(PORT);
+            _udp = new UdpClient(_port);
             while (true)
             {
                 IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                byte[] data = udp.Receive(ref remoteIpEndPoint); //Receive data from port
+                byte[] data = _udp.Receive(ref remoteIpEndPoint); //Receive data from port
 
                 lock (_lockObject) //Locking the data does nothing of value right now but is good practice :3
                 {
@@ -60,7 +68,7 @@ namespace F1_Data_Management
                         copyData[i] = _returnData[i];
 
                     //Sends data packet to PacketManager for further processing
-                    PacketManager.AddPacketData(_returnData);
+                    _packetManager.AddPacketData(_returnData);
                 }
             }
         }

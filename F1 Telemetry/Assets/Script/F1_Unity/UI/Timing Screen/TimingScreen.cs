@@ -45,10 +45,10 @@ namespace F1_Unity
 
             _driverPosition = new Dictionary<byte, int>();
 
-            for (int i = 0; i < Participants.MAX_AMOUNT_OF_CARS; i++)
+            for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
                 bool validDriver;
-                DriverData driverData = Participants.ReadCarData(i, out validDriver);
+                DriverData driverData = GameManager.F1Info.ReadCarData(i, out validDriver);
 
                 //Init everyone with gaining a position on start!
                 //Flash green then to white
@@ -58,7 +58,7 @@ namespace F1_Unity
 
                 //Only enable so many positions in time standing as there are active drivers
                 //If they DNF/DSQ later they will only gray out, not be removed
-                if (i >= Participants.ActiveDrivers)
+                if (i >= GameManager.F1Info.ActiveDrivers)
                     _driverTemplates[i].SetActive(false);
                 else
                     _driverTemplates[i].SetActive(true);
@@ -71,7 +71,7 @@ namespace F1_Unity
             //ONLY IN RACE!
 
             //Only update standings when data can be read safely and correctly
-            if (Participants.ReadyToReadFrom)
+            if (GameManager.F1Info.ReadyToReadFrom)
             {
                 if (_initValues)
                     InitDrivers();
@@ -86,10 +86,10 @@ namespace F1_Unity
         void DoTimingScreen()
         {
             //Loop through all drivers
-            for (int i = 0; i < Participants.MAX_AMOUNT_OF_CARS; i++)
+            for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
                 bool validDriver;
-                DriverData driverData = Participants.ReadCarData(i, out validDriver);
+                DriverData driverData = GameManager.F1Info.ReadCarData(i, out validDriver);
 
                 //Skip the drivers that have no valid index -> junk data
                 if (!validDriver)

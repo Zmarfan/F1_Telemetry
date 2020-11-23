@@ -17,18 +17,18 @@ public class UnityEventManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.FastestLapEvent += FastestLapEvent;
-        EventManager.DRSEnabledEvent += DRSEnabledEvent;
-        EventManager.DRSDisabledEvent += DRSDisabledEvent;
-        EventManager.ChequeredFlagEvent += ChequeredFlagEvent;
+        GameManager.F1Info.FastestLapEvent += FastestLapEvent;
+        GameManager.F1Info.DRSEnabledEvent += DRSEnabledEvent;
+        GameManager.F1Info.DRSDisabledEvent += DRSDisabledEvent;
+        GameManager.F1Info.ChequeredFlagEvent += ChequeredFlagEvent;
     }
 
     private void OnDisable()
-    {    
-        EventManager.FastestLapEvent -= FastestLapEvent;
-        EventManager.DRSEnabledEvent -= DRSEnabledEvent;
-        EventManager.DRSDisabledEvent -= DRSDisabledEvent;
-        EventManager.ChequeredFlagEvent -= ChequeredFlagEvent;
+    {
+        GameManager.F1Info.FastestLapEvent -= FastestLapEvent;
+        GameManager.F1Info.DRSEnabledEvent -= DRSEnabledEvent;
+        GameManager.F1Info.DRSDisabledEvent -= DRSDisabledEvent;
+        GameManager.F1Info.ChequeredFlagEvent -= ChequeredFlagEvent;
     }
 
     /// <summary>
