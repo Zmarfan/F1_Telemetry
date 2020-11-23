@@ -56,3 +56,19 @@
         Mandatory_pitstop
     }
 }
+
+/*Types
+ Blocking
+ Collision
+ Corner Cutting
+ Crossed Pit Exit Lane
+ Ignoring Blue Flags
+ Ignoring Yellow Flags
+ Speeding in Pit Lane
+ Too Many Penalties
+ Jump Start
+ Illegal Overtake Under Safety Car
+ Exceeding Allowed Pace Under Safety Car
+ Falling Too Far Back Under Safety Car
+ Other Offence
+*/

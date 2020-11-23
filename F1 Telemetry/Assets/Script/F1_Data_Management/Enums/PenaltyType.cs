@@ -19,6 +19,7 @@
         This_And_Previous_Lap_Invalidated,
         This_And_Previous_Lap_Invalidated_Without_Reason,
         Retired,
-        Black_Black_Timer
+        Black_Black_Timer,
+        UNKNOWN
     }
 }
