@@ -58,11 +58,10 @@ namespace F1_Data_Management
         }
 
         /// <summary>
-        /// Returns driverData for requested vehicle. validData indicates if the data holds actual driver data or junk.
+        /// Attempt to read data for vehicle. validData indicates if data returned is valid data.
         /// </summary>
-        /// <param name="vehicleIndex">index for a car. 0 - 22 are valid.</param>
-        /// <param name="validData">true if data is valid, attempting to read invalid data is not recommended.</param>
-        /// <returns></returns>
+        /// <param name="vehicleIndex">Index of the car which data you want to get. Must be within 0 - 22.</param>
+        /// <param name="validData">Indicates if returned data is valid data. Unvalid means either -> vehicle doesn't exist or data not yet set</param>
         public DriverData ReadCarData(int vehicleIndex, out bool validData)
         {
             return _participants.ReadCarData(vehicleIndex, out validData);
@@ -88,7 +87,7 @@ namespace F1_Data_Management
         }
 
         /// <summary>
-        /// Invoked on Race Winner event. Returns Packet which can be cast to RaceWinnerEventPacket.
+        /// Invoked on Race Winner event. Returns Packet which can be cast to RaceWinnerEventPacket. Event not triggered in spectator mode.
         /// </summary>
         public event EventOccour RaceWinnerEvent
         {
@@ -115,7 +114,7 @@ namespace F1_Data_Management
         }
 
         /// <summary>
-        /// Invoked on Teammate in pits event. Returns Packet which can be cast to TeamMateInPitsEventPacket.
+        /// Invoked on Teammate in pits event. Returns Packet which can be cast to TeamMateInPitsEventPacket. Event not triggered in spectator mode.
         /// </summary>
         public event EventOccour TeamMateInPitsEvent
         {
@@ -142,7 +141,7 @@ namespace F1_Data_Management
         }
 
         /// <summary>
-        /// Invoked on Chequered flag event. When leader is about to finish the race. Returns Packet which can be cast to EventPacket.
+        /// Invoked on Chequered flag event. When car is about to finish the race. Returns Packet which can be cast to EventPacket. Event not triggered in spectator mode.
         /// </summary>
         public event EventOccour ChequeredFlagEvent
         {

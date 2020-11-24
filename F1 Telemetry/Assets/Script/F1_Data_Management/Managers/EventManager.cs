@@ -43,7 +43,7 @@
         /// </summary>
         public event EventOccour DRSDisabledEvent;
         /// <summary>
-        /// Invoked on Chequered flag event. When leader is about to finish the race. Returns Packet which can be cast to EventPacket.
+        /// Invoked on Chequered flag event. When car is about to finish the race. Returns Packet which can be cast to EventPacket.
         /// </summary>
         public event EventOccour ChequeredFlagEvent;
         /// <summary>
@@ -74,7 +74,7 @@
         }
 
         /// <summary>
-        /// Called from PacketManager when Race Winner event occour.
+        /// Called from PacketManager when Race Winner event occour. Event not triggered in spectator mode.
         /// </summary>
         public void InvokeRaceWinnerEvent(Packet packet)
         {
@@ -98,7 +98,7 @@
         }
 
         /// <summary>
-        /// Called from PacketManager when Team Mate In Pits event occour.
+        /// Called from PacketManager when Team Mate In Pits event occour. Event not triggered in spectator mode.
         /// </summary>
         public void InvokeTeamMateInPitsEvent(Packet packet)
         {
@@ -122,7 +122,7 @@
         }
 
         /// <summary>
-        /// Called from PacketManager when leader is about to cross the finish line for last lap.
+        /// Called from PacketManager when car is about to cross the finish line for last lap. Event not triggered in spectator mode.
         /// </summary>
         public void InvokeChequeredFlagEvent(Packet packet)
         {

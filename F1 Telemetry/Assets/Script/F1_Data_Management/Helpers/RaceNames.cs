@@ -89,7 +89,7 @@ namespace F1_Data_Management
         /////
 
         /////
-        { 42, "PRL | Pierre" }, //ADDED
+        { 42, "PRL Pierre" }, //ADDED
         /////
 
         /////

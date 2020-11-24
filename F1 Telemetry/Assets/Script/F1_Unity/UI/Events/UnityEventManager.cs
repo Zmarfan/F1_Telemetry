@@ -13,6 +13,7 @@ public class UnityEventManager : MonoBehaviour
     [SerializeField] GameObject _penaltyPrefab;
     [SerializeField] GameObject _retirePrefab;
     [SerializeField] GameObject _teamMateInPitPrefab;
+    [SerializeField] GameObject _raceWinnerPrefab;
 
     //Events that are waiting to be triggered but can't activate yet
     Queue<EventBase> _waitingEvents = new Queue<EventBase>();
@@ -27,6 +28,8 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.PenaltyEvent += PenaltyEvent;
         GameManager.F1Info.RetirementEvent += RetirementEvent;
         GameManager.F1Info.TeamMateInPitsEvent += TeamMateInPitEvent;
+        GameManager.F1Info.RaceWinnerEvent += RaceWinnerEvent;
+        GameManager.F1Info.SpeedTrapEvent += SpeedTrapEvent;
     }
 
     private void OnDisable()
@@ -38,6 +41,8 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.PenaltyEvent -= PenaltyEvent;
         GameManager.F1Info.RetirementEvent -= RetirementEvent;
         GameManager.F1Info.TeamMateInPitsEvent -= TeamMateInPitEvent;
+        GameManager.F1Info.RaceWinnerEvent -= RaceWinnerEvent;
+        GameManager.F1Info.SpeedTrapEvent -= SpeedTrapEvent;
     }
 
     /// <summary>
@@ -116,7 +121,7 @@ public class UnityEventManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when Chequered flag event occour (Leader is about to cross finish line). Spawns chequered flag prefab.
+    /// Called when Chequered flag event occour (car is about to cross finish line). Spawns chequered flag prefab.
     /// </summary>
     void ChequeredFlagEvent(Packet packet)
     {
@@ -140,6 +145,27 @@ public class UnityEventManager : MonoBehaviour
     {
         EventBase thisEvent = SpawnEventPrefab(_teamMateInPitPrefab, packet);
         AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when race winner event occour. Spawns race winner prefab.
+    /// </summary>
+    void RaceWinnerEvent(Packet packet)
+    {
+        EventBase thisEvent = SpawnEventPrefab(_raceWinnerPrefab, packet);
+        AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when speed trap event occour.
+    /// </summary>
+    void SpeedTrapEvent(Packet packet)
+    {
+        SpeedTrapEventPacket speedPacket = (SpeedTrapEventPacket)packet;
+        bool status;
+        DriverData data = GameManager.F1Info.ReadCarData(speedPacket.VehicleIndex, out status);
+        if (status)
+            Debug.LogWarning("Speed trap: " + data.ParticipantData.driverFullName + " => " + speedPacket.Speed);
     }
 
     /// <summary>

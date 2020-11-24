@@ -2,16 +2,16 @@
 {
     public enum Team
     {
-        Mercedes,
+        Mercedes_AMG_Petronas,
         Ferrari,
         Red_Bull_Racing,
         Williams,
-        Racing_Point,
+        BWT_Racing_Point,
         Renault,
-        Alpha_Tauri,
+        AlphaTauri,
         Haas,
         McLaren,
-        Alfa_Romeo,
+        Alfa_Romeo_Racing,
         McLaren_1988,
         McLaren_1991,
         Williams_1992,

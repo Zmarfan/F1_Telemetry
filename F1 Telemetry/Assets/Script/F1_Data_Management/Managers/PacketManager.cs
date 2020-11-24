@@ -81,9 +81,9 @@ namespace F1_Data_Management
                             case EventType.Fastest_Lap: { _eventManager.InvokeFastestLapEvent(packet); break; }
                             case EventType.Retirement: { _eventManager.InvokeRetirementEvent(packet); break; }
                             case EventType.Team_Mate_In_Pits: { _eventManager.InvokeTeamMateInPitsEvent(packet); break; }
-                            case EventType.Race_Winner: { UnityEngine.Debug.LogWarning("Race Winner: No implemented reaction to this event!"); break; }
+                            case EventType.Race_Winner: { _eventManager.InvokeRaceWinnerEvent(packet); break; }
                             case EventType.Penalty_Issued: { _eventManager.InvokePenaltyEvent(packet); break; }
-                            case EventType.Speed_Trap_Triggered: { UnityEngine.Debug.LogWarning("Speed trap triggered: No implemented reaction to this event!"); break; }
+                            case EventType.Speed_Trap_Triggered: { _eventManager.InvokeSpeedTrapEvent(packet); break; }
                             default: { throw new System.Exception("There is no handle support for this event: " + eventType); }
                         }
                         break;

@@ -8,16 +8,16 @@ namespace F1_Data_Management
     {
         static Dictionary<Team, Color> teamColor = new Dictionary<Team, Color>()
     {
-        { Team.Mercedes, new Color(8, 206, 178) },
+        { Team.Mercedes_AMG_Petronas, new Color(8, 206, 178) },
         { Team.Ferrari, new Color(213, 1, 6) },
         { Team.Red_Bull_Racing, new Color(36, 64, 246) },
         { Team.Renault, new Color(241, 239, 16) },
         { Team.McLaren, new Color(252, 130, 6) },
-        { Team.Racing_Point, new Color(233, 146, 187) },
+        { Team.BWT_Racing_Point, new Color(233, 146, 187) },
         { Team.Haas, new Color(121, 120, 119) },
         { Team.Williams, new Color(1, 124, 245) },
-        { Team.Alfa_Romeo, new Color(150, 0, 12) },
-        { Team.Alpha_Tauri, new Color(249, 248, 245) }
+        { Team.Alfa_Romeo_Racing, new Color(150, 0, 12) },
+        { Team.AlphaTauri, new Color(249, 248, 245) }
     };
 
         static Color DEFAULT_COLOR = new Color(40, 40, 40);

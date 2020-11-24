@@ -163,6 +163,8 @@ MonoBehaviour:
   _chequeredFlagPrefab: {fileID: 321920245800152628, guid: 2d758922ee727a141919be77a056d667, type: 3}
   _penaltyPrefab: {fileID: 1100837755855285560, guid: 2cc78b00afa7dbb4aa9c25103f161a86, type: 3}
   _retirePrefab: {fileID: 4137811850501173954, guid: eba2efbf1fa3880478c8b3d643e59f24, type: 3}
+  _teamMateInPitPrefab: {fileID: 4137811850501173954, guid: c72bd0a8f60e3c241abc210216afdabe, type: 3}
+  _raceWinnerPrefab: {fileID: 321920245800152628, guid: c48cb6ad0d5c52a49971bcd4a4d6a51d, type: 3}
 --- !u!1001 &4824113722807614778
 PrefabInstance:
   m_ObjectHideFlags: 0

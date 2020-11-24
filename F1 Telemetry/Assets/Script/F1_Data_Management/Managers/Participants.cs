@@ -59,16 +59,6 @@ namespace F1_Data_Management
         {
             return index >= 0 && index < F1Info.MAX_AMOUNT_OF_CARS;
         }
-
-        /// <summary>
-        /// Used by member functions to check if data is ready to read from.
-        /// </summary>
-        void CheckIfReadyToRead()
-        {
-            if (!ReadyToReadFrom)
-                throw new System.Exception("Make sure data is ready to read from first! Check with ReadyToReadFrom");
-        }
-
         #endregion
 
         #region Get functions
@@ -76,13 +66,14 @@ namespace F1_Data_Management
         /// <summary>
         /// Attempt to read data for vehicle. validData indicates if data returned is valid data.
         /// </summary>
+        /// <param name="vehicleIndex">Index of the car which data you want to get. Must be within 0 - 22.</param>
+        /// <param name="validData">Indicates if returned data is valid data. Unvalid means either -> vehicle doesn't exist or data not yet set</param>
         public DriverData ReadCarData(int vehicleIndex, out bool validData)
         {
-            CheckIfReadyToRead();
             if (!ValidIndex(vehicleIndex))
                 throw new System.Exception("Make sure vehicleIndex is between values 0 and " + F1Info.MAX_AMOUNT_OF_CARS);
 
-            validData = ContainsData(vehicleIndex);
+            validData = ReadyToReadFrom ? ContainsData(vehicleIndex) : false;
             return _data[vehicleIndex];
         }
 
