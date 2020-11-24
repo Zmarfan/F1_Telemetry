@@ -11,6 +11,8 @@ public class UnityEventManager : MonoBehaviour
     [SerializeField] GameObject _drsDisabledPrefab;
     [SerializeField] GameObject _chequeredFlagPrefab;
     [SerializeField] GameObject _penaltyPrefab;
+    [SerializeField] GameObject _retirePrefab;
+    [SerializeField] GameObject _teamMateInPitPrefab;
 
     //Events that are waiting to be triggered but can't activate yet
     Queue<EventBase> _waitingEvents = new Queue<EventBase>();
@@ -23,6 +25,8 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.DRSDisabledEvent += DRSDisabledEvent;
         GameManager.F1Info.ChequeredFlagEvent += ChequeredFlagEvent;
         GameManager.F1Info.PenaltyEvent += PenaltyEvent;
+        GameManager.F1Info.RetirementEvent += RetirementEvent;
+        GameManager.F1Info.TeamMateInPitsEvent += TeamMateInPitEvent;
     }
 
     private void OnDisable()
@@ -32,6 +36,8 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.DRSDisabledEvent -= DRSDisabledEvent;
         GameManager.F1Info.ChequeredFlagEvent -= ChequeredFlagEvent;
         GameManager.F1Info.PenaltyEvent -= PenaltyEvent;
+        GameManager.F1Info.RetirementEvent -= RetirementEvent;
+        GameManager.F1Info.TeamMateInPitsEvent -= TeamMateInPitEvent;
     }
 
     /// <summary>
@@ -115,6 +121,24 @@ public class UnityEventManager : MonoBehaviour
     void ChequeredFlagEvent(Packet packet)
     {
         EventBase thisEvent = SpawnEventPrefab(_chequeredFlagPrefab, packet);
+        AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when Retirement event occour. Spawns retirement prefab.
+    /// </summary>
+    void RetirementEvent(Packet packet)
+    {
+        EventBase thisEvent = SpawnEventPrefab(_retirePrefab, packet);
+        AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when Team mate in pit event occour. Spawns Team mate in pit prefab.
+    /// </summary>
+    void TeamMateInPitEvent(Packet packet)
+    {
+        EventBase thisEvent = SpawnEventPrefab(_teamMateInPitPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 

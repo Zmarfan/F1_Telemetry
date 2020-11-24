@@ -79,8 +79,8 @@ namespace F1_Data_Management
                             case EventType.Chequered_Flag: { _eventManager.InvokeChequeredFlagEvent(packet); break; }
 
                             case EventType.Fastest_Lap: { _eventManager.InvokeFastestLapEvent(packet); break; }
-                            case EventType.Retirement: { UnityEngine.Debug.LogWarning("Retirement: No implemented reaction to this event!"); break; }
-                            case EventType.Team_Mate_In_Pits: { UnityEngine.Debug.LogWarning("Team mate in pits: No implemented reaction to this event!"); break; }
+                            case EventType.Retirement: { _eventManager.InvokeRetirementEvent(packet); break; }
+                            case EventType.Team_Mate_In_Pits: { _eventManager.InvokeTeamMateInPitsEvent(packet); break; }
                             case EventType.Race_Winner: { UnityEngine.Debug.LogWarning("Race Winner: No implemented reaction to this event!"); break; }
                             case EventType.Penalty_Issued: { _eventManager.InvokePenaltyEvent(packet); break; }
                             case EventType.Speed_Trap_Triggered: { UnityEngine.Debug.LogWarning("Speed trap triggered: No implemented reaction to this event!"); break; }
