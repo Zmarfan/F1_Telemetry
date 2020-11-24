@@ -120,12 +120,12 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Contains infof about a driver for timing purposes
+        /// A timing station that holds time and lap when leader passed
         /// </summary>
         struct DriverTimingData
         {
-            public int Position { get; set; }
-            float Time { get; set; }
+            public byte Lap { get; set; }
+            public float Time { get; set; }
         }
     }
 }

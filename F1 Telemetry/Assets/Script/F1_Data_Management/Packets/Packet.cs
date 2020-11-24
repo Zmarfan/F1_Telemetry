@@ -8,18 +8,45 @@
         protected static readonly int PACKET_ID_INDEX = 5;
         protected static readonly int MOVE_PAST_HEADER_INDEX = 24;
 
+        /// <summary>
+        /// The byte array which translates into the accessible variables. No user need.
+        /// </summary>
         public byte[] Data { get; protected set; }
 
-        public PacketFormat PacketFormat { get; private set; }     //Game release year
-        public byte GameMajorVersion { get; private set; }         //X.00
-        public byte GameMinorVersion { get; private set; }         //1.XX
+        /// <summary>
+        /// Game release year
+        /// </summary>
+        public PacketFormat PacketFormat { get; private set; }
+        /// <summary>
+        /// X.00
+        /// </summary>
+        public byte GameMajorVersion { get; private set; }
+        /// <summary>
+        /// 1.XX
+        /// </summary>
+        public byte GameMinorVersion { get; private set; }
         public byte PacketVersion { get; private set; }
-        public byte PacketID { get; private set; }                 //What type of package is this? Identifier
+        /// <summary>
+        /// What type of package is this? Identifier. No user need.
+        /// </summary>
+        public byte PacketID { get; private set; }
         public ulong SessionUniqueID { get; private set; }
-        public float SessionTime { get; private set; }             //Total uptime of session
-        public uint FrameID { get; private set; }                  // Identifier for the frame the data was retrieved on
-        public byte PlayerCarIndex { get; private set; }           // Index of player's car in the array
-        public byte SecondaryPlayerCarIndex { get; private set; }  //Index of secondary player's car in the array (splitscreen) -> 255 if no secondary player
+        /// <summary>
+        /// Total uptime of session
+        /// </summary>
+        public float SessionTime { get; private set; }
+        /// <summary>
+        /// Identifier for the frame the data was retrieved on
+        /// </summary>
+        public uint FrameID { get; private set; }
+        /// <summary>
+        /// Index of player's car in the array
+        /// </summary>
+        public byte PlayerCarIndex { get; private set; }
+        /// <summary>
+        /// Index of secondary player's car in the array (splitscreen) -> 255 if no secondary player
+        /// </summary>
+        public byte SecondaryPlayerCarIndex { get; private set; }
 
         public Packet(byte[] data)
         {

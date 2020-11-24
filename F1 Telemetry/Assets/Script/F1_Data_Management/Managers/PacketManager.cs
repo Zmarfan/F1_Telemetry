@@ -6,10 +6,15 @@ namespace F1_Data_Management
     {
         Participants _participants;
         EventManager _eventManager;
+        SessionManager _sessionManager;
 
         Queue<byte[]> _dataPackets = new Queue<byte[]>(); //Queue of all packets received since last frame
 
-        public PacketManager(Participants participants, EventManager eventManager)
+        public float SessionTime { get; private set; } = 0;
+        public byte PlayerCarIndex { get; private set; } = F1Info.MAX_AMOUNT_OF_CARS - 1;
+        public byte SecondaryPlayerCarIndex { get; private set; } = F1Info.MAX_AMOUNT_OF_CARS - 2;
+
+        public PacketManager(Participants participants, EventManager eventManager, SessionManager sessionManager)
         {
             _participants = participants;
             _eventManager = eventManager;
@@ -29,6 +34,9 @@ namespace F1_Data_Management
         public void Reset()
         {
             _dataPackets.Clear();
+            SessionTime = 0;
+            PlayerCarIndex = F1Info.MAX_AMOUNT_OF_CARS - 1;
+            SecondaryPlayerCarIndex = F1Info.MAX_AMOUNT_OF_CARS - 2;
         }
 
         /// <summary>
@@ -48,6 +56,11 @@ namespace F1_Data_Management
         {
             Packet packet = GetPacketType(packetData);
             packet.LoadBytes();
+
+            SessionTime = packet.SessionTime;
+            PlayerCarIndex = packet.PlayerCarIndex;
+            SecondaryPlayerCarIndex = packet.SecondaryPlayerCarIndex;
+
             HandlePacket(packet);
         }
 
@@ -56,14 +69,14 @@ namespace F1_Data_Management
             switch ((PacketType)packet.PacketID)
             {
                 case PacketType.MOTION: { _participants.SetMotionPacket((MotionPacket)packet); break; }
-                case PacketType.SESSION: { break; }
                 case PacketType.LAP_DATA: { _participants.SetLapData((LapDataPacket)packet); break; }
                 case PacketType.PARTICIPANTS: { _participants.SetParticipantsPacket((ParticipantsPacket)packet); break; }
                 case PacketType.CAR_SETUPS: { _participants.SetCarSetupData((CarSetupPacket)packet); break; }
                 case PacketType.CAR_TELEMETRY: { _participants.SetTelemetryData((CarTelemetryPacket)packet); break; }
                 case PacketType.CAR_STATUS: { _participants.SetCarStatusData((CarStatusPacket)packet); break; }
-                case PacketType.FINAL_CLASSIFICATION: { break; };
+                case PacketType.SESSION: { _sessionManager.UpdateSessionData((SessionPacket)packet); break; }
                 case PacketType.LOBBY_INFO: { break; };
+                case PacketType.FINAL_CLASSIFICATION: { break; };
                 case PacketType.EVENT:
                     {
                         //Id what type of event packet this is

@@ -6,26 +6,47 @@
     /// </summary>
     public class SessionPacket : Packet
     {
-        public Weather Weather { get; private set; }                                   //Current weather right now
+        /// <summary>
+        /// Current weather right now
+        /// </summary>
+        public Weather Weather { get; private set; } 
         public sbyte TrackTemperature { get; private set; }
         public sbyte AirTemperature { get; private set; }
-        public byte TotalLaps { get; private set; }                                    //Total laps in the race
-        public ushort TrackLength { get; private set; }                                //Track length in metres
-        public SessionType SessionType { get; private set; }                           //Q1/Race/Time-trial etc
+        public byte TotalLaps { get; private set; }
+        /// <summary>
+        /// Track length in metres
+        /// </summary>
+        public ushort TrackLength { get; private set; }
+        public SessionType SessionType { get; private set; }
         public Track Track { get; private set; }
-        public Formula Formula { get; private set; }                                   //What type of cars in the session
+        /// <summary>
+        /// What type of cars in the session
+        /// </summary>
+        public Formula Formula { get; private set; }
         public ushort SessionTimeLeft { get; private set; }
         public ushort SessionDuration { get; private set; }
-        public byte PitSpeedLimit { get; private set; }                                //In km/h
-        public bool GamePaused { get; private set; }                                   //Represented by a "byte" guessing 0 -> not paused, 1 -> paused 
-        public bool IsSpectating { get; private set; }                                 //Represented by a "byte" guessing 0 -> not spectating, 1 -> spectating
-        public byte SpectatorCarIndex { get; private set; }                            //255 if not spectating
-        public bool SliProNativeSupport { get; private set; }                          //Whether or not SLI Pro is supported, Represented by a "byte" guessing 0 -> not supported, 1 -> supported
+        /// <summary>
+        /// In km/h
+        /// </summary>
+        public byte PitSpeedLimit { get; private set; }
+        public bool GamePaused { get; private set; }
+        public bool IsSpectating { get; private set; }
+        /// <summary>
+        /// 255 if not specating
+        /// </summary>
+        public byte SpectatorCarIndex { get; private set; }
+        /// <summary>
+        /// Whether or not SLI Pro is supported
+        /// </summary>
+        public bool SliProNativeSupport { get; private set; }
         public byte NumberOfMarshalZones { get; private set; }
-        public MarshalZone[] MarshalZones { get; private set; }                        //Info about marshal zones (flag and position in lap)
-        public SafetyCarStatus SafetyCarStatus { get; private set; }                   //Is SC out and what type?
+        /// <summary>
+        /// Info about marshal zones (flag and position in lap)
+        /// </summary>
+        public MarshalZone[] MarshalZones { get; private set; }
+        public SafetyCarStatus SafetyCarStatus { get; private set; }
         public bool IsOnline { get; private set; }
-        public byte NumberWeatherForeCastSamples { get; private set; }                 //Number of weather samples to follow
+        public byte NumberWeatherForeCastSamples { get; private set; }
         public WeatherForecastSample[] WeatherForecastSamples { get; private set; }
 
 
@@ -86,8 +107,11 @@
     /// </summary>
     public struct MarshalZone
     {
-        public float zoneStart;   //Fraction (0..1) of way through the lap the marshal zone starts 
-        public Flag zoneFlag; //Flag status in zone at the moment
+        /// <summary>
+        /// Fraction (0..1) of way through the lap the marshal zone starts 
+        /// </summary>
+        public float zoneStart;
+        public Flag zoneFlag;
     }
 
     /// <summary>
@@ -96,7 +120,10 @@
     public struct WeatherForecastSample
     {
         public SessionType sessionType;
-        public byte timeOffset;         //Time in minutes the forecast is for
+        /// <summary>
+        /// Time in minutes the forecast is for
+        /// </summary>
+        public byte timeOffset;
         public Weather weather;
         public sbyte trackTemperature;
         public sbyte airTemperature;

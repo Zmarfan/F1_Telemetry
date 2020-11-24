@@ -13,6 +13,7 @@ namespace F1_Data_Management
         UdpReceiver _udpReceiver;
         Participants _participants;
         EventManager _eventManager;
+        SessionManager _sessionManager;
 
         /// <summary>
         /// Amount of drivers actually competing -> Indexes can fall outside this value! Don't use for indexing! 0 if not in use
@@ -21,13 +22,22 @@ namespace F1_Data_Management
         /// <summary>
         /// Only read data when it's actually there
         /// </summary>
-        public bool ReadyToReadFrom { get { return _participants.ReadyToReadFrom; } }
+        public bool ReadyToReadFrom { get { return _participants.ReadyToReadFrom && _sessionManager.ReadyToReadFrom; } }
+        /// <summary>
+        /// Current SessionTime in seconds
+        /// </summary>
+        public float SessionTime { get { return _packetManager.SessionTime; } }
+        /// <summary>
+        /// Info regarding session. Check if safe to read through ReadyToReadFrom.
+        /// </summary>
+        public Session Session { get { return _sessionManager.GetSessionDataCopy(); } }
 
         public F1Info(int port = 20777)
         {
+            _sessionManager = new SessionManager();
             _eventManager = new EventManager();
             _participants = new Participants();
-            _packetManager = new PacketManager(_participants, _eventManager);
+            _packetManager = new PacketManager(_participants, _eventManager, _sessionManager);
             _udpReceiver = new UdpReceiver(_packetManager, port);
         }
 
@@ -55,6 +65,7 @@ namespace F1_Data_Management
             _udpReceiver.StopListening();
             _packetManager.Reset();
             _participants.Clear();
+            _sessionManager.Clear();
         }
 
         /// <summary>
@@ -65,6 +76,40 @@ namespace F1_Data_Management
         public DriverData ReadCarData(int vehicleIndex, out bool validData)
         {
             return _participants.ReadCarData(vehicleIndex, out validData);
+        }
+
+        /// <summary>
+        /// Attempt to read data for player vehicle.
+        /// </summary>
+        /// <param name="validData">Indicates if returned data is valid data. Unvalid means either -> vehicle doesn't exist or data not yet set</param>
+        public DriverData ReadPlayerData(out bool validData)
+        {
+            return _participants.ReadCarData(_packetManager.PlayerCarIndex, out validData);
+        }
+
+        /// <summary>
+        /// Attempt to read data for secondary player vehicle.
+        /// </summary>
+        /// <param name="validData">Indicates if returned data is valid data. Unvalid means either -> vehicle doesn't exist or data not yet set</param>
+        public DriverData ReadSecondaryPlayerData(out bool validData)
+        {
+            return _participants.ReadCarData(_packetManager.SecondaryPlayerCarIndex, out validData);
+        }
+
+        /// <summary>
+        /// Attempt to read data for currently spectating vehicle.
+        /// </summary>
+        /// <param name="validData">Indicates if returned data is valid data. Unvalid means either -> vehicle doesn't exist or data not yet set or currently not spectating</param>
+        public DriverData ReadSpectatingCarData(out bool validData)
+        {
+            //No data exist, return junk data OR data exist but currently not spectating
+            if (!ReadyToReadFrom && !_sessionManager.GetSessionDataCopy().IsSpectating)
+            {
+                validData = false;
+                return new DriverData();
+            }
+
+            return _participants.ReadCarData(_sessionManager.GetSessionDataCopy().SpectatorCarIndex, out validData);
         }
         #region Events
 
