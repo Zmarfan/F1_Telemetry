@@ -27,10 +27,6 @@ namespace F1_Data_Management
         /// Current SessionTime in seconds
         /// </summary>
         public float SessionTime { get { return _packetManager.SessionTime; } }
-        /// <summary>
-        /// Info regarding session. Check if safe to read through ReadyToReadFrom.
-        /// </summary>
-        public Session Session { get { return _sessionManager.GetSessionDataCopy(); } }
 
         public F1Info(int port = 20777)
         {
@@ -69,6 +65,14 @@ namespace F1_Data_Management
         }
 
         /// <summary>
+        /// Info regarding session. status indicates if actual data is received or not.
+        /// </summary>
+        public Session ReadSession(out bool status)
+        {
+            return _sessionManager.GetSessionDataCopy(out status);
+        }
+
+        /// <summary>
         /// Attempt to read data for vehicle. validData indicates if data returned is valid data.
         /// </summary>
         /// <param name="vehicleIndex">Index of the car which data you want to get. Must be within 0 - 22.</param>
@@ -102,14 +106,14 @@ namespace F1_Data_Management
         /// <param name="validData">Indicates if returned data is valid data. Unvalid means either -> vehicle doesn't exist or data not yet set or currently not spectating</param>
         public DriverData ReadSpectatingCarData(out bool validData)
         {
-            //No data exist, return junk data OR data exist but currently not spectating
-            if (!ReadyToReadFrom && !_sessionManager.GetSessionDataCopy().IsSpectating)
-            {
-                validData = false;
-                return new DriverData();
-            }
+            Session sessionData = ReadSession(out bool status);
+            validData = status && sessionData.SpectatorCarIndex != byte.MaxValue;
 
-            return _participants.ReadCarData(_sessionManager.GetSessionDataCopy().SpectatorCarIndex, out validData);
+            //Return junk data if no valid data exist
+            if (!validData)
+                return new DriverData();
+
+            return _participants.ReadCarData(sessionData.SpectatorCarIndex, out validData);
         }
         #region Events
 

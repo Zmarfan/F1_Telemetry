@@ -11,17 +11,16 @@
         /// <summary>
         /// Returns a copy of latest saved Session Data
         /// </summary>
-        public Session GetSessionDataCopy()
+        public Session GetSessionDataCopy(out bool status)
         {
-            if (!ReadyToReadFrom)
-                throw new System.Exception("Session data is not yet initilied yet! Check if ready to read through F1Info.ReadyToReadFrom before accessing!");
+            status = ReadyToReadFrom;
 
             Session copy = new Session();
             //Copies all by value data
             copy = SessionData;
 
             //Hard copies all by reference data
-            MarshalZone[] copyMarshalZone = new MarshalZone[SessionData.NumberOfMarshalZones];
+            MarshalZone[] copyMarshalZone = new MarshalZone[SessionData.MarshalZones.Length];
             for (int i = 0; i < copyMarshalZone.Length; i++)
             {
                 copyMarshalZone[i].zoneFlag = SessionData.MarshalZones[i].zoneFlag;
@@ -29,7 +28,7 @@
             }
             copy.MarshalZones = copyMarshalZone;
 
-            WeatherForecastSample[] copyWeatherForecastCopy = new WeatherForecastSample[SessionData.NumberWeatherForeCastSamples];
+            WeatherForecastSample[] copyWeatherForecastCopy = new WeatherForecastSample[SessionData.WeatherForecastSamples.Length];
             for (int i = 0; i < copyWeatherForecastCopy.Length; i++)
             {
                 copyWeatherForecastCopy[i].airTemperature = SessionData.WeatherForecastSamples[i].airTemperature;
@@ -75,10 +74,8 @@
             newSessionData.IsSpectating = sessionPacket.IsSpectating;
             newSessionData.SpectatorCarIndex = sessionPacket.SpectatorCarIndex;
             newSessionData.SliProNativeSupport = sessionPacket.SliProNativeSupport;
-            newSessionData.NumberOfMarshalZones = sessionPacket.NumberOfMarshalZones;
             newSessionData.SafetyCarStatus = sessionPacket.SafetyCarStatus;
             newSessionData.IsOnline = sessionPacket.IsOnline;
-            newSessionData.NumberWeatherForeCastSamples = sessionPacket.NumberWeatherForeCastSamples;
             newSessionData.MarshalZones = sessionPacket.MarshalZones;
             newSessionData.WeatherForecastSamples = sessionPacket.WeatherForecastSamples;
         }
@@ -119,10 +116,8 @@
         /// Whether or not SLI Pro is supported
         /// </summary>
         public bool SliProNativeSupport { get; set; }
-        public byte NumberOfMarshalZones { get; set; }
         public SafetyCarStatus SafetyCarStatus { get; set; }
         public bool IsOnline { get; set; }
-        public byte NumberWeatherForeCastSamples { get; set; }
         /// <summary>
         /// Holds info about marshalZones. Zone Position and flag status.
         /// </summary>
