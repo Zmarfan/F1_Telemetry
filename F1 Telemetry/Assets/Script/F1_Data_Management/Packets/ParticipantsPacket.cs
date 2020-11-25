@@ -37,6 +37,8 @@
                 AllParticipantData[i].driverFullName = RaceNames.GetNameFromNumber(AllParticipantData[i].raceNumber);
                 AllParticipantData[i].driverInitial = RaceNames.GetDriverInitials(AllParticipantData[i].raceNumber);
                 AllParticipantData[i].teamColor = TeamColor.GetColorByTeam(AllParticipantData[i].team);
+
+                AllParticipantData[i].vehicleIndex = i;
             }
         }
     }
@@ -53,6 +55,7 @@
         public Nationality nationality;
         public string name;                    //last name for AI, Player for players, (not to be used, good for debugging though)
         public bool publicTelemetry;           //true if it is public
+        public int vehicleIndex;
 
         //Added calculated data
         public string driverFullName;          //First and last name of driver based on raceNumber

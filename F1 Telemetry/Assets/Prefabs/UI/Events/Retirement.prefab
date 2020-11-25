@@ -256,7 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _showTime: 4
   _fadeTime: 0.5
-  _message: {fileID: 0}
+  _message: {fileID: 9158926863612891020}
 --- !u!1 &8422811006054467339
 GameObject:
   m_ObjectHideFlags: 0

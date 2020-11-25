@@ -67,42 +67,113 @@
     /// </summary>
     public struct LapData
     {
-        //Lap data
-        public float lastLapTime;     //This car's last lap time in seconds
-        public float currentLapTime;  //This car's Current lap time in seconds
+        /// <summary>
+        /// This car's last lap time in seconds
+        /// </summary>
+        public float lastLapTime;
+        /// <summary>
+        /// This car's Current lap time in seconds
+        /// </summary>
+        public float currentLapTime;
 
-        public ushort sector1Time;  //This car's current Sector1 time in millieseconds
-        public ushort sector2Time;  //This car's current Sector2 time in millieseconds
-        public float bestLapTime;   //This car's best lap time of the session in seconds
-        public byte bestLapNumber;  //This car's lap number of the fastest lap
+        /// <summary>
+        /// This car's current Sector1 time in millieseconds
+        /// </summary>
+        public ushort sector1Time;
+        /// <summary>
+        /// This car's current Sector2 time in millieseconds
+        /// </summary>
+        public ushort sector2Time;
+        /// <summary>
+        /// This car's best lap time of the session in seconds
+        /// </summary>
+        public float bestLapTime;
+        /// <summary>
+        /// This car's lap number of the fastest lap
+        /// </summary>
+        public byte bestLapNumber;
 
-        public ushort bestLapSector1Time;  //This car's Best Sector1 time in millieseconds
-        public ushort bestLapSector2Time;  //This car's Best Sector2 time in millieseconds
-        public ushort bestLapSector3Time;  //This car's Best Sector3 time in millieseconds
+        /// <summary>
+        /// This car's Best Sector1 time in millieseconds
+        /// </summary>
+        public ushort bestLapSector1Time;
+        /// <summary>
+        /// This car's Best Sector2 time in millieseconds
+        /// </summary>
+        public ushort bestLapSector2Time;
+        /// <summary>
+        /// This car's Best Sector3 time in millieseconds
+        /// </summary>
+        public ushort bestLapSector3Time;
 
         //Must be in this weird order when reading from data :(
-        public ushort bestOverallSector1Time;  //The fastest car in the session best Sector1 time in millieseconds
-        public byte bestOverallSector1LapNumber;  //The fastest car in the session best Sector1 time, what lap it was set on 
-        public ushort bestOverallSector2Time;  //The fastest car in the session best Sector2 time in millieseconds
-        public byte bestOverallSector2LapNumber;  //The fastest car in the session best Sector2 time, what lap it was set on 
-        public ushort bestOverallSector3Time;  //The fastest car in the session best Sector3 time in millieseconds
-        public byte bestOverallSector3LapNumber;  //The fastest car in the session best Sector3 time, what lap it was set on 
+        /// <summary>
+        /// The fastest car in the session best Sector1 time in millieseconds
+        /// </summary>
+        public ushort bestOverallSector1Time;
+        /// <summary>
+        /// The fastest car in the session best Sector1 time, what lap it was set on 
+        /// </summary>
+        public byte bestOverallSector1LapNumber;
+        /// <summary>
+        /// The fastest car in the session best Sector2 time in millieseconds
+        /// </summary>
+        public ushort bestOverallSector2Time;
+        /// <summary>
+        /// The fastest car in the session best Sector2 time, what lap it was set on 
+        /// </summary>
+        public byte bestOverallSector2LapNumber;
+        /// <summary>
+        /// The fastest car in the session best Sector3 time in millieseconds
+        /// </summary>
+        public ushort bestOverallSector3Time;
+        /// <summary>
+        /// The fastest car in the session best Sector3 time, what lap it was set on 
+        /// </summary>
+        public byte bestOverallSector3LapNumber;
 
 
         //Distances
-        public float lapDistance;   //Distance this car is around the track this lap in metres (possible to me negative if starting behind finish line)
-        public float totalDistance; //Distance this car is around the track in total in metres (possible to me negative if starting behind finish line)
+        /// <summary>
+        /// Distance this car is around the track this lap in metres (possible to me negative if starting behind finish line)
+        /// </summary>
+        public float lapDistance;
+        /// <summary>
+        /// Distance this car is around the track in total in metres (possible to me negative if starting behind finish line)
+        /// </summary>
+        public float totalDistance;
 
         //Varied
-        public float safetyCarDelta;       //SC delta in seconds (this car)
-        public byte carPosition;           //Position in race
-        public byte currentLapNumber;      //What lap this car is on
+        /// <summary>
+        /// SC delta in seconds (this car)
+        /// </summary>
+        public float safetyCarDelta;
+        /// <summary>
+        /// Position in race
+        /// </summary>
+        public byte carPosition;
+        /// <summary>
+        /// What lap this car is on
+        /// </summary>
+        public byte currentLapNumber;
         public PitStatus pitStatus;
-        public byte currentSector;         //Current sector (0 -> Sector1, 1 -> Sector2, 2 -> Sector3)
-        public bool currentLapInvalid;     //Is this current lap invalid? True if invalid
-        public byte totalPenalties;        //Total amount of penalties for this car in seconds
-        public byte gridPosition;          //The position the vehicle started the race in
+        /// <summary>
+        /// Current sector (0 -> Sector1, 1 -> Sector2, 2 -> Sector3)
+        /// </summary>
+        public byte currentSector;
+        /// <summary>
+        /// Is this current lap invalid? True if invalid
+        /// </summary>
+        public bool currentLapInvalid;
+        /// <summary>
+        /// Total amount of penalties for this car in seconds
+        /// </summary>
+        public byte totalPenalties;
+        /// <summary>
+        /// The position the vehicle started the race in
+        /// </summary>
+        public byte gridPosition;
         public DriverStatus driverStatus;
-        public ResultStatus resultStatus;  //Experiment with this one
+        public ResultStatus resultStatus;
     }
 }

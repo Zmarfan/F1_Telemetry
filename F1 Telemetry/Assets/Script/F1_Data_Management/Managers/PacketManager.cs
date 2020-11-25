@@ -18,6 +18,7 @@ namespace F1_Data_Management
         {
             _participants = participants;
             _eventManager = eventManager;
+            _sessionManager = sessionManager;
         }
 
         /// <summary>

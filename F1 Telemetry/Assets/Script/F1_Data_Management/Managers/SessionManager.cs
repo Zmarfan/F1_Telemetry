@@ -78,6 +78,8 @@
             newSessionData.IsOnline = sessionPacket.IsOnline;
             newSessionData.MarshalZones = sessionPacket.MarshalZones;
             newSessionData.WeatherForecastSamples = sessionPacket.WeatherForecastSamples;
+
+            SessionData = newSessionData;
         }
     }
 

@@ -155,6 +155,10 @@ namespace F1_Data_Management
     /// </summary>
     public struct DriverData
     {
+        /// <summary>
+        /// Index for this drivers data when reading.
+        /// </summary>
+        public int VehicleIndex { get { return ParticipantData.vehicleIndex; } }
         public ParticipantData ParticipantData { get; set; }
         public CarMotionData MotionData { get; set; }
         public LapData LapData { get; set; }
