@@ -11,6 +11,8 @@ namespace F1_Unity
         [SerializeField] Text _driverText;
         [SerializeField] Text _speedText;
 
+        bool _tooEarly = false;
+
         public override void Init(Packet packet)
         {
             base.Init(packet);
@@ -28,7 +30,15 @@ namespace F1_Unity
                 _speedText.text = speed + "." + point;
             }
             else
+                _tooEarly = true;
+        }
+
+        public override void Begin()
+        {
+            if (_tooEarly)
                 End();
+            else
+                base.Begin();
         }
     }
 }

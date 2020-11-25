@@ -84,7 +84,8 @@ namespace F1_Unity
                 if (validDriver && status)
                 {
                     _driverPosition.Add(driverData.ID, driverData.LapData.carPosition + 1);
-                    _driverTemplates[i].UpdateTimingState(DriverTimeState.Starting);
+                    _driverTemplates[i].UpdateTimingValues(DriverTimeState.Starting);
+                    _driverTemplates[i].SetTiming();
 
                     //Init leader
                     if (driverData.LapData.carPosition == 1)
@@ -94,7 +95,6 @@ namespace F1_Unity
                         _lastPassedTimingIndex = timingIndex;
 
                         _leaderVehicleIndex = driverData.VehicleIndex;
-                        _driverTemplates[i].UpdateTimingState(DriverTimeState.Starting);
                     }
                 }
 
@@ -153,7 +153,18 @@ namespace F1_Unity
                     continue;
 
                 Positioning(driverData);
-                UpdateDriverTiming(leaderData, sessionData, driverData);
+                UpdateDriverTimingToLeader(leaderData, sessionData, driverData);
+            }
+
+            //Set time text for each template and calculate interval
+            _driverTemplates[0].SetTiming();
+            for (int i = 1; i < _driverTemplates.Length; i++)
+            {
+                if (_driverTemplates[i].IsActive)
+                {
+                    float previousCarDeltaToLeader = _driverTemplates[i - 1].DeltaToLeader;
+                    _driverTemplates[i].SetTiming(previousCarDeltaToLeader);
+                }
             }
         }
 
@@ -209,7 +220,7 @@ namespace F1_Unity
         /// <summary>
         /// Sets the time text for a driver depending on distance to leader.
         /// </summary>
-        void UpdateDriverTiming(DriverData leaderData, Session sessionData, DriverData driverData)
+        void UpdateDriverTimingToLeader(DriverData leaderData, Session sessionData, DriverData driverData)
         {
             float lapCompletion = LapCompletion(sessionData, driverData);
             float leaderLapCompletion = LapCompletion(sessionData, leaderData);
@@ -227,10 +238,9 @@ namespace F1_Unity
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
             {
                 if (_useGapToLeader)
-                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Leader);
+                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Leader);
                 else
-                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Interval);
-
+                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Interval);
                 return;
             }
 
@@ -242,7 +252,7 @@ namespace F1_Unity
             //This car is lapped
             if (lapsBehind > 0)
             {
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Lapped, 0, lapsBehind);
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Lapped, 0, lapsBehind);
                 return;
             }
 
@@ -250,7 +260,8 @@ namespace F1_Unity
             float currentTime = GameManager.F1Info.SessionTime;
             float deltaToLeader = currentTime - _timingData[timingIndex].Time;
 
-            _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Delta, deltaToLeader);
+            DriverTimeState state = _useGapToLeader ? DriverTimeState.DeltaToLeader : DriverTimeState.DeltaInterval;
+            _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(state, deltaToLeader);
         }
 
         /// <summary>

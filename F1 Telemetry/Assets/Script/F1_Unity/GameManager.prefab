@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 148384532158025986}
   - component: {fileID: 148384532158025987}
   - component: {fileID: 148384532158025985}
+  - component: {fileID: 4193282062371430918}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -165,6 +166,19 @@ MonoBehaviour:
   _retirePrefab: {fileID: 4137811850501173954, guid: eba2efbf1fa3880478c8b3d643e59f24, type: 3}
   _teamMateInPitPrefab: {fileID: 4137811850501173954, guid: c72bd0a8f60e3c241abc210216afdabe, type: 3}
   _raceWinnerPrefab: {fileID: 321920245800152628, guid: c48cb6ad0d5c52a49971bcd4a4d6a51d, type: 3}
+  _speedTrapPrefab: {fileID: 4137811850501173954, guid: adcf1c34c5652a64b9cbeeae7ab1768c, type: 3}
+--- !u!114 &4193282062371430918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148384532158025988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67da2ed221351704f8567b4953a24c1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4824113722807614778
 PrefabInstance:
   m_ObjectHideFlags: 0

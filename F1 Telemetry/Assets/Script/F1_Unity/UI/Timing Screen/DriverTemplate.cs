@@ -14,6 +14,10 @@ namespace F1_Unity
         [SerializeField] Text _initialsText;
         [SerializeField] Text _timeText;        //Time text, different depending on interval/to leader -> not yet implemented
 
+        public bool IsActive { get; private set; }
+        public DriverTimeState TimeState { get; private set; }
+        public int LapsLapped { get; private set; }
+        public float DeltaToLeader { get; private set; }
 
         int _position = 0;         //The position of this template -> static never changes
         Timer _colorTimer;         //Timer for how long the positionImage shall flash
@@ -54,10 +58,21 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Updates values for time keeping
+        /// </summary>
+        public void UpdateTimingValues(DriverTimeState state, float deltaToLeader = 0, int lapsLapped = 0)
+        {
+            TimeState = state;
+            DeltaToLeader = deltaToLeader;
+            LapsLapped = lapsLapped;
+        }
+
+        /// <summary>
         /// Only called on start of a race
         /// </summary>
         public void SetActive(bool state)
         {
+            IsActive = state;
             transform.gameObject.SetActive(state);
         }
 
@@ -86,14 +101,15 @@ namespace F1_Unity
         /// <param name="state">What state is driver currently in compared with leader</param>
         /// <param name="time">time to leader in seconds</param>
         /// <param name="laps">laps lapped compared with leader</param>
-        public void UpdateTimingState(DriverTimeState state, float time = 0, int laps = 0)
+        public void SetTiming(float carAheadTimeToLeader = 0)
         {
-            switch (state)
+            switch (TimeState)
             {
                 case DriverTimeState.Leader: { SetTimeText("Leader"); } break;
                 case DriverTimeState.Interval: { SetTimeText("Interval"); } break;
-                case DriverTimeState.Lapped: { SetTimeText("+" + laps + " LAP"); break; }
-                case DriverTimeState.Delta: { SetTimeText(GetDeltaString(time)); break; }
+                case DriverTimeState.Lapped: { SetTimeText("+" + LapsLapped + " LAP"); break; }
+                case DriverTimeState.DeltaToLeader: { SetTimeText(GetDeltaString(DeltaToLeader)); break; }
+                case DriverTimeState.DeltaInterval: { SetTimeText(GetDeltaString(DeltaToLeader - carAheadTimeToLeader)); break; }
                 case DriverTimeState.Starting: { SetTimeText("-"); break; }
                 default: { throw new Exception("UpdateTimingState has been called with a DriverTimeState not yet implemented here!"); }
             }
@@ -155,7 +171,8 @@ namespace F1_Unity
         Leader,
         Interval,
         Lapped,
-        Delta,
+        DeltaToLeader,
+        DeltaInterval,
         Starting
     }
 }
