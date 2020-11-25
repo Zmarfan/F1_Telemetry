@@ -22,12 +22,32 @@ namespace F1_Unity
         int _lastPassedTimingIndex;
         bool _initValues = true;
 
+        bool _useGapToLeader = true;
+
         private void Awake()
         {
             if (_singleton == null)
                 Init();
             else
                 Destroy(this.gameObject);
+        }
+
+        private void OnEnable()
+        {
+            InputManager.PressedTimeInterval += ChangeTimingMode;
+        }
+
+        private void OnDisable()
+        {
+            InputManager.PressedTimeInterval -= ChangeTimingMode;
+        }
+
+        /// <summary>
+        /// Changes betwen interval mode and to leader
+        /// </summary>
+        void ChangeTimingMode()
+        {
+            _useGapToLeader = !_useGapToLeader;
         }
 
         /// <summary>
@@ -206,7 +226,11 @@ namespace F1_Unity
             //This is the leader!
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
             {
-                _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Leader);
+                if (_useGapToLeader)
+                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Leader);
+                else
+                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Interval);
+
                 return;
             }
 

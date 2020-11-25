@@ -91,6 +91,7 @@ namespace F1_Unity
             switch (state)
             {
                 case DriverTimeState.Leader: { SetTimeText("Leader"); } break;
+                case DriverTimeState.Interval: { SetTimeText("Interval"); } break;
                 case DriverTimeState.Lapped: { SetTimeText("+" + laps + " LAP"); break; }
                 case DriverTimeState.Delta: { SetTimeText(GetDeltaString(time)); break; }
                 case DriverTimeState.Starting: { SetTimeText("-"); break; }
@@ -134,27 +135,13 @@ namespace F1_Unity
             {
                 builder.Append(span.Minutes);
                 builder.Append(':');
-                //Add a zero in front of seconds if it's one digit
-                if (span.Seconds < 10)
-                    builder.Append(0);
+                builder.Append(span.Seconds.ToString("0#")); //Start with zero if one digit long
             }
-            builder.Append(span.Seconds);
-            builder.Append('.');
-
-            int millieSeconds = (int)((time - (int)time) * 1000);
-            builder.Append(millieSeconds);
-
-            //Get zeroes
-            if (millieSeconds == 0)
-                builder.Append("00");
             else
-            {
-                while (millieSeconds < 100)
-                {
-                    builder.Append(0);
-                    millieSeconds *= 10;
-                }
-            }
+                builder.Append(span.Seconds);
+
+            builder.Append('.');
+            builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
 
             return builder.ToString();
         }
@@ -166,6 +153,7 @@ namespace F1_Unity
     public enum DriverTimeState
     {
         Leader,
+        Interval,
         Lapped,
         Delta,
         Starting

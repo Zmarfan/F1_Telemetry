@@ -7,6 +7,7 @@ namespace F1_Unity
     public class SpeedTrap : EventBase
     {
         [SerializeField, Range(0, 50)] int _startShowingLap = 3;
+        [SerializeField, Range(1, 4)] int _amountOfDecimals = 1;
         [SerializeField] Text _driverText;
         [SerializeField] Text _speedText;
 
@@ -23,7 +24,7 @@ namespace F1_Unity
             {
                 _driverText.text = RaceNames.GetNameFromNumber(driverData.RaceNumber).ToUpper();
                 float speed = speedPacket.Speed;
-                int point = (int)(speed - (int)speed) * 10;
+                int point = (int)(speed - (int)speed) * (int)Mathf.Pow(10, _amountOfDecimals);
                 _speedText.text = speed + "." + point;
             }
             else
