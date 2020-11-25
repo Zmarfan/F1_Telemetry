@@ -279,6 +279,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 148384532158025985, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
+      propertyPath: _speedTrapPrefab
+      value: 
+      objectReference: {fileID: 4137811850501173954, guid: adcf1c34c5652a64b9cbeeae7ab1768c, type: 3}
     - target: {fileID: 148384532158025986, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

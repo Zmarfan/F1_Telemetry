@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using F1_Data_Management;
-using System;
-using System.Text;
 
 namespace F1_Unity
 {
@@ -54,28 +52,29 @@ namespace F1_Unity
 
             _driverPosition = new Dictionary<byte, int>();
             _driverLastTimeSpot = new Dictionary<byte, int>();
+            Session sessionData = GameManager.F1Info.ReadSession(out bool status);
 
             for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
                 DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool validDriver);
-                Session sessionData = GameManager.F1Info.ReadSession(out bool status);
 
                 //Init everyone with gaining a position on start!
                 //Flash green then to white
                 //Only add valid drivers to the grid
                 if (validDriver && status)
                 {
-                    _driverPosition.Add(driverData.ParticipantData.driverID, driverData.LapData.carPosition + 1);
-
-                    float lapCompletion = LapCompletion(sessionData, driverData);
-                    int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
-                    _driverLastTimeSpot.Add(driverData.ParticipantData.driverID, timingIndex);
+                    _driverPosition.Add(driverData.ID, driverData.LapData.carPosition + 1);
+                    _driverTemplates[i].UpdateTimingState(DriverTimeState.Starting);
 
                     //Init leader
                     if (driverData.LapData.carPosition == 1)
                     {
-                        _leaderVehicleIndex = driverData.VehicleIndex;
+                        float lapCompletion = LapCompletion(sessionData, driverData);
+                        int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
                         _lastPassedTimingIndex = timingIndex;
+
+                        _leaderVehicleIndex = driverData.VehicleIndex;
+                        _driverTemplates[i].UpdateTimingState(DriverTimeState.Starting);
                     }
                 }
 
@@ -85,6 +84,15 @@ namespace F1_Unity
                     _driverTemplates[i].SetActive(false);
                 else
                     _driverTemplates[i].SetActive(true);
+            }
+
+            //Need to loop again to set timing index same as leader -> Will make sure no odd times are displayed if restarting mid race!
+            for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
+            {
+                DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool validDriver);
+
+                if (validDriver && status)
+                    _driverLastTimeSpot.Add(driverData.ID, _lastPassedTimingIndex);
             }
         }
 
@@ -125,15 +133,19 @@ namespace F1_Unity
                     continue;
 
                 Positioning(driverData);
-                SetTimingText(leaderData, sessionData, driverData);
+                UpdateDriverTiming(leaderData, sessionData, driverData);
             }
         }
 
+        /// <summary>
+        /// Saves time and lap leader passed a timing station for other cars to be able to compare with.
+        /// </summary>
         void UpdateLeader(Session sessionData, DriverData leaderData)
         {
+            //Find closest time station
             float lapCompletion = LapCompletion(sessionData, leaderData);
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
-
+            //It's a new time station
             if (timingIndex != _lastPassedTimingIndex)
             {
                 _timingData[timingIndex].Time = GameManager.F1Info.SessionTime;
@@ -147,7 +159,7 @@ namespace F1_Unity
         /// </summary>
         void Positioning(DriverData driverData)
         {
-            byte driverID = driverData.ParticipantData.driverID;
+            byte driverID = driverData.ID;
             byte carPosition = driverData.LapData.carPosition;
 
             //If this driver doesn't exist, it has just joined the session, recalculate everything!
@@ -174,23 +186,27 @@ namespace F1_Unity
             }
         }
 
-        void SetTimingText(DriverData leaderData, Session sessionData, DriverData driverData)
+        /// <summary>
+        /// Sets the time text for a driver depending on distance to leader.
+        /// </summary>
+        void UpdateDriverTiming(DriverData leaderData, Session sessionData, DriverData driverData)
         {
             float lapCompletion = LapCompletion(sessionData, driverData);
             float leaderLapCompletion = LapCompletion(sessionData, leaderData);
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
 
-            byte driverID = driverData.ParticipantData.driverID;
+            byte driverID = driverData.ID;
             //No need to update since it hasn't passed a new station
             if (_driverLastTimeSpot[driverID] == timingIndex)
                 return;
+            //Update last time spot for this driver
             else
                 _driverLastTimeSpot[driverID] = timingIndex;
 
             //This is the leader!
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
             {
-                _driverTemplates[leaderData.LapData.carPosition - 1].SetTimeText("Leader");
+                _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Leader);
                 return;
             }
 
@@ -202,7 +218,7 @@ namespace F1_Unity
             //This car is lapped
             if (lapsBehind > 0)
             {
-                _driverTemplates[driverData.LapData.carPosition - 1].SetTimeText("+" + lapsBehind + " LAP");
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Lapped, 0, lapsBehind);
                 return;
             }
 
@@ -210,47 +226,15 @@ namespace F1_Unity
             float currentTime = GameManager.F1Info.SessionTime;
             float deltaToLeader = currentTime - _timingData[timingIndex].Time;
 
-            string text = GetDeltaString(deltaToLeader);
-            _driverTemplates[driverData.LapData.carPosition - 1].SetTimeText(text);
+            _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingState(DriverTimeState.Delta, deltaToLeader);
         }
 
+        /// <summary>
+        /// How far along a lap is a driver? (0.0f - 1.0f)
+        /// </summary>
         float LapCompletion(Session sessionData, DriverData driverData)
         {
             return Mathf.Clamp01(driverData.LapData.lapDistance / sessionData.TrackLength);
-        }
-
-        string GetDeltaString(float time)
-        {
-            TimeSpan span = TimeSpan.FromSeconds(time);
-            StringBuilder builder = new StringBuilder();
-            builder.Append('+');
-            if (span.Minutes > 0)
-            {
-                builder.Append(span.Minutes);
-                builder.Append(':');
-                //Add a zero in front of seconds if it's one digit
-                if (span.Seconds < 10)
-                    builder.Append(0);
-            }
-            builder.Append(span.Seconds);
-            builder.Append('.');
-
-            int millieSeconds = (int)((time - (int)time) * 1000);
-            builder.Append(millieSeconds);
-
-            //Get zeroes
-            if (millieSeconds == 0)
-                builder.Append("000");
-            else
-            {
-                while (millieSeconds < 100)
-                {
-                    builder.Append(0);
-                    millieSeconds *= 10;
-                }
-            }
-
-            return builder.ToString();
         }
 
         /// <summary>

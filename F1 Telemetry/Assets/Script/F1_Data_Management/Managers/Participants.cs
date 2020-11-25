@@ -159,6 +159,14 @@ namespace F1_Data_Management
         /// Index for this drivers data when reading.
         /// </summary>
         public int VehicleIndex { get { return ParticipantData.vehicleIndex; } }
+        /// <summary>
+        /// Id unique for this driver in the session (better to identify with than index)
+        /// </summary>
+        public byte ID { get { return ParticipantData.driverID; } }
+        /// <summary>
+        /// Race number for this driver -> good for identifying multiplayer names
+        /// </summary>
+        public byte RaceNumber { get { return ParticipantData.raceNumber; } }
         public ParticipantData ParticipantData { get; set; }
         public CarMotionData MotionData { get; set; }
         public LapData LapData { get; set; }

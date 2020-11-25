@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Text;
 
 namespace F1_Unity
 {
@@ -79,6 +81,24 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Updates timing state
+        /// </summary>
+        /// <param name="state">What state is driver currently in compared with leader</param>
+        /// <param name="time">time to leader in seconds</param>
+        /// <param name="laps">laps lapped compared with leader</param>
+        public void UpdateTimingState(DriverTimeState state, float time = 0, int laps = 0)
+        {
+            switch (state)
+            {
+                case DriverTimeState.Leader: { SetTimeText("Leader"); } break;
+                case DriverTimeState.Lapped: { SetTimeText("+" + laps + " LAP"); break; }
+                case DriverTimeState.Delta: { SetTimeText(GetDeltaString(time)); break; }
+                case DriverTimeState.Starting: { SetTimeText("-"); break; }
+                default: { throw new Exception("UpdateTimingState has been called with a DriverTimeState not yet implemented here!"); }
+            }
+        }
+
+        /// <summary>
         /// Sets the team color to color
         /// </summary>
         public void SetTeamColor(F1_Data_Management.Color color)
@@ -101,5 +121,53 @@ namespace F1_Unity
         {
             _timeText.text = timeText;
         }
+
+        /// <summary>
+        /// Converts seconds to +minute:seconds:millieseconds
+        /// </summary>
+        static string GetDeltaString(float time)
+        {
+            TimeSpan span = TimeSpan.FromSeconds(time);
+            StringBuilder builder = new StringBuilder();
+            builder.Append('+');
+            if (span.Minutes > 0)
+            {
+                builder.Append(span.Minutes);
+                builder.Append(':');
+                //Add a zero in front of seconds if it's one digit
+                if (span.Seconds < 10)
+                    builder.Append(0);
+            }
+            builder.Append(span.Seconds);
+            builder.Append('.');
+
+            int millieSeconds = (int)((time - (int)time) * 1000);
+            builder.Append(millieSeconds);
+
+            //Get zeroes
+            if (millieSeconds == 0)
+                builder.Append("00");
+            else
+            {
+                while (millieSeconds < 100)
+                {
+                    builder.Append(0);
+                    millieSeconds *= 10;
+                }
+            }
+
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>
+    /// What state a driver is in compared to leader timing wise
+    /// </summary>
+    public enum DriverTimeState
+    {
+        Leader,
+        Lapped,
+        Delta,
+        Starting
     }
 }

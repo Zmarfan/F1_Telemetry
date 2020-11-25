@@ -14,6 +14,7 @@ public class UnityEventManager : MonoBehaviour
     [SerializeField] GameObject _retirePrefab;
     [SerializeField] GameObject _teamMateInPitPrefab;
     [SerializeField] GameObject _raceWinnerPrefab;
+    [SerializeField] GameObject _speedTrapPrefab;
 
     //Events that are waiting to be triggered but can't activate yet
     Queue<EventBase> _waitingEvents = new Queue<EventBase>();
@@ -161,11 +162,8 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void SpeedTrapEvent(Packet packet)
     {
-        SpeedTrapEventPacket speedPacket = (SpeedTrapEventPacket)packet;
-        bool status;
-        DriverData data = GameManager.F1Info.ReadCarData(speedPacket.VehicleIndex, out status);
-        if (status)
-            Debug.LogWarning("Speed trap: " + data.ParticipantData.driverFullName + " => " + speedPacket.Speed);
+        EventBase thisEvent = SpawnEventPrefab(_speedTrapPrefab, packet);
+        AddToEventQueue(thisEvent);
     }
 
     /// <summary>

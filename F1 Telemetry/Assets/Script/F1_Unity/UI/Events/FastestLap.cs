@@ -39,7 +39,7 @@ namespace F1_Unity
             //If data is valid (99.99 % of the time it is valid but hey for that 0.01 boi :3)
             if (status)
             {
-                fullName = RaceNames.GetNameFromNumber(data.ParticipantData.raceNumber);
+                fullName = RaceNames.GetNameFromNumber(data.RaceNumber);
                 team = data.ParticipantData.team;
             }
             
