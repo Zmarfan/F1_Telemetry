@@ -27,6 +27,8 @@ namespace F1_Unity
 
         bool _intervalMode = false;
 
+        #region Init
+
         private void Awake()
         {
             if (_singleton == null)
@@ -43,15 +45,6 @@ namespace F1_Unity
         private void OnDisable()
         {
             InputManager.PressedTimeInterval -= ChangeTimingMode;
-        }
-
-        /// <summary>
-        /// Changes betwen interval mode and to leader
-        /// </summary>
-        void ChangeTimingMode()
-        {
-            _intervalMode = !_intervalMode;
-            SetMode(_intervalMode);
         }
 
         /// <summary>
@@ -92,7 +85,7 @@ namespace F1_Unity
                 if (validDriver && status)
                 {
                     _driverPosition.Add(driverData.ID, driverData.LapData.carPosition + 1);
-                    _driverTemplates[i].UpdateTimingValues(DriverTimeState.Starting);
+                    _driverTemplates[i].SetTimingState(DriverTimeState.Starting);
                     _driverTemplates[i].SetTiming();
 
                     //If the car is already retired -> set it so
@@ -130,6 +123,19 @@ namespace F1_Unity
             }
         }
 
+        #endregion
+
+        #region Modes
+
+        /// <summary>
+        /// Changes betwen interval mode and to leader
+        /// </summary>
+        void ChangeTimingMode()
+        {
+            _intervalMode = !_intervalMode;
+            SetMode(_intervalMode);
+        }
+
         /// <summary>
         /// Sets mode to interval or to leader
         /// </summary>
@@ -138,6 +144,8 @@ namespace F1_Unity
             for (int i = 0; i < _driverTemplates.Length; i++)
                 _driverTemplates[i].SetMode(interval);
         }
+
+        #endregion
 
         //Updates standing
         private void Update()
@@ -154,6 +162,8 @@ namespace F1_Unity
             }
         }
 
+        #region Calculate
+
         /// <summary>
         /// Updates positions in standing and checks stability
         /// </summary>
@@ -162,7 +172,6 @@ namespace F1_Unity
             //Will be valid -> checked earlier
             Session sessionData = GameManager.F1Info.ReadSession(out bool status);
             DriverData leaderData = GameManager.F1Info.ReadCarData(_leaderVehicleIndex, out bool status2);
-
             UpdateLeader(sessionData, leaderData);
 
             //Loop through all drivers
@@ -170,7 +179,6 @@ namespace F1_Unity
             {
                 bool validDriver;
                 DriverData driverData = GameManager.F1Info.ReadCarData(i, out validDriver);
-
                 //Skip the drivers that have no valid index -> junk data
                 if (!validDriver)
                     continue;
@@ -255,10 +263,17 @@ namespace F1_Unity
         /// </summary>
         void UpdateDriverTimingToLeader(DriverData leaderData, Session sessionData, DriverData driverData)
         {
+            int index = driverData.LapData.carPosition - 1;
+
+            //Pits
+            if (driverData.LapData.pitStatus == PitStatus.Pitting)
+                _driverTemplates[index].SetTimingState(DriverTimeState.Pit);
+            else if (driverData.LapData.pitStatus == PitStatus.In_Pit_Area)
+                _driverTemplates[index].SetTimingState(DriverTimeState.Pit_Area);
+
             float lapCompletion = LapCompletion(sessionData, driverData);
             float leaderLapCompletion = LapCompletion(sessionData, leaderData);
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
-            bool passedLeader = _timingData[timingIndex].PassedByLeader;
 
             byte driverID = driverData.ID;
             //No need to update since it hasn't passed a new station
@@ -272,45 +287,27 @@ namespace F1_Unity
             float currentTime = GameManager.F1Info.SessionTime;
             float deltaToLeader = currentTime - _timingData[timingIndex].Time;
 
-            if (driverData.LapData.pitStatus == PitStatus.Pitting)
-            {
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Pit, deltaToLeader);
-                return;
-            }
-            else if (driverData.LapData.pitStatus == PitStatus.In_Pit_Area)
-            {
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Pit_Area, deltaToLeader);
-                return;
-            }
+            _driverTemplates[index].SetDeltaToLeader(deltaToLeader);
+            bool passedLeader = _timingData[timingIndex].PassedByLeader;
+
             //This is the leader!
-            else if (leaderData.VehicleIndex == driverData.VehicleIndex)
+            if (leaderData.VehicleIndex == driverData.VehicleIndex)
+                _driverTemplates[index].SetTimingState(DriverTimeState.Leader);
+            else if (IsLapped(leaderLapCompletion, lapCompletion, leaderData, driverData, out int amountOfLaps))
             {
-                _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Leader, deltaToLeader);
-                return;
-            }
-            //Is not returned since a car can know it is lapped without knowing interval to leader -> no need to wait for that
-            else if (!passedLeader)
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Starting, deltaToLeader);
-            else
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Delta, deltaToLeader);
-
-
-            int lapsBehind = leaderData.LapData.currentLapNumber - driverData.LapData.currentLapNumber;
-
-            //Sometimes values around 0.98 < value < 1.0 might still be on a new lap, add epsilon and overflow  
-            leaderLapCompletion += LEADER_LAP_EPSILON;
-            leaderLapCompletion = leaderLapCompletion > 1 ? leaderLapCompletion - 1 : leaderLapCompletion;
-
-            //Could be that this car hasn't crossed finish line yet!
-            if (lapCompletion > leaderLapCompletion)
-                lapsBehind--;
-
-            //This car is lapped
-            if (lapsBehind > 0)
-            {
+                //It's lapped and in Leader mode -> show laps
                 if (!_intervalMode)
-                    _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Lapped, deltaToLeader, lapsBehind);
+                {
+                    _driverTemplates[index].SetTimingState(DriverTimeState.Lapped);
+                    _driverTemplates[index].SetLapsLapped(amountOfLaps);
+                }
             }
+            //If nothing else -> Show delta
+            else if (!passedLeader)
+                _driverTemplates[index].SetTimingState(DriverTimeState.Starting);
+            else
+                _driverTemplates[index].SetTimingState(DriverTimeState.Delta);
+
         }
 
         /// <summary>
@@ -320,6 +317,22 @@ namespace F1_Unity
         {
             return Mathf.Clamp01(driverData.LapData.lapDistance / sessionData.TrackLength);
         }
+
+        bool IsLapped(float leaderLapCompletion, float lapCompletion, DriverData leaderData, DriverData driverData, out int amountOfLaps)
+        {
+            amountOfLaps = leaderData.LapData.currentLapNumber - driverData.LapData.currentLapNumber;
+
+            //Sometimes values around 0.98 < value < 1.0 might still be on a new lap, add epsilon and overflow  
+            leaderLapCompletion += LEADER_LAP_EPSILON;
+            leaderLapCompletion = leaderLapCompletion > 1 ? leaderLapCompletion - 1 : leaderLapCompletion;
+
+            //Could be that this car hasn't crossed finish line yet!
+            if (lapCompletion > leaderLapCompletion)
+                amountOfLaps--;
+            return amountOfLaps > 0;
+        }
+
+#endregion
 
         /// <summary>
         /// A timing station that holds time and lap when leader passed

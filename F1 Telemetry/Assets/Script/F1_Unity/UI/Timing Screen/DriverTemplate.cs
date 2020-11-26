@@ -158,22 +158,21 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Updates values for time keeping
+        /// Sets timing state
         /// </summary>
-        public void UpdateTimingValues(DriverTimeState state, float deltaToLeader = 0, int lapsLapped = 0)
-        {
-            TimeState = state;
-            DeltaToLeader = deltaToLeader;
-            LapsLapped = lapsLapped;
-        }
-
+        public void SetTimingState(DriverTimeState state) { TimeState = state; }
+        /// <summary>
+        /// Sets delta to leader
+        /// </summary>
+        public void SetDeltaToLeader(float deltaToLeader) { DeltaToLeader = deltaToLeader; }
+        /// <summary>
+        /// Sets laps lapped to leader
+        /// </summary>
+        public void SetLapsLapped(int lapsLapped) { LapsLapped = lapsLapped; }
         /// <summary>
         /// Calculates and sets car in front delta
         /// </summary>
-        public void SetCarAheadDelta(float carAheadTimeToLeader)
-        {
-            DeltaToCarInFront = DeltaToLeader - carAheadTimeToLeader;
-        }
+        public void SetCarAheadDelta(float carAheadTimeToLeader) { DeltaToCarInFront = DeltaToLeader - carAheadTimeToLeader; }
 
         /// <summary>
         /// Updates timing state
