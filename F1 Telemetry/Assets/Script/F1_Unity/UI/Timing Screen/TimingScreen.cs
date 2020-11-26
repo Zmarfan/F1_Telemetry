@@ -22,7 +22,7 @@ namespace F1_Unity
         int _lastPassedTimingIndex;
         bool _initValues = true;
 
-        bool _useGapToLeader = true;
+        bool _intervalMode = true;
 
         private void Awake()
         {
@@ -47,7 +47,8 @@ namespace F1_Unity
         /// </summary>
         void ChangeTimingMode()
         {
-            _useGapToLeader = !_useGapToLeader;
+            _intervalMode = !_intervalMode;
+            SetMode(_intervalMode);
         }
 
         /// <summary>
@@ -58,6 +59,8 @@ namespace F1_Unity
             _singleton = this;
             for (int i = 0; i < _driverTemplates.Length; i++)
                 _driverTemplates[i].Init(i + 1, _flashColorDuration);
+
+            SetMode(_intervalMode);
         }
 
 
@@ -116,6 +119,15 @@ namespace F1_Unity
             }
         }
 
+        /// <summary>
+        /// Sets mode to interval or to leader
+        /// </summary>
+        void SetMode(bool interval)
+        {
+            for (int i = 0; i < _driverTemplates.Length; i++)
+                _driverTemplates[i].SetMode(interval);
+        }
+
         //Updates standing
         private void Update()
         {
@@ -163,7 +175,8 @@ namespace F1_Unity
                 if (_driverTemplates[i].IsActive)
                 {
                     float previousCarDeltaToLeader = _driverTemplates[i - 1].DeltaToLeader;
-                    _driverTemplates[i].SetTiming(previousCarDeltaToLeader);
+                    _driverTemplates[i].SetCarAheadDelta(previousCarDeltaToLeader);
+                    _driverTemplates[i].SetTiming();
                 }
             }
         }
@@ -237,10 +250,7 @@ namespace F1_Unity
             //This is the leader!
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
             {
-                if (_useGapToLeader)
-                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Leader);
-                else
-                    _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Interval);
+                _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Leader);
                 return;
             }
 
@@ -260,8 +270,7 @@ namespace F1_Unity
             float currentTime = GameManager.F1Info.SessionTime;
             float deltaToLeader = currentTime - _timingData[timingIndex].Time;
 
-            DriverTimeState state = _useGapToLeader ? DriverTimeState.DeltaToLeader : DriverTimeState.DeltaInterval;
-            _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(state, deltaToLeader);
+            _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Delta, deltaToLeader);
         }
 
         /// <summary>

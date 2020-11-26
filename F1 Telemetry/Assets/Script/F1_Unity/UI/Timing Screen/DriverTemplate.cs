@@ -12,12 +12,14 @@ namespace F1_Unity
         [SerializeField] Text _positionText;    //Only used on init on Awake, never changes
         [SerializeField] Image _teamColorImage;
         [SerializeField] Text _initialsText;
-        [SerializeField] Text _timeText;        //Time text, different depending on interval/to leader -> not yet implemented
+        [SerializeField] Text _timeTextLeader;        //Time text against leader
+        [SerializeField] Text _timeTextInterval;      //Time text against leader
 
         public bool IsActive { get; private set; }
         public DriverTimeState TimeState { get; private set; }
         public int LapsLapped { get; private set; }
         public float DeltaToLeader { get; private set; }
+        public float DeltaToCarInFront { get; private set; }
 
         int _position = 0;         //The position of this template -> static never changes
         Timer _colorTimer;         //Timer for how long the positionImage shall flash
@@ -55,6 +57,15 @@ namespace F1_Unity
             _position = initPosition;
             _colorTimer = new Timer(colorDuration);
             _positionText.text = _position.ToString();
+        }
+
+        /// <summary>
+        /// Sets to show correct time standing, interval or to leader
+        /// </summary>
+        public void SetMode(bool interval)
+        {
+            _timeTextInterval.enabled = interval;
+            _timeTextLeader.enabled = !interval;
         }
 
         /// <summary>
@@ -96,21 +107,48 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Calculates and sets car in front delta
+        /// </summary>
+        public void SetCarAheadDelta(float carAheadTimeToLeader)
+        {
+            DeltaToCarInFront = DeltaToLeader - carAheadTimeToLeader;
+        }
+
+        /// <summary>
         /// Updates timing state
         /// </summary>
         /// <param name="state">What state is driver currently in compared with leader</param>
         /// <param name="time">time to leader in seconds</param>
         /// <param name="laps">laps lapped compared with leader</param>
-        public void SetTiming(float carAheadTimeToLeader = 0)
+        public void SetTiming()
         {
             switch (TimeState)
             {
-                case DriverTimeState.Leader: { SetTimeText("Leader"); } break;
-                case DriverTimeState.Interval: { SetTimeText("Interval"); } break;
-                case DriverTimeState.Lapped: { SetTimeText("+" + LapsLapped + " LAP"); break; }
-                case DriverTimeState.DeltaToLeader: { SetTimeText(GetDeltaString(DeltaToLeader)); break; }
-                case DriverTimeState.DeltaInterval: { SetTimeText(GetDeltaString(DeltaToLeader - carAheadTimeToLeader)); break; }
-                case DriverTimeState.Starting: { SetTimeText("-"); break; }
+                case DriverTimeState.Leader:
+                    {
+                        SetTimeText("Leader", _timeTextLeader);
+                        SetTimeText("Interval", _timeTextInterval);
+                        break;
+                    } 
+                case DriverTimeState.Lapped:
+                    {
+                        string text = "+" + LapsLapped + " LAP";
+                        SetTimeText(text, _timeTextLeader);
+                        SetTimeText(text, _timeTextInterval);
+                        break;
+                    }
+                case DriverTimeState.Delta:
+                    {
+                        SetTimeText(GetDeltaString(DeltaToLeader), _timeTextLeader);
+                        SetTimeText(GetDeltaString(DeltaToCarInFront), _timeTextInterval);
+                        break;
+                    }
+                case DriverTimeState.Starting:
+                    {
+                        SetTimeText("-", _timeTextLeader);
+                        SetTimeText("-", _timeTextInterval);
+                        break;
+                    }
                 default: { throw new Exception("UpdateTimingState has been called with a DriverTimeState not yet implemented here!"); }
             }
         }
@@ -134,9 +172,9 @@ namespace F1_Unity
         /// <summary>
         /// Sets the string in time section: time or interval
         /// </summary>
-        public void SetTimeText(string timeText)
+        public void SetTimeText(string timeText, Text text)
         {
-            _timeText.text = timeText;
+            text.text = timeText;
         }
 
         /// <summary>
@@ -169,10 +207,8 @@ namespace F1_Unity
     public enum DriverTimeState
     {
         Leader,
-        Interval,
         Lapped,
-        DeltaToLeader,
-        DeltaInterval,
+        Delta,
         Starting
     }
 }
