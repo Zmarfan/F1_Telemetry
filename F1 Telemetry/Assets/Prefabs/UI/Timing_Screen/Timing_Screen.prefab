@@ -73,7 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _amountOfTimingStations: 100
   _flashColorDuration: 3.5
-  _changeBackColorDuration: 4.5
+  _changeBackColorDuration: 6.5
   _movedUpColor: {r: 0, g: 1, b: 0, a: 1}
   _movedDownColor: {r: 1, g: 0, b: 0, a: 1}
   _driverTemplates:
@@ -111,7 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6d88b99431b82b439379bb04fd621be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fastestLapColor: {r: 0.3998295, g: 0.06899248, b: 0.6415094, a: 1}
+  _fastestLapColor: {r: 0.29084966, g: 0.10973653, b: 0.4245283, a: 1}
+  _warningColor: {r: 0.34901962, g: 0.27095404, b: 0.14117648, a: 1}
+  _penaltyColor: {r: 0.5471698, g: 0.20531711, b: 0.17241009, a: 1}
   _driverTemplates:
   - {fileID: 4852992858340161814}
   - {fileID: 4087291742522916603}

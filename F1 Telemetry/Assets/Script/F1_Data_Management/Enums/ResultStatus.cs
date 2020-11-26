@@ -6,8 +6,9 @@
         Inactive,
         Active,
         Finished,
+        Not_Sure,
         Disqualified,
         Not_Classified,
-        Retired
+        Retired,
     }
 }

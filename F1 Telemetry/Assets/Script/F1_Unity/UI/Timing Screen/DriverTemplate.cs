@@ -7,15 +7,28 @@ namespace F1_Unity
 {
     public class DriverTemplate : MonoBehaviour
     {
+        [Header("Settings")]
+
+        [SerializeField] AnimationCurve _changeBackColorCurve;
+        [SerializeField] Color _outDarkColor;
+        [SerializeField] Color _outLightColor;
+        [SerializeField] Vector3 _driverHolderInPosition;
+        [SerializeField] Vector3 _driverHolderOutPosition;
+        [SerializeField] string _dnfString;
+        [SerializeField] string _dsqString;
+
+        [Header("Drop")]
+
+        [SerializeField] Transform _positionTransform;
+        [SerializeField] RectTransform _driverHolder;
         [SerializeField] Image _positionImage;  //The white image under position number -> flashes red/green during overtakes
-        [SerializeField] Transform _fastestLap; //transform for fastest lap image, deactivated on default
         [SerializeField] Text _positionText;    //Only used on init on Awake, never changes
+        [SerializeField] Transform _fastestLap; //transform for fastest lap image, deactivated on default
         [SerializeField] Image _teamColorImage;
         [SerializeField] Text _initialsText;
         [SerializeField] Text _timeTextLeader;        //Time text against leader
         [SerializeField] Text _timeTextInterval;      //Time text against leader
 
-        [SerializeField] AnimationCurve _changeBackColorCurve;
         [SerializeField] Image _darkBackground;
         [SerializeField] Image _lightBackground;
 
@@ -25,7 +38,8 @@ namespace F1_Unity
         Color _currentFromColorLight;
 
         public bool IsActive { get; private set; }
-        public DriverTimeState TimeState { get; private set; }
+        public bool OutOfSession { get; private set; }
+        public DriverTimeState TimeState { get; private set; } = DriverTimeState.Starting;
         public int LapsLapped { get; private set; }
         public float DeltaToLeader { get; private set; }
         public float DeltaToCarInFront { get; private set; }
@@ -37,8 +51,11 @@ namespace F1_Unity
 
         private void Update()
         {
-            UpdateOvertakeColor();
-            UpdateColor();
+            if (!OutOfSession)
+            {
+                UpdateOvertakeColor();
+                UpdateColor();
+            }
         }
 
         /// <summary>
@@ -68,11 +85,10 @@ namespace F1_Unity
             //colorTimer needs to be created from TimingScreen before we can use it
             if (_colorTimer != null && (_darkBackground.color != _darkBackgroundColor || _lightBackground.color != _lightBackgroundColor))
             {
-                Debug.Log(_colorTimer.Time);
                 _colorTimer.Time += Time.deltaTime;
 
-                _darkBackground.color = Color.Lerp(_currentFromColorDark, _darkBackgroundColor, _colorTimer.Ratio());
-                _lightBackground.color = Color.Lerp(_currentFromColorLight, _lightBackgroundColor, _colorTimer.Ratio());
+                _darkBackground.color = Color.Lerp(_currentFromColorDark, _darkBackgroundColor, _changeBackColorCurve.Evaluate(_colorTimer.Ratio()));
+                _lightBackground.color = Color.Lerp(_currentFromColorLight, _lightBackgroundColor, _changeBackColorCurve.Evaluate(_colorTimer.Ratio()));
 
                 if (_colorTimer.Expired())
                     _colorTimer.Reset();
@@ -84,6 +100,8 @@ namespace F1_Unity
         /// </summary>
         public void Init(int initPosition, float overtakeColorDuration, float colorDuration)
         {
+            OutOfSession = false;
+
             _position = initPosition;
             _overtakeColorTimer = new Timer(overtakeColorDuration);
             _colorTimer = new Timer(colorDuration);
@@ -156,6 +174,9 @@ namespace F1_Unity
         /// <param name="laps">laps lapped compared with leader</param>
         public void SetTiming()
         {
+            if (OutOfSession)
+                return;
+
             switch (TimeState)
             {
                 case DriverTimeState.Leader:
@@ -174,7 +195,7 @@ namespace F1_Unity
                 case DriverTimeState.Delta:
                     {
                         _timeTextLeader.text = GetDeltaString(DeltaToLeader);
-                        _timeTextInterval.text = GetDeltaString(DeltaToLeader);
+                        _timeTextInterval.text = GetDeltaString(DeltaToCarInFront);
                         break;
                     }
                 case DriverTimeState.Starting:
@@ -208,12 +229,57 @@ namespace F1_Unity
         /// </summary>
         public void SetColor(Color color)
         {
-            Color dark = new Color(color.r, color.g, color.b, _darkBackground.color.a);
-            _darkBackground.color = dark;
-            _currentFromColorDark = dark;
-            Color light = new Color(color.r, color.g, color.b, _lightBackground.color.a);
-            _lightBackground.color = light;
-            _currentFromColorLight = light;
+            _colorTimer.Reset();
+
+            color.a = _darkBackgroundColor.a;
+            _darkBackground.color = color;
+            _currentFromColorDark = color;
+            color.a = _lightBackgroundColor.a;
+            _lightBackground.color = color;
+            _currentFromColorLight = color;
+        }
+
+        /// <summary>
+        /// Called when switching from out state to normal state
+        /// </summary>
+        public void NotOut()
+        {
+            OutOfSession = false;
+            _darkBackground.color = _darkBackgroundColor;
+            _lightBackground.color = _lightBackgroundColor;
+
+            _currentFromColorDark = _darkBackgroundColor;
+            _currentFromColorLight = _lightBackgroundColor;
+
+            _positionTransform.gameObject.SetActive(true);
+            _driverHolder.anchoredPosition = _driverHolderInPosition;
+
+            SetTiming();
+        }
+
+        /// <summary>
+        /// Called when the car is out of the session (DNF, DSQ) -> grays it out, rearrange and won't do timing no more
+        /// </summary>
+        public void Out(F1_Data_Management.ResultStatus status)
+        {
+            OutOfSession = true;
+
+            _driverHolder.anchoredPosition = _driverHolderOutPosition;
+            _darkBackground.color = _outDarkColor;
+            _lightBackground.color = _outLightColor;
+            _positionImage.color = Color.white;
+            _positionTransform.gameObject.SetActive(false);
+
+            if (status == F1_Data_Management.ResultStatus.Retired)
+            {
+                _timeTextLeader.text = _dnfString;
+                _timeTextInterval.text = _dnfString;
+            }
+            if (status == F1_Data_Management.ResultStatus.Disqualified)
+            {
+                _timeTextLeader.text = _dsqString;
+                _timeTextInterval.text = _dsqString;
+            }
         }
 
         /// <summary>
@@ -248,6 +314,8 @@ namespace F1_Unity
         Leader,
         Lapped,
         Delta,
-        Starting
+        Starting,
+        DNF,
+        DSQ
     }
 }

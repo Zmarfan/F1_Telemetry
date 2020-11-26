@@ -492,8 +492,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c0df0cfde05c194db0080dc40ca0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showTime: 2
+  _showTime: 3.25
   _fadeTime: 0.5
+  _startShowingLap: 3
+  _amountOfDecimals: 1
   _driverText: {fileID: 6916613146815479831}
   _speedText: {fileID: 5558853947464527008}
 --- !u!1 &4701364508541035909

@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showTime: 5
-  _fadeTime: 1.2
+  _fadeTime: 0.5
   _firstNameText: {fileID: 1100837756702751345}
   _SecondNameText: {fileID: 1100837754780938171}
   _oneNameText: {fileID: 4624181276131289304}

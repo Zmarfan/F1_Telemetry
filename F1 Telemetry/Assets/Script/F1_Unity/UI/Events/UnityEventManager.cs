@@ -177,7 +177,7 @@ public class UnityEventManager : MonoBehaviour
         //No need to react to all these kinds of penalties
         if (t == PenaltyType.Penalty_Reminder || t == PenaltyType.Warning || t == PenaltyType.This_And_Next_Lap_Invalidated || t == PenaltyType.This_And_Next_Lap_Invalidated_Without_Reason ||
             t == PenaltyType.This_And_Previous_Lap_Invalidated || t == PenaltyType.This_And_Previous_Lap_Invalidated_Without_Reason || t == PenaltyType.This_Lap_Invalidated ||
-            t == PenaltyType.This_Lap_Invalidated_Without_Reason)
+            t == PenaltyType.This_Lap_Invalidated_Without_Reason || t == PenaltyType.Retired)
             return;
 
         EventBase thisEvent = SpawnEventPrefab(_penaltyPrefab, packet);

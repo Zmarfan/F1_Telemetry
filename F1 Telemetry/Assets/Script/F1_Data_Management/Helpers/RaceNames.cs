@@ -61,7 +61,7 @@ namespace F1_Data_Management
         //24 - 25
 
         /////
-        { 24, "MR-" }, //ADDED
+        { 24, "MR" }, //ADDED
         /////
 
         { 26, "Daniil Kvyat" },

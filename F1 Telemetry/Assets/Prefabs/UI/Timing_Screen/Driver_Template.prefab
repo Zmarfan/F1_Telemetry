@@ -75,6 +75,43 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1205762798219567159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3365371516479320480}
+  m_Layer: 5
+  m_Name: DriverHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3365371516479320480
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205762798219567159}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4962120954580568482}
+  - {fileID: 156393660855606442}
+  m_Father: {fileID: 9086443390150043967}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1584831032071445265
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +142,7 @@ RectTransform:
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 9086443390150043967}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -179,12 +216,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2362544932838349597}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.24999999, y: 0.24999999, z: 0.24999999}
   m_Children: []
-  m_Father: {fileID: 9086443390150043967}
-  m_RootOrder: 5
+  m_Father: {fileID: 3365371516479320480}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -487,12 +524,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8485992057223323268}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.225, y: 0.58, z: 1}
+  m_LocalScale: {x: 0.22499998, y: 0.5799999, z: 1}
   m_Children: []
-  m_Father: {fileID: 9086443390150043967}
-  m_RootOrder: 4
+  m_Father: {fileID: 3365371516479320480}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -567,7 +604,7 @@ RectTransform:
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 9086443390150043967}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -685,8 +722,7 @@ RectTransform:
   - {fileID: 1337621753989647325}
   - {fileID: 5280073912783022751}
   - {fileID: 9086443390019193722}
-  - {fileID: 4962120954580568482}
-  - {fileID: 156393660855606442}
+  - {fileID: 3365371516479320480}
   - {fileID: 8479670241867496609}
   - {fileID: 8021821773884704148}
   m_Father: {fileID: 0}
@@ -709,37 +745,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d36b0cbe48775a448ad5858a307dcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _positionImage: {fileID: 9086443390403546158}
-  _fastestLap: {fileID: 5280073912783022751}
-  _positionText: {fileID: 6877397316858991093}
-  _teamColorImage: {fileID: 6409337864330994578}
-  _initialsText: {fileID: 238192805065645164}
-  _timeTextLeader: {fileID: 6716914702753882242}
-  _timeTextInterval: {fileID: 4231219126859337225}
   _changeBackColorCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      time: 1.0128784
+      value: 1.1620941
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _outDarkColor: {r: 0, g: 0, b: 0, a: 0.5254902}
+  _outLightColor: {r: 0, g: 0, b: 0, a: 0.2}
+  _driverHolderInPosition: {x: 0, y: 0, z: 0}
+  _driverHolderOutPosition: {x: -100, y: 0, z: 0}
+  _dnfString: OUT
+  _dsqString: DSQ
+  _positionTransform: {fileID: 9086443390019193722}
+  _driverHolder: {fileID: 3365371516479320480}
+  _positionImage: {fileID: 9086443390403546158}
+  _positionText: {fileID: 6877397316858991093}
+  _fastestLap: {fileID: 5280073912783022751}
+  _teamColorImage: {fileID: 6409337864330994578}
+  _initialsText: {fileID: 238192805065645164}
+  _timeTextLeader: {fileID: 6716914702753882242}
+  _timeTextInterval: {fileID: 4231219126859337225}
   _darkBackground: {fileID: 5466784938548493287}
   _lightBackground: {fileID: 8661945388357445640}
 --- !u!1 &9086443390403546156
