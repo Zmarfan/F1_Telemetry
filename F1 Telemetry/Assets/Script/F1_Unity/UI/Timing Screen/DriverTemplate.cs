@@ -15,6 +15,15 @@ namespace F1_Unity
         [SerializeField] Text _timeTextLeader;        //Time text against leader
         [SerializeField] Text _timeTextInterval;      //Time text against leader
 
+        [SerializeField] AnimationCurve _changeBackColorCurve;
+        [SerializeField] Image _darkBackground;
+        [SerializeField] Image _lightBackground;
+
+        Color _darkBackgroundColor;
+        Color _lightBackgroundColor;
+        Color _currentFromColorDark;
+        Color _currentFromColorLight;
+
         public bool IsActive { get; private set; }
         public DriverTimeState TimeState { get; private set; }
         public int LapsLapped { get; private set; }
@@ -22,41 +31,66 @@ namespace F1_Unity
         public float DeltaToCarInFront { get; private set; }
 
         int _position = 0;         //The position of this template -> static never changes
-        Timer _colorTimer;         //Timer for how long the positionImage shall flash
+        Timer _overtakeColorTimer;         //Timer for how long the positionImage shall flash
+        Timer _colorTimer;         //Timer for how long the color after event should last
         bool _resetColor = false;
 
         private void Update()
         {
+            UpdateOvertakeColor();
             UpdateColor();
         }
 
         /// <summary>
         /// Makes sure color goes back to white after set time
         /// </summary>
-        void UpdateColor()
+        void UpdateOvertakeColor()
         {
             //colorTimer needs to be created from TimingScreen before we can use it
-            if (_colorTimer != null && _resetColor)
+            if (_overtakeColorTimer != null && _resetColor)
             {
-                _colorTimer.Time += Time.deltaTime;
+                _overtakeColorTimer.Time += Time.deltaTime;
 
-                if (_colorTimer.Expired())
+                if (_overtakeColorTimer.Expired())
                 {
                     _resetColor = false;
-                    _colorTimer.Reset();
+                    _overtakeColorTimer.Reset();
                     _positionImage.color = Color.white;
                 }
             }
         }
 
         /// <summary>
+        /// Lerps the color back to original after being changed
+        /// </summary>
+        void UpdateColor()
+        {
+            //colorTimer needs to be created from TimingScreen before we can use it
+            if (_colorTimer != null && (_darkBackground.color != _darkBackgroundColor || _lightBackground.color != _lightBackgroundColor))
+            {
+                Debug.Log(_colorTimer.Time);
+                _colorTimer.Time += Time.deltaTime;
+
+                _darkBackground.color = Color.Lerp(_currentFromColorDark, _darkBackgroundColor, _colorTimer.Ratio());
+                _lightBackground.color = Color.Lerp(_currentFromColorLight, _lightBackgroundColor, _colorTimer.Ratio());
+
+                if (_colorTimer.Expired())
+                    _colorTimer.Reset();
+            }
+        }
+
+        /// <summary>
         /// Called when first creating the template. Sets position based on index.
         /// </summary>
-        public void Init(int initPosition, float colorDuration)
+        public void Init(int initPosition, float overtakeColorDuration, float colorDuration)
         {
             _position = initPosition;
+            _overtakeColorTimer = new Timer(overtakeColorDuration);
             _colorTimer = new Timer(colorDuration);
             _positionText.text = _position.ToString();
+
+            _darkBackgroundColor = _darkBackground.color;
+            _lightBackgroundColor = _lightBackground.color;
         }
 
         /// <summary>
@@ -66,16 +100,6 @@ namespace F1_Unity
         {
             _timeTextInterval.enabled = interval;
             _timeTextLeader.enabled = !interval;
-        }
-
-        /// <summary>
-        /// Updates values for time keeping
-        /// </summary>
-        public void UpdateTimingValues(DriverTimeState state, float deltaToLeader = 0, int lapsLapped = 0)
-        {
-            TimeState = state;
-            DeltaToLeader = deltaToLeader;
-            LapsLapped = lapsLapped;
         }
 
         /// <summary>
@@ -107,6 +131,16 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Updates values for time keeping
+        /// </summary>
+        public void UpdateTimingValues(DriverTimeState state, float deltaToLeader = 0, int lapsLapped = 0)
+        {
+            TimeState = state;
+            DeltaToLeader = deltaToLeader;
+            LapsLapped = lapsLapped;
+        }
+
+        /// <summary>
         /// Calculates and sets car in front delta
         /// </summary>
         public void SetCarAheadDelta(float carAheadTimeToLeader)
@@ -126,27 +160,27 @@ namespace F1_Unity
             {
                 case DriverTimeState.Leader:
                     {
-                        SetTimeText("Leader", _timeTextLeader);
-                        SetTimeText("Interval", _timeTextInterval);
+                        _timeTextLeader.text = "Leader";
+                        _timeTextInterval.text = "Interval";
                         break;
                     } 
                 case DriverTimeState.Lapped:
                     {
                         string text = "+" + LapsLapped + " LAP";
-                        SetTimeText(text, _timeTextLeader);
-                        SetTimeText(text, _timeTextInterval);
+                        _timeTextLeader.text = text;
+                        _timeTextInterval.text = text;
                         break;
                     }
                 case DriverTimeState.Delta:
                     {
-                        SetTimeText(GetDeltaString(DeltaToLeader), _timeTextLeader);
-                        SetTimeText(GetDeltaString(DeltaToCarInFront), _timeTextInterval);
+                        _timeTextLeader.text = GetDeltaString(DeltaToLeader);
+                        _timeTextInterval.text = GetDeltaString(DeltaToLeader);
                         break;
                     }
                 case DriverTimeState.Starting:
                     {
-                        SetTimeText("-", _timeTextLeader);
-                        SetTimeText("-", _timeTextInterval);
+                        _timeTextLeader.text = "-";
+                        _timeTextInterval.text = "-";
                         break;
                     }
                 default: { throw new Exception("UpdateTimingState has been called with a DriverTimeState not yet implemented here!"); }
@@ -170,11 +204,16 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Sets the string in time section: time or interval
+        /// Sets new color on driver when event occour
         /// </summary>
-        public void SetTimeText(string timeText, Text text)
+        public void SetColor(Color color)
         {
-            text.text = timeText;
+            Color dark = new Color(color.r, color.g, color.b, _darkBackground.color.a);
+            _darkBackground.color = dark;
+            _currentFromColorDark = dark;
+            Color light = new Color(color.r, color.g, color.b, _lightBackground.color.a);
+            _lightBackground.color = light;
+            _currentFromColorLight = light;
         }
 
         /// <summary>

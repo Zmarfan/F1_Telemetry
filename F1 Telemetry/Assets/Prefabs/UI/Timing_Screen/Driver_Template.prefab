@@ -716,6 +716,32 @@ MonoBehaviour:
   _initialsText: {fileID: 238192805065645164}
   _timeTextLeader: {fileID: 6716914702753882242}
   _timeTextInterval: {fileID: 4231219126859337225}
+  _changeBackColorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _darkBackground: {fileID: 5466784938548493287}
+  _lightBackground: {fileID: 8661945388357445640}
 --- !u!1 &9086443390403546156
 GameObject:
   m_ObjectHideFlags: 0

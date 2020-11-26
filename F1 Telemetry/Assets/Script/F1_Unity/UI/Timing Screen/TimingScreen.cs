@@ -8,6 +8,7 @@ namespace F1_Unity
     {
         [SerializeField, Range(10, 400)] int _amountOfTimingStations = 100;
         [SerializeField, Range(0.01f, 5f)] float _flashColorDuration = 1.0f;
+        [SerializeField, Range(0.01f, 50f)] float _changeBackColorDuration = 4.5f;
         [SerializeField] UnityEngine.Color _movedUpColor = UnityEngine.Color.green;
         [SerializeField] UnityEngine.Color _movedDownColor = UnityEngine.Color.red;
         [SerializeField] DriverTemplate[] _driverTemplates;
@@ -58,7 +59,7 @@ namespace F1_Unity
         {
             _singleton = this;
             for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].Init(i + 1, _flashColorDuration);
+                _driverTemplates[i].Init(i + 1, _flashColorDuration, _changeBackColorDuration);
 
             SetMode(_intervalMode);
         }
