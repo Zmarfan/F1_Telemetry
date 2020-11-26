@@ -6,7 +6,7 @@ namespace F1_Unity
 {
     public class TimingScreen : MonoBehaviour
     {
-        public static readonly float LEADER_LAP_EPSILON = 0.05f;
+        public static readonly float LEADER_LAP_EPSILON = 0.01f;
 
         [SerializeField, Range(10, 400)] int _amountOfTimingStations = 100;
         [SerializeField, Range(0.01f, 5f)] float _flashColorDuration = 1.0f;
@@ -84,6 +84,8 @@ namespace F1_Unity
             {
                 DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool validDriver);
 
+                ResultStatus resultStatus = ResultStatus.Inactive;
+
                 //Init everyone with gaining a position on start!
                 //Flash green then to white
                 //Only add valid drivers to the grid
@@ -94,7 +96,7 @@ namespace F1_Unity
                     _driverTemplates[i].SetTiming();
 
                     //If the car is already retired -> set it so
-                    ResultStatus resultStatus = driverData.LapData.resultStatus;
+                    resultStatus = driverData.LapData.resultStatus;
                     if (resultStatus == ResultStatus.Retired || resultStatus == ResultStatus.Disqualified)
                         _driverTemplates[i].Out(resultStatus);
                     else
@@ -112,12 +114,10 @@ namespace F1_Unity
 
                 //Only enable so many positions in time standing as there are active drivers
                 //If they DNF/DSQ later they will only gray out, not be removed
-                //if (i >= GameManager.F1Info.ActiveDrivers)
-                //    _driverTemplates[i].SetActive(false);
-                //else
-                //    _driverTemplates[i].SetActive(true);
-
-                _driverTemplates[i].SetActive(true);
+                if (resultStatus == ResultStatus.Inactive || resultStatus == ResultStatus.Invalid)
+                    _driverTemplates[i].SetActive(false);
+                else
+                    _driverTemplates[i].SetActive(true);
             }
 
             //Need to loop again to set timing index same as leader -> Will make sure no odd times are displayed if restarting mid race!
@@ -258,6 +258,7 @@ namespace F1_Unity
             float lapCompletion = LapCompletion(sessionData, driverData);
             float leaderLapCompletion = LapCompletion(sessionData, leaderData);
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
+            bool passedLeader = _timingData[timingIndex].PassedByLeader;
 
             byte driverID = driverData.ID;
             //No need to update since it hasn't passed a new station
@@ -267,12 +268,32 @@ namespace F1_Unity
             else
                 _driverLastTimeSpot[driverID] = timingIndex;
 
-            //This is the leader!
-            if (leaderData.VehicleIndex == driverData.VehicleIndex)
+            //Index of current timing to compare with
+            float currentTime = GameManager.F1Info.SessionTime;
+            float deltaToLeader = currentTime - _timingData[timingIndex].Time;
+
+            if (driverData.LapData.pitStatus == PitStatus.Pitting)
             {
-                _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Leader);
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Pit, deltaToLeader);
                 return;
             }
+            else if (driverData.LapData.pitStatus == PitStatus.In_Pit_Area)
+            {
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Pit_Area, deltaToLeader);
+                return;
+            }
+            //This is the leader!
+            else if (leaderData.VehicleIndex == driverData.VehicleIndex)
+            {
+                _driverTemplates[leaderData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Leader, deltaToLeader);
+                return;
+            }
+            //Is not returned since a car can know it is lapped without knowing interval to leader -> no need to wait for that
+            else if (!passedLeader)
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Starting, deltaToLeader);
+            else
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Delta, deltaToLeader);
+
 
             int lapsBehind = leaderData.LapData.currentLapNumber - driverData.LapData.currentLapNumber;
 
@@ -287,17 +308,9 @@ namespace F1_Unity
             //This car is lapped
             if (lapsBehind > 0)
             {
-                Debug.Log("LAPPED");
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Lapped, 0, lapsBehind);
-                return;
+                if (!_intervalMode)
+                    _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(DriverTimeState.Lapped, deltaToLeader, lapsBehind);
             }
-
-            //Index of current timing to compare with
-            float currentTime = GameManager.F1Info.SessionTime;
-            float deltaToLeader = currentTime - _timingData[timingIndex].Time;
-            DriverTimeState state = _timingData[timingIndex].PassedByLeader ? DriverTimeState.Delta : DriverTimeState.Starting;
-
-            _driverTemplates[driverData.LapData.carPosition - 1].UpdateTimingValues(state, deltaToLeader);
         }
 
         /// <summary>

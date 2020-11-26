@@ -10,14 +10,23 @@ namespace F1_Unity
         [Header("Settings")]
 
         [SerializeField] AnimationCurve _changeBackColorCurve;
-        [SerializeField] Color _outDarkColor;
-        [SerializeField] Color _outLightColor;
+        [SerializeField] float _outAlpha = 0.75f;
         [SerializeField] Vector3 _driverHolderInPosition;
         [SerializeField] Vector3 _driverHolderOutPosition;
-        [SerializeField] string _dnfString;
-        [SerializeField] string _dsqString;
+        [SerializeField] Color _timingColor = Color.white;
+        [SerializeField] Color _pittingColor = Color.cyan;
+        [SerializeField] string _dnfString = "OUT";
+        [SerializeField] string _dsqString = "DSQ";
+        [SerializeField] string _startingString = "-";
+        [SerializeField] string _leaderString = "Leader";
+        [SerializeField] string _intervalString = "Interval";
+        [SerializeField] string _lappedString = "LAP";
+        [SerializeField] string _pitString = "Pitting";
+        [SerializeField] string _pitAreaString = "Pit";
 
         [Header("Drop")]
+
+        [SerializeField] CanvasGroup _alphaHolder;
 
         [SerializeField] Transform _positionTransform;
         [SerializeField] RectTransform _driverHolder;
@@ -177,19 +186,44 @@ namespace F1_Unity
             if (OutOfSession)
                 return;
 
+            //Set color for text while pitting
+            if (TimeState == DriverTimeState.Pit || TimeState == DriverTimeState.Pit_Area)
+            {
+                _timeTextLeader.color = _pittingColor;
+                _timeTextInterval.color = _pittingColor;
+            }
+            //Set color for text while timing
+            else
+            {
+                _timeTextLeader.color = _timingColor;
+                _timeTextInterval.color = _timingColor;
+            }
+
             switch (TimeState)
             {
+                case DriverTimeState.Pit:
+                    {
+                        _timeTextLeader.text = _pitString;
+                        _timeTextInterval.text = _pitString;
+                        break;
+                    }
+                case DriverTimeState.Pit_Area:
+                    {
+                        _timeTextLeader.text = _pitAreaString;
+                        _timeTextInterval.text = _pitAreaString;
+                        break;
+                    }
                 case DriverTimeState.Leader:
                     {
-                        _timeTextLeader.text = "Leader";
-                        _timeTextInterval.text = "Interval";
+                        _timeTextLeader.text = _leaderString;
+                        _timeTextInterval.text = _intervalString;
                         break;
-                    } 
+                    }
                 case DriverTimeState.Lapped:
                     {
-                        string text = "+" + LapsLapped + " LAP";
+                        string text = "+" + LapsLapped + " " + _lappedString;
                         _timeTextLeader.text = text;
-                        _timeTextInterval.text = text;
+                        //lapped by leader but shows delta anyway if interval mode
                         break;
                     }
                 case DriverTimeState.Delta:
@@ -200,8 +234,8 @@ namespace F1_Unity
                     }
                 case DriverTimeState.Starting:
                     {
-                        _timeTextLeader.text = "-";
-                        _timeTextInterval.text = "-";
+                        _timeTextLeader.text = _startingString;
+                        _timeTextInterval.text = _startingString;
                         break;
                     }
                 default: { throw new Exception("UpdateTimingState has been called with a DriverTimeState not yet implemented here!"); }
@@ -229,6 +263,9 @@ namespace F1_Unity
         /// </summary>
         public void SetColor(Color color)
         {
+            if (OutOfSession)
+                return;
+
             _colorTimer.Reset();
 
             color.a = _darkBackgroundColor.a;
@@ -245,6 +282,8 @@ namespace F1_Unity
         public void NotOut()
         {
             OutOfSession = false;
+            _alphaHolder.alpha = 1.0f;
+
             _darkBackground.color = _darkBackgroundColor;
             _lightBackground.color = _lightBackgroundColor;
 
@@ -264,9 +303,12 @@ namespace F1_Unity
         {
             OutOfSession = true;
 
+            _alphaHolder.alpha = _outAlpha;
+
+            _darkBackground.color = _darkBackgroundColor;
+            _lightBackground.color = _lightBackgroundColor;
+
             _driverHolder.anchoredPosition = _driverHolderOutPosition;
-            _darkBackground.color = _outDarkColor;
-            _lightBackground.color = _outLightColor;
             _positionImage.color = Color.white;
             _positionTransform.gameObject.SetActive(false);
 
@@ -315,7 +357,7 @@ namespace F1_Unity
         Lapped,
         Delta,
         Starting,
-        DNF,
-        DSQ
+        Pit_Area,
+        Pit
     }
 }

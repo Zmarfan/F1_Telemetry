@@ -58,7 +58,10 @@ namespace F1_Data_Management
             Packet packet = GetPacketType(packetData);
             packet.LoadBytes();
 
-            SessionTime = packet.SessionTime;
+            //Move time forward not backward
+            if (packet.SessionTime > SessionTime)
+                SessionTime = packet.SessionTime;
+
             PlayerCarIndex = packet.PlayerCarIndex;
             SecondaryPlayerCarIndex = packet.SecondaryPlayerCarIndex;
 

@@ -327,37 +327,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[0].inSlope
-      value: 0.022010898
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[0].outSlope
-      value: 0.022010898
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[0].outWeight
-      value: 0.31722704
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[1].time
-      value: 0.62980735
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[1].inSlope
-      value: 0.13431706
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[1].outSlope
-      value: 0.13431706
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357362770528960563, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
-      propertyPath: _changeBackColorCurve.m_Curve.Array.data[1].inWeight
-      value: 0.12272716
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
