@@ -26,7 +26,8 @@ namespace F1_Unity
             if (status)
             {
                 _init = false;
-                _totalLapText.text = sessionData.TotalLaps.ToString();
+                _totalLap = sessionData.TotalLaps;
+                _totalLapText.text = _totalLap.ToString();
             }
         }
 

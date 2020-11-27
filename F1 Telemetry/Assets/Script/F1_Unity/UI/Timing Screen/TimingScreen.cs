@@ -13,6 +13,7 @@ namespace F1_Unity
         [SerializeField, Range(0.01f, 50f)] float _changeBackColorDuration = 4.5f;
         [SerializeField] UnityEngine.Color _movedUpColor = UnityEngine.Color.green;
         [SerializeField] UnityEngine.Color _movedDownColor = UnityEngine.Color.red;
+        [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField] DriverTemplate[] _driverTemplates;
 
         static TimingScreen _singleton;
@@ -45,6 +46,14 @@ namespace F1_Unity
         private void OnDisable()
         {
             InputManager.PressedTimeInterval -= ChangeTimingMode;
+        }
+
+        /// <summary>
+        /// Shows or not show timing screen (will still be active in background)
+        /// </summary>
+        public void SetActive(bool status)
+        {
+            _canvasGroup.alpha = status ? 1.0f : 0.0f;
         }
 
         /// <summary>

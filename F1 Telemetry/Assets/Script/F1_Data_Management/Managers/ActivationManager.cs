@@ -6,6 +6,7 @@ namespace F1_Unity
     {
         [SerializeField] GameObject _all;
         [SerializeField] GameObject _liveSpeed;
+        [SerializeField] TimingScreen _timingScreen;
 
         private void OnEnable()
         {
@@ -19,7 +20,12 @@ namespace F1_Unity
             InputManager.PressedToggleLiveSpeed -= ToggleLiveSpeed;
         }
 
-        void ToggleAll() { _all.SetActive(!_all.activeSelf); }
+        void ToggleAll()
+        {
+            bool current = !_all.activeSelf;
+            _all.SetActive(current);
+            _timingScreen.SetActive(current);
+        }
         void ToggleLiveSpeed() { _liveSpeed.SetActive(!_liveSpeed.activeSelf); }
     }
 }
