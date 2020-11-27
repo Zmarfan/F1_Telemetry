@@ -46,6 +46,8 @@ namespace F1_Unity
         Color _currentFromColorDark;
         Color _currentFromColorLight;
 
+
+        public F1_Data_Management.DriverData DriverData { get; private set; }
         public bool IsActive { get; private set; }
         public bool OutOfSession { get; private set; }
         public DriverTimeState TimeState { get; private set; } = DriverTimeState.Starting;
@@ -157,6 +159,10 @@ namespace F1_Unity
             _resetColor = true;
         }
 
+        /// <summary>
+        /// Sets Drive Data
+        /// </summary>
+        public void SetDriverData(F1_Data_Management.DriverData driverData) { DriverData = driverData; }
         /// <summary>
         /// Sets timing state
         /// </summary>

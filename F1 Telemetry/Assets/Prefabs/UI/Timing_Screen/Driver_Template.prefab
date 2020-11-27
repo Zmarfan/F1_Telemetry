@@ -821,8 +821,16 @@ MonoBehaviour:
   _outAlpha: 0.75
   _driverHolderInPosition: {x: 0, y: 0, z: 0}
   _driverHolderOutPosition: {x: -100, y: 0, z: 0}
+  _timingColor: {r: 1, g: 1, b: 1, a: 1}
+  _pittingColor: {r: 0, g: 1, b: 1, a: 1}
   _dnfString: OUT
   _dsqString: DSQ
+  _startingString: '-'
+  _leaderString: Leader
+  _intervalString: Interval
+  _lappedString: LAP
+  _pitString: Pitting
+  _pitAreaString: Pit
   _alphaHolder: {fileID: 6251631527129752630}
   _positionTransform: {fileID: 9086443390019193722}
   _driverHolder: {fileID: 3365371516479320480}

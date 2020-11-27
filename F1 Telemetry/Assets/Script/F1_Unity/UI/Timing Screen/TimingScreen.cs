@@ -183,6 +183,8 @@ namespace F1_Unity
                 if (!validDriver)
                     continue;
 
+                //Sets driverdata if it's usage is needed
+                _driverTemplates[driverData.LapData.carPosition - 1].SetDriverData(driverData);
                 Positioning(driverData);
                 UpdateDriverTimingToLeader(leaderData, sessionData, driverData);
             }
