@@ -20,7 +20,7 @@ namespace F1_Unity
         //Reach driver position by their ID
         Dictionary<byte, int> _driverPosition;
         Dictionary<byte, int> _driverLastTimeSpot;
-        DriverTimingData[] _timingData;
+        TimingStation[] _timingData;
         int _leaderVehicleIndex;
         int _lastPassedTimingIndex;
         bool _initValues = true;
@@ -67,7 +67,7 @@ namespace F1_Unity
 
             SetMode(_intervalMode);
 
-            _timingData = new DriverTimingData[_amountOfTimingStations];
+            _timingData = new TimingStation[_amountOfTimingStations];
 
             _driverPosition = new Dictionary<byte, int>();
             _driverLastTimeSpot = new Dictionary<byte, int>();
@@ -87,6 +87,8 @@ namespace F1_Unity
                     _driverPosition.Add(driverData.ID, driverData.LapData.carPosition + 1);
                     _driverTemplates[i].SetTimingState(DriverTimeState.Starting);
                     _driverTemplates[i].SetTiming();
+                    //Sets driverdata if it's usage is needed
+                    _driverTemplates[driverData.LapData.carPosition - 1].SetDriverData(driverData);
 
                     //If the car is already retired -> set it so
                     resultStatus = driverData.LapData.resultStatus;
@@ -339,7 +341,7 @@ namespace F1_Unity
         /// <summary>
         /// A timing station that holds time and lap when leader passed
         /// </summary>
-        struct DriverTimingData
+        struct TimingStation
         {
             public bool PassedByLeader { get; set; }
             public byte Lap { get; set; }

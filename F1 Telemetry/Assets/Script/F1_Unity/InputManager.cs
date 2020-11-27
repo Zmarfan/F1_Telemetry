@@ -15,6 +15,8 @@ namespace F1_Unity
         static InputManager _singleton;
 
         public static event InputPressedDown PressedTimeInterval;
+        public static event InputPressedDown PressedToggleLiveSpeed;
+        public static event InputPressedDown PressedToggleAll;
 
         private void Awake()
         {
@@ -28,6 +30,10 @@ namespace F1_Unity
         {
             if (Input.GetButtonDown(InputKeywords.TIME_INTERVAL))
                 PressedTimeInterval?.Invoke();
+            if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))
+                PressedToggleLiveSpeed?.Invoke();
+            if (Input.GetButtonDown(InputKeywords.TOGGLE_ALL))
+                PressedToggleAll?.Invoke();
         }
 
     }

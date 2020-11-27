@@ -9,12 +9,12 @@ namespace F1_Unity
     /// </summary>
     public class LapDisplay : MonoBehaviour
     {
-        [SerializeField] string _preNumberString = "LAP ";
         [SerializeField] Text _currentLapText;
         [SerializeField] Text _totalLapText;
         [SerializeField] DriverTemplate _leaderTemplate;
 
         byte _currentLap = 0;
+        byte _totalLap = 0;
         bool _init = true;
 
         /// <summary>
@@ -47,10 +47,11 @@ namespace F1_Unity
         void UpdateLap()
         {
             byte lap = _leaderTemplate.DriverData.LapData.currentLapNumber;
-            if (lap != _currentLap)
+            //Change lap if new lap and it's not larger than total laps
+            if (lap != _currentLap && lap <= _totalLap)
             {
                 _currentLap = lap;
-                _currentLapText.text = _preNumberString + lap.ToString();
+                _currentLapText.text = lap.ToString();
             }
         }
     }

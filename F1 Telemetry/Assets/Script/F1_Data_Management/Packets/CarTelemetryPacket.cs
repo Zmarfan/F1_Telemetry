@@ -58,21 +58,60 @@ namespace F1_Data_Management
     /// </summary>
     public struct CarTelemetryData
     {
-        public ushort speed;         //In km/h
-        public float throttle;       //Amount of throttle (0.0 - 1.0)
-        public float steer;          //left(-1.0) - right(1.0)
-        public float brake;          //Amount of brake (0.0 - 1.0)
-        public byte clutch;          //Amount of clutch applied (0 to 100)
-        public sbyte gear;           //0 = N & -1 = Reversed
+        /// <summary>
+        /// Current car speed in km/h
+        /// </summary>
+        public ushort speed;
+        /// <summary>
+        /// Amount of throttle (0.0 - 1.0)
+        /// </summary>
+        public float throttle;
+        /// <summary>
+        /// left(-1.0) - right(1.0)
+        /// </summary>
+        public float steer;
+        /// <summary>
+        /// Amount of brake (0.0 - 1.0)
+        /// </summary>
+        public float brake;
+        /// <summary>
+        /// Amount of clutch applied (0 to 100)
+        /// </summary>
+        public byte clutch;
+        /// <summary>
+        /// 0 = N & -1 = Reversed
+        /// </summary>
+        public sbyte gear;
         public ushort engineRPM;
-        public bool DRS;             //True if on
-        public byte revLightPercent; //percentage
+        /// <summary>
+        /// Is DRS currently activated
+        /// </summary>
+        public bool DRS;
+        public byte revLightPercent;
 
-        public ushort[] brakeTemperatures; //Celcius
-        public byte[] tyreSurfaceTemperatures; //Celcius
-        public byte[] tyreInnerTemperatures; //Celcius
-        public ushort engineTemperature; //Celcius
-        public float[] tyrePressures; //PSI
+        /// <summary>
+        /// Brake temperature per tyre in celcius. Use Wheel class to index correct wheel.
+        /// </summary>
+        public ushort[] brakeTemperatures;
+        /// <summary>
+        /// Tyre surface temperature per tyre in celcius. Use Wheel class to index correct wheel.
+        /// </summary>
+        public byte[] tyreSurfaceTemperatures;
+        /// <summary>
+        /// Tyre inner temperature per tyre in celcius. Use Wheel class to index correct wheel.
+        /// </summary>
+        public byte[] tyreInnerTemperatures;
+        /// <summary>
+        /// Engine temperature in celcius
+        /// </summary>
+        public ushort engineTemperature;
+        /// <summary>
+        /// Tyre pressure per tyre in PSI. Use Wheel class to index correct wheel.
+        /// </summary>
+        public float[] tyrePressures;
+        /// <summary>
+        /// Surface type per tyre. Use Wheel class to index correct wheel.
+        /// </summary>
         public SurfaceType[] surfaceTypes;
     }
 
