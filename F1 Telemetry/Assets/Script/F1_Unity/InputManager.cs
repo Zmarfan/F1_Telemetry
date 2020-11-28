@@ -17,6 +17,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedTimeInterval;
         public static event InputPressedDown PressedToggleLiveSpeed;
         public static event InputPressedDown PressedToggleAll;
+        public static event InputPressedDown PressedToggleDriverName;
 
         private void Awake()
         {
@@ -34,6 +35,8 @@ namespace F1_Unity
                 PressedToggleLiveSpeed?.Invoke();
             if (Input.GetButtonDown(InputKeywords.TOGGLE_ALL))
                 PressedToggleAll?.Invoke();
+            if (Input.GetButtonDown(InputKeywords.DRIVER_NAME))
+                PressedToggleDriverName?.Invoke();
         }
 
     }
