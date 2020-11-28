@@ -153,7 +153,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 0
 --- !u!1 &2145299608389391995
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Aston Martin Red Bull Racing
+  m_Text: Team Name
 --- !u!1 &2294501903661818364
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.070261955, b: 1, a: 1}
+  m_Color: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -498,6 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a07856f135f03449f178488c1b3417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _raceNumberColorAlpha: 0.45
   _positionText: {fileID: 338831956413947418}
   _teamColorImage: {fileID: 29421970887856059}
   _driverNameText: {fileID: 8869804998710274634}
@@ -572,7 +573,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ccd4dab867cca3b44ac36b88cf640d04, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7f8fe1a5bd3f7b748a53e4f8c7383eb6, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -828,7 +829,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LORD_ZMARFAN
+  m_Text: Driver_Name
 --- !u!114 &7402072052768687401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -962,7 +963,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: <i>82</i>
+  m_Text: <i>0</i>
 --- !u!114 &1168150061606856182
 MonoBehaviour:
   m_ObjectHideFlags: 0
