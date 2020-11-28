@@ -16,10 +16,35 @@ namespace F1_Unity
         [SerializeField] Text _kmhSpeedText;
         [SerializeField] Text _mphSpeedText;
 
+        int turn = 1;
+        float startPoint = 0;
+
         private void Update()
         {
             if (GameManager.F1Info.ReadyToReadFrom)
+            {
                 UpdateValues();
+
+                bool start = Input.GetKeyDown(KeyCode.T);
+                bool end = Input.GetKeyDown(KeyCode.Y);
+
+                //REMOVE
+                DriverData playerDriverData = GameManager.F1Info.ReadPlayerData(out bool valid);
+                if (valid)
+                {
+                    //Debug.Log(TrackTurns.GetTurn(Track.Abu_Dhabi, playerDriverData.LapData.lapDistance));
+
+                    if (start)
+                        startPoint = playerDriverData.LapData.lapDistance;
+
+                    if (end)
+                    {
+                        Debug.Log("Turn: " + turn + ", start: " + startPoint + ", end: " + playerDriverData.LapData.lapDistance);
+                        turn++;
+                    }
+                }
+                //REMOVE
+            }
         }
 
         /// <summary>

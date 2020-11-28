@@ -243,6 +243,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LiveSpeed
       objectReference: {fileID: 0}
+    - target: {fileID: 4137811850501173954, guid: 4fe2047d1d806e348b9dd03feec85ef0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7201924231412175873, guid: 4fe2047d1d806e348b9dd03feec85ef0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
