@@ -65,7 +65,7 @@ namespace F1_Unity
                 _kmhSpeedText.text = showSpeedKMH.ToString();
                 _mphSpeedText.text = showSpeedMPH.ToString();
 
-                _driverText.text = RaceNames.GetNameFromNumber(spectatorDriverData.RaceNumber).ToUpper();
+                _driverText.text = ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber).ToUpper();
 
                 SetColor(showSpeedKMH);
             }

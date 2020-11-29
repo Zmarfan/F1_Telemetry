@@ -34,9 +34,6 @@
                 AllParticipantData[i].publicTelemetry = manager.GetBool();
 
                 //Added calculated data not present in packet from f1 2020
-                AllParticipantData[i].driverFullName = RaceNames.GetNameFromNumber(AllParticipantData[i].raceNumber);
-                AllParticipantData[i].driverInitial = RaceNames.GetDriverInitials(AllParticipantData[i].raceNumber);
-                AllParticipantData[i].teamColor = TeamColor.GetColorByTeam(AllParticipantData[i].team);
 
                 AllParticipantData[i].vehicleIndex = i;
             }
@@ -56,11 +53,6 @@
         public string name;                    //last name for AI, Player for players, (not to be used, good for debugging though)
         public bool publicTelemetry;           //true if it is public
         public int vehicleIndex;
-
-        //Added calculated data
-        public string driverFullName;          //First and last name of driver based on raceNumber
-        public string driverInitial;           //Three letters shown in standings
-        public Color teamColor;   //Own struct for color for expandability instead of Unity Color.
 
         public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in ParticipantData / Packet
     }

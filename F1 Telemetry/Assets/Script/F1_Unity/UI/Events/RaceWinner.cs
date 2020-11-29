@@ -20,10 +20,9 @@ namespace F1_Unity
 
             if (status)
             {
-                _driverText.text = RaceNames.GetNameFromNumber(data.RaceNumber).Replace('_', ' ');
+                _driverText.text = ParticipantManager.GetNameFromNumber(data.RaceNumber).Replace('_', ' ');
                 _teamText.text = data.ParticipantData.team.ToString().Replace('_', ' ');
-                F1_Data_Management.Color teamColor = data.ParticipantData.teamColor;
-                _teamImage.color = new UnityEngine.Color(teamColor.r, teamColor.g, teamColor.b);
+                _teamImage.color = TeamColor.GetColorByTeam(data.ParticipantData.team);
             }
         }
     }

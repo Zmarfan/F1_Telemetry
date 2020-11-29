@@ -11,7 +11,6 @@ namespace F1_Unity
     {
         [SerializeField] Text _currentLapText;
         [SerializeField] Text _totalLapText;
-        [SerializeField] DriverTemplate _leaderTemplate;
 
         byte _currentLap = 0;
         byte _totalLap = 0;
@@ -47,9 +46,9 @@ namespace F1_Unity
         /// </summary>
         void UpdateLap()
         {
-            byte lap = _leaderTemplate.DriverData.LapData.currentLapNumber;
+            byte lap = DriverDataManager.GetDriverFromPosition(1, out bool status).LapData.currentLapNumber;
             //Change lap if new lap and it's not larger than total laps
-            if (lap != _currentLap && lap <= _totalLap)
+            if (status && lap != _currentLap && lap <= _totalLap)
             {
                 _currentLap = lap;
                 _currentLapText.text = lap.ToString();

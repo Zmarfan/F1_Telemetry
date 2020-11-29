@@ -250,9 +250,9 @@ namespace F1_Unity
         /// <summary>
         /// Sets the team color to color
         /// </summary>
-        public void SetTeamColor(F1_Data_Management.Color color)
+        public void SetTeamColor(Color color)
         {
-            _teamColorImage.color = new Color(color.r, color.g, color.b, color.a);
+            _teamColorImage.color = color;
         }
 
         /// <summary>

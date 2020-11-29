@@ -249,8 +249,8 @@ namespace F1_Unity
                 if (positionIndex == 0)
                     _leaderVehicleIndex = driverData.ParticipantData.vehicleIndex;
 
-                _driverTemplates[positionIndex].SetInitials(driverData.ParticipantData.driverInitial); //Set initals for that position
-                _driverTemplates[positionIndex].SetTeamColor(driverData.ParticipantData.teamColor); //Set team color
+                _driverTemplates[positionIndex].SetInitials(ParticipantManager.GetDriverInitials(driverData.RaceNumber)); //Set initals for that position
+                _driverTemplates[positionIndex].SetTeamColor(TeamColor.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
 
                 //if the car is retired, set it to out
                 ResultStatus resultStatus = driverData.LapData.resultStatus;

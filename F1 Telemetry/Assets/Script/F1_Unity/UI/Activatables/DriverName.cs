@@ -33,13 +33,12 @@ namespace F1_Unity
 
                 _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
 
-                F1_Data_Management.Color c = spectatorDriverData.ParticipantData.teamColor;
-                UnityEngine.Color color = new UnityEngine.Color(c.r, c.g, c.b);
+                Color color = TeamColor.GetColorByTeam(spectatorDriverData.ParticipantData.team);
                 _teamColorImage.color = color;
                 color.a = _raceNumberColorAlpha;
                 _raceNumberShadow.effectColor = color;
 
-                _driverNameText.text = RaceNames.GetNameFromNumber(spectatorDriverData.RaceNumber);
+                _driverNameText.text = ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber);
                 _raceNumberText.text = "<i>" + spectatorDriverData.RaceNumber + "</i>"; //Puts it in italics
                 _teamNameText.text = ConvertEnumToString.Convert<Team>(spectatorDriverData.ParticipantData.team);
                 _flagImage.sprite = FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);

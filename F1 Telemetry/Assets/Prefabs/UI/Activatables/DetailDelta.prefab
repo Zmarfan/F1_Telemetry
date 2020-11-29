@@ -85,8 +85,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 73.1, y: -25.1}
-  m_SizeDelta: {x: 895.18225, y: 243.54443}
+  m_AnchoredPosition: {x: 29.87, y: -25.1}
+  m_SizeDelta: {x: 606.973, y: 243.54443}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4032486156864493141
 CanvasRenderer:
@@ -120,7 +120,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: a3f8f965a70f0bc498cfbb23b8790c9b, type: 3}
     m_FontSize: 188
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 300
     m_Alignment: 3
@@ -129,7 +129,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.714
+  m_Text: 0.000
 --- !u!1 &973725308682795642
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4094cb8fb4f74744c9bfe193565de6fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 141a39ccd66c6cc41a4523ad67e58c1c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -452,7 +452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -36, y: 0}
+  m_AnchoredPosition: {x: -30.599976, y: 0}
   m_SizeDelta: {x: 1350, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2112659197585950051
@@ -646,7 +646,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 36.7, y: -68.72}
+  m_AnchoredPosition: {x: 29.5, y: -68.72}
   m_SizeDelta: {x: 895.18225, y: 125.170074}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3836152823360180351
@@ -958,7 +958,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 126e71ce0c7110147bb9274d744fca74, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0222620deef9cfc4d8e1518162c0f68f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1002,7 +1002,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 818, y: 6.1}
+  m_AnchoredPosition: {x: 809, y: 6.1}
   m_SizeDelta: {x: 120.945465, y: 64.57197}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &2852841134358723198
@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b74aaffdd41193a449996b95de091e13, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18578267077bc5547a41ef6e5267fa89, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1238,6 +1238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7201924231412175873}
+  - component: {fileID: 1547864675897278564}
   m_Layer: 5
   m_Name: DetailDelta
   m_TagString: Untagged
@@ -1265,6 +1266,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1547864675897278564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b060c8af2c61344bf1e2e9e689b5e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deltaText: {fileID: 3191611544717325293}
+  _driver1PositionText: {fileID: 338831956413947418}
+  _driver1NameText: {fileID: 8869804998710274634}
+  _driver1NumberText: {fileID: 5072899885461121026}
+  _driver1CarImage: {fileID: 2322003797430121956}
+  _driver1TeamImage: {fileID: 1892373075006083961}
+  _driver1PortraitImage: {fileID: 7443407802607350414}
+  _driver1TeamStripeImage: {fileID: 29421970887856059}
+  _driver2PositionText: {fileID: 3505861207595854057}
+  _driver2NameText: {fileID: 8646833144773336220}
+  _driver2NumberText: {fileID: 2869394774866707384}
+  _driver2CarImage: {fileID: 6586473152009034646}
+  _driver2TeamImage: {fileID: 70883901158364935}
+  _driver2PortraitImage: {fileID: 5142561250360994852}
+  _driver2TeamStripeImage: {fileID: 2321122600646075971}
 --- !u!1 &4179267552367285680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,7 +1471,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b74aaffdd41193a449996b95de091e13, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18578267077bc5547a41ef6e5267fa89, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1982,7 +2010,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 126e71ce0c7110147bb9274d744fca74, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0222620deef9cfc4d8e1518162c0f68f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2228,7 +2256,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4094cb8fb4f74744c9bfe193565de6fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 141a39ccd66c6cc41a4523ad67e58c1c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
