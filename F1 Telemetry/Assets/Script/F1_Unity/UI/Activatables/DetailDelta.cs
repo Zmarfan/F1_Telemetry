@@ -8,7 +8,9 @@ namespace F1_Unity
 {
     public class DetailDelta : MonoBehaviour
     {
+        [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField] Text _deltaText;
+        [SerializeField] string _defaultDeltaString = "---";
         //Only used to get Delta as it is calculated and stored there -> no need to calculate again
         [SerializeField] DriverTemplate[] _driverTemplates;
 
@@ -44,26 +46,42 @@ namespace F1_Unity
 
         void UpdateDriverDelta()
         {
-            DriverData d2Data = GameManager.F1Info.ReadSpectatingCarData(out bool status1);
+            bool status1 = false;
+            bool status2 = false;
+            DriverData d2Data = GameManager.F1Info.ReadSpectatingCarData(out status1);
 
             if (status1)
             {
                 //Getting driverData of driver in front of spectating car
-                DriverData d1Data = DriverDataManager.GetDriverFromPosition(d2Data.LapData.carPosition - 1, out bool status2);
-                //Both contain valid data now
-                if (status2)
+                if (d2Data.LapData.carPosition - 2 >= 0)
                 {
+                    status2 = true;
+                    DriverData d1Data = _driverTemplates[d2Data.LapData.carPosition - 2].DriverData;
+
                     //Not showing correct driver info -> fix that
                     if (_driver1ID != d1Data.ID || _driver2ID != d2Data.ID)
                     {
                         _driver1ID = d1Data.ID;
                         _driver2ID = d2Data.ID;
-                        SetVisuals(d2Data, _driver1PositionText, _driver1NameText, _driver1NumberText, _driver1CarImage, _driver1TeamImage, _driver1PortraitImage, _driver1TeamStripeImage);
-                        SetVisuals(d1Data, _driver2PositionText, _driver2NameText, _driver2NumberText, _driver2CarImage, _driver2TeamImage, _driver2PortraitImage, _driver2TeamStripeImage);
+                        SetVisuals(d1Data, _driver1PositionText, _driver1NameText, _driver1NumberText, _driver1CarImage, _driver1TeamImage, _driver1PortraitImage, _driver1TeamStripeImage);
+                        SetVisuals(d2Data, _driver2PositionText, _driver2NameText, _driver2NumberText, _driver2CarImage, _driver2TeamImage, _driver2PortraitImage, _driver2TeamStripeImage);
                     }
                     UpdateDelta(d2Data.LapData.carPosition - 1);
                 }
             }
+
+            if (status1 && status2)
+                Show(true);
+            else
+                Show(false);
+        }
+
+        /// <summary>
+        /// If there is no valid data to look at -> Don't show any
+        /// </summary>
+        void Show(bool active)
+        {
+            _canvasGroup.alpha = active ? 1.0f : 0.0f;
         }
 
         /// <summary>
@@ -71,22 +89,29 @@ namespace F1_Unity
         /// </summary>
         void UpdateDelta(int index)
         {
-            TimeSpan span = new System.TimeSpan((long)_driverTemplates[index].DeltaToCarInFront);
-            StringBuilder builder = new System.Text.StringBuilder();
-
-            if (span.Minutes > 0)
+            //We don't want to set anything if the delta isn't yet correct
+            if (_driverTemplates[index].TimeState != DriverTimeState.Starting)
             {
-                builder.Append(span.Minutes);
-                builder.Append(':');
-                builder.Append(span.Seconds.ToString("0#")); //Start with zero if one digit long
+                TimeSpan span = TimeSpan.FromSeconds(_driverTemplates[index].DeltaToCarInFront);
+
+                StringBuilder builder = new StringBuilder();
+
+                if (span.Minutes > 0)
+                {
+                    builder.Append(span.Minutes);
+                    builder.Append(':');
+                    builder.Append(span.Seconds.ToString("0#")); //Start with zero if one digit long
+                }
+                else
+                    builder.Append(span.Seconds);
+
+                builder.Append('.');
+                builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
+
+                _deltaText.text = builder.ToString();
             }
             else
-                builder.Append(span.Seconds);
-
-            builder.Append('.');
-            builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
-
-            _deltaText.text = builder.ToString();
+                _deltaText.text = _defaultDeltaString;
         }
 
         /// <summary>

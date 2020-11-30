@@ -19,8 +19,6 @@ namespace F1_Unity
         [SerializeField] Text _time;
         [SerializeField] Image _teamImage;
 
-        [SerializeField] Sprite[] _teamSprites;   //They are in same order as Team enum -> last one is for everything other than 10 main teams
-
         /// <summary>
         /// Init fastest lap with correct settings. time in seconds is converted to display format
         /// </summary>
@@ -34,13 +32,13 @@ namespace F1_Unity
             bool status;
             DriverData data = GameManager.F1Info.ReadCarData(fastestLapPacket.VehicleIndex, out status);
             string fullName = string.Empty;
-            Team team = Team.My_Team_Or_Unknown;
+            Sprite teamSprite = ParticipantManager.GetTeamSprite(Team.My_Team_Or_Unknown);
 
             //If data is valid (99.99 % of the time it is valid but hey for that 0.01 boi :3)
             if (status)
             {
                 fullName = ParticipantManager.GetNameFromNumber(data.RaceNumber);
-                team = data.ParticipantData.team;
+                teamSprite = ParticipantManager.GetTeamSprite(data.ParticipantData.team);
             }
             
             float time = fastestLapPacket.LapTime;
@@ -48,12 +46,7 @@ namespace F1_Unity
             InitTime(time);
             InitName(fullName);
 
-            //Team is in sprite list (official F1 team)
-            if ((int)team < _teamSprites.Length - 1)
-                _teamImage.sprite = _teamSprites[(int)team];
-            //Set to default F1 sprite if other team
-            else
-                _teamImage.sprite = _teamSprites[_teamSprites.Length - 1];
+            _teamImage.sprite = teamSprite;
         }
 
         /// <summary>

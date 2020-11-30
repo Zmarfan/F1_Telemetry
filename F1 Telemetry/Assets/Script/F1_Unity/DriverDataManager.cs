@@ -41,8 +41,8 @@ namespace F1_Unity
 
         private void Update()
         {
-            if (GameManager.F1Info.ReadyToReadFrom)
-                UpdatePositionToData();
+            //if (GameManager.F1Info.ReadyToReadFrom)
+            //    UpdatePositionToData();
         }
 
         /// <summary>

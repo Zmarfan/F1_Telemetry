@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -137.5, y: -49.85}
+  m_AnchoredPosition: {x: -97.7, y: -49.85}
   m_SizeDelta: {x: 375, y: 174.70535}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2883214088159583302
@@ -1278,7 +1278,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b060c8af2c61344bf1e2e9e689b5e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 4182913167844052371}
   _deltaText: {fileID: 3191611544717325293}
+  _driverTemplates:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _driver1PositionText: {fileID: 338831956413947418}
   _driver1NameText: {fileID: 8869804998710274634}
   _driver1NumberText: {fileID: 5072899885461121026}
@@ -1928,7 +1952,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 137.5, y: -49.853}
+  m_AnchoredPosition: {x: 114, y: -49.853}
   m_SizeDelta: {x: 375, y: 174.70535}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2101225122197282287
