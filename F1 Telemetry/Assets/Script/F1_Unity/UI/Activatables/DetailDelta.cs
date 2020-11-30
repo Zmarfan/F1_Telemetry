@@ -8,9 +8,18 @@ namespace F1_Unity
 {
     public class DetailDelta : MonoBehaviour
     {
-        [SerializeField] CanvasGroup _canvasGroup;
-        [SerializeField] Text _deltaText;
+        [Header("Settings")]
+
+        [SerializeField, Range(0.01f, 10f)] float _timeBetweenDeltaUpdates = 1.0f; 
         [SerializeField] string _defaultDeltaString = "---";
+        [SerializeField] Color _startingDeltaColor = Color.grey;
+        [SerializeField] Color _slowerColor = Color.red;
+        [SerializeField] Color _fasterColor = Color.green;
+
+        [Header("Drop")]
+
+        [SerializeField] Text _deltaText;
+        [SerializeField] CanvasGroup _canvasGroup;
         //Only used to get Delta as it is calculated and stored there -> no need to calculate again
         [SerializeField] DriverTemplate[] _driverTemplates;
 
@@ -38,6 +47,14 @@ namespace F1_Unity
         byte _driver1ID = byte.MaxValue;
         byte _driver2ID = byte.MaxValue;
 
+        Timer _deltaTimer;
+        float _lastDelta;
+
+        private void Awake()
+        {
+            _deltaTimer = new Timer(_timeBetweenDeltaUpdates);
+        }
+
         private void Update()
         {
             if (GameManager.F1Info.ReadyToReadFrom)
@@ -46,6 +63,8 @@ namespace F1_Unity
 
         void UpdateDriverDelta()
         {
+            _deltaTimer.Time += Time.deltaTime;
+
             bool status1 = false;
             bool status2 = false;
             DriverData d2Data = GameManager.F1Info.ReadSpectatingCarData(out status1);
@@ -57,16 +76,15 @@ namespace F1_Unity
                 {
                     status2 = true;
                     DriverData d1Data = _driverTemplates[d2Data.LapData.carPosition - 2].DriverData;
-
-                    //Not showing correct driver info -> fix that
-                    if (_driver1ID != d1Data.ID || _driver2ID != d2Data.ID)
-                    {
-                        _driver1ID = d1Data.ID;
-                        _driver2ID = d2Data.ID;
-                        SetVisuals(d1Data, _driver1PositionText, _driver1NameText, _driver1NumberText, _driver1CarImage, _driver1TeamImage, _driver1PortraitImage, _driver1TeamStripeImage);
-                        SetVisuals(d2Data, _driver2PositionText, _driver2NameText, _driver2NumberText, _driver2CarImage, _driver2TeamImage, _driver2PortraitImage, _driver2TeamStripeImage);
-                    }
-                    UpdateDelta(d2Data.LapData.carPosition - 1);
+                    SetData(d1Data, d2Data, d2Data.LapData.carPosition - 1);
+                }
+                //It's the leader
+                else
+                {
+                    status2 = true;
+                    //Read car behind spectator if he is leading
+                    DriverData d1Data = _driverTemplates[d2Data.LapData.carPosition].DriverData;
+                    SetData(d2Data, d1Data, d2Data.LapData.carPosition);
                 }
             }
 
@@ -74,6 +92,26 @@ namespace F1_Unity
                 Show(true);
             else
                 Show(false);
+        }
+
+        /// <summary>
+        /// Sets delta and driver details if needed.
+        /// </summary>
+        void SetData(DriverData d1Data, DriverData d2Data, int deltaIndex)
+        {
+            //Not showing correct driver info -> fix that
+            if (_driver1ID != d1Data.ID || _driver2ID != d2Data.ID)
+            {
+                _driver1ID = d1Data.ID;
+                _driver2ID = d2Data.ID;
+                SetVisuals(d1Data, _driver1PositionText, _driver1NameText, _driver1NumberText, _driver1CarImage, _driver1TeamImage, _driver1PortraitImage, _driver1TeamStripeImage);
+                SetVisuals(d2Data, _driver2PositionText, _driver2NameText, _driver2NumberText, _driver2CarImage, _driver2TeamImage, _driver2PortraitImage, _driver2TeamStripeImage);
+
+                UpdateDelta(deltaIndex);
+            }
+
+            if (_deltaTimer.Expired())
+                UpdateDelta(deltaIndex);
         }
 
         /// <summary>
@@ -89,10 +127,14 @@ namespace F1_Unity
         /// </summary>
         void UpdateDelta(int index)
         {
+            _deltaTimer.Reset();
+
             //We don't want to set anything if the delta isn't yet correct
-            if (_driverTemplates[index].TimeState != DriverTimeState.Starting)
+            DriverTimeState state = _driverTemplates[index].TimeState;
+            if (state != DriverTimeState.Starting && state != DriverTimeState.Pit && state != DriverTimeState.Pit_Area && state != DriverTimeState.Lapped)
             {
-                TimeSpan span = TimeSpan.FromSeconds(_driverTemplates[index].DeltaToCarInFront);
+                float delta = _driverTemplates[index].DeltaToCarInFront;
+                TimeSpan span = TimeSpan.FromSeconds(delta);
 
                 StringBuilder builder = new StringBuilder();
 
@@ -109,9 +151,17 @@ namespace F1_Unity
                 builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
 
                 _deltaText.text = builder.ToString();
+
+                //Color
+                _deltaText.color = delta > _lastDelta ? _slowerColor : _fasterColor;
+
+                _lastDelta = delta;
             }
             else
+            {
+                _deltaText.color = _startingDeltaColor;
                 _deltaText.text = _defaultDeltaString;
+            }
         }
 
         /// <summary>

@@ -1278,8 +1278,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b060c8af2c61344bf1e2e9e689b5e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 4182913167844052371}
+  _timeBetweenDeltaUpdates: 1.75
+  _defaultDeltaString: -------
+  _startingDeltaColor: {r: 0.675, g: 0.675, b: 0.675, a: 1}
+  _slowerColor: {r: 0.8039216, g: 0.31372547, b: 0.31372547, a: 1}
+  _fasterColor: {r: 0.3137255, g: 0.8039216, b: 0.32941177, a: 1}
   _deltaText: {fileID: 3191611544717325293}
+  _canvasGroup: {fileID: 4182913167844052371}
   _driverTemplates:
   - {fileID: 0}
   - {fileID: 0}
