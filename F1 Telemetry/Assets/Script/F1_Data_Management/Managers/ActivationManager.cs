@@ -8,12 +8,14 @@ namespace F1_Unity
         [SerializeField] GameObject _liveSpeed;
         [SerializeField] TimingScreen _timingScreen;
         [SerializeField] GameObject _driverName;
+        [SerializeField] GameObject _detailDelta;
 
         private void OnEnable()
         {
             InputManager.PressedToggleAll += ToggleAll;
             InputManager.PressedToggleLiveSpeed += ToggleLiveSpeed;
             InputManager.PressedToggleDriverName += ToggleDriverName;
+            InputManager.PressedToggleDetailDelta += ToggleDetailDelta;
         }
 
         private void OnDisable()
@@ -21,6 +23,7 @@ namespace F1_Unity
             InputManager.PressedToggleAll -= ToggleAll;
             InputManager.PressedToggleLiveSpeed -= ToggleLiveSpeed;
             InputManager.PressedToggleDriverName -= ToggleDriverName;
+            InputManager.PressedToggleDetailDelta -= ToggleDetailDelta;
         }
 
         void ToggleAll()
@@ -30,6 +33,17 @@ namespace F1_Unity
             _timingScreen.SetActive(current);
         }
         void ToggleLiveSpeed() { _liveSpeed.SetActive(!_liveSpeed.activeSelf); }
-        void ToggleDriverName() { _driverName.SetActive(!_driverName.activeSelf); }
+
+        void ToggleDriverName()
+        {
+            _driverName.SetActive(!_driverName.activeSelf);
+            _detailDelta.SetActive(false);
+        }
+
+        void ToggleDetailDelta()
+        {
+            _detailDelta.SetActive(!_detailDelta.activeSelf);
+            _driverName.SetActive(false);
+        }
     }
 }
