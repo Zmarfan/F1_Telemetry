@@ -498,6 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a07856f135f03449f178488c1b3417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 4182913167844052371}
   _raceNumberColorAlpha: 0.45
   _positionText: {fileID: 338831956413947418}
   _teamColorImage: {fileID: 29421970887856059}

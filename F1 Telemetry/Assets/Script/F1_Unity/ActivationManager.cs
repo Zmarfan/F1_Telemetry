@@ -10,6 +10,7 @@ namespace F1_Unity
         [SerializeField] GameObject _driverName;
         [SerializeField] GameObject _detailDelta;
         [SerializeField] GameObject _tyreWear;
+        [SerializeField] GameObject _speedCompare;
 
         private void OnEnable()
         {
@@ -18,6 +19,7 @@ namespace F1_Unity
             InputManager.PressedToggleDriverName += ToggleDriverName;
             InputManager.PressedToggleDetailDelta += ToggleDetailDelta;
             InputManager.PressedToggleTyreWear += ToggleTyreWear;
+            InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
         }
 
         private void OnDisable()
@@ -27,6 +29,7 @@ namespace F1_Unity
             InputManager.PressedToggleDriverName -= ToggleDriverName;
             InputManager.PressedToggleDetailDelta -= ToggleDetailDelta;
             InputManager.PressedToggleTyreWear -= ToggleTyreWear;
+            InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
         }
 
         void ToggleAll()
@@ -46,18 +49,27 @@ namespace F1_Unity
         {
             _driverName.SetActive(!_driverName.activeSelf);
             _detailDelta.SetActive(false);
+            _speedCompare.SetActive(false);
         }
 
         void ToggleDetailDelta()
         {
             _detailDelta.SetActive(!_detailDelta.activeSelf);
             _driverName.SetActive(false);
+            _speedCompare.SetActive(false);
         }
 
         void ToggleTyreWear()
         {
             _tyreWear.SetActive(!_tyreWear.activeSelf);
             _liveSpeed.SetActive(false);
+        }
+
+        void ToggleSpeedCompare()
+        {
+            _speedCompare.SetActive(!_speedCompare.activeSelf);
+            _driverName.SetActive(false);
+            _detailDelta.SetActive(false);
         }
     }
 }

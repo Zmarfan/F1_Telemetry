@@ -91,5 +91,6 @@
         Welsh,
         Barbadian,
         Vietnamese,
+        Taiwanese
     }
 }

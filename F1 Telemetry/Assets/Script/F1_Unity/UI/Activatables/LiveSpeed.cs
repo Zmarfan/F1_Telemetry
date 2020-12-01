@@ -6,8 +6,6 @@ namespace F1_Unity
 {
     public class LiveSpeed : MonoBehaviour
     {
-        public const float CONVERT_KMH_TO_MPH = 0.621371192f;
-
         [SerializeField] UnityEngine.Color _slowColor;
         [SerializeField] UnityEngine.Color _fastColor;
         [SerializeField] int _transitionToFastColorSpeedKMH = 200;
@@ -56,18 +54,16 @@ namespace F1_Unity
             if (status)
             {
                 //Speed is in kmh so convert to mph as well
-                float preciseSpeedInKMH = spectatorDriverData.TelemetryData.speed;
-                float preciseSpeedInMPH = preciseSpeedInKMH * CONVERT_KMH_TO_MPH;
+                ushort speedInKMH = spectatorDriverData.TelemetryData.speed;
+                ushort speedInMPH = (ushort)(speedInKMH * Constants.CONVERT_KMH_TO_MPH);
 
-                int showSpeedKMH = (int)(preciseSpeedInKMH + 0.5f);
-                int showSpeedMPH = (int)(preciseSpeedInMPH + 0.5f);
 
-                _kmhSpeedText.text = showSpeedKMH.ToString();
-                _mphSpeedText.text = showSpeedMPH.ToString();
+                _kmhSpeedText.text = speedInKMH.ToString();
+                _mphSpeedText.text = speedInMPH.ToString();
 
                 _driverText.text = ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber).ToUpper();
 
-                SetColor(showSpeedKMH);
+                SetColor(speedInKMH);
             }
         }
 
