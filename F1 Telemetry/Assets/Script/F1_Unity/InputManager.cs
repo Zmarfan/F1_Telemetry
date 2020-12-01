@@ -19,6 +19,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleAll;
         public static event InputPressedDown PressedToggleDriverName;
         public static event InputPressedDown PressedToggleDetailDelta;
+        public static event InputPressedDown PressedToggleTyreWear;
 
         private void Awake()
         {
@@ -38,8 +39,10 @@ namespace F1_Unity
                 PressedToggleDetailDelta?.Invoke();
             if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))    //L
                 PressedToggleLiveSpeed?.Invoke();
+            if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))     //K
+                PressedToggleTyreWear?.Invoke();
             if (Input.GetButtonDown(InputKeywords.TOGGLE_ALL))    //M
-                PressedToggleAll?.Invoke(); 
+                PressedToggleAll?.Invoke();
         }
 
     }

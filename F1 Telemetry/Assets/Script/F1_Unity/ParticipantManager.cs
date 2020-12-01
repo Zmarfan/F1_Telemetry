@@ -27,12 +27,14 @@ namespace F1_Unity
         [SerializeField] NumberSpriteStruct[] _numberPortraitList;
         [SerializeField] TeamSpriteStruct[] _teamSpriteList;
         [SerializeField] TeamSpriteStruct[] _carSpriteList;
+        [SerializeField] VisualCompoundSpriteStruct[] _visualTyreCompounds;
 
         static ParticipantManager _singleton;
         static Dictionary<byte, string> _namesByRaceNumber = new Dictionary<byte, string>();
         static Dictionary<byte, Sprite> _portraitByRaceNumber = new Dictionary<byte, Sprite>();
         static Dictionary<Team, Sprite> _teamSpriteByTeam = new Dictionary<Team, Sprite>();
         static Dictionary<Team, Sprite> _carSpriteByTeam = new Dictionary<Team, Sprite>();
+        static Dictionary<VisualTyreCompound, Sprite> _visualTyreCompoundSpriteByEnum = new Dictionary<VisualTyreCompound, Sprite>();
 
         private void Awake()
         {
@@ -59,6 +61,9 @@ namespace F1_Unity
 
             for (int i = 0; i < _carSpriteList.Length; i++)
                 _carSpriteByTeam.Add(_carSpriteList[i].team, _carSpriteList[i].sprite);
+
+            for (int i = 0; i < _visualTyreCompounds.Length; i++)
+                _visualTyreCompoundSpriteByEnum.Add(_visualTyreCompounds[i].compound, _visualTyreCompounds[i].sprite);
         }
 
         /// <summary>
@@ -123,6 +128,14 @@ namespace F1_Unity
                 return initials.ToUpper();
         }
 
+        /// <summary>
+        /// Returns sprite of visual tyre compound.
+        /// </summary>
+        public static Sprite GetVisualTyreCompoundSprite(VisualTyreCompound visualTyreCompound)
+        {
+            return _visualTyreCompoundSpriteByEnum[visualTyreCompound];
+        }
+
         [System.Serializable]
         public struct NumberNameStruct
         {
@@ -141,6 +154,13 @@ namespace F1_Unity
         public struct TeamSpriteStruct
         {
             public Team team;
+            public Sprite sprite;
+        }
+
+        [System.Serializable]
+        public struct VisualCompoundSpriteStruct
+        {
+            public VisualTyreCompound compound;
             public Sprite sprite;
         }
     }
