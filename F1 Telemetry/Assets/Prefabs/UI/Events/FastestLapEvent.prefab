@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: STROLL
+  m_Text: Last_Name
 --- !u!1 &1100837755365860301
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1.55.125
+  m_Text: 0.00.000
 --- !u!1 &1100837755489637965
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,18 +348,6 @@ MonoBehaviour:
   _oneNameText: {fileID: 4624181276131289304}
   _time: {fileID: 1100837755365859891}
   _teamImage: {fileID: 1100837756822582455}
-  _teamSprites:
-  - {fileID: 21300000, guid: 31bdbddca76ac11499033e0750be781f, type: 3}
-  - {fileID: 21300000, guid: 8091d018b48a1c243855f76711258698, type: 3}
-  - {fileID: 21300000, guid: 85bd90488c3e2e44fbc5c399dc877f5e, type: 3}
-  - {fileID: 21300000, guid: 71fcee5482892184f9b9a7681e030c20, type: 3}
-  - {fileID: 21300000, guid: f792fd84e2911e641b8b719e5b8935b9, type: 3}
-  - {fileID: 21300000, guid: 10d7a2cf390b1bf4abd25066cc2cec50, type: 3}
-  - {fileID: 21300000, guid: a982f96569e50424a8f19dc105ab958c, type: 3}
-  - {fileID: 21300000, guid: b74aaffdd41193a449996b95de091e13, type: 3}
-  - {fileID: 21300000, guid: b46a29bec25fc654ea8eb93d1ba435fb, type: 3}
-  - {fileID: 21300000, guid: 6d2ca0ba3b9f8ba488a1b09b16f1c744, type: 3}
-  - {fileID: 21300000, guid: 18578267077bc5547a41ef6e5267fa89, type: 3}
 --- !u!1 &1100837756106909074
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,7 +689,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Lance
+  m_Text: First_Name
 --- !u!1 &1100837756822582448
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +756,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f792fd84e2911e641b8b719e5b8935b9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18578267077bc5547a41ef6e5267fa89, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.124457106, g: 0.124457106, b: 0.1509434, a: 0.9529412}
+  m_Color: {r: 0.049875416, g: 0.049875416, b: 0.05660379, a: 0.9529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -442,7 +442,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 191.1
+  m_Text: 0
 --- !u!1 &4137811850501173954
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +651,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LORD_ZMARFAN
+  m_Text: DRIVER_NAME
 --- !u!1 &6402449549114242712
 GameObject:
   m_ObjectHideFlags: 0

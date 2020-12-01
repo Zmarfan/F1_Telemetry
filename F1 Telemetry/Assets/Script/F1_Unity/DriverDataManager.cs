@@ -41,8 +41,8 @@ namespace F1_Unity
 
         private void Update()
         {
-            //if (GameManager.F1Info.ReadyToReadFrom)
-            //    UpdatePositionToData();
+            if (GameManager.F1Info.ReadyToReadFrom)
+                UpdatePositionToData();
         }
 
         /// <summary>
@@ -50,6 +50,7 @@ namespace F1_Unity
         /// </summary>
         void UpdatePositionToData()
         {
+            _positionToData.Clear();
             for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
                 DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool status);

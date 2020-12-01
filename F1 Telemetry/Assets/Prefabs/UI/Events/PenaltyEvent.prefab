@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 17, y: 0}
+  m_AnchoredPosition: {x: 20.4, y: 0}
   m_SizeDelta: {x: 780.9869, y: 124.917404}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1100837754780938168
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: STROLL
+  m_Text: Last_Name
 --- !u!1 &1100837755489637965
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,9 +208,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'TIME
+  m_Text: 'PENALTY
 
-    PENALTY'
+    TYPE'
 --- !u!1 &1100837755855285560
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +580,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Lance
+  m_Text: First_Name
 --- !u!1 &3379097109712669960
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,7 +735,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Corner Cutting
+  m_Text: Offence_Type
 --- !u!1 &4847150462314100434
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,7 +814,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +5
+  m_Text: +00
 --- !u!1 &5513867427234239499
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +893,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: LORD_ZMARFAN
+  m_Text: Driver_Name
 --- !u!1 &5623893261955019987
 GameObject:
   m_ObjectHideFlags: 0

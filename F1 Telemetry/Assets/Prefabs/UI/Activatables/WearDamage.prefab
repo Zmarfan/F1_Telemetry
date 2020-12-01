@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 6013756220927311033}
   - component: {fileID: 306897483175038725}
   - component: {fileID: 8189848091537627850}
+  - component: {fileID: 2843868534602984882}
   m_Layer: 5
   m_Name: TyreText
   m_TagString: Untagged
@@ -103,14 +104,15 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_Children: []
+  m_Children:
+  - {fileID: 5949153286563094380}
   m_Father: {fileID: 2093383414155200542}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -32.9, y: -185.79999}
-  m_SizeDelta: {x: 477.06226, y: 242.21387}
+  m_AnchoredPosition: {x: 23.9, y: -185.79999}
+  m_SizeDelta: {x: 0, y: 242.21387}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &306897483175038725
 CanvasRenderer:
@@ -147,13 +149,27 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 55
-    m_Alignment: 2
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: MEDIUM
+  m_Text: Tyre_Type
+--- !u!114 &2843868534602984882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808322723190968224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &1035719930366082444
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,7 +713,6 @@ RectTransform:
   - {fileID: 7980632393597711702}
   - {fileID: 5510884778055958838}
   - {fileID: 6013756220927311033}
-  - {fileID: 5949153286563094380}
   - {fileID: 2744877981891122866}
   m_Father: {fileID: 7686429341758283158}
   m_RootOrder: 1
@@ -984,7 +999,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2093383414155200542}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1672,18 +1687,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7870713084799441866}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
-  m_Father: {fileID: 2093383414155200542}
-  m_RootOrder: 4
+  m_Father: {fileID: 6013756220927311033}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -73.7, y: -138}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: -96, y: 96}
   m_SizeDelta: {x: 63.413025, y: 41.306503}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6443046742931795724
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1712,7 +1727,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b14d73d449570a149af44227fd64d50a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: da6e603a3c7c85145872f326a6935772, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

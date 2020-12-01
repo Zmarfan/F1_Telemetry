@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LORD_ZMARFAN RETIRED
+  m_Text: DRIVER_NAME RETIRED
 --- !u!1 &2294501903661818364
 GameObject:
   m_ObjectHideFlags: 0
