@@ -81,8 +81,6 @@ namespace F1_Unity
 
         void ToggleLocation()
         {
-            _location.SetActive(!_location.activeSelf);
-            //Update values when accessing it -> No need for it to poll
             _location.GetComponent<Location>().Init();
         }
     }
