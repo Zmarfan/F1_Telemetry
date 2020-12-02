@@ -21,6 +21,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleDetailDelta;
         public static event InputPressedDown PressedToggleTyreWear;
         public static event InputPressedDown PressedToggleSpeedCompare;
+        public static event InputPressedDown PressedToggleLocation;
 
         private void Awake()
         {
@@ -46,6 +47,8 @@ namespace F1_Unity
                 PressedToggleAll?.Invoke();
             if (Input.GetButtonDown(InputKeywords.SPEED_COMPARE)) //U
                 PressedToggleSpeedCompare?.Invoke();
+            if (Input.GetButtonDown(InputKeywords.LOCATION))      //I
+                PressedToggleLocation?.Invoke();
         }
 
     }

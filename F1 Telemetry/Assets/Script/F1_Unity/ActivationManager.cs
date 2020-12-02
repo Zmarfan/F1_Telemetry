@@ -4,6 +4,10 @@ namespace F1_Unity
 {
     public class ActivationManager : MonoBehaviour
     {
+        [Header("Drop")]
+
+        [SerializeField] Transform _canvas;
+
         [SerializeField] GameObject _all;
         [SerializeField] GameObject _liveSpeed;
         [SerializeField] TimingScreen _timingScreen;
@@ -11,6 +15,7 @@ namespace F1_Unity
         [SerializeField] GameObject _detailDelta;
         [SerializeField] GameObject _tyreWear;
         [SerializeField] GameObject _speedCompare;
+        [SerializeField] GameObject _location;
 
         private void OnEnable()
         {
@@ -20,6 +25,7 @@ namespace F1_Unity
             InputManager.PressedToggleDetailDelta += ToggleDetailDelta;
             InputManager.PressedToggleTyreWear += ToggleTyreWear;
             InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
+            InputManager.PressedToggleLocation += ToggleLocation;
         }
 
         private void OnDisable()
@@ -30,6 +36,7 @@ namespace F1_Unity
             InputManager.PressedToggleDetailDelta -= ToggleDetailDelta;
             InputManager.PressedToggleTyreWear -= ToggleTyreWear;
             InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
+            InputManager.PressedToggleLocation -= ToggleLocation;
         }
 
         void ToggleAll()
@@ -70,6 +77,13 @@ namespace F1_Unity
             _speedCompare.SetActive(!_speedCompare.activeSelf);
             _driverName.SetActive(false);
             _detailDelta.SetActive(false);
+        }
+
+        void ToggleLocation()
+        {
+            _location.SetActive(!_location.activeSelf);
+            //Update values when accessing it -> No need for it to poll
+            _location.GetComponent<Location>().Init();
         }
     }
 }

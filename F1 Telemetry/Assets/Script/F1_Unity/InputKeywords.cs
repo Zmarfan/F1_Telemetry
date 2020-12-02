@@ -9,5 +9,6 @@
         public static readonly string DETAIL_DELTA = "DetailDelta";
         public static readonly string TYRE_WEAR = "TyreWear";
         public static readonly string SPEED_COMPARE = "SpeedCompare";
+        public static readonly string LOCATION = "Location";
     }
 }

@@ -6,8 +6,8 @@ namespace F1_Unity
 {
     public class LiveSpeed : MonoBehaviour
     {
-        [SerializeField] UnityEngine.Color _slowColor;
-        [SerializeField] UnityEngine.Color _fastColor;
+        [SerializeField] Color _slowColor;
+        [SerializeField] Color _fastColor;
         [SerializeField] int _transitionToFastColorSpeedKMH = 200;
 
         [SerializeField] Text _driverText;

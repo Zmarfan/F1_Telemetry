@@ -327,7 +327,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 693828112918817770, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
+    - target: {fileID: 2536049597505525152, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099089162439253608, guid: c26afea24ca397546a2644a9a027fbe4, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}

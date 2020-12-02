@@ -14,10 +14,12 @@
         public Session GetSessionDataCopy(out bool status)
         {
             status = ReadyToReadFrom;
-
             Session copy = new Session();
             //Copies all by value data
             copy = SessionData;
+            //If it's not ready to be read -> return junk
+            if (!status)
+                return copy;
 
             //Hard copies all by reference data
             MarshalZone[] copyMarshalZone = new MarshalZone[SessionData.MarshalZones.Length];
