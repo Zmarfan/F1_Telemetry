@@ -13,6 +13,7 @@ namespace F1_Unity
         [Header("Drop")]
 
         [SerializeField] CanvasGroup _canvasGroup;
+        [SerializeField] DriverTemplate[] _driverTemplates;
 
         [Header("Display")]
 
@@ -39,7 +40,28 @@ namespace F1_Unity
         [SerializeField] Slider _brakeHandleSlider;
         [SerializeField] Image _rpmBackground;
 
+        [Header("Timing")]
+
+        [SerializeField] GameObject _driverAheadTiming;
+        [SerializeField] Text _driverAheadPositionText;
+        [SerializeField] Image _driverAheadTeamColor;
+        [SerializeField] Text _driverAheadNameText;
+        [SerializeField] Text _driverAheadDeltaText;
+
+        [SerializeField] GameObject _driverBehindTiming;
+        [SerializeField] Text _driverBehindPositionText;
+        [SerializeField] Image _driverBehindTeamColor;
+        [SerializeField] Text _driverBehindNameText;
+        [SerializeField] Text _driverBehindDeltaText;
+
+        [SerializeField] Text _driverPositionText;
+        [SerializeField] Image _driverTeamColor;
+        [SerializeField] Text _driverNameText;
+
+
         Timer _gForceTimer;
+        byte _driverAheadID = byte.MaxValue;
+        byte _driverBehindID = byte.MaxValue;
 
         private void Awake()
         {
@@ -67,6 +89,7 @@ namespace F1_Unity
                 Show(true);
                 UpdateSliders(driverData);
                 UpdateDisplay(driverData);
+                UpdateTiming(driverData);
                 if (_gForceTimer.Expired())
                     UpdateGForce(driverData);
             }
@@ -131,7 +154,7 @@ namespace F1_Unity
             //x -> side to side, y -> forward/backward
             Vector2 gForce = new Vector2(driverData.MotionData.gForceLateral, -driverData.MotionData.gForceLongitudinal);
             float gForceMagnitude = gForce.magnitude;
-            _gForceText.text = gForceMagnitude.ToString("#.0G").Replace(',', '.');
+            _gForceText.text = gForceMagnitude.ToString("0.0G").Replace(',', '.');
 
             //Visuals
             for (int i = 0; i < _gForceDirections.Length; i++)
@@ -160,6 +183,38 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Sets the timing visuals in Halo Hud with data from timing screen
+        /// </summary>
+        void UpdateTiming(DriverData driverData)
+        {
+            DriverData infront = DriverDataManager.GetDriverFromPosition(driverData.LapData.carPosition - 1, out bool infrontStatus);
+            DriverData behind = DriverDataManager.GetDriverFromPosition(driverData.LapData.carPosition + 1, out bool behindStatus);
+            UpdateDriver(_driverAheadTiming, infront.LapData.carPosition, TeamColor.GetColorByTeam(infront.ParticipantData.team), ParticipantManager.GetDriverInitials(infront.RaceNumber), _driverAheadPositionText, _driverAheadTeamColor, _driverAheadNameText, infrontStatus);
+            UpdateDriver(null, driverData.LapData.carPosition, TeamColor.GetColorByTeam(driverData.ParticipantData.team), ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper(), _driverPositionText, _driverTeamColor, _driverNameText);
+            UpdateDriver(_driverBehindTiming, behind.LapData.carPosition, TeamColor.GetColorByTeam(behind.ParticipantData.team), ParticipantManager.GetDriverInitials(behind.RaceNumber), _driverBehindPositionText, _driverBehindTeamColor, _driverBehindNameText, behindStatus);
+
+            //Sets delta if possible -> copy from timing screen
+            if (infrontStatus)
+                //Set delta to show the spectating cars delta! -> replace + for - to show it's in front!
+                _driverAheadDeltaText.text = _driverTemplates[driverData.LapData.carPosition - 1].CurrentDelta.Replace('+', '-');
+            if (behindStatus)
+                _driverBehindDeltaText.text = _driverTemplates[behind.LapData.carPosition - 1].CurrentDelta;
+        }
+
+        /// <summary>
+        /// Sets the visuals for a driver in halo huds timing screen
+        /// </summary>
+        void UpdateDriver(GameObject container, byte position, Color teamColor, string name, Text positionText, Image teamColorImage, Text nameText, bool status = true)
+        {
+            if (container != null)
+                container.SetActive(status);
+
+            positionText.text = position.ToString();
+            teamColorImage.color = teamColor;
+            nameText.text = name;
+        }
+
+        /// <summary>
         /// Shows or hides the activatable
         /// </summary>
         void Show(bool status)
@@ -173,9 +228,6 @@ namespace F1_Unity
         [System.Serializable]
         public struct GForceDirection
         {
-            [Header("Only for debugging purpose")]
-            public string header;
-            [Header("Settings")]
             public Vector2 direction;
             public GameObject level0;
             public GameObject level1;

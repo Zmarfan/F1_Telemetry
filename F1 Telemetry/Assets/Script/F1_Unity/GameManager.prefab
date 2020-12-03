@@ -1059,6 +1059,102 @@ PrefabInstance:
       propertyPath: m_Name
       value: HaloHud
       objectReference: {fileID: 0}
+    - target: {fileID: 4876441119977646751, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.122284
+      objectReference: {fileID: 0}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.size
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[0]
+      value: 
+      objectReference: {fileID: 120465337188058156}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[1]
+      value: 
+      objectReference: {fileID: 8811939115378394049}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[2]
+      value: 
+      objectReference: {fileID: 6043401733553776111}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[3]
+      value: 
+      objectReference: {fileID: 2357362770528960563}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[4]
+      value: 
+      objectReference: {fileID: 3506701865443260614}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[5]
+      value: 
+      objectReference: {fileID: 4143829635419520298}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[6]
+      value: 
+      objectReference: {fileID: 7968086548189172988}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[7]
+      value: 
+      objectReference: {fileID: 4022235553513162934}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[8]
+      value: 
+      objectReference: {fileID: 4968156129096745037}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[9]
+      value: 
+      objectReference: {fileID: 1947377433463992458}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[10]
+      value: 
+      objectReference: {fileID: 2573573134070642097}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[11]
+      value: 
+      objectReference: {fileID: 5212268013551364280}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[12]
+      value: 
+      objectReference: {fileID: 7996553125826074234}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[13]
+      value: 
+      objectReference: {fileID: 2348580967969048938}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[14]
+      value: 
+      objectReference: {fileID: 6787480737458850148}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[15]
+      value: 
+      objectReference: {fileID: 8357964991056890038}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[16]
+      value: 
+      objectReference: {fileID: 6442225793879631873}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[17]
+      value: 
+      objectReference: {fileID: 3935687329923924993}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[18]
+      value: 
+      objectReference: {fileID: 6078271633897067880}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[19]
+      value: 
+      objectReference: {fileID: 2285881558530939914}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[20]
+      value: 
+      objectReference: {fileID: 5338119348193288105}
+    - target: {fileID: 7065090959410556596, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
+      propertyPath: _driverTemplates.Array.data[21]
+      value: 
+      objectReference: {fileID: 8223729147500143783}
     - target: {fileID: 7201924231412175873, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
