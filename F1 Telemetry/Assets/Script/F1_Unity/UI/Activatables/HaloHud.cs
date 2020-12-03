@@ -16,7 +16,13 @@ namespace F1_Unity
 
         [Header("Display")]
 
-        [SerializeField] float _highSpeedColorLimit = 300;
+        [SerializeField] Text _gForceText;
+        [SerializeField, Range(0.01f, 5f)] float _gForceUpdateRate = 0.25f;
+        [SerializeField] GForceDirection[] _gForceDirections;
+        [SerializeField, Range(0.0f, 100f)] float _level0GForceMinForce = 0.3f; 
+        [SerializeField, Range(0.0f, 100f)] float _level1GForceMinForce = 1.75f; 
+        [SerializeField, Range(0.0f, 100f)] float _level2GForceMinForce = 2.5f; 
+        [SerializeField, Range(0f, 500f)] float _highSpeedColorLimit = 300;
         [SerializeField] Color _slowSpeedColor = Color.white;
         [SerializeField] Color _highSpeedColor;
         [SerializeField] string _neutralText = "N";
@@ -32,6 +38,13 @@ namespace F1_Unity
         [SerializeField] Image _brakeBackground;
         [SerializeField] Slider _brakeHandleSlider;
         [SerializeField] Image _rpmBackground;
+
+        Timer _gForceTimer;
+
+        private void Awake()
+        {
+            _gForceTimer = new Timer(_gForceUpdateRate);
+        }
 
         private void Update()
         {
@@ -49,9 +62,13 @@ namespace F1_Unity
             DriverData driverData = GameManager.F1Info.ReadSpectatingCarData(out bool status);
             if (status)
             {
+                _gForceTimer.Time += Time.deltaTime;
+
                 Show(true);
                 UpdateSliders(driverData);
                 UpdateDisplay(driverData);
+                if (_gForceTimer.Expired())
+                    UpdateGForce(driverData);
             }
             else
                 Show(false);
@@ -105,11 +122,64 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Sets the G-force visuals for halo hud
+        /// </summary>
+        void UpdateGForce(DriverData driverData)
+        {
+            _gForceTimer.Reset();
+
+            //x -> side to side, y -> forward/backward
+            Vector2 gForce = new Vector2(driverData.MotionData.gForceLateral, -driverData.MotionData.gForceLongitudinal);
+            float gForceMagnitude = gForce.magnitude;
+            _gForceText.text = gForceMagnitude.ToString("#.0G").Replace(',', '.');
+
+            //Visuals
+            for (int i = 0; i < _gForceDirections.Length; i++)
+            {
+                bool level0 = false;
+                bool level1 = false;
+                bool level2 = false;
+                Vector2 direction = _gForceDirections[i].direction;
+                direction = direction.normalized * gForceMagnitude;
+
+                float dot = Vector3.Dot(direction.normalized, gForce.normalized);
+                //The force is along this direction in some form
+                if (dot >= 0)
+                {
+                    Vector2 projection = Vector3.Project(direction, gForce);
+                    float sqrMagnitude = projection.sqrMagnitude * dot * dot * dot;
+                    level0 = sqrMagnitude >= _level0GForceMinForce * _level0GForceMinForce;
+                    level1 = sqrMagnitude >= _level1GForceMinForce * _level1GForceMinForce;
+                    level2 = sqrMagnitude >= _level2GForceMinForce * _level2GForceMinForce;
+                }
+
+                _gForceDirections[i].level0.SetActive(level0);
+                _gForceDirections[i].level1.SetActive(level1);
+                _gForceDirections[i].level2.SetActive(level2);
+            }
+        }
+
+        /// <summary>
         /// Shows or hides the activatable
         /// </summary>
         void Show(bool status)
         {
             _canvasGroup.alpha = status ? 1.0f : 0.0f;
+        }
+
+        /// <summary>
+        /// Holds Vector of G-Force direction and the gameobjects affected by that direction
+        /// </summary>
+        [System.Serializable]
+        public struct GForceDirection
+        {
+            [Header("Only for debugging purpose")]
+            public string header;
+            [Header("Settings")]
+            public Vector2 direction;
+            public GameObject level0;
+            public GameObject level1;
+            public GameObject level2;
         }
     }
 }

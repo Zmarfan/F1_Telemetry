@@ -103,9 +103,18 @@
         public float worldRightDirectionY;
         public float worldRightDirectionZ;
 
-        public float gForceLateral;      //G-force negative when turning right, positive when turning left
-        public float gForceLongitudinal; //G-force negative when braking, positive when accelerating
-        public float gForceVertical;     //G-force negative when lift up, positive when pushed down (not entirely sure)
+        /// <summary>
+        /// G-force negative when turning right, positive when turning left
+        /// </summary>
+        public float gForceLateral;
+        /// <summary>
+        /// G-force negative when braking, positive when accelerating
+        /// </summary>
+        public float gForceLongitudinal;
+        /// <summary>
+        /// G-force negative when lift up, positive when pushed down (not entirely sure)
+        /// </summary>
+        public float gForceVertical;
         public float yaw;
         public float pitch;
         public float roll;

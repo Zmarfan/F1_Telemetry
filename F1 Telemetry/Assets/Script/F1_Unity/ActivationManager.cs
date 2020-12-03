@@ -16,6 +16,7 @@ namespace F1_Unity
         [SerializeField] GameObject _tyreWear;
         [SerializeField] GameObject _speedCompare;
         [SerializeField] GameObject _location;
+        [SerializeField] GameObject _haloHud;
 
         private void OnEnable()
         {
@@ -26,6 +27,7 @@ namespace F1_Unity
             InputManager.PressedToggleTyreWear += ToggleTyreWear;
             InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
             InputManager.PressedToggleLocation += ToggleLocation;
+            InputManager.PressedToggleHaloHud += ToggleHaloHud;
         }
 
         private void OnDisable()
@@ -37,6 +39,7 @@ namespace F1_Unity
             InputManager.PressedToggleTyreWear -= ToggleTyreWear;
             InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
             InputManager.PressedToggleLocation -= ToggleLocation;
+            InputManager.PressedToggleHaloHud -= ToggleHaloHud;
         }
 
         void ToggleAll()
@@ -82,6 +85,11 @@ namespace F1_Unity
         void ToggleLocation()
         {
             _location.GetComponent<Location>().Init();
+        }
+
+        void ToggleHaloHud()
+        {
+            _haloHud.SetActive(!_haloHud.activeSelf);
         }
     }
 }

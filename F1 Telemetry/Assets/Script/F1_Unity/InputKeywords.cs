@@ -10,5 +10,6 @@
         public static readonly string TYRE_WEAR = "TyreWear";
         public static readonly string SPEED_COMPARE = "SpeedCompare";
         public static readonly string LOCATION = "Location";
+        public static readonly string HALO_HUD = "HaloHud";
     }
 }
