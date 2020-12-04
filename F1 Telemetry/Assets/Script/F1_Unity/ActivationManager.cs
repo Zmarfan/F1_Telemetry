@@ -17,6 +17,7 @@ namespace F1_Unity
         [SerializeField] GameObject _speedCompare;
         [SerializeField] GameObject _location;
         [SerializeField] GameObject _haloHud;
+        [SerializeField] GameObject _lapComparision;
 
         private void OnEnable()
         {
@@ -28,6 +29,7 @@ namespace F1_Unity
             InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
             InputManager.PressedToggleLocation += ToggleLocation;
             InputManager.PressedToggleHaloHud += ToggleHaloHud;
+            InputManager.PressedToggleLapComparision += ToggleLapComparision;
         }
 
         private void OnDisable()
@@ -40,6 +42,7 @@ namespace F1_Unity
             InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
             InputManager.PressedToggleLocation -= ToggleLocation;
             InputManager.PressedToggleHaloHud -= ToggleHaloHud;
+            InputManager.PressedToggleLapComparision -= ToggleLapComparision;
         }
 
         void ToggleAll()
@@ -49,17 +52,12 @@ namespace F1_Unity
             _timingScreen.SetActive(current);
         }
 
-        void ToggleLiveSpeed()
-        {
-            _liveSpeed.SetActive(!_liveSpeed.activeSelf);
-            _tyreWear.SetActive(false);
-        }
-
         void ToggleDriverName()
         {
             _driverName.SetActive(!_driverName.activeSelf);
             _detailDelta.SetActive(false);
             _speedCompare.SetActive(false);
+            _lapComparision.SetActive(false);
         }
 
         void ToggleDetailDelta()
@@ -67,12 +65,7 @@ namespace F1_Unity
             _detailDelta.SetActive(!_detailDelta.activeSelf);
             _driverName.SetActive(false);
             _speedCompare.SetActive(false);
-        }
-
-        void ToggleTyreWear()
-        {
-            _tyreWear.SetActive(!_tyreWear.activeSelf);
-            _liveSpeed.SetActive(false);
+            _lapComparision.SetActive(false);
         }
 
         void ToggleSpeedCompare()
@@ -80,6 +73,27 @@ namespace F1_Unity
             _speedCompare.SetActive(!_speedCompare.activeSelf);
             _driverName.SetActive(false);
             _detailDelta.SetActive(false);
+            _lapComparision.SetActive(false);
+        }
+
+        void ToggleLapComparision()
+        {
+            _lapComparision.SetActive(!_lapComparision.activeSelf);
+            _driverName.SetActive(false);
+            _detailDelta.SetActive(false);
+            _speedCompare.SetActive(false);
+        }
+
+        void ToggleLiveSpeed()
+        {
+            _liveSpeed.SetActive(!_liveSpeed.activeSelf);
+            _tyreWear.SetActive(false);
+        }
+
+        void ToggleTyreWear()
+        {
+            _tyreWear.SetActive(!_tyreWear.activeSelf);
+            _liveSpeed.SetActive(false);
         }
 
         void ToggleLocation()

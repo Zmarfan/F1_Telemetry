@@ -58,10 +58,7 @@ namespace F1_Unity
         [SerializeField] Image _driverTeamColor;
         [SerializeField] Text _driverNameText;
 
-
         Timer _gForceTimer;
-        byte _driverAheadID = byte.MaxValue;
-        byte _driverBehindID = byte.MaxValue;
 
         private void Awake()
         {

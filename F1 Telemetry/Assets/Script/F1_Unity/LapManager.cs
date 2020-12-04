@@ -39,8 +39,14 @@ namespace F1_Unity
             if (vehicleIndex < 0 || vehicleIndex >= F1Info.MAX_AMOUNT_OF_CARS)
                 throw new Exception("Vehicle index falls out of range! 0-22! Index: " + vehicleIndex);
             //Invalid lap number
-            if (lapNumber <= 0 || lapNumber > _storedDriverData[vehicleIndex].CurrentLap)
-                throw new Exception("Lap number must fall within recorded laps! Has data up to lap " + _storedDriverData[vehicleIndex].CurrentLap);
+            if (lapNumber <= 0)
+                throw new Exception("Lap number must be positive");
+            //Hasn't initilized yet -> return junk data
+            if (lapNumber > _storedDriverData[vehicleIndex].CurrentLap)
+            {
+                status = false;
+                return new StoredLapData();
+            }
 
             //Driver either doesn't exist or a lap for that driver has not been recorded if it's lapstate is unknown
             status = _storedDriverData[vehicleIndex].LapState != LapState.Unknown;
@@ -120,7 +126,8 @@ namespace F1_Unity
                         else if (sector == LapState.Sector_3 && storedSector == LapState.Sector_1)
                             _storedDriverData[i].AddSector2(driverData.LapData);
                     }
-                    //Car has completed first sector and can start recording all laps now!
+                    //Car has completed first sector and can start recording all laps now! 
+                    //Must be when entering sector2 since then it's 100 % the values will be correct
                     else if (sector == LapState.Sector_2)
                         _storedDriverData[i].AddSector1(driverData.LapData);
                 }
@@ -134,6 +141,9 @@ namespace F1_Unity
         public int CurrentLap { get { return _lapDataList.Count; } }
         public LapState LapState { get; private set; } = LapState.Unknown;
 
+        /// <summary>
+        /// Get StoredLapData for a specific lap.
+        /// </summary>
         public StoredLapData GetStoredLapData(int lapNumber)
         {
             if (lapNumber > 0 && lapNumber <= CurrentLap)

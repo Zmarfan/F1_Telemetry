@@ -11,5 +11,6 @@
         public static readonly string SPEED_COMPARE = "SpeedCompare";
         public static readonly string LOCATION = "Location";
         public static readonly string HALO_HUD = "HaloHud";
+        public static readonly string LAP_COMPARISION = "LapComparision";
     }
 }

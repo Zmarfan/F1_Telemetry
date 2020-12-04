@@ -23,6 +23,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleSpeedCompare;
         public static event InputPressedDown PressedToggleLocation;
         public static event InputPressedDown PressedToggleHaloHud;
+        public static event InputPressedDown PressedToggleLapComparision;
 
         private void Awake()
         {
@@ -34,24 +35,26 @@ namespace F1_Unity
 
         private void Update()
         {
-            if (Input.GetButtonDown(InputKeywords.DRIVER_NAME))   //R
-                PressedToggleDriverName?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.TIME_INTERVAL)) //T
-                PressedTimeInterval?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.DETAIL_DELTA))  //Y
-                PressedToggleDetailDelta?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))    //L
-                PressedToggleLiveSpeed?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))     //K
-                PressedToggleTyreWear?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.TOGGLE_ALL))    //M
-                PressedToggleAll?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.SPEED_COMPARE)) //U
-                PressedToggleSpeedCompare?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.LOCATION))      //I
-                PressedToggleLocation?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.HALO_HUD))      //O
+            if (Input.GetButtonDown(InputKeywords.DRIVER_NAME))     //R
+                PressedToggleDriverName?.Invoke();                  
+            if (Input.GetButtonDown(InputKeywords.TIME_INTERVAL))   //T
+                PressedTimeInterval?.Invoke();                      
+            if (Input.GetButtonDown(InputKeywords.DETAIL_DELTA))    //Y
+                PressedToggleDetailDelta?.Invoke();                 
+            if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))      //L
+                PressedToggleLiveSpeed?.Invoke();                   
+            if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))       //K
+                PressedToggleTyreWear?.Invoke();                    
+            if (Input.GetButtonDown(InputKeywords.TOGGLE_ALL))      //M
+                PressedToggleAll?.Invoke();                         
+            if (Input.GetButtonDown(InputKeywords.SPEED_COMPARE))   //U
+                PressedToggleSpeedCompare?.Invoke();                
+            if (Input.GetButtonDown(InputKeywords.LOCATION))        //I
+                PressedToggleLocation?.Invoke();                    
+            if (Input.GetButtonDown(InputKeywords.HALO_HUD))        //O
                 PressedToggleHaloHud?.Invoke();
+            if (Input.GetButtonDown(InputKeywords.LAP_COMPARISION)) //P
+                PressedToggleLapComparision?.Invoke();
         }
 
     }
