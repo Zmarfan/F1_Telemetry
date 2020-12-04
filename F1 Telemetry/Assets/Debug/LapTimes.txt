@@ -1,0 +1,104 @@
+Driver: Kevin Magnussen
+Lap: 1, Sector 1: 25,326, Sector 2: 39,664, Sector 3: 28,711, Lap Time: 93,7011, Tyre: Wet
+Lap: 2, Sector 1: 41,473, Sector 2: 35,926, Sector 3: 24,828, Lap Time: 102,227, Tyre: Wet
+Lap: 3, Sector 1: 18,794, Sector 2: 0, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Romain Grosjean
+Lap: 1, Sector 1: 24,811, Sector 2: 36,979, Sector 3: 24,894, Lap Time: 86,68399, Tyre: Wet
+Lap: 2, Sector 1: 18,704, Sector 2: 36,054, Sector 3: 24,843, Lap Time: 79,60075, Tyre: Wet
+Lap: 3, Sector 1: 18,686, Sector 2: 35,905, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Lando Norris
+Lap: 1, Sector 1: 24,896, Sector 2: 38,262, Sector 3: 24,854, Lap Time: 88,01212, Tyre: Wet
+Lap: 2, Sector 1: 18,689, Sector 2: 36,824, Sector 3: 24,676, Lap Time: 80,18861, Tyre: Wet
+Lap: 3, Sector 1: 18,459, Sector 2: 36,145, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Daniil Kvyat
+Lap: 1, Sector 1: 26,636, Sector 2: 40,5, Sector 3: 25,566, Lap Time: 92,70162, Tyre: Wet
+Lap: 2, Sector 1: 18,983, Sector 2: 37,046, Sector 3: 24,85, Lap Time: 80,87855, Tyre: Wet
+Lap: 3, Sector 1: 18,696, Sector 2: 36,711, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: George Russell
+Lap: 1, Sector 1: 25,778, Sector 2: 40,177, Sector 3: 25,929, Lap Time: 91,88446, Tyre: Wet
+Lap: 2, Sector 1: 18,773, Sector 2: 36,215, Sector 3: 25,16, Lap Time: 80,14754, Tyre: Wet
+Lap: 3, Sector 1: 18,898, Sector 2: 36,31, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Kimi Räikkönen
+Lap: 1, Sector 1: 26,129, Sector 2: 40,4, Sector 3: 25,807, Lap Time: 92,33564, Tyre: Wet
+Lap: 2, Sector 1: 18,87, Sector 2: 36,705, Sector 3: 25,069, Lap Time: 80,6444, Tyre: Wet
+Lap: 3, Sector 1: 18,705, Sector 2: 36,512, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Charles Leclerc
+Lap: 1, Sector 1: 23,694, Sector 2: 36,582, Sector 3: 24,513, Lap Time: 84,78918, Tyre: Wet
+Lap: 2, Sector 1: 18,552, Sector 2: 35,501, Sector 3: 24,459, Lap Time: 78,51151, Tyre: Wet
+Lap: 3, Sector 1: 18,446, Sector 2: 35,42, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Nicholas Latifi
+Lap: 1, Sector 1: 25,595, Sector 2: 39,588, Sector 3: 25,551, Lap Time: 90,73421, Tyre: Wet
+Lap: 2, Sector 1: 18,837, Sector 2: 36,193, Sector 3: 25,088, Lap Time: 80,11801, Tyre: Wet
+Lap: 3, Sector 1: 18,777, Sector 2: 36,202, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Alexander Albon
+Lap: 1, Sector 1: 22,783, Sector 2: 35,965, Sector 3: 24,355, Lap Time: 83,10304, Tyre: Wet
+Lap: 2, Sector 1: 18,406, Sector 2: 35,436, Sector 3: 24,295, Lap Time: 78,13678, Tyre: Wet
+Lap: 3, Sector 1: 18,32, Sector 2: 35,436, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Valtteri Bottas
+Lap: 1, Sector 1: 22,978, Sector 2: 36,147, Sector 3: 24,438, Lap Time: 83,5625, Tyre: Wet
+Lap: 2, Sector 1: 18,348, Sector 2: 35,531, Sector 3: 24,307, Lap Time: 78,18562, Tyre: Wet
+Lap: 3, Sector 1: 18,241, Sector 2: 35,507, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Antonio Giovinazzi
+Lap: 1, Sector 1: 26,092, Sector 2: 40,111, Sector 3: 25,952, Lap Time: 92,15535, Tyre: Wet
+Lap: 2, Sector 1: 18,9, Sector 2: 36,434, Sector 3: 25,1, Lap Time: 80,43385, Tyre: Wet
+Lap: 3, Sector 1: 18,762, Sector 2: 36,388, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Carlos Sainz Jr.
+Lap: 1, Sector 1: 24,594, Sector 2: 37,473, Sector 3: 24,892, Lap Time: 86,95944, Tyre: Wet
+Lap: 2, Sector 1: 18,867, Sector 2: 36,164, Sector 3: 24,686, Lap Time: 79,7167, Tyre: Wet
+Lap: 3, Sector 1: 18,498, Sector 2: 36,043, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Daniel Ricciardo
+Lap: 1, Sector 1: 24,646, Sector 2: 37,752, Sector 3: 24,891, Lap Time: 87,28928, Tyre: Wet
+Lap: 2, Sector 1: 18,636, Sector 2: 36,529, Sector 3: 24,641, Lap Time: 79,80649, Tyre: Wet
+Lap: 3, Sector 1: 18,438, Sector 2: 36,141, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Sergio Pérez
+Lap: 1, Sector 1: 23,383, Sector 2: 36,377, Sector 3: 24,472, Lap Time: 84,23158, Tyre: Wet
+Lap: 2, Sector 1: 18,416, Sector 2: 35,507, Sector 3: 24,425, Lap Time: 78,34843, Tyre: Wet
+Lap: 3, Sector 1: 18,332, Sector 2: 35,409, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Pierre Gasly
+Lap: 1, Sector 1: 26,308, Sector 2: 40,444, Sector 3: 25,724, Lap Time: 92,47601, Tyre: Wet
+Lap: 2, Sector 1: 18,888, Sector 2: 36,863, Sector 3: 24,976, Lap Time: 80,72718, Tyre: Wet
+Lap: 3, Sector 1: 18,611, Sector 2: 36,693, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Sebastian Vettel
+Lap: 1, Sector 1: 24,252, Sector 2: 36,804, Sector 3: 24,489, Lap Time: 85,54522, Tyre: Wet
+Lap: 2, Sector 1: 18,481, Sector 2: 35,598, Sector 3: 24,398, Lap Time: 78,47712, Tyre: Wet
+Lap: 3, Sector 1: 18,535, Sector 2: 35,685, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Lance Stroll
+Lap: 1, Sector 1: 24,899, Sector 2: 37,84, Sector 3: 24,856, Lap Time: 87,59544, Tyre: Wet
+Lap: 2, Sector 1: 18,863, Sector 2: 36,478, Sector 3: 24,559, Lap Time: 79,8996, Tyre: Wet
+Lap: 3, Sector 1: 18,459, Sector 2: 36,217, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Max Verstappen
+Lap: 1, Sector 1: 22,19, Sector 2: 35,816, Sector 3: 24,011, Lap Time: 82,01689, Tyre: Wet
+Lap: 2, Sector 1: 18,338, Sector 2: 35,045, Sector 3: 23,939, Lap Time: 77,32202, Tyre: Wet
+Lap: 3, Sector 1: 18,177, Sector 2: 35,179, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Esteban Ocon
+Lap: 1, Sector 1: 25,229, Sector 2: 38,417, Sector 3: 24,829, Lap Time: 88,47522, Tyre: Wet
+Lap: 2, Sector 1: 18,671, Sector 2: 36,844, Sector 3: 24,709, Lap Time: 80,22416, Tyre: Wet
+Lap: 3, Sector 1: 18,494, Sector 2: 36,172, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+Driver: Lewis Hamilton
+Lap: 1, Sector 1: 22,364, Sector 2: 34,221, Sector 3: 24,676, Lap Time: 81,26102, Tyre: Wet
+Lap: 2, Sector 1: 17,782, Sector 2: 33,6, Sector 3: 23,805, Lap Time: 75,18679, Tyre: Wet
+Lap: 3, Sector 1: 17,776, Sector 2: 33,468, Sector 3: 0, Lap Time: 0, Tyre: 0
+
+empty index
+
+empty index
+

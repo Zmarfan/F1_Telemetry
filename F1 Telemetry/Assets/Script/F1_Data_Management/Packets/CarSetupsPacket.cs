@@ -56,13 +56,31 @@
     {
         public byte frontWing;
         public byte rearWing;
-        public byte onThrottle;   //Differential adjustment on throttle (percentage)
-        public byte offThrottle;  //Differential adjustment off throttle (percentage)
+        /// <summary>
+        /// Differential adjustment on throttle (percentage)
+        /// </summary>
+        public byte onThrottle;
+        /// <summary>
+        /// Differential adjustment off throttle (percentage)
+        /// </summary>
+        public byte offThrottle;
 
-        public float frontCamber; //Angle (Suspension Geomentry)
-        public float rearCamber;  //Angle (Suspension Geomentry)
-        public float frontToe;    //Angle (Suspension Geomentry)
-        public float rearToe;     //Angle (Suspension Geomentry)
+        /// <summary>
+        /// Angle (Suspension Geomentry)
+        /// </summary>
+        public float frontCamber;
+        /// <summary>
+        /// Angle (Suspension Geomentry)
+        /// </summary>
+        public float rearCamber;
+        /// <summary>
+        /// Angle (Suspension Geomentry)
+        /// </summary>
+        public float frontToe;
+        /// <summary>
+        /// Angle (Suspension Geomentry)
+        /// </summary>
+        public float rearToe;
 
         public byte frontSuspension;
         public byte rearSuspension;
@@ -70,13 +88,31 @@
         public byte rearAntiRollBar;
         public byte frontSuspensionHeight;
         public byte rearSuspensionHeight;
-        public byte brakePressure;         //Percentage
-        public byte brakeBias;             //Percentage
+        /// <summary>
+        /// Percentage
+        /// </summary>
+        public byte brakePressure;
+        /// <summary>
+        /// Percentage
+        /// </summary>
+        public byte brakeBias;
 
-        public float rearLeftTyrePressure;   //PSI
-        public float rearRightTyrePressure;  //PSI
-        public float frontLeftTyrePressure;  //PSI
-        public float frontRightTyrePressure; //PSI
+        /// <summary>
+        /// PSI
+        /// </summary>
+        public float rearLeftTyrePressure;
+        /// <summary>
+        /// PSI
+        /// </summary>
+        public float rearRightTyrePressure;
+        /// <summary>
+        /// PSI
+        /// </summary>
+        public float frontLeftTyrePressure;
+        /// <summary>
+        /// PSI
+        /// </summary>
+        public float frontRightTyrePressure;
 
         public byte ballast;
         public float fuelLoad;

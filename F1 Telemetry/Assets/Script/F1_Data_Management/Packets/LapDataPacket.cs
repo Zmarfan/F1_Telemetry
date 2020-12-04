@@ -52,7 +52,7 @@
                 LapData[i].carPosition = manager.GetByte();
                 LapData[i].currentLapNumber = manager.GetByte();
                 LapData[i].pitStatus = manager.GetEnumFromByte<PitStatus>();
-                LapData[i].currentSector = manager.GetByte();
+                LapData[i].currentSector = manager.GetEnumFromByte<LapState>();
                 LapData[i].currentLapInvalid = manager.GetBool();
                 LapData[i].totalPenalties = manager.GetByte();
                 LapData[i].gridPosition = manager.GetByte();
@@ -158,9 +158,9 @@
         public byte currentLapNumber;
         public PitStatus pitStatus;
         /// <summary>
-        /// Current sector (0 -> Sector1, 1 -> Sector2, 2 -> Sector3)
+        /// Current sector
         /// </summary>
-        public byte currentSector;
+        public LapState currentSector;
         /// <summary>
         /// Is this current lap invalid? True if invalid
         /// </summary>
