@@ -18,6 +18,7 @@ namespace F1_Unity
         [SerializeField] GameObject _location;
         [SerializeField] GameObject _haloHud;
         [SerializeField] GameObject _lapComparision;
+        [SerializeField] GameObject _ersCompare;
 
         private void OnEnable()
         {
@@ -30,6 +31,7 @@ namespace F1_Unity
             InputManager.PressedToggleLocation += ToggleLocation;
             InputManager.PressedToggleHaloHud += ToggleHaloHud;
             InputManager.PressedToggleLapComparision += ToggleLapComparision;
+            InputManager.PressedToggleERSCompare += ToggleERSCompare;
         }
 
         private void OnDisable()
@@ -43,6 +45,7 @@ namespace F1_Unity
             InputManager.PressedToggleLocation -= ToggleLocation;
             InputManager.PressedToggleHaloHud -= ToggleHaloHud;
             InputManager.PressedToggleLapComparision -= ToggleLapComparision;
+            InputManager.PressedToggleERSCompare -= ToggleERSCompare;
         }
 
         void ToggleAll()
@@ -58,6 +61,7 @@ namespace F1_Unity
             _detailDelta.SetActive(false);
             _speedCompare.SetActive(false);
             _lapComparision.SetActive(false);
+            _ersCompare.SetActive(false);
         }
 
         void ToggleDetailDelta()
@@ -66,6 +70,7 @@ namespace F1_Unity
             _driverName.SetActive(false);
             _speedCompare.SetActive(false);
             _lapComparision.SetActive(false);
+            _ersCompare.SetActive(false);
         }
 
         void ToggleSpeedCompare()
@@ -74,6 +79,7 @@ namespace F1_Unity
             _driverName.SetActive(false);
             _detailDelta.SetActive(false);
             _lapComparision.SetActive(false);
+            _ersCompare.SetActive(false);
         }
 
         void ToggleLapComparision()
@@ -82,6 +88,16 @@ namespace F1_Unity
             _driverName.SetActive(false);
             _detailDelta.SetActive(false);
             _speedCompare.SetActive(false);
+            _ersCompare.SetActive(false);
+        }
+
+        void ToggleERSCompare()
+        {
+            _ersCompare.SetActive(!_ersCompare.activeSelf);
+            _driverName.SetActive(false);
+            _detailDelta.SetActive(false);
+            _speedCompare.SetActive(false);
+            _lapComparision.SetActive(false);
         }
 
         void ToggleLiveSpeed()

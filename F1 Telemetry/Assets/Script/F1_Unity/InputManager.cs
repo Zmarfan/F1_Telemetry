@@ -24,6 +24,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleLocation;
         public static event InputPressedDown PressedToggleHaloHud;
         public static event InputPressedDown PressedToggleLapComparision;
+        public static event InputPressedDown PressedToggleERSCompare;
 
         private void Awake()
         {
@@ -35,6 +36,8 @@ namespace F1_Unity
 
         private void Update()
         {
+            if (Input.GetButtonDown(InputKeywords.ERS_COMPARE))     //E
+                PressedToggleERSCompare?.Invoke();
             if (Input.GetButtonDown(InputKeywords.DRIVER_NAME))     //R
                 PressedToggleDriverName?.Invoke();                  
             if (Input.GetButtonDown(InputKeywords.TIME_INTERVAL))   //T
