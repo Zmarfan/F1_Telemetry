@@ -27,20 +27,20 @@ namespace F1_Unity
                 bool end = Input.GetKeyDown(KeyCode.Y);
 
                 //REMOVE
-                DriverData playerDriverData = GameManager.F1Info.ReadPlayerData(out bool valid);
-                if (valid)
-                {
-                    //Debug.Log(TrackTurns.GetTurn(Track.Abu_Dhabi, playerDriverData.LapData.lapDistance));
+                //DriverData playerDriverData = GameManager.F1Info.ReadPlayerData(out bool valid);
+                //if (valid)
+                //{
+                //    //Debug.Log(TrackTurns.GetTurn(Track.Abu_Dhabi, playerDriverData.LapData.lapDistance));
 
-                    if (start)
-                        startPoint = playerDriverData.LapData.lapDistance;
+                //    if (start)
+                //        startPoint = playerDriverData.LapData.lapDistance;
 
-                    if (end)
-                    {
-                        Debug.Log("Turn: " + turn + ", start: " + startPoint + ", end: " + playerDriverData.LapData.lapDistance);
-                        turn++;
-                    }
-                }
+                //    if (end)
+                //    {
+                //        Debug.Log("Turn: " + turn + ", start: " + startPoint + ", end: " + playerDriverData.LapData.lapDistance);
+                //        turn++;
+                //    }
+                //}
                 //REMOVE
             }
         }
