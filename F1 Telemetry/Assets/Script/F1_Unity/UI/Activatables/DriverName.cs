@@ -17,6 +17,7 @@ namespace F1_Unity
         [SerializeField] Image _flagImage;
 
         byte _currentDriverId = byte.MaxValue;
+        byte _currentDriverPosition = byte.MaxValue;
 
         private void Update()
         {
@@ -31,10 +32,11 @@ namespace F1_Unity
             Session sessionData = GameManager.F1Info.ReadSession(out bool statusSession);
             DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
 
-            if (statusDriver && _currentDriverId != spectatorDriverData.ID)
+            if (statusDriver && (_currentDriverId != spectatorDriverData.ID || _currentDriverPosition != spectatorDriverData.LapData.carPosition))
             {
                 Show(true);
                 _currentDriverId = spectatorDriverData.ID;
+                _currentDriverPosition = spectatorDriverData.LapData.carPosition;
 
                 _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
 

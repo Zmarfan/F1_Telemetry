@@ -91,7 +91,13 @@
         /// Current weather right now
         /// </summary>
         public Weather Weather { get; set; }
+        /// <summary>
+        /// Current track temperature in celsius
+        /// </summary>
         public sbyte TrackTemperature { get; set; }
+        /// <summary>
+        /// Current air temperature in celsius
+        /// </summary>
         public sbyte AirTemperature { get; set; }
         public byte TotalLaps { get; set; }
         /// <summary>

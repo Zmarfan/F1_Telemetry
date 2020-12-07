@@ -20,5 +20,6 @@
         public static readonly string LAP_COMPARISION = "LapComparision";
         public static readonly string ERS_COMPARE = "ERSCompare";
         public static readonly string CIRCUIT_INFO = "CircuitInfo";
+        public static readonly string WEATHER = "Weather";
     }
 }

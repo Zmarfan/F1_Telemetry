@@ -17,10 +17,7 @@ namespace F1_Unity
         [SerializeField] Text _downforceText;
         [SerializeField] Text _tyreWearText;
 
-        /// <summary>
-        /// Called on initiation to set values.
-        /// </summary>
-        public void Toggle(bool active)
+        void OnEnable()
         {
             Session sessionData = GameManager.F1Info.ReadSession(out bool status);
             if (status)
@@ -39,9 +36,7 @@ namespace F1_Unity
                 _tyreWearText.text = data.tyreWear.ToString().ToUpper();
             }
             else
-                active = false;
-
-            gameObject.SetActive(active);
+                gameObject.SetActive(false);
         }
     }
 }

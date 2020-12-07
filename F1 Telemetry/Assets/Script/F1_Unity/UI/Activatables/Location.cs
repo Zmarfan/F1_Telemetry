@@ -11,10 +11,7 @@ namespace F1_Unity
         [SerializeField] Text _stringText;
         [SerializeField] Image _flagImage;
 
-        /// <summary>
-        /// Called on initiation to set values.
-        /// </summary>
-        public void Toggle(bool active)
+        void OnEnable()
         {
             Session sessionData = GameManager.F1Info.ReadSession(out bool status);
             if (status)
@@ -25,9 +22,7 @@ namespace F1_Unity
                 _flagImage.sprite = FlagManager.GetFlagByTrack(sessionData.Track);
             }
             else
-                active = false;
-
-            gameObject.SetActive(active);
+                gameObject.SetActive(false);
         }
     }
 }

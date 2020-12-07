@@ -10,12 +10,14 @@ namespace F1_Unity
         [SerializeField] FlagTrackStruct[] _flagsByTrack;
         [SerializeField] StringTrackStruct[] _stringByTrack;
         [SerializeField] CircuitInfoData[] _circuitInfoData;
+        [SerializeField] SpriteWeatherStruct[] _weatherSpriteList;
 
         static FlagManager _singleton;
         static Dictionary<Nationality, Sprite> _flagSpritesByNationality = new Dictionary<Nationality, Sprite>();
         static Dictionary<Track, Sprite> _flagSpritesByTrack = new Dictionary<Track, Sprite>();
         static Dictionary<Track, string> _grandPrixStringByTrack = new Dictionary<Track, string>();
         static Dictionary<Track, CircuitInfoData> _circuitInfoByTrack = new Dictionary<Track, CircuitInfoData>();
+        static Dictionary<Weather, Sprite> _spriteByWeather = new Dictionary<Weather, Sprite>();
 
         private void Awake()
         {
@@ -37,6 +39,8 @@ namespace F1_Unity
                 _grandPrixStringByTrack.Add(_stringByTrack[i].track, _stringByTrack[i].text);
             for (int i = 0; i < _circuitInfoData.Length; i++)
                 _circuitInfoByTrack.Add(_circuitInfoData[i].track, _circuitInfoData[i]);
+            for (int i = 0; i < _weatherSpriteList.Length; i++)
+                _spriteByWeather.Add(_weatherSpriteList[i].weather, _weatherSpriteList[i].sprite);
         }
 
         /// <summary>
@@ -63,6 +67,14 @@ namespace F1_Unity
         public static string GetGrandPrixString(Track track)
         {
             return _grandPrixStringByTrack[track];
+        }
+
+        /// <summary>
+        /// Gets weather sprite for a specific weather type
+        /// </summary>
+        public static Sprite GetWeatherSprite(Weather weather)
+        {
+            return _spriteByWeather[weather];
         }
 
         /// <summary>
@@ -103,6 +115,16 @@ namespace F1_Unity
         {
             public Track track;
             public string text;
+        }
+
+        /// <summary>
+        /// Used to initilize dictionary of weather sprites in inspector with weather types as keys
+        /// </summary>
+        [System.Serializable]
+        public struct SpriteWeatherStruct
+        {
+            public Weather weather;
+            public Sprite sprite;
         }
 
         /// <summary>

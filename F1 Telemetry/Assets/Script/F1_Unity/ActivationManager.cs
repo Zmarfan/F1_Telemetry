@@ -20,6 +20,7 @@ namespace F1_Unity
         [SerializeField] GameObject _lapComparision;
         [SerializeField] GameObject _ersCompare;
         [SerializeField] GameObject _circuitInfo;
+        [SerializeField] GameObject _weather;
 
         private void OnEnable()
         {
@@ -34,6 +35,7 @@ namespace F1_Unity
             InputManager.PressedToggleLapComparision += ToggleLapComparision;
             InputManager.PressedToggleERSCompare += ToggleERSCompare;
             InputManager.PressedToggleCircuitInfo += ToggleCircuitInfo;
+            InputManager.PressedToggleWeather += ToggleWeather;
         }
 
         private void OnDisable()
@@ -49,6 +51,7 @@ namespace F1_Unity
             InputManager.PressedToggleLapComparision -= ToggleLapComparision;
             InputManager.PressedToggleERSCompare -= ToggleERSCompare;
             InputManager.PressedToggleCircuitInfo -= ToggleCircuitInfo;
+            InputManager.PressedToggleWeather -= ToggleWeather;
         }
 
         void ToggleAll()
@@ -117,14 +120,23 @@ namespace F1_Unity
 
         void ToggleLocation()
         {
-            _location.GetComponent<Location>().Toggle(true);
-            _circuitInfo.GetComponent<CircuitInfo>().Toggle(false);
+            _location.SetActive(!_location.activeSelf);
+            _circuitInfo.SetActive(false);
+            _weather.SetActive(false);
         }
 
         void ToggleCircuitInfo()
         {
-            _circuitInfo.GetComponent<CircuitInfo>().Toggle(true);
-            _location.GetComponent<Location>().Toggle(false);
+            _circuitInfo.SetActive(!_circuitInfo.activeSelf);
+            _location.SetActive(false);
+            _weather.SetActive(false);
+        }
+
+        void ToggleWeather()
+        {
+            _weather.SetActive(!_weather.activeSelf);
+            _location.SetActive(false);
+            _circuitInfo.SetActive(false);
         }
 
         void ToggleHaloHud()

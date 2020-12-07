@@ -26,6 +26,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleLapComparision;
         public static event InputPressedDown PressedToggleERSCompare;
         public static event InputPressedDown PressedToggleCircuitInfo;
+        public static event InputPressedDown PressedToggleWeather;
 
         private void Awake()
         {
@@ -91,10 +92,12 @@ namespace F1_Unity
         /// </summary>
         void CheckInformation()
         {
-            if (Input.GetButtonDown(InputKeywords.LOCATION))        //1
+            if (Input.GetButtonDown(InputKeywords.LOCATION))             //1
                 PressedToggleLocation?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.CIRCUIT_INFO))    //2
+            else if (Input.GetButtonDown(InputKeywords.CIRCUIT_INFO))    //2
                 PressedToggleCircuitInfo?.Invoke();
+            else if (Input.GetButtonDown(InputKeywords.WEATHER))         //3
+                PressedToggleWeather?.Invoke();
         }
 
         /// <summary>
