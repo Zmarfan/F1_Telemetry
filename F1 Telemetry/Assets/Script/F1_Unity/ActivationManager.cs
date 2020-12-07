@@ -19,6 +19,7 @@ namespace F1_Unity
         [SerializeField] GameObject _haloHud;
         [SerializeField] GameObject _lapComparision;
         [SerializeField] GameObject _ersCompare;
+        [SerializeField] GameObject _circuitInfo;
 
         private void OnEnable()
         {
@@ -32,6 +33,7 @@ namespace F1_Unity
             InputManager.PressedToggleHaloHud += ToggleHaloHud;
             InputManager.PressedToggleLapComparision += ToggleLapComparision;
             InputManager.PressedToggleERSCompare += ToggleERSCompare;
+            InputManager.PressedToggleCircuitInfo += ToggleCircuitInfo;
         }
 
         private void OnDisable()
@@ -46,6 +48,7 @@ namespace F1_Unity
             InputManager.PressedToggleHaloHud -= ToggleHaloHud;
             InputManager.PressedToggleLapComparision -= ToggleLapComparision;
             InputManager.PressedToggleERSCompare -= ToggleERSCompare;
+            InputManager.PressedToggleCircuitInfo -= ToggleCircuitInfo;
         }
 
         void ToggleAll()
@@ -114,7 +117,14 @@ namespace F1_Unity
 
         void ToggleLocation()
         {
-            _location.GetComponent<Location>().Init();
+            _location.GetComponent<Location>().Toggle(true);
+            _circuitInfo.GetComponent<CircuitInfo>().Toggle(false);
+        }
+
+        void ToggleCircuitInfo()
+        {
+            _circuitInfo.GetComponent<CircuitInfo>().Toggle(true);
+            _location.GetComponent<Location>().Toggle(false);
         }
 
         void ToggleHaloHud()

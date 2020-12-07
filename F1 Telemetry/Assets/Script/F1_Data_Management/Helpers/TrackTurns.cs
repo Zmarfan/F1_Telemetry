@@ -7,7 +7,7 @@ namespace F1_Data_Management
         static Dictionary<Track, TrackTurnInfo> _trackInfo = new Dictionary<Track, TrackTurnInfo>()
         {
             {
-                Track.Abu_Dhabi, //DONE
+                Track.Yas_Marina_Circuit, //DONE
                 new TrackTurnInfo(new Turn[] 
                 {
                     new Turn(305, 530),   //1
@@ -34,7 +34,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Austria, //DONE
+                Track.Red_Bull_Ring, //DONE
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(315, 546),   //1
@@ -50,7 +50,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Baku_Azerbaijan,
+                Track.Baku_City_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -76,7 +76,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Brazil,
+                Track.Autodromo_Jose_Carlos_Pace,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -97,7 +97,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Catalunya,
+                Track.Cicuit_de_Barcelona_Catalunya,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -119,7 +119,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Hanoi,
+                Track.Hanoi_Street_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -148,7 +148,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Hockenheim,
+                Track.Hockenheimring,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0), //1
@@ -191,7 +191,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Melbourne,
+                Track.Albert_Park_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -213,7 +213,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Mexico,
+                Track.Autodromo_Hermanos_Rodriguez,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0), //1
@@ -236,7 +236,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Monaco,
+                Track.Circuit_de_Monaco,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -261,7 +261,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Montreal,
+                Track.Circuit_Gilles_Villeneuve,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -281,7 +281,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Monza,
+                Track.Autodromo_Nazionale_Monza,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -298,28 +298,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Paul_Ricard,
-                new TrackTurnInfo(new Turn[]
-                {
-                    new Turn(0, 0),   //1
-                    new Turn(0, 0),   //2
-                    new Turn(0, 0),  //3
-                    new Turn(0, 0), //4
-                    new Turn(0, 0), //5
-                    new Turn(0, 0), //6
-                    new Turn(0, 0), //7
-                    new Turn(0, 0), //8
-                    new Turn(0, 0), //9
-                    new Turn(0, 0), //10
-                    new Turn(0, 0), //11
-                    new Turn(0, 0), //12
-                    new Turn(0, 0), //13
-                    new Turn(0, 0), //14
-                    new Turn(0, 0), //15
-                })
-            },
-            {
-                Track.Sakhir_Bahrain,
+                Track.Circuit_Paul_Ricard,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -340,7 +319,28 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Sakhir_Short,
+                Track.Bahrain_International_Circuit,
+                new TrackTurnInfo(new Turn[]
+                {
+                    new Turn(0, 0),   //1
+                    new Turn(0, 0),   //2
+                    new Turn(0, 0),  //3
+                    new Turn(0, 0), //4
+                    new Turn(0, 0), //5
+                    new Turn(0, 0), //6
+                    new Turn(0, 0), //7
+                    new Turn(0, 0), //8
+                    new Turn(0, 0), //9
+                    new Turn(0, 0), //10
+                    new Turn(0, 0), //11
+                    new Turn(0, 0), //12
+                    new Turn(0, 0), //13
+                    new Turn(0, 0), //14
+                    new Turn(0, 0), //15
+                })
+            },
+            {
+                Track.Bahrain_International_Circuit_Short,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -356,7 +356,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Shanghai,
+                Track.Shanghai_International_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -378,7 +378,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Silverstone,
+                Track.Silverstone_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -402,7 +402,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Silverstone_Short,
+                Track.Silverstone_Circuit_Short,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -416,7 +416,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Singapore,
+                Track.Marina_Bay_Street_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -445,7 +445,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Sochi,
+                Track.Sochi_Autodrom,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -469,7 +469,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Spa,
+                Track.Circuit_de_Spa_Francorchamps,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -494,7 +494,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Suzuka,
+                Track.Suzuka_Circuit,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -518,7 +518,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Suzuka_Short,
+                Track.Suzuka_Circuit_Short,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -532,7 +532,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Texas,
+                Track.Circuit_of_the_Americas,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -558,7 +558,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Texas_Short,
+                Track.Circuit_of_the_Americas_Short,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1
@@ -582,7 +582,7 @@ namespace F1_Data_Management
                 })
             },
             {
-                Track.Zandvoort,
+                Track.Circuit_Zandvoort,
                 new TrackTurnInfo(new Turn[]
                 {
                     new Turn(0, 0),   //1

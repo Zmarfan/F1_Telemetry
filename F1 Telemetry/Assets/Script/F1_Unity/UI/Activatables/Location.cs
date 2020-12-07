@@ -11,27 +11,23 @@ namespace F1_Unity
         [SerializeField] Text _stringText;
         [SerializeField] Image _flagImage;
 
-        private void Start()
-        {
-            Init();
-        }
-
         /// <summary>
         /// Called on initiation to set values.
         /// </summary>
-        public void Init()
+        public void Toggle(bool active)
         {
             Session sessionData = GameManager.F1Info.ReadSession(out bool status);
             if (status)
             {
-                gameObject.SetActive(true);
-                _animator.SetTrigger(_animatorTrigger);
+                //_animator.SetTrigger(_animatorTrigger);
 
                 _stringText.text = FlagManager.GetGrandPrixString(sessionData.Track);
                 _flagImage.sprite = FlagManager.GetFlagByTrack(sessionData.Track);
             }
             else
-                gameObject.SetActive(false);
+                active = false;
+
+            gameObject.SetActive(active);
         }
     }
 }
