@@ -12,8 +12,7 @@ namespace F1_Unity
         {
             base.Init(packet);
             RetirementEventPacket retirePacket = (RetirementEventPacket)packet;
-            bool status;
-            DriverData data = GameManager.F1Info.ReadCarData(retirePacket.VehicleIndex, out status);
+            DriverData data = GameManager.F1Info.ReadCarData(retirePacket.VehicleIndex, out bool status);
             //99.99 % certain it's valid but safety concern
             if (status)
                 _message.text = ParticipantManager.GetNameFromNumber(data.RaceNumber).ToUpper() + " RETIRED";

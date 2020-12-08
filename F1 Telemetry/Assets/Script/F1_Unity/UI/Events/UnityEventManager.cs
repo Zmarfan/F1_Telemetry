@@ -15,6 +15,7 @@ public class UnityEventManager : MonoBehaviour
     [SerializeField] GameObject _teamMateInPitPrefab;
     [SerializeField] GameObject _raceWinnerPrefab;
     [SerializeField] GameObject _speedTrapPrefab;
+    [SerializeField] GameObject _fastestSectorPrefab;
 
     //Events that are waiting to be triggered but can't activate yet
     Queue<EventBase> _waitingEvents = new Queue<EventBase>();
@@ -31,6 +32,8 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.TeamMateInPitsEvent += TeamMateInPitEvent;
         GameManager.F1Info.RaceWinnerEvent += RaceWinnerEvent;
         GameManager.F1Info.SpeedTrapEvent += SpeedTrapEvent;
+
+        LapManager.FastestSectorEvent += FastestSectorEvent;
     }
 
     private void OnDisable()
@@ -44,18 +47,19 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.TeamMateInPitsEvent -= TeamMateInPitEvent;
         GameManager.F1Info.RaceWinnerEvent -= RaceWinnerEvent;
         GameManager.F1Info.SpeedTrapEvent -= SpeedTrapEvent;
+
+        LapManager.FastestSectorEvent -= FastestSectorEvent;
     }
 
     /// <summary>
     /// Spawns EventPrefab and init with Packet.
     /// </summary>
-    EventBase SpawnEventPrefab(GameObject prefab, Packet packet)
+    EventBase SpawnPacketEventPrefab(GameObject prefab, Packet packet)
     {
         GameObject obj = Instantiate(prefab, Vector3.zero, Quaternion.identity, _canvas) as GameObject;
         EventBase thisEvent = obj.GetComponent<EventBase>();
         thisEvent.Init(packet);
         return thisEvent;
-        
     }
 
     /// <summary>
@@ -99,7 +103,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void FastestLapEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_fastestLapPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_fastestLapPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -108,7 +112,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void DRSEnabledEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_drsEnabledPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_drsEnabledPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -117,7 +121,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void DRSDisabledEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_drsDisabledPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_drsDisabledPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -126,7 +130,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void ChequeredFlagEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_chequeredFlagPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_chequeredFlagPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -135,7 +139,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void RetirementEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_retirePrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_retirePrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -144,7 +148,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void TeamMateInPitEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_teamMateInPitPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_teamMateInPitPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -153,7 +157,7 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void RaceWinnerEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_raceWinnerPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_raceWinnerPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 
@@ -162,7 +166,22 @@ public class UnityEventManager : MonoBehaviour
     /// </summary>
     void SpeedTrapEvent(Packet packet)
     {
-        EventBase thisEvent = SpawnEventPrefab(_speedTrapPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_speedTrapPrefab, packet);
+        AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when a new fastest sector is done
+    /// </summary>
+    /// <param name="driverData">Driver data for the driver who did the sector</param>
+    /// <param name="sector">Which sector?</param>
+    /// <param name="time">What time in seconds is the new fastest time for that sector?</param>
+    void FastestSectorEvent(DriverData driverData, LapState sector, float time)
+    {
+        //It's own spawning since it hasn't got a packet as in parameter
+        GameObject obj = Instantiate(_fastestSectorPrefab, Vector3.zero, Quaternion.identity, _canvas) as GameObject;
+        FastestSector thisEvent = obj.GetComponent<FastestSector>();
+        thisEvent.Init(driverData, sector, time);
         AddToEventQueue(thisEvent);
     }
 
@@ -180,7 +199,7 @@ public class UnityEventManager : MonoBehaviour
             t == PenaltyType.This_Lap_Invalidated_Without_Reason || t == PenaltyType.Retired)
             return;
 
-        EventBase thisEvent = SpawnEventPrefab(_penaltyPrefab, packet);
+        EventBase thisEvent = SpawnPacketEventPrefab(_penaltyPrefab, packet);
         AddToEventQueue(thisEvent);
     }
 

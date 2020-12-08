@@ -15,8 +15,7 @@ namespace F1_Unity
             base.Init(packet);
             RaceWinnerEventPacket winnerPacket = (RaceWinnerEventPacket)packet;
 
-            bool status;
-            DriverData data = GameManager.F1Info.ReadCarData(winnerPacket.VehicleIndex, out status);
+            DriverData data = GameManager.F1Info.ReadCarData(winnerPacket.VehicleIndex, out bool status);
 
             if (status)
             {

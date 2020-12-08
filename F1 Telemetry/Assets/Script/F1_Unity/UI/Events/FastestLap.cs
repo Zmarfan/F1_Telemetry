@@ -29,8 +29,7 @@ namespace F1_Unity
             //Cast to correct type
             FastestLapEventPacket fastestLapPacket = (FastestLapEventPacket)packet;
 
-            bool status;
-            DriverData data = GameManager.F1Info.ReadCarData(fastestLapPacket.VehicleIndex, out status);
+            DriverData data = GameManager.F1Info.ReadCarData(fastestLapPacket.VehicleIndex, out bool status);
             string fullName = string.Empty;
             Sprite teamSprite = ParticipantManager.GetTeamSprite(Team.My_Team_Or_Unknown);
 

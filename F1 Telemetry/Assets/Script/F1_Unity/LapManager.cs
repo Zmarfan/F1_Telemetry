@@ -6,14 +6,25 @@ using System.IO;
 
 namespace F1_Unity
 {
+    public delegate void FastestSectorDelegate(DriverData driverData, LapState sector, float time);
+
     /// <summary>
     /// Singleton class that hold all laps and their sector times for every lap of every driver.
     /// </summary>
     public class LapManager : MonoBehaviour
     {
+        /// <summary>
+        /// Invoked whenever a new fastest sector is set.
+        /// </summary>
+        public static event FastestSectorDelegate FastestSectorEvent;
+
         //Index represent vehicle index. Stores all lap data for every driver
         static StoredDriverData[] _storedDriverData = new StoredDriverData[F1Info.MAX_AMOUNT_OF_CARS];
         static LapManager _singleton;
+
+        static float _currentFastestSector1 = float.MaxValue;
+        static float _currentFastestSector2 = float.MaxValue;
+        static float _currentFastestSector3 = float.MaxValue;
 
         private void Awake()
         {
@@ -59,8 +70,8 @@ namespace F1_Unity
                 UpdateLapData();
 
             //DEBUGGING ONLY
-            if (Input.GetKeyDown(KeyCode.B))
-                WriteFile();
+            //if (Input.GetKeyDown(KeyCode.B))
+            //    WriteFile();
             //DEBUGGING ONLY
         }
 
@@ -118,19 +129,50 @@ namespace F1_Unity
                     {
                         //The driver just crossed the finish line to complete a lap
                         if (sector == LapState.Sector_1 && storedSector == LapState.Sector_2)
+                        {
                             _storedDriverData[i].FinishLap(driverData);
+                            CheckForFastestSector(driverData, LapState.Sector_3, driverData.LapData.bestLapSector3Time, ref _currentFastestSector3);
+                        }
                         //The Car just completed sector 1 -> Can add sector 1
                         else if (sector == LapState.Sector_2 && storedSector == LapState.Sector_3)
+                        {
                             _storedDriverData[i].AddSector1(driverData.LapData);
+                            CheckForFastestSector(driverData, LapState.Sector_1, driverData.LapData.bestLapSector1Time, ref _currentFastestSector1);
+                        }
                         //The car just completed sector 2 -> Can add sector 2
                         else if (sector == LapState.Sector_3 && storedSector == LapState.Sector_1)
+                        {
                             _storedDriverData[i].AddSector2(driverData.LapData);
+                            CheckForFastestSector(driverData, LapState.Sector_2, driverData.LapData.bestLapSector2Time, ref _currentFastestSector2);
+                        }
                     }
                     //Car has completed first sector and can start recording all laps now! 
                     //Must be when entering sector2 since then it's 100 % the values will be correct
                     else if (sector == LapState.Sector_2)
                         _storedDriverData[i].AddSector1(driverData.LapData);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Checks if the drivers best sector x time is the best of the session so far and invoke fastestSector event in that case.
+        /// </summary>
+        /// <param name="driverData">DriverData for the driver being checked</param>
+        /// <param name="sector">What sector is this?</param>
+        /// <param name="driversBest">What time is this driver's best sector x time</param>
+        /// <param name="currentBest">Stored best sector x time in millieseconds</param>
+        void CheckForFastestSector(DriverData driverData, LapState sector, ushort driversBest, ref float currentBest)
+        {
+            //On the first lap they haven't set a best yet -> return in that case
+            if (driversBest == 0)
+                return;
+
+            TimeSpan span = TimeSpan.FromMilliseconds(driversBest);
+            float driversBestInSeconds = (float)span.TotalSeconds;
+            if (driversBestInSeconds < currentBest)
+            {
+                currentBest = driversBestInSeconds;
+                FastestSectorEvent?.Invoke(driverData, sector, driversBestInSeconds);
             }
         }
     }

@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3737f1f78116d746bba7b3635537dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showTime: 4
+  _showTime: 2
   _fadeTime: 0.5
   _message: {fileID: 9158926863612891020}
 --- !u!1 &8422811006054467339

@@ -778,6 +778,7 @@ MonoBehaviour:
   _teamMateInPitPrefab: {fileID: 4137811850501173954, guid: c72bd0a8f60e3c241abc210216afdabe, type: 3}
   _raceWinnerPrefab: {fileID: 321920245800152628, guid: c48cb6ad0d5c52a49971bcd4a4d6a51d, type: 3}
   _speedTrapPrefab: {fileID: 4137811850501173954, guid: adcf1c34c5652a64b9cbeeae7ab1768c, type: 3}
+  _fastestSectorPrefab: {fileID: 4137811850501173954, guid: a2f7acae928be17428ccc0341085dcf4, type: 3}
 --- !u!1 &3697970669565346257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,7 +1729,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 945269014221349743, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1675713544432616154, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
       propertyPath: m_Color.r
@@ -1752,7 +1753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4137811850501173954, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4876441119977646751, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1972,7 +1973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502327501005526077, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f60afb0575a48ba4db7bdac850a72d41, type: 3}
@@ -3218,7 +3219,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3411215149722185333, guid: 15dfea27c73c8a64e92875a3ba23019c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 402.6408
       objectReference: {fileID: 0}
     - target: {fileID: 4137811850501173954, guid: 15dfea27c73c8a64e92875a3ba23019c, type: 3}
       propertyPath: m_Name
@@ -3226,7 +3227,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4137811850501173954, guid: 15dfea27c73c8a64e92875a3ba23019c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6013756220927311033, guid: 15dfea27c73c8a64e92875a3ba23019c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 278.91263
       objectReference: {fileID: 0}
     - target: {fileID: 7201924231412175873, guid: 15dfea27c73c8a64e92875a3ba23019c, type: 3}
       propertyPath: m_LocalPosition.x

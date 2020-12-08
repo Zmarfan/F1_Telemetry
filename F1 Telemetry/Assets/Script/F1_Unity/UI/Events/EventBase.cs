@@ -31,6 +31,14 @@ namespace F1_Unity
 
         public virtual void Init(Packet packet)
         {
+            Init();
+        }
+
+        /// <summary>
+        /// Called for every event -> make sure data is available and center transform position.
+        /// </summary>
+        protected void Init()
+        {
             //This should never be possible but here as a safe guard
             if (!GameManager.F1Info.ReadyToReadFrom)
                 End();

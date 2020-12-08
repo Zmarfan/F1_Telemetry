@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041c121a48ff7754390c27fe73af7901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showTime: 5
+  _showTime: 3
   _fadeTime: 0.5
   _penaltyTypeText: {fileID: 1100837755583604072}
   _infringementTypeText: {fileID: 6139615362219491979}

@@ -26,8 +26,7 @@ namespace F1_Unity
             //Cast to correct type
             PenaltyEventPacket penaltyPacket = (PenaltyEventPacket)packet;
 
-            bool status;
-            DriverData data = GameManager.F1Info.ReadCarData(penaltyPacket.VehicleIndex, out status);
+            DriverData data = GameManager.F1Info.ReadCarData(penaltyPacket.VehicleIndex, out bool status);
             string fullName = string.Empty;
 
             //If data is valid (99.99 % of the time it is valid but hey for that 0.01 boi :3)
