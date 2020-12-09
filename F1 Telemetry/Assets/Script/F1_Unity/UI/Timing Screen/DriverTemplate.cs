@@ -236,7 +236,7 @@ namespace F1_Unity
                     {
                         string text = "+" + LapsLapped + " " + _lappedString;
                         _timeTextLeader.text = text;
-                        //lapped by leader but shows delta anyway if interval mode
+                        _timeTextInterval.text = text;
                         break;
                     }
                 case DriverTimeState.Delta:
