@@ -136,6 +136,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7201924231412175873}
   - component: {fileID: 459857536924847922}
+  - component: {fileID: -6402009781885965467}
+  - component: {fileID: 6986944927442379444}
   m_Layer: 5
   m_Name: PitTimer
   m_TagString: Untagged
@@ -178,3 +180,28 @@ MonoBehaviour:
   _driverPitStopPrefab: {fileID: 845823863436511425, guid: d71f68b1d4228174fa632b059d6118df, type: 3}
   _holder: {fileID: 4481285602090920249}
   _canvasGroup: {fileID: 4182913167844052371}
+--- !u!114 &-6402009781885965467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7543ddd3ad82945bef1f281fee5b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 6986944927442379444}
+--- !u!225 &6986944927442379444
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0

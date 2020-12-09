@@ -27,6 +27,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleERSCompare;
         public static event InputPressedDown PressedToggleCircuitInfo;
         public static event InputPressedDown PressedToggleWeather;
+        public static event InputPressedDown PressedTogglePitTimer;
 
         private void Awake()
         {
@@ -85,6 +86,8 @@ namespace F1_Unity
                 PressedToggleLiveSpeed?.Invoke();
             else if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))       //2
                 PressedToggleTyreWear?.Invoke();
+            else if (Input.GetButtonDown(InputKeywords.PIT_TIMER))       //3
+                PressedTogglePitTimer?.Invoke();
         }
 
         /// <summary>

@@ -459,6 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7201924231412175873}
   - component: {fileID: 5474275923825659698}
+  - component: {fileID: -2695324596699529692}
   m_Layer: 5
   m_Name: DriverName
   m_TagString: Untagged
@@ -507,6 +508,18 @@ MonoBehaviour:
   _raceNumberText: {fileID: 5072899885461121026}
   _raceNumberShadow: {fileID: 1168150061606856182}
   _flagImage: {fileID: 6240544574911498802}
+--- !u!114 &-2695324596699529692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51bb825f82d34f641ad642339737966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4151831252151124605
 GameObject:
   m_ObjectHideFlags: 0

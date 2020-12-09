@@ -1652,6 +1652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7201924231412175873}
   - component: {fileID: 5658572077177642480}
+  - component: {fileID: -2683021721295177748}
   m_Layer: 5
   m_Name: ERSCompare
   m_TagString: Untagged
@@ -1717,6 +1718,18 @@ MonoBehaviour:
   _driver2ERSText: {fileID: 1946000677336979744}
   _driver2DeployedText: {fileID: 9203752425005854864}
   _driver2HarvestedText: {fileID: 3446149843598343003}
+--- !u!114 &-2683021721295177748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51bb825f82d34f641ad642339737966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4221619630836076022
 GameObject:
   m_ObjectHideFlags: 0

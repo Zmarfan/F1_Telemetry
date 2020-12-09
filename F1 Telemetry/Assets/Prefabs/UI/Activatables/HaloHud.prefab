@@ -2325,6 +2325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7201924231412175873}
   - component: {fileID: 7065090959410556596}
+  - component: {fileID: -3519407066177766297}
   m_Layer: 8
   m_Name: HaloHud
   m_TagString: Untagged
@@ -2430,6 +2431,18 @@ MonoBehaviour:
   _driverPositionText: {fileID: 7903504076895099117}
   _driverTeamColor: {fileID: 6491199292699009924}
   _driverNameText: {fileID: 1409460338654795067}
+--- !u!114 &-3519407066177766297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51bb825f82d34f641ad642339737966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4272757162959271813
 GameObject:
   m_ObjectHideFlags: 0

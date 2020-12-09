@@ -1239,6 +1239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7201924231412175873}
   - component: {fileID: 1547864675897278564}
+  - component: {fileID: -4395046856981050589}
   m_Layer: 5
   m_Name: DetailDelta
   m_TagString: Untagged
@@ -1278,13 +1279,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b060c8af2c61344bf1e2e9e689b5e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 4182913167844052371}
+  _driver1PositionText: {fileID: 338831956413947418}
+  _driver1NameText: {fileID: 8869804998710274634}
+  _driver1NumberText: {fileID: 5072899885461121026}
+  _driver1TeamImage: {fileID: 1892373075006083961}
+  _driver1PortraitImage: {fileID: 7443407802607350414}
+  _driver1TeamStripeImage: {fileID: 29421970887856059}
+  _driver2PositionText: {fileID: 3505861207595854057}
+  _driver2NameText: {fileID: 8646833144773336220}
+  _driver2NumberText: {fileID: 2869394774866707384}
+  _driver2TeamImage: {fileID: 70883901158364935}
+  _driver2PortraitImage: {fileID: 5142561250360994852}
+  _driver2TeamStripeImage: {fileID: 2321122600646075971}
   _timeBetweenDeltaUpdates: 1.75
   _defaultDeltaString: -------
   _startingDeltaColor: {r: 0.675, g: 0.675, b: 0.675, a: 1}
   _slowerColor: {r: 0.8039216, g: 0.31372547, b: 0.31372547, a: 1}
   _fasterColor: {r: 0.3137255, g: 0.8039216, b: 0.32941177, a: 1}
   _deltaText: {fileID: 3191611544717325293}
-  _canvasGroup: {fileID: 4182913167844052371}
   _driverTemplates:
   - {fileID: 0}
   - {fileID: 0}
@@ -1308,20 +1321,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _driver1PositionText: {fileID: 338831956413947418}
-  _driver1NameText: {fileID: 8869804998710274634}
-  _driver1NumberText: {fileID: 5072899885461121026}
   _driver1CarImage: {fileID: 2322003797430121956}
-  _driver1TeamImage: {fileID: 1892373075006083961}
-  _driver1PortraitImage: {fileID: 7443407802607350414}
-  _driver1TeamStripeImage: {fileID: 29421970887856059}
-  _driver2PositionText: {fileID: 3505861207595854057}
-  _driver2NameText: {fileID: 8646833144773336220}
-  _driver2NumberText: {fileID: 2869394774866707384}
   _driver2CarImage: {fileID: 6586473152009034646}
-  _driver2TeamImage: {fileID: 70883901158364935}
-  _driver2PortraitImage: {fileID: 5142561250360994852}
-  _driver2TeamStripeImage: {fileID: 2321122600646075971}
+--- !u!114 &-4395046856981050589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51bb825f82d34f641ad642339737966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4179267552367285680
 GameObject:
   m_ObjectHideFlags: 0

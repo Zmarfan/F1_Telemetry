@@ -9,18 +9,23 @@ namespace F1_Unity
         [SerializeField] Transform _canvas;
 
         [SerializeField] GameObject _all;
-        [SerializeField] GameObject _liveSpeed;
         [SerializeField] TimingScreen _timingScreen;
-        [SerializeField] GameObject _driverName;
-        [SerializeField] GameObject _detailDelta;
-        [SerializeField] GameObject _tyreWear;
-        [SerializeField] GameObject _speedCompare;
-        [SerializeField] GameObject _location;
-        [SerializeField] GameObject _haloHud;
-        [SerializeField] GameObject _lapComparision;
-        [SerializeField] GameObject _ersCompare;
-        [SerializeField] GameObject _circuitInfo;
-        [SerializeField] GameObject _weather;
+        [SerializeField] ToggleActivatable _liveSpeed;
+        [SerializeField] ToggleActivatable _driverName;
+        [SerializeField] ToggleActivatable _detailDelta;
+        [SerializeField] ToggleActivatable _tyreWear;
+        [SerializeField] ToggleActivatable _speedCompare;
+        [SerializeField] ToggleActivatable _location;
+        [SerializeField] ToggleActivatable _haloHud;
+        [SerializeField] ToggleActivatable _lapComparision;
+        [SerializeField] ToggleActivatable _ersCompare;
+        [SerializeField] ToggleActivatable _circuitInfo;
+        [SerializeField] ToggleActivatable _weather;
+        [SerializeField] ToggleActivatablePit _pitTimer;
+
+        [SerializeField] ToggleActivatable[] _lowerSlot;
+        [SerializeField] ToggleActivatable[] _rightSlot;
+        [SerializeField] ToggleActivatable[] _upperRightSlot;
 
         private void OnEnable()
         {
@@ -36,6 +41,7 @@ namespace F1_Unity
             InputManager.PressedToggleERSCompare += ToggleERSCompare;
             InputManager.PressedToggleCircuitInfo += ToggleCircuitInfo;
             InputManager.PressedToggleWeather += ToggleWeather;
+            InputManager.PressedTogglePitTimer += TogglePitTimer;
         }
 
         private void OnDisable()
@@ -52,6 +58,19 @@ namespace F1_Unity
             InputManager.PressedToggleERSCompare -= ToggleERSCompare;
             InputManager.PressedToggleCircuitInfo -= ToggleCircuitInfo;
             InputManager.PressedToggleWeather -= ToggleWeather;
+            InputManager.PressedTogglePitTimer -= TogglePitTimer;
+        }
+
+        /// <summary>
+        /// Turns off all activatables in a list except for an exception
+        /// </summary>
+        void TurnOffActivatableArray(ToggleActivatable exception, ToggleActivatable[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] != exception)
+                    array[i].Toggle(false);
+            }
         }
 
         void ToggleAll()
@@ -63,85 +82,73 @@ namespace F1_Unity
 
         void ToggleDriverName()
         {
-            _driverName.SetActive(!_driverName.activeSelf);
-            _detailDelta.SetActive(false);
-            _speedCompare.SetActive(false);
-            _lapComparision.SetActive(false);
-            _ersCompare.SetActive(false);
+            _driverName.Toggle(!_driverName.gameObject.activeSelf);
+            TurnOffActivatableArray(_driverName, _lowerSlot);
         }
 
         void ToggleDetailDelta()
         {
-            _detailDelta.SetActive(!_detailDelta.activeSelf);
-            _driverName.SetActive(false);
-            _speedCompare.SetActive(false);
-            _lapComparision.SetActive(false);
-            _ersCompare.SetActive(false);
+            _detailDelta.Toggle(!_detailDelta.gameObject.activeSelf);
+            TurnOffActivatableArray(_detailDelta, _lowerSlot);
         }
 
         void ToggleSpeedCompare()
         {
-            _speedCompare.SetActive(!_speedCompare.activeSelf);
-            _driverName.SetActive(false);
-            _detailDelta.SetActive(false);
-            _lapComparision.SetActive(false);
-            _ersCompare.SetActive(false);
+            _speedCompare.Toggle(!_speedCompare.gameObject.activeSelf);
+            TurnOffActivatableArray(_speedCompare, _lowerSlot);
         }
 
         void ToggleLapComparision()
         {
-            _lapComparision.SetActive(!_lapComparision.activeSelf);
-            _driverName.SetActive(false);
-            _detailDelta.SetActive(false);
-            _speedCompare.SetActive(false);
-            _ersCompare.SetActive(false);
+            _lapComparision.Toggle(!_lapComparision.gameObject.activeSelf);
+            TurnOffActivatableArray(_lapComparision, _lowerSlot);
         }
 
         void ToggleERSCompare()
         {
-            _ersCompare.SetActive(!_ersCompare.activeSelf);
-            _driverName.SetActive(false);
-            _detailDelta.SetActive(false);
-            _speedCompare.SetActive(false);
-            _lapComparision.SetActive(false);
+            _ersCompare.Toggle(!_ersCompare.gameObject.activeSelf);
+            TurnOffActivatableArray(_ersCompare, _lowerSlot);
         }
 
         void ToggleLiveSpeed()
         {
-            _liveSpeed.SetActive(!_liveSpeed.activeSelf);
-            _tyreWear.SetActive(false);
+            _liveSpeed.Toggle(!_liveSpeed.gameObject.activeSelf);
+            TurnOffActivatableArray(_liveSpeed, _rightSlot);
         }
 
         void ToggleTyreWear()
         {
-            _tyreWear.SetActive(!_tyreWear.activeSelf);
-            _liveSpeed.SetActive(false);
+            _tyreWear.Toggle(!_tyreWear.gameObject.activeSelf);
+            TurnOffActivatableArray(_tyreWear, _rightSlot);
         }
 
         void ToggleLocation()
         {
-            _location.SetActive(!_location.activeSelf);
-            _circuitInfo.SetActive(false);
-            _weather.SetActive(false);
+            _location.Toggle(!_location.gameObject.activeSelf);
+            TurnOffActivatableArray(_location, _upperRightSlot);
         }
 
         void ToggleCircuitInfo()
         {
-            _circuitInfo.SetActive(!_circuitInfo.activeSelf);
-            _location.SetActive(false);
-            _weather.SetActive(false);
+            _circuitInfo.Toggle(!_circuitInfo.gameObject.activeSelf);
+            TurnOffActivatableArray(_circuitInfo, _lowerSlot);
         }
 
         void ToggleWeather()
         {
-            _weather.SetActive(!_weather.activeSelf);
-            _location.SetActive(false);
-            _circuitInfo.SetActive(false);
+            _weather.Toggle(!_weather.gameObject.activeSelf);
+            TurnOffActivatableArray(_weather, _upperRightSlot);
         }
 
         void ToggleHaloHud()
         {
-            _haloHud.SetActive(!_haloHud.activeSelf);
+            _haloHud.Toggle(!_haloHud.gameObject.activeSelf);
+        }
+
+        void TogglePitTimer()
+        {
+            _pitTimer.Toggle(!_pitTimer.CurrentState);
+            TurnOffActivatableArray(_pitTimer, _rightSlot);
         }
     }
 }

@@ -882,6 +882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7201924231412175873}
   - component: {fileID: 6792151877183330594}
+  - component: {fileID: -6244498318031844042}
   m_Layer: 5
   m_Name: Weather
   m_TagString: Untagged
@@ -926,6 +927,18 @@ MonoBehaviour:
   _airTempFText: {fileID: 5382390400106113861}
   _trackTempCText: {fileID: 4940385722377341772}
   _trackTempFText: {fileID: 9062539293316346503}
+--- !u!114 &-6244498318031844042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137811850501173954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51bb825f82d34f641ad642339737966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4474264465179235083
 GameObject:
   m_ObjectHideFlags: 0
