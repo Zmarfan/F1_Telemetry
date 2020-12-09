@@ -53,14 +53,7 @@ namespace F1_Unity
         /// </summary>
         void InitTime(float timeInSeconds)
         {
-            TimeSpan span = TimeSpan.FromSeconds(timeInSeconds);
-            StringBuilder showText = new StringBuilder();
-            showText.Append(span.Minutes);
-            showText.Append('.');
-            showText.Append(span.Seconds);
-            showText.Append('.');
-            showText.Append(span.Milliseconds);
-            _time.text = showText.ToString();
+            _time.text = F1Utility.GetDeltaString(timeInSeconds);
         }
 
         /// <summary>

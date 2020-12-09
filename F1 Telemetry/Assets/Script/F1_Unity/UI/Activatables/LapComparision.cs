@@ -93,13 +93,12 @@ namespace F1_Unity
                     if (status1 && status2 && storedLapDataDriver1.lapState == LapState.Sector_3 && storedLapDataDriver2.lapState == LapState.Sector_3)
                     {
                         //Driver behind -> delta
-                        float behindDelta = storedLapDataDriver1.lapTime - storedLapDataDriver2.lapTime;
-                        bool slower = behindDelta < 0;
-                        char pre = slower ? '+' : '-';
+                        float behindDelta = storedLapDataDriver2.lapTime - storedLapDataDriver1.lapTime;
+                        bool slower = behindDelta > 0;
                         _driver2TimeText[i].color = slower ? _slowerColor : _fasterColor;
-                        _driver2TimeText[i].text = pre + GetStringFromTimeInSeconds(Mathf.Abs(behindDelta));
+                        _driver2TimeText[i].text = F1Utility.GetDeltaStringSigned(behindDelta);
 
-                        _driver1TimeText[i].text = GetStringFromTimeInSeconds(storedLapDataDriver1.lapTime);
+                        _driver1TimeText[i].text = F1Utility.GetDeltaString(storedLapDataDriver1.lapTime);
                     }
                     //Don't have access to that in memory
                     else
@@ -142,29 +141,6 @@ namespace F1_Unity
                 int lap = _currentLap - i - 1;
                 _lapTexts[i].text = lap > 0 ? "LAP " + lap : string.Empty;
             }
-        }
-
-        /// <summary>
-        /// Converts seconds to +minute:seconds:millieseconds
-        /// </summary>
-        static string GetStringFromTimeInSeconds(float time)
-        {
-            TimeSpan span = TimeSpan.FromSeconds(time);
-            StringBuilder builder = new StringBuilder();
-
-            if (span.Minutes > 0)
-            {
-                builder.Append(span.Minutes);
-                builder.Append(':');
-                builder.Append(span.Seconds.ToString("0#")); //Start with zero if one digit long
-            }
-            else
-                builder.Append(span.Seconds);
-
-            builder.Append('.');
-            builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
-
-            return builder.ToString();
         }
     }
 }

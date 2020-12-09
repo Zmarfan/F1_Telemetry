@@ -92,14 +92,14 @@ namespace F1_Unity
             _driver1NumberText.text = "<i>" + d1Data.RaceNumber + "</i>";
             _driver1TeamImage.sprite = ParticipantManager.GetTeamSprite(d1Data.ParticipantData.team);
             _driver1PortraitImage.sprite = ParticipantManager.GetPortraitFromNumber(d1Data.RaceNumber);
-            _driver1TeamStripeImage.color = TeamColor.GetColorByTeam(d1Data.ParticipantData.team);
+            _driver1TeamStripeImage.color = F1Utility.GetColorByTeam(d1Data.ParticipantData.team);
 
             _driver2PositionText.text = d2Data.LapData.carPosition.ToString();
             _driver2NameText.text = ParticipantManager.GetNameFromNumber(d2Data.RaceNumber).ToUpper();
             _driver2NumberText.text = "<i>" + d2Data.RaceNumber + "</i>";
             _driver2TeamImage.sprite = ParticipantManager.GetTeamSprite(d2Data.ParticipantData.team);
             _driver2PortraitImage.sprite = ParticipantManager.GetPortraitFromNumber(d2Data.RaceNumber);
-            _driver2TeamStripeImage.color = TeamColor.GetColorByTeam(d2Data.ParticipantData.team);
+            _driver2TeamStripeImage.color = F1Utility.GetColorByTeam(d2Data.ParticipantData.team);
         }
     }
 }

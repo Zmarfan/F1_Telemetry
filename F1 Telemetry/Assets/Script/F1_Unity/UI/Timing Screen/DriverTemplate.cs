@@ -241,8 +241,8 @@ namespace F1_Unity
                     }
                 case DriverTimeState.Delta:
                     {
-                        _timeTextLeader.text = GetDeltaString(DeltaToLeader);
-                        _timeTextInterval.text = GetDeltaString(DeltaToCarInFront);
+                        _timeTextLeader.text = F1Utility.GetDeltaStringSigned(DeltaToLeader);
+                        _timeTextInterval.text = F1Utility.GetDeltaStringSigned(DeltaToCarInFront);
                         break;
                     }
                 case DriverTimeState.Starting:
@@ -335,29 +335,6 @@ namespace F1_Unity
                 _timeTextLeader.text = _dsqString;
                 _timeTextInterval.text = _dsqString;
             }
-        }
-
-        /// <summary>
-        /// Converts seconds to +minute:seconds:millieseconds
-        /// </summary>
-        static string GetDeltaString(float time)
-        {
-            TimeSpan span = TimeSpan.FromSeconds(time);
-            StringBuilder builder = new StringBuilder();
-            builder.Append('+');
-            if (span.Minutes > 0)
-            {
-                builder.Append(span.Minutes);
-                builder.Append(':');
-                builder.Append(span.Seconds.ToString("0#")); //Start with zero if one digit long
-            }
-            else
-                builder.Append(span.Seconds);
-
-            builder.Append('.');
-            builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
-
-            return builder.ToString();
         }
     }
 

@@ -67,23 +67,8 @@ namespace F1_Unity
             if (state != DriverTimeState.Starting && state != DriverTimeState.Pit && state != DriverTimeState.Pit_Area && state != DriverTimeState.Lapped)
             {
                 float delta = _driverTemplates[index].DeltaToCarInFront;
-                TimeSpan span = TimeSpan.FromSeconds(delta);
 
-                StringBuilder builder = new StringBuilder();
-
-                if (span.Minutes > 0)
-                {
-                    builder.Append(span.Minutes);
-                    builder.Append(':');
-                    builder.Append(span.Seconds.ToString("0#")); //Start with zero if one digit long
-                }
-                else
-                    builder.Append(span.Seconds);
-
-                builder.Append('.');
-                builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
-
-                _deltaText.text = builder.ToString();
+                _deltaText.text = F1Utility.GetDeltaString(delta);
 
                 //Color
                 _deltaText.color = delta > _lastDelta ? _slowerColor : _fasterColor;

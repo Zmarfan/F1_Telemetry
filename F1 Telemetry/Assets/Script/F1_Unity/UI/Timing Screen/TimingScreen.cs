@@ -250,7 +250,7 @@ namespace F1_Unity
                     _leaderVehicleIndex = driverData.ParticipantData.vehicleIndex;
 
                 _driverTemplates[positionIndex].SetInitials(ParticipantManager.GetDriverInitials(driverData.RaceNumber)); //Set initals for that position
-                _driverTemplates[positionIndex].SetTeamColor(TeamColor.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
+                _driverTemplates[positionIndex].SetTeamColor(F1Utility.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
 
                 //if the car is retired, set it to out
                 ResultStatus resultStatus = driverData.LapData.resultStatus;

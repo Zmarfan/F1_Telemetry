@@ -40,7 +40,7 @@ namespace F1_Unity
 
                 _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
 
-                Color color = TeamColor.GetColorByTeam(spectatorDriverData.ParticipantData.team);
+                Color color = F1Utility.GetColorByTeam(spectatorDriverData.ParticipantData.team);
                 _teamColorImage.color = color;
                 color.a = _raceNumberColorAlpha;
                 _raceNumberShadow.effectColor = color;

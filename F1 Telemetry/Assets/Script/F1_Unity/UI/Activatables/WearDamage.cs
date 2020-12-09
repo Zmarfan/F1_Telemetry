@@ -117,7 +117,7 @@ namespace F1_Unity
         void SetIndDriverVisuals(DriverData driverData)
         {
             _driverNameText.text = ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
-            _teamColorImage.color = TeamColor.GetColorByTeam(driverData.ParticipantData.team);
+            _teamColorImage.color = F1Utility.GetColorByTeam(driverData.ParticipantData.team);
         }
     }
 }
