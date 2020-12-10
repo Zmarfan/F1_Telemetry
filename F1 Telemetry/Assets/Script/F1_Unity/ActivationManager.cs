@@ -22,6 +22,7 @@ namespace F1_Unity
         [SerializeField] ToggleActivatable _circuitInfo;
         [SerializeField] ToggleActivatable _weather;
         [SerializeField] ToggleActivatablePit _pitTimer;
+        [SerializeField] ToggleActivatable _driverNameChampionship;
 
         [SerializeField] ToggleActivatable[] _lowerSlot;
         [SerializeField] ToggleActivatable[] _rightSlot;
@@ -42,6 +43,7 @@ namespace F1_Unity
             InputManager.PressedToggleCircuitInfo += ToggleCircuitInfo;
             InputManager.PressedToggleWeather += ToggleWeather;
             InputManager.PressedTogglePitTimer += TogglePitTimer;
+            InputManager.PressedToggleDriverNameChampionship += ToggleDriverNameChampionship;
         }
 
         private void OnDisable()
@@ -59,6 +61,7 @@ namespace F1_Unity
             InputManager.PressedToggleCircuitInfo -= ToggleCircuitInfo;
             InputManager.PressedToggleWeather -= ToggleWeather;
             InputManager.PressedTogglePitTimer -= TogglePitTimer;
+            InputManager.PressedToggleDriverNameChampionship -= ToggleDriverNameChampionship;
         }
 
         /// <summary>
@@ -149,6 +152,12 @@ namespace F1_Unity
         {
             _pitTimer.Toggle(!_pitTimer.CurrentState);
             TurnOffActivatableArray(_pitTimer, _rightSlot);
+        }
+
+        void ToggleDriverNameChampionship()
+        {
+            _driverNameChampionship.Toggle(!_driverNameChampionship.gameObject.activeSelf);
+            TurnOffActivatableArray(_driverNameChampionship, _lowerSlot);
         }
     }
 }

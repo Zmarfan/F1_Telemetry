@@ -28,6 +28,7 @@ namespace F1_Unity
         public static event InputPressedDown PressedToggleCircuitInfo;
         public static event InputPressedDown PressedToggleWeather;
         public static event InputPressedDown PressedTogglePitTimer;
+        public static event InputPressedDown PressedToggleDriverNameChampionship;
 
         private void Awake()
         {
@@ -82,12 +83,14 @@ namespace F1_Unity
         /// </summary>
         void CheckDriver()
         {
-            if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))           //1
-                PressedToggleLiveSpeed?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))       //2
-                PressedToggleTyreWear?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.PIT_TIMER))       //3
+            if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))                     //1
+                PressedToggleLiveSpeed?.Invoke();                                  
+            else if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))                 //2
+                PressedToggleTyreWear?.Invoke();                                   
+            else if (Input.GetButtonDown(InputKeywords.PIT_TIMER))                 //3
                 PressedTogglePitTimer?.Invoke();
+            else if (Input.GetButtonDown(InputKeywords.DRIVER_NAME_CHAMPIONSHIP))  //4
+                PressedToggleDriverNameChampionship?.Invoke();
         }
 
         /// <summary>

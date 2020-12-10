@@ -22,5 +22,6 @@
         public static readonly string CIRCUIT_INFO = "CircuitInfo";
         public static readonly string WEATHER = "Weather";
         public static readonly string PIT_TIMER = "PitTimer";
+        public static readonly string DRIVER_NAME_CHAMPIONSHIP = "DriverNameChampionship";
     }
 }

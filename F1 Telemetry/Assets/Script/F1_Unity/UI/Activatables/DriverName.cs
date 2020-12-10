@@ -16,8 +16,8 @@ namespace F1_Unity
         [SerializeField] Shadow _raceNumberShadow;
         [SerializeField] Image _flagImage;
 
-        byte _currentDriverId = byte.MaxValue;
-        byte _currentDriverPosition = byte.MaxValue;
+        protected byte _currentDriverId = byte.MaxValue;
+        protected byte _currentDriverPosition = byte.MaxValue;
 
         private void Update()
         {
@@ -27,37 +27,44 @@ namespace F1_Unity
                 Show(false);
         }
 
-        void UpdateVisuals()
+        protected virtual void UpdateVisuals()
         {
-            Session sessionData = GameManager.F1Info.ReadSession(out bool statusSession);
             DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
 
             if (statusDriver && (_currentDriverId != spectatorDriverData.ID || _currentDriverPosition != spectatorDriverData.LapData.carPosition))
             {
                 Show(true);
-                _currentDriverId = spectatorDriverData.ID;
-                _currentDriverPosition = spectatorDriverData.LapData.carPosition;
-
-                _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
-
-                Color color = F1Utility.GetColorByTeam(spectatorDriverData.ParticipantData.team);
-                _teamColorImage.color = color;
-                color.a = _raceNumberColorAlpha;
-                _raceNumberShadow.effectColor = color;
-
-                _driverNameText.text = ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber);
-                _raceNumberText.text = "<i>" + spectatorDriverData.RaceNumber + "</i>"; //Puts it in italics
-                _teamNameText.text = ConvertEnumToString.Convert<Team>(spectatorDriverData.ParticipantData.team);
-                _flagImage.sprite = FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);
+                SetVisuals(spectatorDriverData);
             }
-            else if (!sessionData.IsSpectating)
+            else if (!statusDriver)
                 Show(false);
+        }
+
+        /// <summary>
+        /// Sets the visuals
+        /// </summary>
+        protected virtual void SetVisuals(DriverData spectatorDriverData)
+        {
+            _currentDriverId = spectatorDriverData.ID;
+            _currentDriverPosition = spectatorDriverData.LapData.carPosition;
+
+            _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
+
+            Color color = F1Utility.GetColorByTeam(spectatorDriverData.ParticipantData.team);
+            _teamColorImage.color = color;
+            color.a = _raceNumberColorAlpha;
+            _raceNumberShadow.effectColor = color;
+
+            _driverNameText.text = ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber);
+            _raceNumberText.text = "<i>" + spectatorDriverData.RaceNumber + "</i>"; //Puts it in italics
+            _teamNameText.text = ConvertEnumToString.Convert<Team>(spectatorDriverData.ParticipantData.team);
+            _flagImage.sprite = FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);
         }
 
         /// <summary>
         /// Show or hide activatable
         /// </summary>
-        void Show(bool status)
+        protected void Show(bool status)
         {
             _canvasGroup.alpha = status ? 1.0f : 0.0f;
         }
