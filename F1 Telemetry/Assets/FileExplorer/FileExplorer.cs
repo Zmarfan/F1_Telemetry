@@ -25,6 +25,7 @@ namespace FileExplorer
         [SerializeField] GameObject _iconPrefab;
         [SerializeField] FileTypeToSprite[] _fileTypeToSpriteList;
 
+        public event PressedIcon OpenFile;
 
         //List of all items currently showing
         List<Icon> _items = new List<Icon>();
@@ -78,6 +79,9 @@ namespace FileExplorer
                 _inputfield.text = filePath;
                 PressedGo();
             }
+            //It's a file -> send event further out and let them deal with it
+            else
+                OpenFile?.Invoke(name, extension, filePath);
         }
 
         /// <summary>
@@ -133,14 +137,28 @@ namespace FileExplorer
         /// <param name="filePath">The full path to this item</param>
         void SpawnItem(string name, string extension, string filePath)
         {
-            FileTypes fileType = GetSupportedFileType(extension);
-            GameObject item = Instantiate(_iconPrefab, Vector3.zero, Quaternion.identity, _iconArea) as GameObject;
-            Icon script = item.GetComponent<Icon>();
-            script.SetValues(name, extension, filePath, _fileTypeToSprite[fileType], fileType != FileTypes.Unknown);
-            //Listen to clicked event
-            script.ClickedIcon += Selected;
-            script.DoubleClickedIcon += Open;
-            _items.Add(script);
+            try
+            {
+                //if it's a directory -> check if it's accessable -> if not don't show it
+                DirectoryInfo[] directories;
+                if (extension == string.Empty)
+                    directories = new DirectoryInfo(filePath).GetDirectories();
+
+                //Valid directories and files get through here
+                FileTypes fileType = GetSupportedFileType(extension);
+                GameObject item = Instantiate(_iconPrefab, Vector3.zero, Quaternion.identity, _iconArea) as GameObject;
+                Icon script = item.GetComponent<Icon>();
+                script.SetValues(name, extension, filePath, _fileTypeToSprite[fileType], fileType != FileTypes.Unknown);
+                //Listen to clicked event
+                script.ClickedIcon += Selected;
+                script.DoubleClickedIcon += Open;
+                _items.Add(script);
+            }
+            //Can't access directory -> don't display it
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }  
         }
 
         /// <summary>
