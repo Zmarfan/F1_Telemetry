@@ -155,10 +155,7 @@ namespace FileExplorer
                 _items.Add(script);
             }
             //Can't access directory -> don't display it
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }  
+            catch {}  
         }
 
         /// <summary>

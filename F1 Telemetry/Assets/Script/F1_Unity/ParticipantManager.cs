@@ -17,6 +17,7 @@ namespace F1_Unity
         [Header("Defaults")]
 
         [SerializeField] string _defaultDriverName = "Driver #";
+        [SerializeField] string _defaultDriverInital = "#";
         [SerializeField] Sprite _defaultPortrait;
         [SerializeField] Sprite _defaultTeamSprite;
         [SerializeField] Sprite _defaultCarSprite;
@@ -24,6 +25,7 @@ namespace F1_Unity
         [Header("Lists")]
 
         [SerializeField] NumberNameStruct[] _numberNameList;
+        [SerializeField] NumberNameStruct[] _numberInitialsList;
         [SerializeField] NumberSpriteStruct[] _numberPortraitList;
         [SerializeField] TeamSpriteStruct[] _teamSpriteList;
         [SerializeField] TeamSpriteStruct[] _carSpriteList;
@@ -31,6 +33,7 @@ namespace F1_Unity
 
         static ParticipantManager _singleton;
         static Dictionary<byte, string> _namesByRaceNumber = new Dictionary<byte, string>();
+        static Dictionary<byte, string> _initalsByRaceNumber = new Dictionary<byte, string>();
         static Dictionary<byte, Sprite> _portraitByRaceNumber = new Dictionary<byte, Sprite>();
         static Dictionary<Team, Sprite> _teamSpriteByTeam = new Dictionary<Team, Sprite>();
         static Dictionary<Team, Sprite> _carSpriteByTeam = new Dictionary<Team, Sprite>();
@@ -50,18 +53,22 @@ namespace F1_Unity
         void Init()
         {
             _singleton = this;
+            //Names
             for (int i = 0; i < _numberNameList.Length; i++)
                 _namesByRaceNumber.Add(_numberNameList[i].raceNumber, _numberNameList[i].name);
-
+            //Initals
+            for (int i = 0; i < _numberInitialsList.Length; i++)
+                _initalsByRaceNumber.Add(_numberInitialsList[i].raceNumber, _numberInitialsList[i].name);
+            //Portraits
             for (int i = 0; i < _numberPortraitList.Length; i++)
                 _portraitByRaceNumber.Add(_numberPortraitList[i].raceNumber, _numberPortraitList[i].sprite);
-
+            //Team logos
             for (int i = 0; i < _teamSpriteList.Length; i++)
                 _teamSpriteByTeam.Add(_teamSpriteList[i].team, _teamSpriteList[i].sprite);
-
+            //Team car
             for (int i = 0; i < _carSpriteList.Length; i++)
                 _carSpriteByTeam.Add(_carSpriteList[i].team, _carSpriteList[i].sprite);
-
+            //Visual Tyre sprite
             for (int i = 0; i < _visualTyreCompounds.Length; i++)
                 _visualTyreCompoundSpriteByEnum.Add(_visualTyreCompounds[i].compound, _visualTyreCompounds[i].sprite);
         }
@@ -116,16 +123,10 @@ namespace F1_Unity
         /// </summary>
         public static string GetDriverInitials(byte raceNumber)
         {
-            string fullName = GetNameFromNumber(raceNumber);
-            string[] words = fullName.Split(_singleton._splitters);
-
-            //Get second word (surname) if available, otherwise take first word (firstName / Username for multiplayer)
-            string initials = words.Length > 1 ? words[1] : words[0];
-
-            if (initials.Length > _singleton._initialLength)
-                return initials.Substring(0, _singleton._initialLength).ToUpper();
+            if (_initalsByRaceNumber.ContainsKey(raceNumber))
+                return _initalsByRaceNumber[raceNumber];
             else
-                return initials.ToUpper();
+                return _singleton._defaultDriverInital + raceNumber.ToString();
         }
 
         /// <summary>
