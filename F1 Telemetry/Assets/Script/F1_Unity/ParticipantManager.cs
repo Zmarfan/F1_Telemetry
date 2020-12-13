@@ -9,11 +9,6 @@ namespace F1_Unity
     /// </summary>
     public class ParticipantManager : MonoBehaviour
     {
-        [Header("Settings")]
-
-        [SerializeField] char[] _splitters = new char[] { ' ', '_', '-' };
-        [SerializeField] byte _initialLength = 3;
-
         [Header("Defaults")]
 
         [SerializeField] string _defaultDriverName = "Driver #";
@@ -25,15 +20,13 @@ namespace F1_Unity
         [Header("Lists")]
 
         [SerializeField] NumberNameStruct[] _numberNameList;
-        [SerializeField] NumberNameStruct[] _numberInitialsList;
         [SerializeField] NumberSpriteStruct[] _numberPortraitList;
         [SerializeField] TeamSpriteStruct[] _teamSpriteList;
         [SerializeField] TeamSpriteStruct[] _carSpriteList;
         [SerializeField] VisualCompoundSpriteStruct[] _visualTyreCompounds;
 
         static ParticipantManager _singleton;
-        static Dictionary<byte, string> _namesByRaceNumber = new Dictionary<byte, string>();
-        static Dictionary<byte, string> _initalsByRaceNumber = new Dictionary<byte, string>();
+        static Dictionary<byte, NumberNameStruct> _namesByRaceNumber = new Dictionary<byte, NumberNameStruct>();
         static Dictionary<byte, Sprite> _portraitByRaceNumber = new Dictionary<byte, Sprite>();
         static Dictionary<Team, Sprite> _teamSpriteByTeam = new Dictionary<Team, Sprite>();
         static Dictionary<Team, Sprite> _carSpriteByTeam = new Dictionary<Team, Sprite>();
@@ -63,10 +56,7 @@ namespace F1_Unity
             _singleton = this;
             //Names
             for (int i = 0; i < _numberNameList.Length; i++)
-                _namesByRaceNumber.Add(_numberNameList[i].raceNumber, _numberNameList[i].name);
-            //Initals
-            for (int i = 0; i < _numberInitialsList.Length; i++)
-                _initalsByRaceNumber.Add(_numberInitialsList[i].raceNumber, _numberInitialsList[i].name);
+                _namesByRaceNumber.Add(_numberNameList[i].raceNumber, _numberNameList[i]);
             //Portraits
             for (int i = 0; i < _numberPortraitList.Length; i++)
                 _portraitByRaceNumber.Add(_numberPortraitList[i].raceNumber, _numberPortraitList[i].sprite);
@@ -87,7 +77,7 @@ namespace F1_Unity
         public static string GetNameFromNumber(byte raceNumber)
         {
             if (_namesByRaceNumber.ContainsKey(raceNumber))
-                return _namesByRaceNumber[raceNumber];
+                return _namesByRaceNumber[raceNumber].name;
             else
                 return _singleton._defaultDriverName + raceNumber.ToString();
         }
@@ -131,8 +121,8 @@ namespace F1_Unity
         /// </summary>
         public static string GetDriverInitials(byte raceNumber)
         {
-            if (_initalsByRaceNumber.ContainsKey(raceNumber))
-                return _initalsByRaceNumber[raceNumber];
+            if (_namesByRaceNumber.ContainsKey(raceNumber))
+                return _namesByRaceNumber[raceNumber].initals;
             else
                 return _singleton._defaultDriverInital + raceNumber.ToString();
         }
@@ -150,6 +140,7 @@ namespace F1_Unity
         {
             public byte raceNumber;
             public string name;
+            public string initals;
         }
 
         [System.Serializable]

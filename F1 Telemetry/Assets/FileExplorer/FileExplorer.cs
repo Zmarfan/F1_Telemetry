@@ -20,6 +20,7 @@ namespace FileExplorer
 
         [Header("Drop")]
 
+        [SerializeField] Button _selectButton;
         [SerializeField] Text _fileNameText;
         [SerializeField] Text _fileTypeText;
         [SerializeField] InputField _inputfield;
@@ -44,6 +45,10 @@ namespace FileExplorer
         string _filePath;
         bool _isFile = false;
         string _currentlySelectedItemName = string.Empty;
+
+        string _selectedName = string.Empty;
+        string _selectedExtension = string.Empty;
+        string _selectedFilePath = string.Empty;
 
         private void Awake()
         {
@@ -70,6 +75,14 @@ namespace FileExplorer
         /// </summary>
         void Selected(string name, string extension, string filePath)
         {
+            _selectButton.interactable = true;
+
+            //Save data for selecting directory via button
+            _selectedName = name;
+            _selectedExtension = extension;
+            _selectedFilePath = filePath;
+
+            //Show selected data details
             _fileNameText.text = _fileNamePre + name;
             _fileTypeText.text = extension == string.Empty ? _fileTypePre + _directoryTypeName : _fileTypePre + extension;
         }
@@ -85,8 +98,13 @@ namespace FileExplorer
                 _inputfield.text = filePath;
                 PressedGo();
             }
-            //send event further out and let them deal with it
-            OpenFile?.Invoke(name, extension, filePath);
+            //It's a file
+            else
+            {
+                //send event further out and let them deal with it
+                OpenFile?.Invoke(name, extension, filePath);
+            }
+            
         }
 
         /// <summary>
@@ -104,6 +122,13 @@ namespace FileExplorer
                 //Clear file info
                 _fileNameText.text = string.Empty;
                 _fileTypeText.text = string.Empty;
+
+                //clear selected data
+                _selectedName = null;
+                _selectedExtension = null;
+                _selectedFilePath = null;
+
+                _selectButton.interactable = false;
 
                 //Remove all previous icons
                 for (int i = 0; i < _items.Count; i++)
@@ -181,6 +206,14 @@ namespace FileExplorer
             //Call out that it's destroyed
             ClosedFileExplorer?.Invoke();
             Destroy(this.gameObject);
+        }
+
+        /// <summary>
+        /// Called when user presses button for select -> used to open selected file or !directory!
+        /// </summary>
+        public void Select()
+        {
+            OpenFile?.Invoke(_selectedName, _selectedExtension, _selectedFilePath);
         }
 
         /// <summary>
