@@ -6,8 +6,8 @@ namespace F1_Unity
 {
     public class Location : MonoBehaviour
     {
-        [SerializeField] Animator _animator;
-        [SerializeField] string _animatorTrigger = "Trigger";
+        //[SerializeField] Animator _animator;
+        //[SerializeField] string _animatorTrigger = "Trigger";
         [SerializeField] Text _stringText;
         [SerializeField] Image _flagImage;
 

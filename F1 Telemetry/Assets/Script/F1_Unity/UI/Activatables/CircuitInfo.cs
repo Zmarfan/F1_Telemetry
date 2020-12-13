@@ -6,8 +6,8 @@ namespace F1_Unity
 {
     public class CircuitInfo : MonoBehaviour
     {
-        [SerializeField] Animator _animator;
-        [SerializeField] string _animatorTrigger = "Trigger";
+        //[SerializeField] Animator _animator;
+        //[SerializeField] string _animatorTrigger = "Trigger";
         [SerializeField] string _preTrackNameString = "Circuit Info - ";
         [SerializeField] Text _circuitInfoText;
         [SerializeField] Text _trackTypeText;

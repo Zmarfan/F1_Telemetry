@@ -43,7 +43,6 @@ namespace FileExplorer
         };
 
         string _filePath;
-        bool _isFile = false;
         string _currentlySelectedItemName = string.Empty;
 
         string _selectedName = string.Empty;
@@ -243,7 +242,6 @@ namespace FileExplorer
         public void PressedGo()
         {
             string currentFilePath = _inputfield.text;
-            _isFile = false;
             _filePath = LoadFilesAndDirectories(currentFilePath);
         }
 

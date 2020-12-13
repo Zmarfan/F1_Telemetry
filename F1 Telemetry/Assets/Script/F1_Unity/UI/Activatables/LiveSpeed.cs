@@ -14,8 +14,8 @@ namespace F1_Unity
         [SerializeField] Text _kmhSpeedText;
         [SerializeField] Text _mphSpeedText;
 
-        int turn = 1;
-        float startPoint = 0;
+        //int turn = 1;
+        //float startPoint = 0;
 
         private void Update()
         {
