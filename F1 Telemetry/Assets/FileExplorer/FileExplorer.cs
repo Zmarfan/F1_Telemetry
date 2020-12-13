@@ -7,6 +7,8 @@ using System.Text;
 
 namespace FileExplorer
 {
+    public delegate void ClosedFileExplorerDelegate();
+
     public class FileExplorer : MonoBehaviour
     {
         [Header("Settings")]
@@ -26,6 +28,7 @@ namespace FileExplorer
         [SerializeField] FileTypeToSprite[] _fileTypeToSpriteList;
 
         public event PressedIcon OpenFile;
+        public event ClosedFileExplorerDelegate ClosedFileExplorer;
 
         //List of all items currently showing
         List<Icon> _items = new List<Icon>();
@@ -44,6 +47,9 @@ namespace FileExplorer
 
         private void Awake()
         {
+            //Center the file explorer
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
             //Initilize dictionary of filetype to sprite for icon retrival
             for (int i = 0; i < _fileTypeToSpriteList.Length; i++)
                 _fileTypeToSprite.Add(_fileTypeToSpriteList[i].type, _fileTypeToSpriteList[i].sprite);
@@ -79,9 +85,8 @@ namespace FileExplorer
                 _inputfield.text = filePath;
                 PressedGo();
             }
-            //It's a file -> send event further out and let them deal with it
-            else
-                OpenFile?.Invoke(name, extension, filePath);
+            //send event further out and let them deal with it
+            OpenFile?.Invoke(name, extension, filePath);
         }
 
         /// <summary>
@@ -166,6 +171,16 @@ namespace FileExplorer
             if (_supportedFileTypes.ContainsKey(extenstion))
                 return _supportedFileTypes[extenstion];
             return FileTypes.Unknown;
+        }
+
+        /// <summary>
+        /// Called when user presses close button to close file explorer
+        /// </summary>
+        public void Close()
+        {
+            //Call out that it's destroyed
+            ClosedFileExplorer?.Invoke();
+            Destroy(this.gameObject);
         }
 
         /// <summary>

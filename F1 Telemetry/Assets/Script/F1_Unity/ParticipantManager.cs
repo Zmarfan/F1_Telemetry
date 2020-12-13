@@ -48,6 +48,14 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Sets all lists that user have control over, is called before Awake is called
+        /// </summary>
+        public void SetValues()
+        {
+
+        }
+
+        /// <summary>
         /// Make a dictionary of list data for easy access
         /// </summary>
         void Init()
