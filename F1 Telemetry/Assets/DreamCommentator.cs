@@ -11,13 +11,18 @@ using F1_Unity;
 /// </summary>
 public class DreamCommentator : MonoBehaviour
 {
+    static readonly int PORTRAIT_MIN_NUMBER = 1;
+    static readonly int PORTRAIT_MAX_NUMBER = 99;
+
     static readonly int PARTICIPANT_DATA_NUMBER_INDEX = 0;
     static readonly int PARTICIPANT_DATA_NAME_INDEX = 1;
     static readonly int PARTICIPANT_DATA_INITIAL_INDEX = 2;
 
+    static readonly string FILE_TYPE = ".txt";
+    static readonly string PORTRAIT_TYPE = ".png";
+
     [Header("Settings")]
 
-    [SerializeField] string _participantFileExtension = ".txt";
     [SerializeField] string _noValidData = "No Valid Data!";
     [SerializeField] string _validData = "Valid Data!";
     [SerializeField] Color _validDataColor = Color.green;
@@ -27,6 +32,9 @@ public class DreamCommentator : MonoBehaviour
 
     [SerializeField] Button _startButton;
     [SerializeField] Text _participantDataStatusText;
+    [SerializeField] Text _participantDataFilePathText;
+    [SerializeField] Text _portraitDataStatusText;
+    [SerializeField] Text _portraitDataFilePathText;
     [SerializeField] GameObject _main;
     [SerializeField] Transform _fileExplorerHolder;
     [SerializeField] GameObject _fileExplorerPrefab;
@@ -35,6 +43,7 @@ public class DreamCommentator : MonoBehaviour
 
     //Data about participant that is sent to GameManager when starting game
     List<ParticipantManager.NumberNameStruct> _participantData;
+    List<Sprite> _portraitData;
 
     private void Awake()
     {
@@ -50,10 +59,12 @@ public class DreamCommentator : MonoBehaviour
         string participantFilePath = SaveSystem.LoadFilePath(SaveTypes.ParticipantData);
         if (participantFilePath != null)
             LoadInParticipantData(participantFilePath);
+        else
+            HandleInvalidParticipantData();
         //Portraits
-        //string portraitFilePath = SaveSystem.LoadFilePath(SaveTypes.Portrait);
-        //if (portraitFilePath != null)
-        //    LoadInPortraitData(portraitFilePath);
+        string portraitFilePath = SaveSystem.LoadFilePath(SaveTypes.Portrait);
+        if (portraitFilePath != null)
+            LoadInPortraitData(portraitFilePath);
     }
 
     #region Misc
@@ -64,7 +75,7 @@ public class DreamCommentator : MonoBehaviour
     void AttemptToReadyStart()
     {
         //Enable start button if data is available
-        if (_participantData != null)
+        if (_participantData != null && _portraitData != null)
             _startButton.interactable = true;
     }
 
@@ -164,6 +175,7 @@ public class DreamCommentator : MonoBehaviour
         SaveSystem.SaveFilePath(filePath, SaveTypes.ParticipantData);
         _participantDataStatusText.text = _validData;
         _participantDataStatusText.color = _validDataColor;
+        _participantDataFilePathText.text = filePath;
         AttemptToReadyStart();
     }
 
@@ -177,6 +189,7 @@ public class DreamCommentator : MonoBehaviour
         _startButton.interactable = false;
         _participantDataStatusText.text = _noValidData;
         _participantDataStatusText.color = _invalidDataColor;
+        _participantDataFilePathText.text = string.Empty;
         Debug.LogWarning("Error with file reading!");
     }
 
@@ -204,7 +217,7 @@ public class DreamCommentator : MonoBehaviour
     void ParticipantLocationOpen(string name, string extension, string filePath)
     {
         //It's a text file -> read in
-        if (extension == _participantFileExtension)
+        if (extension == FILE_TYPE)
         {
             Show(true);
             string participantFilePath = filePath;
@@ -248,8 +261,93 @@ public class DreamCommentator : MonoBehaviour
             _currentFileExplorer.ClosedFileExplorer -= ClosedFileExplorer;
             Destroy(_currentFileExplorer.gameObject);
 
-            //LoadInPortraitData(portraitFilePath);
+            LoadInPortraitData(portraitFilePath);
         }
+    }
+
+    #endregion
+
+    #region Participant Data Handling
+
+    /// <summary>
+    /// Reads all correctly named portrait .png files in specified directory
+    /// </summary>
+    void LoadInPortraitData(string filePath)
+    {
+        try
+        {
+            DirectoryInfo fileList = new DirectoryInfo(filePath);
+            //Search through all files for .png with correct format
+            FileInfo[] files = fileList.GetFiles();
+            List<Sprite> data = new List<Sprite>();
+
+            //Loop over all files and save all the correctly named .png files to portrait data list
+            for (int i = 0; i < files.Length; i++)
+            {
+                //It's a png file
+                if (files[i].Extension == PORTRAIT_TYPE)
+                {
+                    //Is file name a number?
+                    if (byte.TryParse(Path.GetFileNameWithoutExtension(files[i].FullName), out byte number))
+                    {
+                        //Number is in correct number range
+                        if (number >= PORTRAIT_MIN_NUMBER && number <= PORTRAIT_MAX_NUMBER)
+                            data.Add(LoadSpriteFromPng(files[i].FullName));
+                    }
+                }
+            }
+
+            //Valid data!
+            HandleValidPortraitData(data, filePath);
+        }
+        //No tries to see if the data is as expected, is it not it will come here and get cleaned up! Expect clean data.
+        catch
+        {
+            HandleInvalidPortraitData();
+        }
+    }
+
+    /// <summary>
+    /// Loads in .png from filepath and convert it to sprite.
+    /// </summary>
+    /// <param name="filePath">.png filepath</param>
+    Sprite LoadSpriteFromPng(string filePath)
+    {
+        byte[] data = File.ReadAllBytes(filePath);
+        Texture2D texture = new Texture2D(64, 64, TextureFormat.ARGB32, false);
+        texture.LoadImage(data);
+        texture.name = Path.GetFileNameWithoutExtension(filePath);
+
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        return sprite;
+    }
+
+    /// <summary>
+    /// Called when there is a directory assigned for portraits
+    /// </summary>
+    void HandleValidPortraitData(List<Sprite> data, string filePath)
+    {
+        _portraitData = data;
+        //Save this filepath for future use as it gave valid data
+        SaveSystem.SaveFilePath(filePath, SaveTypes.Portrait);
+        _portraitDataStatusText.text = _validData;
+        _portraitDataStatusText.color = _validDataColor;
+        _portraitDataFilePathText.text = filePath;
+        AttemptToReadyStart();
+    }
+
+    /// <summary>
+    /// Called when there is no specified directory for portraits
+    /// </summary>
+    void HandleInvalidPortraitData()
+    {
+        _portraitData = null;
+        //Don't allow start of game if data isn't available
+        _startButton.interactable = false;
+        _portraitDataStatusText.text = _noValidData;
+        _portraitDataStatusText.color = _invalidDataColor;
+        _portraitDataFilePathText.text = string.Empty;
+        Debug.LogWarning("No assigned directory for portraits!");
     }
 
     #endregion
