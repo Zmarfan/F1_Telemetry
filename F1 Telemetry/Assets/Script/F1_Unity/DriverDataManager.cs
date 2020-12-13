@@ -115,7 +115,7 @@ namespace F1_Unity
             /// <summary>
             /// Number of current amount of championship points
             /// </summary>
-            public byte points;
+            public int points;
             /// <summary>
             /// Race number for the driver 
             /// </summary>

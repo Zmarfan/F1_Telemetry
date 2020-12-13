@@ -17,6 +17,7 @@ public class DreamCommentator : MonoBehaviour
     static readonly int PARTICIPANT_DATA_NUMBER_INDEX = 0;
     static readonly int PARTICIPANT_DATA_NAME_INDEX = 1;
     static readonly int PARTICIPANT_DATA_INITIAL_INDEX = 2;
+    static readonly int PARTICIPANT_DATA_POINTS_INDEX = 3;
 
     static readonly string FILE_TYPE = ".txt";
     static readonly string PORTRAIT_TYPE = ".png";
@@ -42,7 +43,7 @@ public class DreamCommentator : MonoBehaviour
     FileExplorer.FileExplorer _currentFileExplorer = null;
 
     //Data about participant that is sent to GameManager when starting game
-    List<ParticipantManager.NumberNameStruct> _participantData;
+    List<ParticipantData> _participantData;
     List<Sprite> _portraitData;
 
     private void Awake()
@@ -132,7 +133,7 @@ public class DreamCommentator : MonoBehaviour
             string stringData = File.ReadAllText(filePath);
             string[] lines = stringData.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             //The finished data set
-            var data = new List<ParticipantManager.NumberNameStruct>();
+            var data = new List<ParticipantData>();
 
             //Loop over all lines
             for (int i = 0; i < lines.Length; i++)
@@ -146,10 +147,7 @@ public class DreamCommentator : MonoBehaviour
                 for (int j = 0; j < parts.Length; j++)
                 {
                     //Read in actual data for 1 driver
-                    var addData = new ParticipantManager.NumberNameStruct();
-                    addData.raceNumber = byte.Parse(parts[PARTICIPANT_DATA_NUMBER_INDEX]);
-                    addData.name = parts[PARTICIPANT_DATA_NAME_INDEX];
-                    addData.initals = parts[PARTICIPANT_DATA_INITIAL_INDEX];
+                    var addData = new ParticipantData(byte.Parse(parts[PARTICIPANT_DATA_NUMBER_INDEX]), parts[PARTICIPANT_DATA_NAME_INDEX], parts[PARTICIPANT_DATA_INITIAL_INDEX], int.Parse(parts[PARTICIPANT_DATA_POINTS_INDEX]));
 
                     //Add this driver data in data storage
                     data.Add(addData);
@@ -168,7 +166,7 @@ public class DreamCommentator : MonoBehaviour
     /// <summary>
     /// Called when valid ParticipantData is aquired
     /// </summary>
-    void HandleValidParticipantData(List<ParticipantManager.NumberNameStruct> data, string filePath)
+    void HandleValidParticipantData(List<ParticipantData> data, string filePath)
     {
         _participantData = data;
         //Save this filepath for future use as it gave valid data
@@ -348,6 +346,25 @@ public class DreamCommentator : MonoBehaviour
         _portraitDataStatusText.color = _invalidDataColor;
         _portraitDataFilePathText.text = string.Empty;
         Debug.LogWarning("No assigned directory for portraits!");
+    }
+
+    #endregion
+
+    #region Structs
+
+    /// <summary>
+    /// Used to hold data from .txt file with driver data
+    /// </summary>
+    public struct ParticipantData
+    {
+        ParticipantManager.NumberNameStruct numberName;
+        DriverDataManager.ChampionshipEntry championshipEntry;
+
+        public ParticipantData(byte raceNumber, string name, string initials, int points)
+        {
+            numberName = new ParticipantManager.NumberNameStruct() { raceNumber = raceNumber, name = name, initals = initials };
+            championshipEntry = new DriverDataManager.ChampionshipEntry() { raceNumber = raceNumber, points = points };
+        }
     }
 
     #endregion
