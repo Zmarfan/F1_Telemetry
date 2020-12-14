@@ -31,6 +31,8 @@ public class DreamCommentator : MonoBehaviour
 
     [Header("Drop")]
 
+    [SerializeField] GameObject _gameManagerPrefab;
+    [SerializeField] GameObject _startScreenHolder;
     [SerializeField] Button _startButton;
     [SerializeField] Text _participantDataStatusText;
     [SerializeField] Text _participantDataFilePathText;
@@ -44,11 +46,22 @@ public class DreamCommentator : MonoBehaviour
 
     //Data about participant that is sent to GameManager when starting game
     List<ParticipantData> _participantData;
-    List<Sprite> _portraitData;
+    List<ParticipantManager.NumberSpriteStruct> _portraitData;
 
     private void Awake()
     {
         LoadInAllData();
+    }
+
+    /// <summary>
+    /// Called when starting the game. Completely remove start window and span and initilize GameManager
+    /// </summary>
+    public void StartGame()
+    {
+        GameObject obj = Instantiate(_gameManagerPrefab, Vector3.zero, Quaternion.identity);
+        obj.GetComponent<GameManager>().Init(_participantData, _portraitData);
+        obj.SetActive(true);
+        Destroy(_startScreenHolder);
     }
 
     /// <summary>
@@ -143,15 +156,11 @@ public class DreamCommentator : MonoBehaviour
                     continue;
 
                 string[] parts = lines[i].Split(new[] { "+" }, StringSplitOptions.None);
-                //Loop over all parts of data for this driver
-                for (int j = 0; j < parts.Length; j++)
-                {
-                    //Read in actual data for 1 driver
-                    var addData = new ParticipantData(byte.Parse(parts[PARTICIPANT_DATA_NUMBER_INDEX]), parts[PARTICIPANT_DATA_NAME_INDEX], parts[PARTICIPANT_DATA_INITIAL_INDEX], int.Parse(parts[PARTICIPANT_DATA_POINTS_INDEX]));
+                //Read in actual data for 1 driver
+                var addData = new ParticipantData(byte.Parse(parts[PARTICIPANT_DATA_NUMBER_INDEX]), parts[PARTICIPANT_DATA_NAME_INDEX], parts[PARTICIPANT_DATA_INITIAL_INDEX], int.Parse(parts[PARTICIPANT_DATA_POINTS_INDEX]));
 
-                    //Add this driver data in data storage
-                    data.Add(addData);
-                }
+                //Add this driver data in data storage
+                data.Add(addData);
             }
             //Valid data!
             HandleValidParticipantData(data, filePath);
@@ -265,7 +274,7 @@ public class DreamCommentator : MonoBehaviour
 
     #endregion
 
-    #region Participant Data Handling
+    #region Portrait Data Handling
 
     /// <summary>
     /// Reads all correctly named portrait .png files in specified directory
@@ -277,7 +286,7 @@ public class DreamCommentator : MonoBehaviour
             DirectoryInfo fileList = new DirectoryInfo(filePath);
             //Search through all files for .png with correct format
             FileInfo[] files = fileList.GetFiles();
-            List<Sprite> data = new List<Sprite>();
+            List<ParticipantManager.NumberSpriteStruct> data = new List<ParticipantManager.NumberSpriteStruct>();
 
             //Loop over all files and save all the correctly named .png files to portrait data list
             for (int i = 0; i < files.Length; i++)
@@ -290,7 +299,7 @@ public class DreamCommentator : MonoBehaviour
                     {
                         //Number is in correct number range
                         if (number >= PORTRAIT_MIN_NUMBER && number <= PORTRAIT_MAX_NUMBER)
-                            data.Add(LoadSpriteFromPng(files[i].FullName));
+                            data.Add(new ParticipantManager.NumberSpriteStruct(LoadSpriteFromPng(files[i].FullName), number));
                     }
                 }
             }
@@ -323,7 +332,7 @@ public class DreamCommentator : MonoBehaviour
     /// <summary>
     /// Called when there is a directory assigned for portraits
     /// </summary>
-    void HandleValidPortraitData(List<Sprite> data, string filePath)
+    void HandleValidPortraitData(List<ParticipantManager.NumberSpriteStruct> data, string filePath)
     {
         _portraitData = data;
         //Save this filepath for future use as it gave valid data
@@ -357,8 +366,8 @@ public class DreamCommentator : MonoBehaviour
     /// </summary>
     public struct ParticipantData
     {
-        ParticipantManager.NumberNameStruct numberName;
-        DriverDataManager.ChampionshipEntry championshipEntry;
+        public ParticipantManager.NumberNameStruct numberName;
+        public DriverDataManager.ChampionshipEntry championshipEntry;
 
         public ParticipantData(byte raceNumber, string name, string initials, int points)
         {

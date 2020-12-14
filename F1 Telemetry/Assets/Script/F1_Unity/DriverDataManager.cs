@@ -10,11 +10,6 @@ namespace F1_Unity
     /// </summary>
     public class DriverDataManager : MonoBehaviour
     {
-        /// <summary>
-        /// Holds drivers in contention for the driver championship -> not in order
-        /// </summary>
-        [SerializeField] List<ChampionshipEntry> _championshipPointList;
-
         static DriverDataManager _singleton;
         static Dictionary<int, DriverData> _positionToData = new Dictionary<int, DriverData>();
         /// <summary>
@@ -31,13 +26,11 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Initilize dictionary
+        /// Sets all lists that user have control over, is called before Awake is called
         /// </summary>
-        void Init()
+        public void Init(List<ChampionshipEntry> championshipPointList)
         {
-            _singleton = this;
-
-            List<ChampionshipEntry> sortedList = _championshipPointList.OrderByDescending(o => o.points).ToList();
+            List<ChampionshipEntry> sortedList = championshipPointList.OrderByDescending(item => item.points).ToList();
             //Sets the position of all drivers
             for (int i = 0; i < sortedList.Count; i++)
             {
@@ -49,6 +42,14 @@ namespace F1_Unity
             //Sets dictionary from list -> better access
             for (int i = 0; i < sortedList.Count; i++)
                 _championshipDictionary.Add(sortedList[i].raceNumber, sortedList[i]);
+        }
+
+        /// <summary>
+        /// Initilize dictionary
+        /// </summary>
+        void Init()
+        {
+            _singleton = this;
         }
 
         /// <summary>

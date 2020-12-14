@@ -19,8 +19,6 @@ namespace F1_Unity
 
         [Header("Lists")]
 
-        [SerializeField] NumberNameStruct[] _numberNameList;
-        [SerializeField] NumberSpriteStruct[] _numberPortraitList;
         [SerializeField] TeamSpriteStruct[] _teamSpriteList;
         [SerializeField] TeamSpriteStruct[] _carSpriteList;
         [SerializeField] VisualCompoundSpriteStruct[] _visualTyreCompounds;
@@ -43,9 +41,14 @@ namespace F1_Unity
         /// <summary>
         /// Sets all lists that user have control over, is called before Awake is called
         /// </summary>
-        public void SetValues()
+        public void Init(List<NumberNameStruct> numberNameList, List<NumberSpriteStruct> portraitSprites)
         {
-
+            //Names
+            for (int i = 0; i < numberNameList.Count; i++)
+                _namesByRaceNumber.Add(numberNameList[i].raceNumber, numberNameList[i]);
+            //Portraits
+            for (int i = 0; i < portraitSprites.Count; i++)
+                _portraitByRaceNumber.Add(portraitSprites[i].raceNumber, portraitSprites[i].sprite);
         }
 
         /// <summary>
@@ -54,12 +57,7 @@ namespace F1_Unity
         void Init()
         {
             _singleton = this;
-            //Names
-            for (int i = 0; i < _numberNameList.Length; i++)
-                _namesByRaceNumber.Add(_numberNameList[i].raceNumber, _numberNameList[i]);
-            //Portraits
-            for (int i = 0; i < _numberPortraitList.Length; i++)
-                _portraitByRaceNumber.Add(_numberPortraitList[i].raceNumber, _numberPortraitList[i].sprite);
+            
             //Team logos
             for (int i = 0; i < _teamSpriteList.Length; i++)
                 _teamSpriteByTeam.Add(_teamSpriteList[i].team, _teamSpriteList[i].sprite);
@@ -148,6 +146,12 @@ namespace F1_Unity
         {
             public byte raceNumber;
             public Sprite sprite;
+
+            public NumberSpriteStruct(Sprite sprite, byte raceNumber)
+            {
+                this.raceNumber = raceNumber;
+                this.sprite = sprite;
+            }
         }
 
         [System.Serializable]

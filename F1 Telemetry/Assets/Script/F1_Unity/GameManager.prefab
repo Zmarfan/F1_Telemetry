@@ -282,7 +282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &148384532158025986
 Transform:
   m_ObjectHideFlags: 0
@@ -314,6 +314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee64b8abc75c30544a67022269f4f6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _participantManagerScript: {fileID: 1853311395470664559}
+  _driverDataManagerScript: {fileID: 4945290003740234418}
 --- !u!1 &2783539569257772824
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,98 +424,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cff508fa67dbdf448921ce6157073de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _splitters: 20005f002d00
-  _initialLength: 3
   _defaultDriverName: Driver #
+  _defaultDriverInital: '#'
   _defaultPortrait: {fileID: 21300000, guid: 141a39ccd66c6cc41a4523ad67e58c1c, type: 3}
   _defaultTeamSprite: {fileID: 21300000, guid: 18578267077bc5547a41ef6e5267fa89, type: 3}
   _defaultCarSprite: {fileID: 21300000, guid: 0222620deef9cfc4d8e1518162c0f68f, type: 3}
-  _numberNameList:
-  - raceNumber: 2
-    name: iwasborntolose
-  - raceNumber: 3
-    name: Daniel Ricciardo
-  - raceNumber: 4
-    name: Lando Norris
-  - raceNumber: 5
-    name: Sebastian Vettel
-  - raceNumber: 6
-    name: Nicholas Latifi
-  - raceNumber: 7
-    name: "Kimi R\xE4ikk\xF6nen"
-  - raceNumber: 8
-    name: Romain Grosjean
-  - raceNumber: 10
-    name: Pierre Gasly
-  - raceNumber: 11
-    name: "Sergio P\xE9rez"
-  - raceNumber: 12
-    name: Elias1337
-  - raceNumber: 14
-    name: PRL Faikoways
-  - raceNumber: 15
-    name: KingWunder
-  - raceNumber: 16
-    name: Charles Leclerc
-  - raceNumber: 17
-    name: Jules Bianchi
-  - raceNumber: 18
-    name: Lance Stroll
-  - raceNumber: 20
-    name: Kevin Magnussen
-  - raceNumber: 21
-    name: PRL Marijn
-  - raceNumber: 22
-    name: M4RCC
-  - raceNumber: 23
-    name: Alexander Albon
-  - raceNumber: 24
-    name: MR
-  - raceNumber: 26
-    name: Daniil Kvyat
-  - raceNumber: 27
-    name: Stolly
-  - raceNumber: 28
-    name: BlinkdeVinkje
-  - raceNumber: 30
-    name: PRL Tekashi
-  - raceNumber: 31
-    name: Esteban Ocon
-  - raceNumber: 33
-    name: Max Verstappen
-  - raceNumber: 34
-    name: PRL daBurLs
-  - raceNumber: 42
-    name: PRL Pierre
-  - raceNumber: 43
-    name: TrueDoe
-  - raceNumber: 44
-    name: Lewis Hamilton
-  - raceNumber: 55
-    name: Carlos Sainz Jr.
-  - raceNumber: 57
-    name: PRL Winston
-  - raceNumber: 63
-    name: George Russell
-  - raceNumber: 64
-    name: Psylexx
-  - raceNumber: 67
-    name: Svenna
-  - raceNumber: 69
-    name: PRL Fysq
-  - raceNumber: 77
-    name: Valtteri Bottas
-  - raceNumber: 82
-    name: Lord_Zmarfan
-  - raceNumber: 93
-    name: Robbie Van
-  - raceNumber: 98
-    name: Akhatal
-  - raceNumber: 99
-    name: Antonio Giovinazzi
-  _numberPortraitList:
-  - raceNumber: 82
-    sprite: {fileID: 21300000, guid: 683dc85f98f1cfa44902c1bad4bbbe49, type: 3}
   _teamSpriteList:
   - team: 0
     sprite: {fileID: 21300000, guid: 31bdbddca76ac11499033e0750be781f, type: 3}
@@ -1415,67 +1330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1747e64b0ea4e3b4ca567945d21c81a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _championshipPointList:
-  - points: 232
-    raceNumber: 30
-    position: 0
-  - points: 35
-    raceNumber: 22
-    position: 0
-  - points: 58
-    raceNumber: 24
-    position: 0
-  - points: 49
-    raceNumber: 14
-    position: 0
-  - points: 69
-    raceNumber: 42
-    position: 0
-  - points: 45
-    raceNumber: 52
-    position: 0
-  - points: 50
-    raceNumber: 82
-    position: 0
-  - points: 25
-    raceNumber: 45
-    position: 0
-  - points: 55
-    raceNumber: 2
-    position: 0
-  - points: 85
-    raceNumber: 27
-    position: 0
-  - points: 35
-    raceNumber: 34
-    position: 0
-  - points: 0
-    raceNumber: 43
-    position: 0
-  - points: 27
-    raceNumber: 93
-    position: 0
-  - points: 57
-    raceNumber: 15
-    position: 0
-  - points: 0
-    raceNumber: 12
-    position: 0
-  - points: 0
-    raceNumber: 64
-    position: 0
-  - points: 221
-    raceNumber: 57
-    position: 0
-  - points: 62
-    raceNumber: 98
-    position: 0
-  - points: 8
-    raceNumber: 69
-    position: 0
-  - points: 28
-    raceNumber: 28
-    position: 0
 --- !u!1 &6394711873412587249
 GameObject:
   m_ObjectHideFlags: 0
