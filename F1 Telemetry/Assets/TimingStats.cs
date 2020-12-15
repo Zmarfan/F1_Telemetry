@@ -76,7 +76,8 @@ namespace F1_Unity
         /// </summary>
         void UpdateStop(DriverData driverData)
         {
-            _stopText.text = "?" + _stopEndingString;
+            byte timesPitted = GameManager.LapManager.TimesPitted(driverData.VehicleIndex);
+            _stopText.text = timesPitted + _stopEndingString;
         }
 
         /// <summary>

@@ -32,6 +32,26 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Used to count pit stop a driver has made. Increment that drivers pitstop counter by one. 
+        /// </summary>
+        public void AddPitStop(int vehicleIndex)
+        {
+            _storedDriverData[vehicleIndex].IncrementPitCounter();
+        }
+
+        /// <summary>
+        /// Returns how many times a driver has pitted.
+        /// </summary>
+        public byte TimesPitted(int vehicleIndex)
+        {
+            //Invalid vehicle index
+            if (vehicleIndex < 0 || vehicleIndex >= F1Info.MAX_AMOUNT_OF_CARS)
+                throw new Exception("Vehicle index falls out of range! 0-22! Index: " + vehicleIndex);
+
+            return _storedDriverData[vehicleIndex].TimesPitted;
+        }
+
+        /// <summary>
         /// Gets StoredLapData for specific driver and lap. Make sure lap number is valid. Can't access future or negative laps.
         /// </summary>
         /// <param name="vehicleIndex">Vehicle index for driver whose lap you want.</param>
@@ -173,6 +193,7 @@ namespace F1_Unity
     public class StoredDriverData
     {
         List<StoredLapData> _lapDataList = new List<StoredLapData>();
+        public byte TimesPitted { get; private set; } = 0;
         public int CurrentLap { get { return _lapDataList.Count; } }
         public LapState LapState { get; private set; } = LapState.Unknown;
 
@@ -185,6 +206,14 @@ namespace F1_Unity
                 return _lapDataList[lapNumber - 1];
             else
                 throw new Exception("Trying to access a lap not yet in the system! Current Lap in system:" + CurrentLap + ", access: " + lapNumber);
+        }
+
+        /// <summary>
+        /// The player has now pitted, increment pit counter by one.
+        /// </summary>
+        public void IncrementPitCounter()
+        {
+            TimesPitted++;
         }
 
         /// <summary>

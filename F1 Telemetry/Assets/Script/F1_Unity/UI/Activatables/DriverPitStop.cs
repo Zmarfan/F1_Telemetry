@@ -131,9 +131,10 @@ namespace F1_Unity
         {
             switch (_currentPitStopStatus)
             {
-                //Just started it's actual pit stop! Set corner colors and init
+                //Just started it's actual pit stop! Set corner colors and init -> called once
                 case PitStopStatus.Entering:
                     {
+                        GameManager.LapManager.AddPitStop(_vehicleIndex);
                         _currentPitStopStatus = PitStopStatus.Started;
                         _startActualPitTime = GameManager.F1Info.SessionTime;
                         _inBoxPitTimeText.text = "0.0";
