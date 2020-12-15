@@ -11,12 +11,10 @@ namespace F1_Unity
         [SerializeField, Range(10, 400)] int _amountOfTimingStations = 100;
         [SerializeField, Range(0.01f, 5f)] float _flashColorDuration = 1.0f;
         [SerializeField, Range(0.01f, 50f)] float _changeBackColorDuration = 4.5f;
-        [SerializeField] UnityEngine.Color _movedUpColor = UnityEngine.Color.green;
-        [SerializeField] UnityEngine.Color _movedDownColor = UnityEngine.Color.red;
+        [SerializeField] Color _movedUpColor = Color.green;
+        [SerializeField] Color _movedDownColor = Color.red;
         [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField] DriverTemplate[] _driverTemplates;
-
-        static TimingScreen _singleton;
 
         //Reach driver position by their ID
         Dictionary<byte, int> _driverPosition;
@@ -32,10 +30,7 @@ namespace F1_Unity
 
         private void Awake()
         {
-            if (_singleton == null)
-                Init();
-            else
-                Destroy(this.gameObject);
+            Init();
         }
 
         private void OnEnable()
@@ -61,7 +56,8 @@ namespace F1_Unity
         /// </summary>
         void Init()
         {
-            _singleton = this;
+            _timingData = new TimingStation[_amountOfTimingStations];
+
             for (int i = 0; i < _driverTemplates.Length; i++)
                 _driverTemplates[i].Init(i + 1, _flashColorDuration, _changeBackColorDuration);
         }
@@ -75,8 +71,6 @@ namespace F1_Unity
             _initValues = false;
 
             SetMode(_intervalMode);
-
-            _timingData = new TimingStation[_amountOfTimingStations];
 
             _driverPosition = new Dictionary<byte, int>();
             _driverLastTimeSpot = new Dictionary<byte, int>();
@@ -176,7 +170,7 @@ namespace F1_Unity
         #region Calculate
 
         /// <summary>
-        /// Updates positions in standing and checks stability
+        /// Updates positions in standing and checks stability, also updates driver stats
         /// </summary>
         void DoTimingScreen()
         {
@@ -194,8 +188,10 @@ namespace F1_Unity
                 if (!validDriver)
                     continue;
 
-                //Sets driverdata if it's usage is needed
+                //Sets driverdata if it's usage is needed and to update timing 
                 _driverTemplates[driverData.LapData.carPosition - 1].SetDriverData(driverData);
+                //Update stats for driver
+                _driverTemplates[driverData.LapData.carPosition - 1].UpdateStats(driverData);
                 Positioning(driverData);
                 UpdateDriverTimingToLeader(leaderData, sessionData, driverData);
             }
@@ -350,6 +346,7 @@ namespace F1_Unity
         /// <summary>
         /// A timing station that holds time and lap when leader passed
         /// </summary>
+        [System.Serializable]
         struct TimingStation
         {
             public bool PassedByLeader { get; set; }

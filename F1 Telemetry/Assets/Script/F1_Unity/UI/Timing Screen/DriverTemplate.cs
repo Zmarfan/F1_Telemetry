@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System;
 using System.Text;
+using F1_Data_Management;
 
 namespace F1_Unity
 {
@@ -26,6 +27,7 @@ namespace F1_Unity
 
         [Header("Drop")]
 
+        [SerializeField] TimingStats _timingStats;
         [SerializeField] CanvasGroup _alphaHolder;
 
         [SerializeField] Transform _positionTransform;
@@ -170,7 +172,7 @@ namespace F1_Unity
         /// <summary>
         /// Sets Drive Data
         /// </summary>
-        public void SetDriverData(F1_Data_Management.DriverData driverData) { DriverData = driverData; }
+        public void SetDriverData(DriverData driverData) { DriverData = driverData; }
         /// <summary>
         /// Sets timing state
         /// </summary>
@@ -187,6 +189,14 @@ namespace F1_Unity
         /// Calculates and sets car in front delta
         /// </summary>
         public void SetCarAheadDelta(float carAheadTimeToLeader) { DeltaToCarInFront = DeltaToLeader - carAheadTimeToLeader; }
+
+        /// <summary>
+        /// Updates visual stats for this driver
+        /// </summary>
+        public void UpdateStats(DriverData driverData)
+        {
+            _timingStats.UpdateValues(driverData);
+        }
 
         /// <summary>
         /// Updates timing state
@@ -312,7 +322,7 @@ namespace F1_Unity
         /// <summary>
         /// Called when the car is out of the session (DNF, DSQ) -> grays it out, rearrange and won't do timing no more
         /// </summary>
-        public void Out(F1_Data_Management.ResultStatus status)
+        public void Out(ResultStatus status)
         {
             OutOfSession = true;
 
@@ -327,12 +337,12 @@ namespace F1_Unity
 
             _timeTextLeader.color = _timingColor;
 
-            if (status == F1_Data_Management.ResultStatus.Retired)
+            if (status == ResultStatus.Retired)
             {
                 _timeTextLeader.text = _dnfString;
                 _timeTextInterval.text = _dnfString;
             }
-            if (status == F1_Data_Management.ResultStatus.Disqualified)
+            if (status == ResultStatus.Disqualified)
             {
                 _timeTextLeader.text = _dsqString;
                 _timeTextInterval.text = _dsqString;
