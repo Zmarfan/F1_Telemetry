@@ -31,13 +31,13 @@ namespace F1_Unity
 
             DriverData data = GameManager.F1Info.ReadCarData(fastestLapPacket.VehicleIndex, out bool status);
             string fullName = string.Empty;
-            Sprite teamSprite = ParticipantManager.GetTeamSprite(Team.My_Team_Or_Unknown);
+            Sprite teamSprite = GameManager.ParticipantManager.GetTeamSprite(Team.My_Team_Or_Unknown);
 
             //If data is valid (99.99 % of the time it is valid but hey for that 0.01 boi :3)
             if (status)
             {
-                fullName = ParticipantManager.GetNameFromNumber(data.RaceNumber);
-                teamSprite = ParticipantManager.GetTeamSprite(data.ParticipantData.team);
+                fullName = GameManager.ParticipantManager.GetNameFromNumber(data.RaceNumber);
+                teamSprite = GameManager.ParticipantManager.GetTeamSprite(data.ParticipantData.team);
             }
             
             float time = fastestLapPacket.LapTime;

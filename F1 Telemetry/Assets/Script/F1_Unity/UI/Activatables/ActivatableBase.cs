@@ -54,14 +54,14 @@ namespace F1_Unity
                 //Getting driverData of driver in front of spectating car
                 if (d2Data.LapData.carPosition - 2 >= 0)
                 {
-                    DriverData d1Data = DriverDataManager.GetDriverFromPosition(d2Data.LapData.carPosition - 1, out status2);
+                    DriverData d1Data = GameManager.DriverDataManager.GetDriverFromPosition(d2Data.LapData.carPosition - 1, out status2);
                     SetData(d1Data, d2Data);
                 }
                 //It's the leader
                 else
                 {
                     //Read car behind spectator if he is leading
-                    DriverData d1Data = DriverDataManager.GetDriverFromPosition(d2Data.LapData.carPosition + 1, out status2);
+                    DriverData d1Data = GameManager.DriverDataManager.GetDriverFromPosition(d2Data.LapData.carPosition + 1, out status2);
                     SetData(d2Data, d1Data);
                 }
             }
@@ -88,18 +88,18 @@ namespace F1_Unity
         protected virtual void SetVisuals(DriverData d1Data, DriverData d2Data)
         {
             _driver1PositionText.text = d1Data.LapData.carPosition.ToString();
-            _driver1NameText.text = ParticipantManager.GetNameFromNumber(d1Data.RaceNumber).ToUpper();
+            _driver1NameText.text = GameManager.ParticipantManager.GetNameFromNumber(d1Data.RaceNumber).ToUpper();
             _driver1NumberText.text = "<i>" + d1Data.RaceNumber + "</i>";
-            _driver1TeamImage.sprite = ParticipantManager.GetTeamSprite(d1Data.ParticipantData.team);
-            _driver1PortraitImage.sprite = ParticipantManager.GetPortraitFromNumber(d1Data.RaceNumber);
-            _driver1TeamStripeImage.color = F1Utility.GetColorByTeam(d1Data.ParticipantData.team);
+            _driver1TeamImage.sprite = GameManager.ParticipantManager.GetTeamSprite(d1Data.ParticipantData.team);
+            _driver1PortraitImage.sprite = GameManager.ParticipantManager.GetPortraitFromNumber(d1Data.RaceNumber);
+            _driver1TeamStripeImage.color = GameManager.F1Utility.GetColorByTeam(d1Data.ParticipantData.team);
 
             _driver2PositionText.text = d2Data.LapData.carPosition.ToString();
-            _driver2NameText.text = ParticipantManager.GetNameFromNumber(d2Data.RaceNumber).ToUpper();
+            _driver2NameText.text = GameManager.ParticipantManager.GetNameFromNumber(d2Data.RaceNumber).ToUpper();
             _driver2NumberText.text = "<i>" + d2Data.RaceNumber + "</i>";
-            _driver2TeamImage.sprite = ParticipantManager.GetTeamSprite(d2Data.ParticipantData.team);
-            _driver2PortraitImage.sprite = ParticipantManager.GetPortraitFromNumber(d2Data.RaceNumber);
-            _driver2TeamStripeImage.color = F1Utility.GetColorByTeam(d2Data.ParticipantData.team);
+            _driver2TeamImage.sprite = GameManager.ParticipantManager.GetTeamSprite(d2Data.ParticipantData.team);
+            _driver2PortraitImage.sprite = GameManager.ParticipantManager.GetPortraitFromNumber(d2Data.RaceNumber);
+            _driver2TeamStripeImage.color = GameManager.F1Utility.GetColorByTeam(d2Data.ParticipantData.team);
         }
     }
 }

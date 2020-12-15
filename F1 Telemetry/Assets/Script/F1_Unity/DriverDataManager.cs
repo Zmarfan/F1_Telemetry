@@ -10,20 +10,11 @@ namespace F1_Unity
     /// </summary>
     public class DriverDataManager : MonoBehaviour
     {
-        static DriverDataManager _singleton;
-        static Dictionary<int, DriverData> _positionToData = new Dictionary<int, DriverData>();
+        Dictionary<int, DriverData> _positionToData = new Dictionary<int, DriverData>();
         /// <summary>
         /// Holds data for every driver currently entered in the championship
         /// </summary>
-        static Dictionary<int, ChampionshipEntry> _championshipDictionary = new Dictionary<int, ChampionshipEntry>();
-
-        private void Awake()
-        {
-            if (_singleton == null)
-                Init();
-            else
-                Destroy(this.gameObject);
-        }
+        Dictionary<int, ChampionshipEntry> _championshipDictionary = new Dictionary<int, ChampionshipEntry>();
 
         /// <summary>
         /// Sets all lists that user have control over, is called before Awake is called
@@ -45,19 +36,11 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Initilize dictionary
-        /// </summary>
-        void Init()
-        {
-            _singleton = this;
-        }
-
-        /// <summary>
         /// Gets information about driver in the championship based on racing number
         /// </summary>
         /// <param name="racingNumber">Number of driver</param>
         /// <param name="status">Indicates if returned data is valid or junk</param>
-        public static ChampionshipEntry GetChampionShipEntry(int racingNumber, out bool status)
+        public ChampionshipEntry GetChampionShipEntry(int racingNumber, out bool status)
         {
             try
             {
@@ -76,7 +59,7 @@ namespace F1_Unity
         /// </summary>
         /// <param name="position">position of driver</param>
         /// <returns></returns>
-        public static DriverData GetDriverFromPosition(int position, out bool status)
+        public DriverData GetDriverFromPosition(int position, out bool status)
         {
             try
             {

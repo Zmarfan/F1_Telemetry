@@ -87,8 +87,8 @@ namespace F1_Unity
                 int lap = _currentLap - i - 1;
                 if (lap > 0)
                 {
-                    StoredLapData storedLapDataDriver1 = LapManager.ReadDriverLapData(d1Data.VehicleIndex, (byte)lap, out bool status1);
-                    StoredLapData storedLapDataDriver2 = LapManager.ReadDriverLapData(d2Data.VehicleIndex, (byte)lap, out bool status2);
+                    StoredLapData storedLapDataDriver1 = GameManager.LapManager.ReadDriverLapData(d1Data.VehicleIndex, (byte)lap, out bool status1);
+                    StoredLapData storedLapDataDriver2 = GameManager.LapManager.ReadDriverLapData(d2Data.VehicleIndex, (byte)lap, out bool status2);
                     //Lap data is available for both drivers
                     if (status1 && status2 && storedLapDataDriver1.lapState == LapState.Sector_3 && storedLapDataDriver2.lapState == LapState.Sector_3)
                     {
@@ -126,8 +126,8 @@ namespace F1_Unity
             if (d1Data.StatusData.visualTyreCompound == 0 || d2Data.StatusData.visualTyreCompound == 0)
                 return;
 
-            _driver1TyreImage.sprite = ParticipantManager.GetVisualTyreCompoundSprite(d1Data.StatusData.visualTyreCompound);
-            _driver2TyreImage.sprite = ParticipantManager.GetVisualTyreCompoundSprite(d2Data.StatusData.visualTyreCompound);
+            _driver1TyreImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(d1Data.StatusData.visualTyreCompound);
+            _driver2TyreImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(d2Data.StatusData.visualTyreCompound);
         }
 
         /// <summary>

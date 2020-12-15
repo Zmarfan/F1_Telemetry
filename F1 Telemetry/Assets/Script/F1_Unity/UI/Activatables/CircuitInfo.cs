@@ -26,7 +26,7 @@ namespace F1_Unity
                 _circuitInfoText.text = _preTrackNameString + ConvertEnumToString.Convert<Track>(sessionData.Track);
 
                 //Get info about circuit depending on track
-                FlagManager.CircuitInfoData data = FlagManager.GetCircuitInfoData(sessionData.Track);
+                FlagManager.CircuitInfoData data = GameManager.FlagManager.GetCircuitInfoData(sessionData.Track);
 
                 _trackTypeText.text = data.trackType.ToString().ToUpper();
                 _fullThrottleText.text = data.fullThrottle.ToString("0.0").Replace(',', '.');

@@ -88,8 +88,8 @@ namespace F1_Unity
         protected override void SetVisuals(DriverData d1Data, DriverData d2Data)
         {
             base.SetVisuals(d1Data, d2Data);
-            _driver1CarImage.sprite = ParticipantManager.GetCarSprite(d1Data.ParticipantData.team);
-            _driver2CarImage.sprite = ParticipantManager.GetCarSprite(d2Data.ParticipantData.team);
+            _driver1CarImage.sprite = GameManager.ParticipantManager.GetCarSprite(d1Data.ParticipantData.team);
+            _driver2CarImage.sprite = GameManager.ParticipantManager.GetCarSprite(d2Data.ParticipantData.team);
         }
     }
 }

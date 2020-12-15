@@ -184,11 +184,11 @@ namespace F1_Unity
         /// </summary>
         void UpdateTiming(DriverData driverData)
         {
-            DriverData infront = DriverDataManager.GetDriverFromPosition(driverData.LapData.carPosition - 1, out bool infrontStatus);
-            DriverData behind = DriverDataManager.GetDriverFromPosition(driverData.LapData.carPosition + 1, out bool behindStatus);
-            UpdateDriver(_driverAheadTiming, infront.LapData.carPosition, F1Utility.GetColorByTeam(infront.ParticipantData.team), ParticipantManager.GetDriverInitials(infront.RaceNumber), _driverAheadPositionText, _driverAheadTeamColor, _driverAheadNameText, infrontStatus);
-            UpdateDriver(null, driverData.LapData.carPosition, F1Utility.GetColorByTeam(driverData.ParticipantData.team), ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper(), _driverPositionText, _driverTeamColor, _driverNameText);
-            UpdateDriver(_driverBehindTiming, behind.LapData.carPosition, F1Utility.GetColorByTeam(behind.ParticipantData.team), ParticipantManager.GetDriverInitials(behind.RaceNumber), _driverBehindPositionText, _driverBehindTeamColor, _driverBehindNameText, behindStatus);
+            DriverData infront = GameManager.DriverDataManager.GetDriverFromPosition(driverData.LapData.carPosition - 1, out bool infrontStatus);
+            DriverData behind = GameManager.DriverDataManager.GetDriverFromPosition(driverData.LapData.carPosition + 1, out bool behindStatus);
+            UpdateDriver(_driverAheadTiming, infront.LapData.carPosition, GameManager.F1Utility.GetColorByTeam(infront.ParticipantData.team), GameManager.ParticipantManager.GetDriverInitials(infront.RaceNumber), _driverAheadPositionText, _driverAheadTeamColor, _driverAheadNameText, infrontStatus);
+            UpdateDriver(null, driverData.LapData.carPosition, GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team), GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper(), _driverPositionText, _driverTeamColor, _driverNameText);
+            UpdateDriver(_driverBehindTiming, behind.LapData.carPosition, GameManager.F1Utility.GetColorByTeam(behind.ParticipantData.team), GameManager.ParticipantManager.GetDriverInitials(behind.RaceNumber), _driverBehindPositionText, _driverBehindTeamColor, _driverBehindNameText, behindStatus);
 
             //Sets delta if possible -> copy from timing screen
             if (infrontStatus)

@@ -64,7 +64,7 @@ namespace F1_Unity
         /// </summary>
         void UpdateTyre(DriverData driverData)
         {
-            _tyreImage.sprite = ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
+            _tyreImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
             if (driverData.ParticipantData.publicTelemetry)
                 _tyreLapText.text = driverData.StatusData.tyreAgeInLaps.ToString() + _tyreLapEndingString;
             else

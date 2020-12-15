@@ -12,25 +12,19 @@ namespace F1_Unity
         [SerializeField] CircuitInfoData[] _circuitInfoData;
         [SerializeField] SpriteWeatherStruct[] _weatherSpriteList;
 
-        static FlagManager _singleton;
-        static Dictionary<Nationality, Sprite> _flagSpritesByNationality = new Dictionary<Nationality, Sprite>();
-        static Dictionary<Track, Sprite> _flagSpritesByTrack = new Dictionary<Track, Sprite>();
-        static Dictionary<Track, string> _grandPrixStringByTrack = new Dictionary<Track, string>();
-        static Dictionary<Track, CircuitInfoData> _circuitInfoByTrack = new Dictionary<Track, CircuitInfoData>();
-        static Dictionary<Weather, Sprite> _spriteByWeather = new Dictionary<Weather, Sprite>();
+        Dictionary<Nationality, Sprite> _flagSpritesByNationality = new Dictionary<Nationality, Sprite>();
+        Dictionary<Track, Sprite> _flagSpritesByTrack = new Dictionary<Track, Sprite>();
+        Dictionary<Track, string> _grandPrixStringByTrack = new Dictionary<Track, string>();
+        Dictionary<Track, CircuitInfoData> _circuitInfoByTrack = new Dictionary<Track, CircuitInfoData>();
+        Dictionary<Weather, Sprite> _spriteByWeather = new Dictionary<Weather, Sprite>();
 
         private void Awake()
         {
-            if (_singleton == null)
-                Init();
-            else
-                Destroy(this.gameObject);
+            Init();
         }
 
         void Init()
         {
-            _singleton = this;
-
             for (int i = 0; i < _flagsByNation.Length; i++)
                 _flagSpritesByNationality.Add(_flagsByNation[i].nationality, _flagsByNation[i].flagSprite);
             for (int i = 0; i < _flagsByTrack.Length; i++)
@@ -48,7 +42,7 @@ namespace F1_Unity
         /// </summary>
         /// <param name="nationality">What flag?</param>
         /// <returns>Sprite of that flag</returns>
-        public static Sprite GetFlag(Nationality nationality)
+        public Sprite GetFlag(Nationality nationality)
         {
             return _flagSpritesByNationality[nationality];
         }
@@ -56,7 +50,7 @@ namespace F1_Unity
         /// <summary>
         /// Returns flag for specific track
         /// </summary>
-        public static Sprite GetFlagByTrack(Track track)
+        public Sprite GetFlagByTrack(Track track)
         {
             return _flagSpritesByTrack[track];
         }
@@ -64,7 +58,7 @@ namespace F1_Unity
         /// <summary>
         /// Returns Grand Prix String for specific track
         /// </summary>
-        public static string GetGrandPrixString(Track track)
+        public string GetGrandPrixString(Track track)
         {
             return _grandPrixStringByTrack[track];
         }
@@ -72,7 +66,7 @@ namespace F1_Unity
         /// <summary>
         /// Gets weather sprite for a specific weather type
         /// </summary>
-        public static Sprite GetWeatherSprite(Weather weather)
+        public Sprite GetWeatherSprite(Weather weather)
         {
             return _spriteByWeather[weather];
         }
@@ -80,7 +74,7 @@ namespace F1_Unity
         /// <summary>
         /// Gets circuit info for a specific track. Track type, full throttle, downforce etc
         /// </summary>
-        public static CircuitInfoData GetCircuitInfoData(Track track)
+        public CircuitInfoData GetCircuitInfoData(Track track)
         {
             return _circuitInfoByTrack[track];
         }

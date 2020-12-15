@@ -24,7 +24,7 @@ namespace F1_Unity
             //Early in the race it gets beaten all the time, no need to react to it until later
             if (status && driverData.LapData.currentLapNumber >= _startShowingLap)
             {
-                _driverText.text = ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
+                _driverText.text = GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
                 float speed = speedPacket.Speed;
                 int point = (int)(speed - (int)speed) * (int)Mathf.Pow(10, _amountOfDecimals);
                 _speedText.text = speed + "." + point;

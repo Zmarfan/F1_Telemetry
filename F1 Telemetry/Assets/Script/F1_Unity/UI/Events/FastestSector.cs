@@ -18,7 +18,7 @@ namespace F1_Unity
             Init();
 
             _sectorText.text = ConvertEnumToString.Convert(sector);
-            _driverText.text = ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
+            _driverText.text = GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
             _timeText.text = F1Utility.GetDeltaString(time);
         }
     }

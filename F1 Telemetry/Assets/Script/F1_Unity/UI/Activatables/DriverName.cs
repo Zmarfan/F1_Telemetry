@@ -50,15 +50,15 @@ namespace F1_Unity
 
             _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
 
-            Color color = F1Utility.GetColorByTeam(spectatorDriverData.ParticipantData.team);
+            Color color = GameManager.F1Utility.GetColorByTeam(spectatorDriverData.ParticipantData.team);
             _teamColorImage.color = color;
             color.a = _raceNumberColorAlpha;
             _raceNumberShadow.effectColor = color;
 
-            _driverNameText.text = ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber);
+            _driverNameText.text = GameManager.ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber);
             _raceNumberText.text = "<i>" + spectatorDriverData.RaceNumber + "</i>"; //Puts it in italics
             _teamNameText.text = ConvertEnumToString.Convert<Team>(spectatorDriverData.ParticipantData.team);
-            _flagImage.sprite = FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);
+            _flagImage.sprite = GameManager.FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);
         }
 
         /// <summary>

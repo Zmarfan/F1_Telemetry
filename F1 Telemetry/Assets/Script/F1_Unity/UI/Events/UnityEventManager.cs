@@ -33,7 +33,7 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.RaceWinnerEvent += RaceWinnerEvent;
         GameManager.F1Info.SpeedTrapEvent += SpeedTrapEvent;
 
-        LapManager.FastestSectorEvent += FastestSectorEvent;
+        GameManager.LapManager.FastestSectorEvent += FastestSectorEvent;
     }
 
     private void OnDisable()
@@ -48,7 +48,7 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.RaceWinnerEvent -= RaceWinnerEvent;
         GameManager.F1Info.SpeedTrapEvent -= SpeedTrapEvent;
 
-        LapManager.FastestSectorEvent -= FastestSectorEvent;
+        GameManager.LapManager.FastestSectorEvent -= FastestSectorEvent;
     }
 
     /// <summary>

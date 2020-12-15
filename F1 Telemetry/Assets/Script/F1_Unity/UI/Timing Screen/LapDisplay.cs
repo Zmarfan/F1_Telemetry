@@ -46,7 +46,7 @@ namespace F1_Unity
         /// </summary>
         void UpdateLap()
         {
-            byte lap = DriverDataManager.GetDriverFromPosition(1, out bool status).LapData.currentLapNumber;
+            byte lap = GameManager.DriverDataManager.GetDriverFromPosition(1, out bool status).LapData.currentLapNumber;
             //Change lap if new lap and it's not larger than total laps
             if (status && lap != _currentLap && lap <= _totalLap)
             {

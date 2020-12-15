@@ -11,28 +11,45 @@ namespace F1_Unity
         //Used only to init the managers
         [SerializeField] ParticipantManager _participantManagerScript;
         [SerializeField] DriverDataManager _driverDataManagerScript;
+        [SerializeField] LapManager _lapManagerScript;
+        [SerializeField] F1Utility _F1UtilityScript;
+        [SerializeField] FlagManager _flagManagerScript;
 
-        GameManager _singleton;
+        static GameManager _singleton;
         public static F1Info F1Info { get; private set; } = new F1Info();
 
-        private void Awake()
-        {
-            if (_singleton == null)
-            {
-                _singleton = this;
-                StartListeningOnGame();
-            }
-            else
-                Destroy(this.gameObject);
-        }
+        /// <summary>
+        /// Holds all raceNumber to raceDriver correlations. Team, car and portrait sprites. And tyre compound sprites
+        /// </summary>
+        public static ParticipantManager ParticipantManager { get { return _singleton._participantManagerScript; } }
+        /// <summary>
+        /// Holds all lap data for each driver.
+        /// </summary>
+        public static LapManager LapManager { get { return _singleton._lapManagerScript; } }
+        /// <summary>
+        /// Common methods for handling F1 data. Team color and delta formatting
+        /// </summary>
+        public static F1Utility F1Utility { get { return _singleton._F1UtilityScript; } }
+        /// <summary>
+        /// Holds sprites and different data depending on track and nationality. Also hold weather sprites.
+        /// </summary>
+        public static FlagManager FlagManager { get { return _singleton._flagManagerScript; } }
+        /// <summary>
+        /// Holds data for all drivers based on position on track. Also holds championship standing for all drivers.
+        /// </summary>
+        public static DriverDataManager DriverDataManager { get { return _singleton._driverDataManagerScript; } }
 
         /// <summary>
         /// Called from Start window to init GameManager before it's activated
         /// </summary>
         public void Init(List<DreamCommentator.ParticipantData> data, List<ParticipantManager.NumberSpriteStruct> portraitSprites)
         {
+            _singleton = this;
+
             _participantManagerScript.Init(data.Select(item => item.numberName).ToList(), portraitSprites);
             _driverDataManagerScript.Init(data.Select(item => item.championshipEntry).ToList());
+
+            StartListeningOnGame();
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace F1_Unity
             Session sessionData = GameManager.F1Info.ReadSession(out bool status);
             if (status)
             {
-                _weatherImage.sprite = FlagManager.GetWeatherSprite(sessionData.Weather);
+                _weatherImage.sprite = GameManager.FlagManager.GetWeatherSprite(sessionData.Weather);
                 SetTemperatureTexts(sessionData.AirTemperature, _airTempCText, _airTempFText);
                 SetTemperatureTexts(sessionData.TrackTemperature, _trackTempCText, _trackTempFText);
             }

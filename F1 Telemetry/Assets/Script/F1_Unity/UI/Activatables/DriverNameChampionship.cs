@@ -15,7 +15,7 @@ namespace F1_Unity
         {
             base.SetVisuals(spectatorDriverData);
             //Championship details
-            var data = DriverDataManager.GetChampionShipEntry(spectatorDriverData.RaceNumber, out bool status);
+            var data = GameManager.DriverDataManager.GetChampionShipEntry(spectatorDriverData.RaceNumber, out bool status);
             //Could access data -> driver is in standings
             if (status)
             {

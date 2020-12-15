@@ -19,9 +19,9 @@ namespace F1_Unity
 
             if (status)
             {
-                _driverText.text = ParticipantManager.GetNameFromNumber(data.RaceNumber).Replace('_', ' ');
+                _driverText.text = GameManager.ParticipantManager.GetNameFromNumber(data.RaceNumber).Replace('_', ' ');
                 _teamText.text = data.ParticipantData.team.ToString().Replace('_', ' ');
-                _teamImage.color = F1Utility.GetColorByTeam(data.ParticipantData.team);
+                _teamImage.color = GameManager.F1Utility.GetColorByTeam(data.ParticipantData.team);
             }
         }
     }

@@ -53,7 +53,7 @@ namespace F1_Unity
             //Looping over position
             for (int i = 1; i <= F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
-                DriverData data = DriverDataManager.GetDriverFromPosition(i, out bool status);
+                DriverData data = GameManager.DriverDataManager.GetDriverFromPosition(i, out bool status);
                 //Is in pits
                 if (data.LapData.pitStatus != PitStatus.None)
                 {

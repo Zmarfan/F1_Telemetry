@@ -71,7 +71,7 @@ namespace F1_Unity
         void SetFrameVisuals(DriverData driverData)
         {
             //Tyre compound
-            _tyreTypeImage.sprite = ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
+            _tyreTypeImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
             _tyreTypeText.text = ConvertEnumToString.Convert<VisualTyreCompound>(driverData.StatusData.visualTyreCompound).ToUpper();
 
             //Some drivers have hidden telemetry -> Can't access those values
@@ -116,8 +116,8 @@ namespace F1_Unity
         /// </summary>
         void SetIndDriverVisuals(DriverData driverData)
         {
-            _driverNameText.text = ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
-            _teamColorImage.color = F1Utility.GetColorByTeam(driverData.ParticipantData.team);
+            _driverNameText.text = GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber).ToUpper();
+            _teamColorImage.color = GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team);
         }
     }
 }

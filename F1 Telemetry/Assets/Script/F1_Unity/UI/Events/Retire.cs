@@ -15,7 +15,7 @@ namespace F1_Unity
             DriverData data = GameManager.F1Info.ReadCarData(retirePacket.VehicleIndex, out bool status);
             //99.99 % certain it's valid but safety concern
             if (status)
-                _message.text = ParticipantManager.GetNameFromNumber(data.RaceNumber).ToUpper() + " RETIRED";
+                _message.text = GameManager.ParticipantManager.GetNameFromNumber(data.RaceNumber).ToUpper() + " RETIRED";
         }
     }
 }

@@ -74,8 +74,8 @@ namespace F1_Unity
             //Sets reference time to compare with
             _startTime = GameManager.F1Info.SessionTime;
 
-            _driverNameText.text = ParticipantManager.GetNameFromNumber(driverData.RaceNumber);
-            _teamColorImage.color = F1Utility.GetColorByTeam(driverData.ParticipantData.team);
+            _driverNameText.text = GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber);
+            _teamColorImage.color = GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team);
         }
 
         /// <summary>

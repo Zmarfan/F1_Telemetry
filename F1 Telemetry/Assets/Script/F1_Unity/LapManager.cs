@@ -16,26 +16,19 @@ namespace F1_Unity
         /// <summary>
         /// Invoked whenever a new fastest sector is set.
         /// </summary>
-        public static event FastestSectorDelegate FastestSectorEvent;
+        public event FastestSectorDelegate FastestSectorEvent;
 
         //Index represent vehicle index. Stores all lap data for every driver
-        static StoredDriverData[] _storedDriverData = new StoredDriverData[F1Info.MAX_AMOUNT_OF_CARS];
-        static LapManager _singleton;
+        StoredDriverData[] _storedDriverData = new StoredDriverData[F1Info.MAX_AMOUNT_OF_CARS];
 
-        static float _currentFastestSector1 = float.MaxValue;
-        static float _currentFastestSector2 = float.MaxValue;
-        static float _currentFastestSector3 = float.MaxValue;
+        float _currentFastestSector1 = float.MaxValue;
+        float _currentFastestSector2 = float.MaxValue;
+        float _currentFastestSector3 = float.MaxValue;
 
         private void Awake()
         {
-            if (_singleton == null)
-            {
-                _singleton = this;
-                for (int i = 0; i < _storedDriverData.Length; i++)
-                    _storedDriverData[i] = new StoredDriverData();
-            }
-            else
-                Destroy(this.gameObject);
+            for (int i = 0; i < _storedDriverData.Length; i++)
+                _storedDriverData[i] = new StoredDriverData();
         }
 
         /// <summary>
@@ -44,7 +37,7 @@ namespace F1_Unity
         /// <param name="vehicleIndex">Vehicle index for driver whose lap you want.</param>
         /// <param name="lapNumber">What lap for that driver?</param>
         /// <param name="status">Indicates whether the received data is valid or not. Depending on when program was launched data may be junk.</param>
-        public static StoredLapData ReadDriverLapData(int vehicleIndex, byte lapNumber, out bool status)
+        public StoredLapData ReadDriverLapData(int vehicleIndex, byte lapNumber, out bool status)
         {
             //Invalid vehicle index
             if (vehicleIndex < 0 || vehicleIndex >= F1Info.MAX_AMOUNT_OF_CARS)
@@ -86,7 +79,7 @@ namespace F1_Unity
                 {
                     DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool status);
                     if (status)
-                        sw.WriteLine("Driver: " + ParticipantManager.GetNameFromNumber(driverData.RaceNumber));
+                        sw.WriteLine("Driver: " + GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber));
                     else
                         sw.WriteLine("empty index");
 

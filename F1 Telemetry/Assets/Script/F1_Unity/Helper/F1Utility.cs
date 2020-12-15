@@ -11,15 +11,11 @@ namespace F1_Unity
         [SerializeField] Color _defaultColor = new Color(40, 40, 40);
         [SerializeField] TeamColorStruct[] _teamColors;
 
-        static F1Utility _singleton;
-        static Dictionary<Team, Color> teamColor = new Dictionary<Team, Color>();
+        Dictionary<Team, Color> teamColor = new Dictionary<Team, Color>();
 
         private void Awake()
         {
-            if (_singleton == null)
-                Init();
-            else
-                Destroy(this.gameObject);
+            Init();
         }
 
         /// <summary>
@@ -27,7 +23,6 @@ namespace F1_Unity
         /// </summary>
         void Init()
         {
-            _singleton = this;
             for (int i = 0; i < _teamColors.Length; i++)
                 teamColor.Add(_teamColors[i].team, _teamColors[i].color);
         }
@@ -35,12 +30,12 @@ namespace F1_Unity
         /// <summary>
         /// Returns color matched with team if available. Otherwise return default color.
         /// </summary>
-        public static Color GetColorByTeam(Team team)
+        public Color GetColorByTeam(Team team)
         {
             if (teamColor.ContainsKey(team))
                 return teamColor[team];
             else
-                return _singleton._defaultColor;
+                return _defaultColor;
         }
 
         /// <summary>

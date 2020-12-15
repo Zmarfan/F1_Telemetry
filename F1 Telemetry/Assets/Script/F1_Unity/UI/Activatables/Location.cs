@@ -18,8 +18,8 @@ namespace F1_Unity
             {
                 //_animator.SetTrigger(_animatorTrigger);
 
-                _stringText.text = FlagManager.GetGrandPrixString(sessionData.Track);
-                _flagImage.sprite = FlagManager.GetFlagByTrack(sessionData.Track);
+                _stringText.text = GameManager.FlagManager.GetGrandPrixString(sessionData.Track);
+                _flagImage.sprite = GameManager.FlagManager.GetFlagByTrack(sessionData.Track);
             }
             else
                 gameObject.SetActive(false);

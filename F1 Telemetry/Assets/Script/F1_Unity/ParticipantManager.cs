@@ -24,19 +24,15 @@ namespace F1_Unity
         [SerializeField] TeamSpriteStruct[] _carSpriteList;
         [SerializeField] VisualCompoundSpriteStruct[] _visualTyreCompounds;
 
-        static ParticipantManager _singleton;
-        static Dictionary<byte, NumberNameStruct> _namesByRaceNumber = new Dictionary<byte, NumberNameStruct>();
-        static Dictionary<byte, Sprite> _portraitByRaceNumber = new Dictionary<byte, Sprite>();
-        static Dictionary<Team, Sprite> _teamSpriteByTeam = new Dictionary<Team, Sprite>();
-        static Dictionary<Team, Sprite> _carSpriteByTeam = new Dictionary<Team, Sprite>();
-        static Dictionary<VisualTyreCompound, Sprite> _visualTyreCompoundSpriteByEnum = new Dictionary<VisualTyreCompound, Sprite>();
+        Dictionary<byte, NumberNameStruct> _namesByRaceNumber = new Dictionary<byte, NumberNameStruct>();
+        Dictionary<byte, Sprite> _portraitByRaceNumber = new Dictionary<byte, Sprite>();
+        Dictionary<Team, Sprite> _teamSpriteByTeam = new Dictionary<Team, Sprite>();
+        Dictionary<Team, Sprite> _carSpriteByTeam = new Dictionary<Team, Sprite>();
+        Dictionary<VisualTyreCompound, Sprite> _visualTyreCompoundSpriteByEnum = new Dictionary<VisualTyreCompound, Sprite>();
 
         private void Awake()
         {
-            if (_singleton == null)
-                Init();
-            else
-                Destroy(this.gameObject);
+            Init();
         }
 
         /// <summary>
@@ -64,8 +60,6 @@ namespace F1_Unity
         /// </summary>
         void Init()
         {
-            _singleton = this;
-            
             //Team logos
             for (int i = 0; i < _teamSpriteList.Length; i++)
                 _teamSpriteByTeam.Add(_teamSpriteList[i].team, _teamSpriteList[i].sprite);
@@ -80,63 +74,63 @@ namespace F1_Unity
         /// <summary>
         /// Converts raceNumber to race driver name, returns "Driver #raceNumber" if not in system yet
         /// </summary>
-        public static string GetNameFromNumber(byte raceNumber)
+        public string GetNameFromNumber(byte raceNumber)
         {
             if (_namesByRaceNumber.ContainsKey(raceNumber))
                 return _namesByRaceNumber[raceNumber].name;
             else
-                return _singleton._defaultDriverName + raceNumber.ToString();
+                return _defaultDriverName + raceNumber.ToString();
         }
 
         /// <summary>
         /// Converts raceNumber to race driver portrait, returns default portrait if not in system yet
         /// </summary>
-        public static Sprite GetPortraitFromNumber(byte raceNumber)
+        public Sprite GetPortraitFromNumber(byte raceNumber)
         {
             if (_portraitByRaceNumber.ContainsKey(raceNumber))
                 return _portraitByRaceNumber[raceNumber];
             else
-                return _singleton._defaultPortrait;
+                return _defaultPortrait;
         }
 
         /// <summary>
         /// Converts Team enum to team sprite, returns default sprite if not in system yet
         /// </summary>
-        public static Sprite GetTeamSprite(Team team)
+        public Sprite GetTeamSprite(Team team)
         {
             if (_teamSpriteByTeam.ContainsKey(team))
                 return _teamSpriteByTeam[team];
             else
-                return _singleton._defaultTeamSprite;
+                return _defaultTeamSprite;
         }
 
         /// <summary>
         /// Converts Team enum to car sprite, returns default sprite if not in system yet
         /// </summary>
-        public static Sprite GetCarSprite(Team team)
+        public Sprite GetCarSprite(Team team)
         {
             if (_carSpriteByTeam.ContainsKey(team))
                 return _carSpriteByTeam[team];
             else
-                return _singleton._defaultCarSprite;
+                return _defaultCarSprite;
         }
 
         /// <summary>
         /// <para> Returns 3 first letters in second name. Dashes/Underscores are treated as spaces. </para>
         /// If only one name -> first 3 letters in that.
         /// </summary>
-        public static string GetDriverInitials(byte raceNumber)
+        public string GetDriverInitials(byte raceNumber)
         {
             if (_namesByRaceNumber.ContainsKey(raceNumber))
                 return _namesByRaceNumber[raceNumber].initals;
             else
-                return _singleton._defaultDriverInital + raceNumber.ToString();
+                return _defaultDriverInital + raceNumber.ToString();
         }
 
         /// <summary>
         /// Returns sprite of visual tyre compound.
         /// </summary>
-        public static Sprite GetVisualTyreCompoundSprite(VisualTyreCompound visualTyreCompound)
+        public Sprite GetVisualTyreCompoundSprite(VisualTyreCompound visualTyreCompound)
         {
             return _visualTyreCompoundSpriteByEnum[visualTyreCompound];
         }
