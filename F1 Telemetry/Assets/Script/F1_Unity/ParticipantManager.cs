@@ -19,6 +19,7 @@ namespace F1_Unity
 
         [Header("Lists")]
 
+        [SerializeField] NumberNameStruct[] _defaultNames;
         [SerializeField] TeamSpriteStruct[] _teamSpriteList;
         [SerializeField] TeamSpriteStruct[] _carSpriteList;
         [SerializeField] VisualCompoundSpriteStruct[] _visualTyreCompounds;
@@ -46,6 +47,13 @@ namespace F1_Unity
             //Names
             for (int i = 0; i < numberNameList.Count; i++)
                 _namesByRaceNumber.Add(numberNameList[i].raceNumber, numberNameList[i]);
+            //Add default names if number isn't already taken
+            for (int i = 0; i < _defaultNames.Length; i++)
+            {
+                if (!_namesByRaceNumber.ContainsKey(_defaultNames[i].raceNumber))
+                    _namesByRaceNumber.Add(_defaultNames[i].raceNumber, _defaultNames[i]);
+            }
+
             //Portraits
             for (int i = 0; i < portraitSprites.Count; i++)
                 _portraitByRaceNumber.Add(portraitSprites[i].raceNumber, portraitSprites[i].sprite);

@@ -14,6 +14,8 @@ namespace F1_Unity
     {
         static InputManager _singleton;
 
+        public static event InputPressedDown PressedQuitGame;
+
         public static event InputPressedDown PressedTimeInterval;
         public static event InputPressedDown PressedToggleLiveSpeed;
         public static event InputPressedDown PressedToggleAll;

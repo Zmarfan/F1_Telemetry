@@ -325,6 +325,8 @@ namespace F1_Unity
             _positionImage.color = Color.white;
             _positionTransform.gameObject.SetActive(false);
 
+            _timeTextLeader.color = _timingColor;
+
             if (status == F1_Data_Management.ResultStatus.Retired)
             {
                 _timeTextLeader.text = _dnfString;

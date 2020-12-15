@@ -429,6 +429,73 @@ MonoBehaviour:
   _defaultPortrait: {fileID: 21300000, guid: 141a39ccd66c6cc41a4523ad67e58c1c, type: 3}
   _defaultTeamSprite: {fileID: 21300000, guid: 18578267077bc5547a41ef6e5267fa89, type: 3}
   _defaultCarSprite: {fileID: 21300000, guid: 0222620deef9cfc4d8e1518162c0f68f, type: 3}
+  _defaultNames:
+  - raceNumber: 1
+    name: Champion
+    initals: CHA
+  - raceNumber: 3
+    name: Daniel Ricciardo
+    initals: RIC
+  - raceNumber: 4
+    name: Lando Norris
+    initals: NOR
+  - raceNumber: 5
+    name: Sebastian Vettel
+    initals: VET
+  - raceNumber: 6
+    name: Nicholas Latifi
+    initals: LAT
+  - raceNumber: 7
+    name: Kimi Raikkonen
+    initals: RAI
+  - raceNumber: 8
+    name: Romain Grosjean
+    initals: GRO
+  - raceNumber: 10
+    name: Pierre Gasly
+    initals: GAS
+  - raceNumber: 11
+    name: Sergio Perez
+    initals: PER
+  - raceNumber: 16
+    name: Charles Leclerc
+    initals: LEC
+  - raceNumber: 17
+    name: Jules Bianchi
+    initals: BIA
+  - raceNumber: 18
+    name: Lance Stroll
+    initals: STR
+  - raceNumber: 20
+    name: Kevin Magnussen
+    initals: MAG
+  - raceNumber: 23
+    name: Alexander Albon
+    initals: ALB
+  - raceNumber: 26
+    name: Daniil Kvyat
+    initals: KVY
+  - raceNumber: 31
+    name: Esteban Ocon
+    initals: OCO
+  - raceNumber: 33
+    name: Max Verstappen
+    initals: VER
+  - raceNumber: 44
+    name: Lewis Hamilton
+    initals: HAM
+  - raceNumber: 55
+    name: Carlos Sainz
+    initals: SAI
+  - raceNumber: 63
+    name: George Russel
+    initals: RUS
+  - raceNumber: 77
+    name: Valtteri Bottas
+    initals: BOT
+  - raceNumber: 99
+    name: Antonio Giovinazzi
+    initals: GIO
   _teamSpriteList:
   - team: 0
     sprite: {fileID: 21300000, guid: 31bdbddca76ac11499033e0750be781f, type: 3}
