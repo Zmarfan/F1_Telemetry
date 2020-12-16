@@ -24,7 +24,7 @@ namespace F1_Unity
         int _lastPassedTimingIndex;
         bool _initValues = true;
 
-        bool _intervalMode = false;
+        TimeScreenState _timeScreenState = TimeScreenState.Leader;
 
         #region Init
 
@@ -70,7 +70,7 @@ namespace F1_Unity
         {
             _initValues = false;
 
-            SetMode(_intervalMode);
+            SetMode(_timeScreenState);
 
             _driverPosition = new Dictionary<byte, int>();
             _driverLastTimeSpot = new Dictionary<byte, int>();
@@ -137,17 +137,17 @@ namespace F1_Unity
         /// </summary>
         void ChangeTimingMode()
         {
-            _intervalMode = !_intervalMode;
-            SetMode(_intervalMode);
+            _timeScreenState = (TimeScreenState)(((int)_timeScreenState + 1) % (int)TimeScreenState.Length);
+            SetMode(_timeScreenState);
         }
 
         /// <summary>
         /// Sets mode to interval or to leader
         /// </summary>
-        void SetMode(bool interval)
+        void SetMode(TimeScreenState timeScreenState)
         {
             for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].SetMode(interval);
+                _driverTemplates[i].SetMode(timeScreenState);
         }
 
         #endregion
@@ -188,10 +188,13 @@ namespace F1_Unity
                 if (!validDriver)
                     continue;
 
+                int index = driverData.LapData.carPosition - 1;
                 //Sets driverdata if it's usage is needed and to update timing 
-                _driverTemplates[driverData.LapData.carPosition - 1].SetDriverData(driverData);
+                _driverTemplates[index].SetDriverData(driverData);
+                //Update fastest lap text
+                _driverTemplates[index].SetFastestLap(driverData);
                 //Update stats for driver
-                _driverTemplates[driverData.LapData.carPosition - 1].UpdateStats(driverData);
+                _driverTemplates[index].UpdateStats(driverData);
                 Positioning(driverData);
                 UpdateDriverTimingToLeader(leaderData, sessionData, driverData);
             }
@@ -305,7 +308,7 @@ namespace F1_Unity
             else if (IsLapped(leaderLapCompletion, lapCompletion, leaderData, driverData, out int amountOfLaps))
             {
                 //It's lapped and in Leader mode -> show laps
-                if (!_intervalMode)
+                if (_timeScreenState == TimeScreenState.Leader)
                 {
                     _driverTemplates[index].SetTimingState(DriverTimeState.Lapped);
                     _driverTemplates[index].SetLapsLapped(amountOfLaps);
@@ -353,5 +356,16 @@ namespace F1_Unity
             public byte Lap { get; set; }
             public float Time { get; set; }
         }
+    }
+
+    /// <summary>
+    /// Used to tell what state timing screen is in
+    /// </summary>
+    public enum TimeScreenState
+    {
+        Leader,
+        Interval,
+        Fastest_Lap,
+        Length
     }
 }

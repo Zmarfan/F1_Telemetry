@@ -90,11 +90,11 @@ namespace F1_Unity
 
                 PitStatus pitStatus = driverData.LapData.pitStatus;
 
-                //Currently not pitting anymore
-                if (pitStatus == PitStatus.None)
+                //Currently not pitting anymore -> or if the driver isn't racing -> try to remove
+                if (pitStatus == PitStatus.None || driverData.LapData.resultStatus != ResultStatus.Active)
                 {
                     _showAfterEndedTimer.Time += Time.deltaTime;
-                    if (_showAfterEndedTimer.Expired())
+                    if (_showAfterEndedTimer.Expired() || driverData.LapData.resultStatus != ResultStatus.Active)
                     {
                         DeadEvent?.Invoke(_vehicleIndex);
                         Destroy(gameObject);

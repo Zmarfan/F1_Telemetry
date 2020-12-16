@@ -16,6 +16,7 @@ namespace F1_Unity
         [SerializeField] Vector3 _driverHolderOutPosition;
         [SerializeField] Color _timingColor = Color.white;
         [SerializeField] Color _pittingColor = Color.cyan;
+        [SerializeField] Color _fastestLapColor;
         [SerializeField] string _dnfString = "OUT";
         [SerializeField] string _dsqString = "DSQ";
         [SerializeField] string _startingString = "-";
@@ -32,13 +33,14 @@ namespace F1_Unity
 
         [SerializeField] Transform _positionTransform;
         [SerializeField] RectTransform _driverHolder;
-        [SerializeField] Image _positionImage;  //The white image under position number -> flashes red/green during overtakes
-        [SerializeField] Text _positionText;    //Only used on init on Awake, never changes
-        [SerializeField] Transform _fastestLap; //transform for fastest lap image, deactivated on default
+        [SerializeField] Image _positionImage;        //The white image under position number -> flashes red/green during overtakes
+        [SerializeField] Text _positionText;          //Only used on init on Awake, never changes
+        [SerializeField] Transform _fastestLap;       //transform for fastest lap image, deactivated on default
         [SerializeField] Image _teamColorImage;
         [SerializeField] Text _initialsText;
         [SerializeField] Text _timeTextLeader;        //Time text against leader
-        [SerializeField] Text _timeTextInterval;      //Time text against leader
+        [SerializeField] Text _timeTextInterval;      //Time text against guy ahead
+        [SerializeField] Text _fastestLapText;        //Fastest lap for this guy
 
         [SerializeField] Image _darkBackground;
         [SerializeField] Image _lightBackground;
@@ -135,10 +137,33 @@ namespace F1_Unity
         /// <summary>
         /// Sets to show correct time standing, interval or to leader
         /// </summary>
-        public void SetMode(bool interval)
+        public void SetMode(TimeScreenState timeScreenState)
         {
-            _timeTextInterval.enabled = interval;
-            _timeTextLeader.enabled = !interval;
+            switch (timeScreenState)
+            {
+                case TimeScreenState.Leader:
+                    {
+                        _timeTextLeader.enabled = true;
+                        _timeTextInterval.enabled = false;
+                        _fastestLapText.enabled = false;
+                        break;
+                    }
+                case TimeScreenState.Interval:
+                    {
+                        _timeTextLeader.enabled = false;
+                        _timeTextInterval.enabled = true;
+                        _fastestLapText.enabled = false;
+                        break;
+                    }
+                case TimeScreenState.Fastest_Lap:
+                    {
+                        _timeTextLeader.enabled = false;
+                        _timeTextInterval.enabled = false;
+                        _fastestLapText.enabled = true;
+                        break;
+                    }
+                default: { throw new Exception("Timing enum for changing state is not implemented properly: enum: " + timeScreenState); }
+            }
         }
 
         /// <summary>
@@ -167,6 +192,17 @@ namespace F1_Unity
             Color color = oldPosition < _position ? movedDownColor : movedUpColor;
             _positionImage.color = color;
             _resetColor = true;
+        }
+
+        /// <summary>
+        /// Updates drivers fastest lap
+        /// </summary>
+        /// <param name="driverData"></param>
+        public void SetFastestLap(DriverData driverData)
+        {
+            //Set color and lap value for fastest lap for this driver
+            _fastestLapText.text = F1Utility.GetDeltaString(driverData.LapData.bestLapTime);
+            _fastestLapText.color = GameManager.LapManager.FastestLapTime == driverData.LapData.bestLapTime ? _fastestLapColor : _timingColor;
         }
 
         /// <summary>

@@ -21,6 +21,7 @@ namespace F1_Unity
 
         [Header("Drop")]
 
+        [SerializeField] RectTransform _holder;
         [SerializeField] Image _positionChangedImage;
         [SerializeField] Image _tyreImage;
         [SerializeField] Image _penaltyImage;
@@ -29,15 +30,27 @@ namespace F1_Unity
         [SerializeField] Text _stopText;
         [SerializeField] Text _penaltyText;
 
+        //Used to keep track of when an update is needed -> no need to poll
+        int _lastPositionChanged = int.MinValue;
+        VisualTyreCompound _lastTyreCompound;
+        int _lastAmountOfPenalties = int.MinValue;
+        int _lastTyreLife = int.MinValue;
+        int _lastAmountOfStops = int.MinValue;
+
         /// <summary>
         /// Called from parent to update all the variables
         /// </summary>
         public void UpdateValues(DriverData driverData)
         {
-            UpdatePositionChange(driverData);
-            UpdateTyre(driverData);
-            UpdateStop(driverData);
-            UpdatePenalty(driverData);
+            bool changed = false;
+            UpdatePositionChange(driverData, ref changed);
+            UpdateTyre(driverData, ref changed);
+            UpdateStop(driverData, ref changed);
+            UpdatePenalty(driverData, ref changed);
+
+            //Align everything correctly if changes have been made
+            if (changed)
+                _holder.ForceUpdateRectTransforms();
         }
 
         #region Update Functions
@@ -45,9 +58,14 @@ namespace F1_Unity
         /// <summary>
         /// Updates position change image sprite, color and value for display depending on drivers current position compared to starting position
         /// </summary>
-        void UpdatePositionChange(DriverData driverData)
+        void UpdatePositionChange(DriverData driverData, ref bool changed)
         {
             int positionChanged = driverData.LapData.gridPosition - driverData.LapData.carPosition;
+            //No need to update values since they are the same
+            if (positionChanged == _lastPositionChanged)
+                return;
+            changed = true;
+
             //Gained places
             if (positionChanged > 0)
                 ChangePositionSprite(_positionChangedUp, _positionChangedUpColor, positionChanged);
@@ -57,36 +75,8 @@ namespace F1_Unity
             //Unchanged
             else
                 ChangePositionSprite(_positionChangedUnchanged, _positionChangedUnchangedolor, positionChanged);
-        }
 
-        /// <summary>
-        /// Updates tyre type and laps old to display based on driver data
-        /// </summary>
-        void UpdateTyre(DriverData driverData)
-        {
-            _tyreImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
-            if (driverData.ParticipantData.publicTelemetry)
-                _tyreLapText.text = driverData.StatusData.tyreAgeInLaps.ToString() + _tyreLapEndingString;
-            else
-                _tyreLapText.text = _tyreLapUnavailableDataString + _tyreLapEndingString;
-        }
-
-        /// <summary>
-        /// Updates text for amount of stops driver has currently done in the race
-        /// </summary>
-        void UpdateStop(DriverData driverData)
-        {
-            byte timesPitted = GameManager.LapManager.TimesPitted(driverData.VehicleIndex);
-            _stopText.text = timesPitted + _stopEndingString;
-        }
-
-        /// <summary>
-        /// Updates sprite and text for penalty situation for driver
-        /// </summary>
-        void UpdatePenalty(DriverData driverData)
-        {
-            _penaltyImage.gameObject.SetActive(driverData.LapData.totalPenalties != 0);
-            _penaltyText.text = driverData.LapData.totalPenalties.ToString() + _penaltyEndingString;
+            _lastPositionChanged = positionChanged;
         }
 
         /// <summary>
@@ -98,6 +88,62 @@ namespace F1_Unity
             _positionChangedImage.color = color;
             _positionChangedText.color = color;
             _positionChangedText.text = Mathf.Abs(positionChange).ToString();
+        }
+
+        /// <summary>
+        /// Updates tyre type and laps old to display based on driver data
+        /// </summary>
+        void UpdateTyre(DriverData driverData, ref bool changed)
+        {
+            //No need to update values since they are the same
+            if (_lastTyreCompound == driverData.StatusData.visualTyreCompound && _lastTyreLife == driverData.StatusData.tyreAgeInLaps)
+                return;
+            changed = true;
+
+            _tyreImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
+            if (driverData.ParticipantData.publicTelemetry)
+                _tyreLapText.text = driverData.StatusData.tyreAgeInLaps.ToString() + _tyreLapEndingString;
+            else
+                _tyreLapText.text = _tyreLapUnavailableDataString + _tyreLapEndingString;
+
+            _lastTyreCompound = driverData.StatusData.visualTyreCompound;
+            _lastTyreLife = driverData.StatusData.tyreAgeInLaps;
+        }
+
+        /// <summary>
+        /// Updates text for amount of stops driver has currently done in the race
+        /// </summary>
+        void UpdateStop(DriverData driverData, ref bool changed)
+        {
+            byte timesPitted = GameManager.LapManager.TimesPitted(driverData.VehicleIndex);
+            //No need to update values since they are the same
+            if (timesPitted == _lastAmountOfStops)
+                return;
+            changed = true;
+
+            _stopText.text = timesPitted + _stopEndingString;
+
+            _lastAmountOfStops = timesPitted;
+        }
+
+        /// <summary>
+        /// Updates sprite and text for penalty situation for driver
+        /// </summary>
+        void UpdatePenalty(DriverData driverData, ref bool changed)
+        {
+            //No need to update values since they are the same
+            int totalPenalties = driverData.LapData.totalPenalties;
+            if (totalPenalties == _lastAmountOfPenalties)
+                return;
+            changed = true;
+
+            _penaltyImage.gameObject.SetActive(totalPenalties != 0);
+            if (totalPenalties > 0)
+                _penaltyText.text = totalPenalties.ToString() + _penaltyEndingString;
+            else
+                _penaltyText.text = string.Empty;
+
+            _lastAmountOfPenalties = totalPenalties;
         }
 
         #endregion

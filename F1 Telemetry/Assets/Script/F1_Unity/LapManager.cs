@@ -18,6 +18,11 @@ namespace F1_Unity
         /// </summary>
         public event FastestSectorDelegate FastestSectorEvent;
 
+        /// <summary>
+        /// Index of the driver with fastest lap
+        /// </summary>
+        public float FastestLapTime { get; private set; } = float.MaxValue;
+
         //Index represent vehicle index. Stores all lap data for every driver
         StoredDriverData[] _storedDriverData = new StoredDriverData[F1Info.MAX_AMOUNT_OF_CARS];
 
@@ -135,6 +140,10 @@ namespace F1_Unity
                 DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool status);
                 if (status)
                 {
+                    //Also updates current fastest lap if it's faster than latest fastest lap
+                    if (driverData.LapData.bestLapTime < FastestLapTime && driverData.LapData.bestLapTime != 0)
+                        FastestLapTime = driverData.LapData.bestLapTime;
+
                     LapState sector = driverData.LapData.currentSector;
                     LapState storedSector = _storedDriverData[i].LapState;
                     //Means a lap is already recording
@@ -268,11 +277,6 @@ namespace F1_Unity
             lapData.lapState = LapState.Sector_3;
             LapState = LapState.Sector_3;
             _lapDataList[_lapDataList.Count - 1] = lapData;
-
-            //Debug.Log("Sector1: " + TimeSpan.FromMilliseconds(lapData.sector1).TotalSeconds + ", Sector 2: " + TimeSpan.FromMilliseconds(lapData.sector2).TotalSeconds + ", Sector 3 " + TimeSpan.FromMilliseconds(lapData.sector3).TotalSeconds);
-            //Debug.Log("Total Lap Time for lap " + _lapDataList.Count + ": " + lapData.lapTime);
-            //Debug.Log("Tyre: " + lapData.tyreCompound);
-            //Debug.Log(ParticipantManager.GetNameFromNumber(data.RaceNumber));
         }
     }
 
