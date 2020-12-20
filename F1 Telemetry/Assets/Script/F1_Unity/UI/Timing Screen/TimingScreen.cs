@@ -35,12 +35,12 @@ namespace F1_Unity
 
         private void OnEnable()
         {
-            InputManager.PressedTimeInterval += ChangeTimingMode;
+            GameManager.InputManager.PressedTimeInterval += ChangeTimingMode;
         }
 
         private void OnDisable()
         {
-            InputManager.PressedTimeInterval -= ChangeTimingMode;
+            GameManager.InputManager.PressedTimeInterval -= ChangeTimingMode;
         }
 
         /// <summary>

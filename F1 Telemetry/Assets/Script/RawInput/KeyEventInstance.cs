@@ -32,12 +32,12 @@
         /// <summary>
         /// Keydown event for this key is invoked
         /// </summary>
-        public void KeyDownEvent()
+        public void KeyDownEvent(Key key)
         {
             //If it is pressed down from being up -> invoke KeyDown Event
             if (!IsCurrentlyPressedDown)
             {
-                KeyDown?.Invoke();
+                KeyDown?.Invoke(key);
                 IsCurrentlyPressedDown = true;
             }
         }
@@ -45,9 +45,9 @@
         /// <summary>
         /// KeyUp event for this key is invoked. Only happens if key previously was down.
         /// </summary>
-        public void KeyUpEvent()
+        public void KeyUpEvent(Key key)
         {
-            KeyUp?.Invoke();
+            KeyUp?.Invoke(key);
             IsCurrentlyPressedDown = false;
         }
 

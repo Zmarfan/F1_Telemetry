@@ -7,7 +7,7 @@ namespace RawInput
     /// <summary>
     /// Delegate for raw input events -> down or up
     /// </summary>
-    public delegate void RawInputDelegate();
+    public delegate void RawInputDelegate(Key key);
 
     /// <summary>
     /// Main point of access to rawInput system
@@ -60,6 +60,8 @@ namespace RawInput
             }
         }
 
+        #region Subscribe
+
         /// <summary>
         /// Listen for input on specific key.
         /// </summary>
@@ -78,6 +80,99 @@ namespace RawInput
             else
                 throw new System.Exception("There is no key event instance support for this key: " + key);
         }
+
+        /// <summary>
+        /// Listen for input on specific key down.
+        /// </summary>
+        /// <param name="key">What key do you want to listen to?</param>
+        /// <param name="listenMethodKeyDown">On Keydown method to be called</param>
+        public void SubscribeToKeyEventDown(Key key, RawInputDelegate listenMethodKeyDown)
+        {
+            //Checks so key that user is trying to subsribe to exist
+            if (_keyStatus.ContainsKey(key))
+            {
+                //Subscribe to this key's specific input events
+                _keyStatus[key].KeyDown += listenMethodKeyDown;
+            }
+            else
+                throw new System.Exception("There is no key event instance support for this key: " + key);
+        }
+
+        /// <summary>
+        /// Listen for input on specific key up.
+        /// </summary>
+        /// <param name="key">What key do you want to listen to?</param>
+        /// <param name="listenMethodKeyDown">On Keyup method to be called</param>
+        public void SubscribeToKeyEventUp(Key key, RawInputDelegate listenMethodKeyUp)
+        {
+            //Checks so key that user is trying to subsribe to exist
+            if (_keyStatus.ContainsKey(key))
+            {
+                //Subscribe to this key's specific input events
+                _keyStatus[key].KeyUp += listenMethodKeyUp;
+            }
+            else
+                throw new System.Exception("There is no key event instance support for this key: " + key);
+        }
+
+        #endregion
+
+        #region Unsubscribe
+
+        /// <summary>
+        /// Stop listen for input on specific key.
+        /// </summary>
+        /// <param name="key">What key do you want to stop listening to?</param>
+        /// <param name="listenMethodKeyDown">On Keydown method to stop be called</param>
+        /// <param name="listenMethodKeyUp">On Keyup method to stop be called</param>
+        public void UnsubscribeToKeyEvent(Key key, RawInputDelegate listenMethodKeyDown, RawInputDelegate listenMethodKeyUp)
+        {
+            //Checks so key that user is trying to subsribe to exist
+            if (_keyStatus.ContainsKey(key))
+            {
+                //Subscribe to this key's specific input events
+                _keyStatus[key].KeyDown -= listenMethodKeyDown;
+                _keyStatus[key].KeyUp -= listenMethodKeyUp;
+            }
+            else
+                throw new System.Exception("There is no key event instance support for this key: " + key);
+        }
+
+        /// <summary>
+        /// Stop listen for input on specific key for key down.
+        /// </summary>
+        /// <param name="key">What key do you want to stop listening to?</param>
+        /// <param name="listenMethodKeyDown">On Keydown method to stop be called</param>
+        public void UnsubscribeToKeyEventDown(Key key, RawInputDelegate listenMethodKeyDown)
+        {
+            //Checks so key that user is trying to subsribe to exist
+            if (_keyStatus.ContainsKey(key))
+            {
+                //Subscribe to this key's specific input events
+                _keyStatus[key].KeyDown -= listenMethodKeyDown;
+            }
+            else
+                throw new System.Exception("There is no key event instance support for this key: " + key);
+        }
+
+        /// <summary>
+        /// Stop listen for input on specific key for key up.
+        /// </summary>
+        /// <param name="key">What key do you want to stop listening to?</param>
+        /// <param name="listenMethodKeyUp">On Keyup method to stop be called</param>
+        public void UnsubscribeToKeyEventUp(Key key, RawInputDelegate listenMethodKeyUp)
+        {
+            //Checks so key that user is trying to subsribe to exist
+            if (_keyStatus.ContainsKey(key))
+            {
+                //Subscribe to this key's specific input events
+                _keyStatus[key].KeyUp -= listenMethodKeyUp;
+            }
+            else
+                throw new System.Exception("There is no key event instance support for this key: " + key);
+        }
+
+        #endregion
 
         /// <summary>
         /// Is this key currently being pressed down?
@@ -114,7 +209,7 @@ namespace RawInput
         {
             //Should always be true -> Invokes event for KeyDown for that specific key
             if (_keyStatus.ContainsKey(argument.KeyPressed))
-                _keyStatus[argument.KeyPressed].KeyDownEvent();
+                _keyStatus[argument.KeyPressed].KeyDownEvent(argument.KeyPressed);
             else
                 throw new System.Exception("There is no key event instance support for this key: " + argument.KeyPressed);
         }
@@ -128,7 +223,7 @@ namespace RawInput
         {
             //Should always be true -> Invokes event for KeyUp for that specific key
             if (_keyStatus.ContainsKey(argument.KeyPressed))
-                _keyStatus[argument.KeyPressed].KeyUpEvent();
+                _keyStatus[argument.KeyPressed].KeyUpEvent(argument.KeyPressed);
             else
                 throw new System.Exception("There is no key event instance support for this key: " + argument.KeyPressed);
         }

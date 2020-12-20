@@ -30,38 +30,38 @@ namespace F1_Unity
 
         private void OnEnable()
         {
-            InputManager.PressedToggleAll += ToggleAll;
-            InputManager.PressedToggleLiveSpeed += ToggleLiveSpeed;
-            InputManager.PressedToggleDriverName += ToggleDriverName;
-            InputManager.PressedToggleDetailDelta += ToggleDetailDelta;
-            InputManager.PressedToggleTyreWear += ToggleTyreWear;
-            InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
-            InputManager.PressedToggleLocation += ToggleLocation;
-            InputManager.PressedToggleHaloHud += ToggleHaloHud;
-            InputManager.PressedToggleLapComparision += ToggleLapComparision;
-            InputManager.PressedToggleERSCompare += ToggleERSCompare;
-            InputManager.PressedToggleCircuitInfo += ToggleCircuitInfo;
-            InputManager.PressedToggleWeather += ToggleWeather;
-            InputManager.PressedTogglePitTimer += TogglePitTimer;
-            InputManager.PressedToggleDriverNameChampionship += ToggleDriverNameChampionship;
+            GameManager.InputManager.PressedToggleAll += ToggleAll;
+            GameManager.InputManager.PressedToggleLiveSpeed += ToggleLiveSpeed;
+            GameManager.InputManager.PressedToggleDriverName += ToggleDriverName;
+            GameManager.InputManager.PressedToggleDetailDelta += ToggleDetailDelta;
+            GameManager.InputManager.PressedToggleTyreWear += ToggleTyreWear;
+            GameManager.InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
+            GameManager.InputManager.PressedToggleLocation += ToggleLocation;
+            GameManager.InputManager.PressedToggleHaloHud += ToggleHaloHud;
+            GameManager.InputManager.PressedToggleLapComparision += ToggleLapComparision;
+            GameManager.InputManager.PressedToggleERSCompare += ToggleERSCompare;
+            GameManager.InputManager.PressedToggleCircuitInfo += ToggleCircuitInfo;
+            GameManager.InputManager.PressedToggleWeather += ToggleWeather;
+            GameManager.InputManager.PressedTogglePitTimer += TogglePitTimer;
+            GameManager.InputManager.PressedToggleDriverNameChampionship += ToggleDriverNameChampionship;
         }
 
         private void OnDisable()
         {
-            InputManager.PressedToggleAll -= ToggleAll;
-            InputManager.PressedToggleLiveSpeed -= ToggleLiveSpeed;
-            InputManager.PressedToggleDriverName -= ToggleDriverName;
-            InputManager.PressedToggleDetailDelta -= ToggleDetailDelta;
-            InputManager.PressedToggleTyreWear -= ToggleTyreWear;
-            InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
-            InputManager.PressedToggleLocation -= ToggleLocation;
-            InputManager.PressedToggleHaloHud -= ToggleHaloHud;
-            InputManager.PressedToggleLapComparision -= ToggleLapComparision;
-            InputManager.PressedToggleERSCompare -= ToggleERSCompare;
-            InputManager.PressedToggleCircuitInfo -= ToggleCircuitInfo;
-            InputManager.PressedToggleWeather -= ToggleWeather;
-            InputManager.PressedTogglePitTimer -= TogglePitTimer;
-            InputManager.PressedToggleDriverNameChampionship -= ToggleDriverNameChampionship;
+            GameManager.InputManager.PressedToggleAll -= ToggleAll;
+            GameManager.InputManager.PressedToggleLiveSpeed -= ToggleLiveSpeed;
+            GameManager.InputManager.PressedToggleDriverName -= ToggleDriverName;
+            GameManager.InputManager.PressedToggleDetailDelta -= ToggleDetailDelta;
+            GameManager.InputManager.PressedToggleTyreWear -= ToggleTyreWear;
+            GameManager.InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
+            GameManager.InputManager.PressedToggleLocation -= ToggleLocation;
+            GameManager.InputManager.PressedToggleHaloHud -= ToggleHaloHud;
+            GameManager.InputManager.PressedToggleLapComparision -= ToggleLapComparision;
+            GameManager.InputManager.PressedToggleERSCompare -= ToggleERSCompare;
+            GameManager.InputManager.PressedToggleCircuitInfo -= ToggleCircuitInfo;
+            GameManager.InputManager.PressedToggleWeather -= ToggleWeather;
+            GameManager.InputManager.PressedTogglePitTimer -= TogglePitTimer;
+            GameManager.InputManager.PressedToggleDriverNameChampionship -= ToggleDriverNameChampionship;
         }
 
         /// <summary>

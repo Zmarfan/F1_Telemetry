@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RawInput;
 
 namespace F1_Unity
 {
@@ -12,109 +13,202 @@ namespace F1_Unity
     /// </summary>
     public class InputManager : MonoBehaviour
     {
-        static InputManager _singleton;
+        #region Input Settings
 
-        public static event InputPressedDown PressedTimeInterval;
-        public static event InputPressedDown PressedToggleLiveSpeed;
-        public static event InputPressedDown PressedToggleAll;
-        public static event InputPressedDown PressedToggleDriverName;
-        public static event InputPressedDown PressedToggleDetailDelta;
-        public static event InputPressedDown PressedToggleTyreWear;
-        public static event InputPressedDown PressedToggleSpeedCompare;
-        public static event InputPressedDown PressedToggleLocation;
-        public static event InputPressedDown PressedToggleHaloHud;
-        public static event InputPressedDown PressedToggleLapComparision;
-        public static event InputPressedDown PressedToggleERSCompare;
-        public static event InputPressedDown PressedToggleCircuitInfo;
-        public static event InputPressedDown PressedToggleWeather;
-        public static event InputPressedDown PressedTogglePitTimer;
-        public static event InputPressedDown PressedToggleDriverNameChampionship;
+        [Header("Input Keys")]
 
-        private void Awake()
+        [SerializeField] Key _toggleAllKey = Key.M;
+        [SerializeField] Key _lowerKey = Key.Z;
+        [SerializeField] Key _rightKey = Key.X;
+        [SerializeField] Key _upperRightKey = Key.C;
+        [SerializeField] Key _timingKey = Key.V;
+        [SerializeField] Key _haloHudKey = Key.H;
+
+        [Header("Lower")]
+
+        [SerializeField] Key _driverNameKey = Key.Q;
+        [SerializeField] Key _detailDeltaKey = Key.W;
+        [SerializeField] Key _speedCompareKey = Key.E;
+        [SerializeField] Key _lapComparisionKey = Key.R;
+        [SerializeField] Key _ersCompareKey = Key.T;
+        [SerializeField] Key _circuitInfoKey = Key.Y;
+        [SerializeField] Key _driverNameChampionshipKey = Key.U;
+
+        [Header("Right")]
+
+        [SerializeField] Key _liveSpeedKey = Key.Q;
+        [SerializeField] Key _tyreWearKey = Key.W;
+        [SerializeField] Key _pitTimerKey = Key.E;
+
+        [Header("Upper Right")]
+
+        [SerializeField] Key _locationKey = Key.Q;
+        [SerializeField] Key _weatherKey = Key.W;
+
+        [Header("Timing")]
+
+        [SerializeField] Key _timingIntervalTypeKey = Key.Q;
+
+        #endregion
+
+        #region Events
+
+        //Misc
+        public event InputPressedDown PressedToggleAll;
+        public event InputPressedDown PressedToggleHaloHud;
+        //Timing
+        public event InputPressedDown PressedTimeInterval;
+        //Lower
+        public event InputPressedDown PressedToggleDriverName;
+        public event InputPressedDown PressedToggleDetailDelta;
+        public event InputPressedDown PressedToggleSpeedCompare;
+        public event InputPressedDown PressedToggleLapComparision;
+        public event InputPressedDown PressedToggleERSCompare;
+        public event InputPressedDown PressedToggleCircuitInfo;
+        public event InputPressedDown PressedToggleDriverNameChampionship;
+        //Right
+        public event InputPressedDown PressedToggleLiveSpeed;
+        public event InputPressedDown PressedToggleTyreWear;
+        public event InputPressedDown PressedTogglePitTimer;
+        //Upper Right
+        public event InputPressedDown PressedToggleLocation;
+        public event InputPressedDown PressedToggleWeather;
+
+        #endregion
+
+        #region Enable Disable
+
+        void OnEnable()
         {
-            if (_singleton == null)
-                _singleton = this;
-            else
-                Destroy(this.gameObject);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_toggleAllKey, ToggleAll);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_haloHudKey, ToggleHaloHud);
+
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_timingIntervalTypeKey, CheckTiming);
+
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_driverNameKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_speedCompareKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_lapComparisionKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_ersCompareKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_circuitInfoKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_driverNameChampionshipKey, CheckLower);
+
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_liveSpeedKey, CheckRight);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_tyreWearKey, CheckRight);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_pitTimerKey, CheckRight);
+
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_locationKey, CheckUpperRight);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_weatherKey, CheckUpperRight);
         }
 
-        private void Update()
+        void OnDisable()
         {
-            if (Input.GetButton(InputKeywords.TIMING))       //TIMING => t
-                CheckTiming();
-            else if (Input.GetButton(InputKeywords.INFO))    //INFO => i
-                CheckInformation();        
-            else if (Input.GetButton(InputKeywords.COMPARE)) //COMPARE => u
-                CheckCompare();        
-            else if (Input.GetButton(InputKeywords.DRIVER))  //DRIVER => y
-                CheckDriver();
-            else                                             //MISC -> NONE
-                CheckMisc();
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_toggleAllKey, ToggleAll);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_haloHudKey, ToggleHaloHud);
+
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_timingIntervalTypeKey, CheckTiming);
+
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_driverNameKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_speedCompareKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_lapComparisionKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_ersCompareKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_circuitInfoKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_driverNameChampionshipKey, CheckLower);
+
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_liveSpeedKey, CheckRight);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_tyreWearKey, CheckRight);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_pitTimerKey, CheckRight);
+
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_locationKey, CheckUpperRight);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_weatherKey, CheckUpperRight);
+        }
+
+        #endregion
+
+        #region Callback Methods
+
+        /// <summary>
+        /// Sends out input for toggle all
+        /// </summary>
+        void ToggleAll(Key key)
+        {
+            PressedToggleAll?.Invoke();
         }
 
         /// <summary>
-        /// Invokes input events involving timing 
+        /// Sends out input for HaloHud
         /// </summary>
-        void CheckTiming()
+        void ToggleHaloHud(Key key)
         {
-            if (Input.GetButtonDown(InputKeywords.TIME_INTERVAL))   //1
-                PressedTimeInterval?.Invoke();
+            PressedToggleHaloHud?.Invoke();
         }
 
         /// <summary>
-        /// Invokes input events involving comparision of drivers
+        /// Gets called when lower input event is called, lower section of inputs
         /// </summary>
-        void CheckCompare()
+        /// <param name="key">Key that was pressed for lower group</param>
+        void CheckLower(Key key)
         {
-            if (Input.GetButtonDown(InputKeywords.DRIVER_NAME))          //1
-                PressedToggleDriverName?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.DETAIL_DELTA))    //2
-                PressedToggleDetailDelta?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.LAP_COMPARISION)) //3
-                PressedToggleLapComparision?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.SPEED_COMPARE))   //4
-                PressedToggleSpeedCompare?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.ERS_COMPARE))     //5
-                PressedToggleERSCompare?.Invoke();
+            //Is group key held down?
+            if (GameManager.RawInputSystem.IsKeyDown(_lowerKey))
+            {
+                if (key == _driverNameKey)                      { PressedToggleDriverName?.Invoke(); }
+                else if (key == _detailDeltaKey)                { PressedToggleDetailDelta?.Invoke(); }
+                else if (key == _speedCompareKey)               { PressedToggleSpeedCompare?.Invoke(); }
+                else if (key == _lapComparisionKey)             { PressedToggleLapComparision?.Invoke(); }
+                else if (key == _ersCompareKey)                 { PressedToggleERSCompare?.Invoke(); }
+                else if (key == _circuitInfoKey)                { PressedToggleCircuitInfo?.Invoke(); }
+                else if (key == _driverNameChampionshipKey)     { PressedToggleDriverNameChampionship?.Invoke(); }
+                else { throw new System.Exception("There exist no handling for this input key: " + key); }
+            }
         }
 
         /// <summary>
-        /// Invokes input events involving driver detail and information
+        /// Gets called when lower input event is called, Right section of inputs
         /// </summary>
-        void CheckDriver()
+        /// <param name="key">Key that was pressed for lower group</param>
+        void CheckRight(Key key)
         {
-            if (Input.GetButtonDown(InputKeywords.LIVE_SPEED))                     //1
-                PressedToggleLiveSpeed?.Invoke();                                  
-            else if (Input.GetButtonDown(InputKeywords.TYRE_WEAR))                 //2
-                PressedToggleTyreWear?.Invoke();                                   
-            else if (Input.GetButtonDown(InputKeywords.PIT_TIMER))                 //3
-                PressedTogglePitTimer?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.DRIVER_NAME_CHAMPIONSHIP))  //4
-                PressedToggleDriverNameChampionship?.Invoke();
+            //Is group key held down?
+            if (GameManager.RawInputSystem.IsKeyDown(_rightKey))
+            {
+                if (key == _liveSpeedKey) { PressedToggleLiveSpeed?.Invoke(); }
+                else if (key == _tyreWearKey) { PressedToggleTyreWear?.Invoke(); }
+                else if (key == _pitTimerKey) { PressedTogglePitTimer?.Invoke(); }
+                else { throw new System.Exception("There exist no handling for this input key: " + key); }
+            }
         }
 
         /// <summary>
-        /// Invokes information input events
+        /// Gets called when lower input event is called, Upper Right section of inputs
         /// </summary>
-        void CheckInformation()
+        /// <param name="key">Key that was pressed for lower group</param>
+        void CheckUpperRight(Key key)
         {
-            if (Input.GetButtonDown(InputKeywords.LOCATION))             //1
-                PressedToggleLocation?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.CIRCUIT_INFO))    //2
-                PressedToggleCircuitInfo?.Invoke();
-            else if (Input.GetButtonDown(InputKeywords.WEATHER))         //3
-                PressedToggleWeather?.Invoke();
+            //Is group key held down?
+            if (GameManager.RawInputSystem.IsKeyDown(_upperRightKey))
+            {
+                if (key == _locationKey) { PressedToggleLocation?.Invoke(); }
+                else if (key == _weatherKey) { PressedToggleWeather?.Invoke(); }
+                else { throw new System.Exception("There exist no handling for this input key: " + key); }
+             }
         }
 
         /// <summary>
-        /// Invokes misc input events
+        /// Gets called when lower input event is called, timing section of inputs
         /// </summary>
-        void CheckMisc()
+        /// <param name="key">Key that was pressed for lower group</param>
+        void CheckTiming(Key key)
         {
-            if (Input.GetButtonDown(InputKeywords.TOGGLE_ALL))  //M
-                PressedToggleAll?.Invoke();
-            if (Input.GetButtonDown(InputKeywords.HALO_HUD))    //H
-                PressedToggleHaloHud?.Invoke();
+            //Is group key held down?
+            if (GameManager.RawInputSystem.IsKeyDown(_timingKey))
+            {
+                if (key == _timingIntervalTypeKey) { PressedTimeInterval?.Invoke(); }
+                else { throw new System.Exception("There exist no handling for this input key: " + key); }
+            }
         }
     }
+
+    #endregion
 }

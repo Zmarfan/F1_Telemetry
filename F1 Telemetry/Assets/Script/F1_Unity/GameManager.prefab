@@ -319,6 +319,7 @@ MonoBehaviour:
   _lapManagerScript: {fileID: 5351194951648197464}
   _F1UtilityScript: {fileID: 8424133487733396468}
   _flagManagerScript: {fileID: 4936379151388851755}
+  _inputManager: {fileID: 3193525254642038260}
 --- !u!1 &2783539569257772824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,6 +1320,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67da2ed221351704f8567b4953a24c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _toggleAllKey: 77
+  _lowerKey: 90
+  _rightKey: 88
+  _upperRightKey: 67
+  _timingKey: 86
+  _haloHudKey: 72
+  _driverNameKey: 81
+  _detailDeltaKey: 87
+  _speedCompareKey: 69
+  _lapComparisionKey: 82
+  _ersCompareKey: 84
+  _circuitInfoKey: 89
+  _driverNameChampionshipKey: 85
+  _liveSpeedKey: 81
+  _tyreWearKey: 87
+  _pitTimerKey: 69
+  _locationKey: 81
+  _weatherKey: 87
+  _timingIntervalTypeKey: 81
 --- !u!1 &4013788141119917898
 GameObject:
   m_ObjectHideFlags: 0

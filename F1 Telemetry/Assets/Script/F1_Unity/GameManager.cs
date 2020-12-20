@@ -14,6 +14,7 @@ namespace F1_Unity
         [SerializeField] LapManager _lapManagerScript;
         [SerializeField] F1Utility _F1UtilityScript;
         [SerializeField] FlagManager _flagManagerScript;
+        [SerializeField] InputManager _inputManager;
 
         static GameManager _singleton;
         public static F1Info F1Info { get; private set; } = new F1Info();
@@ -37,9 +38,15 @@ namespace F1_Unity
         /// <summary>
         /// Holds data for all drivers based on position on track. Also holds championship standing for all drivers.
         /// </summary>
+        /// </summary>
+        /// </summary>
         public static DriverDataManager DriverDataManager { get { return _singleton._driverDataManagerScript; } }
         /// <summary>
-        /// RawInputSystem that allows subscribtion and read of inputs on a low level (application not in focus)
+        /// Way to read input from user. Subscribe to correct event.
+        /// </summary>
+        public static InputManager InputManager { get { return _singleton._inputManager; } }
+        /// <summary>
+        /// RawInputSystem that allows subscribtion and read of inputs on a low level (application not in focus). Use InputManager instead for reading input
         /// </summary>
         public static RawInputSystem RawInputSystem { get; private set; } = new RawInputSystem();
 

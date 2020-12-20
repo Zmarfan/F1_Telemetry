@@ -26,6 +26,7 @@ public class DreamCommentator : MonoBehaviour
 
     [SerializeField] string _noValidData = "No Valid Data!";
     [SerializeField] string _validData = "Valid Data!";
+    [SerializeField] string _commentMarker = "//";
     [SerializeField] Color _validDataColor = Color.green;
     [SerializeField] Color _invalidDataColor = Color.red;
 
@@ -151,8 +152,8 @@ public class DreamCommentator : MonoBehaviour
             //Loop over all lines
             for (int i = 0; i < lines.Length; i++)
             {
-                //Skip blank lines
-                if (lines[i] == string.Empty)
+                //Skip blank lines and comment lines
+                if (lines[i] == string.Empty || lines[i].StartsWith(_commentMarker))
                     continue;
 
                 string[] parts = lines[i].Split(new[] { "+" }, StringSplitOptions.None);
