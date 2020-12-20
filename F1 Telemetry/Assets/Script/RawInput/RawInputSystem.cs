@@ -52,7 +52,7 @@ namespace RawInput
         {
             if (_inputListener != null)
             {
-                _inputListener.UnHookKeyBoard();
+                _inputListener.UnHookKeyboard();
                 //Clear Key values
                 List<KeyEventInstance> instances = _keyStatus.Values.ToList();
                 for (int i = 0; i < instances.Count; i++)

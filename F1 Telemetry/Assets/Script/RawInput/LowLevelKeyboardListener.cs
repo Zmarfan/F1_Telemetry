@@ -55,7 +55,7 @@ namespace RawInput
         /// </summary>
         ~LowLevelKeyboardListener()
         {
-            UnHookKeyBoard();
+            UnHookKeyboard();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace RawInput
         /// <summary>
         /// Remove hook that listens to low level input
         /// </summary>
-        public void UnHookKeyBoard()
+        public void UnHookKeyboard()
         {
             if (_hookID != IntPtr.Zero)
             {
