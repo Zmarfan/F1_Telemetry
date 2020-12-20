@@ -1,6 +1,6 @@
 ﻿using F1_Data_Management;
 using UnityEngine;
-using FileExplorer;
+using RawInput;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,6 +38,25 @@ namespace F1_Unity
         /// Holds data for all drivers based on position on track. Also holds championship standing for all drivers.
         /// </summary>
         public static DriverDataManager DriverDataManager { get { return _singleton._driverDataManagerScript; } }
+        /// <summary>
+        /// RawInputSystem that allows subscribtion and read of inputs on a low level (application not in focus)
+        /// </summary>
+        public static RawInputSystem RawInputSystem { get; private set; } = new RawInputSystem();
+
+        private void OnEnable()
+        {
+            RawInputSystem.BeginListening();
+        }
+
+        private void OnDisable()
+        {
+            RawInputSystem.StopListening();
+        }
+
+        private void OnApplicationQuit()
+        {
+            RawInputSystem.StopListening();
+        }
 
         /// <summary>
         /// Called from Start window to init GameManager before it's activated

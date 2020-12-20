@@ -13,6 +13,8 @@ namespace RawInput
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
+        private const int WM_KEYUP = 0x0101;
+        private const int WM_SYSKEYUP = 0x0105;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
@@ -29,7 +31,14 @@ namespace RawInput
 
         public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr IParam);
 
-        public event EventHandler<KeyPressedArgs> OnKeyPressed;
+        /// <summary>
+        /// Event invoked on any Key Down
+        /// </summary>
+        public event EventHandler<KeyPressedArgs> OnKeyDown;
+        /// <summary>
+        /// Event invoked on any Key Up
+        /// </summary>
+        public event EventHandler<KeyPressedArgs> OnKeyUp;
 
         //Delegate called when low level input is detected
         private LowLevelKeyboardProc _proc;
@@ -95,12 +104,23 @@ namespace RawInput
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr IParam)
         {
             //Contains valid data
-            if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
+            if (nCode >= 0)
             {
                 //Convert data to correct virtual key code
                 int virtualKeyCode = Marshal.ReadInt32(IParam);
-                //Invoke outer event that keypressed happened with key data
-                OnKeyPressed?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
+
+                //Key Up
+                if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
+                {
+                    //Invoke outer event that keypressed happened with key data
+                    OnKeyUp?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
+                }
+                //Key Down
+                else if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
+                {
+                    //Invoke outer event that keypressed happened with key data
+                    OnKeyDown?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
+                }
             }
             //Pass along data to other hooks
             return CallNextHookEx(_hookID, nCode, wParam, IParam);
