@@ -32,6 +32,7 @@ public class DreamCommentator : MonoBehaviour
 
     [Header("Drop")]
 
+    [SerializeField] RectTransform _rectTransform;
     [SerializeField] GameObject _gameManagerPrefab;
     [SerializeField] GameObject _startScreenHolder;
     [SerializeField] Button _startButton;
@@ -119,6 +120,8 @@ public class DreamCommentator : MonoBehaviour
     /// </summary>
     FileExplorer.FileExplorer SpawnFileExplorer()
     {
+        //Reset window to center position
+        _rectTransform.anchoredPosition = Vector2.zero;
         //Hide the main window while file exploring
         Show(false);
         GameObject obj = Instantiate(_fileExplorerPrefab, Vector3.zero, Quaternion.identity, _fileExplorerHolder) as GameObject;

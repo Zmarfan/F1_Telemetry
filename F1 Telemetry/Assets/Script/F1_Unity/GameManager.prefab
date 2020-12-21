@@ -1321,10 +1321,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _toggleAllKey: 77
-  _lowerKey: 90
-  _rightKey: 88
-  _upperRightKey: 67
-  _timingKey: 86
+  _lowerKey: 65
+  _rightKey: 83
+  _upperRightKey: 68
+  _timingKey: 70
   _haloHudKey: 72
   _driverNameKey: 81
   _detailDeltaKey: 87
