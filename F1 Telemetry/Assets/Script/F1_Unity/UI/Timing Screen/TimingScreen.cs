@@ -25,6 +25,7 @@ namespace F1_Unity
         bool _initValues = true;
 
         TimeScreenState _timeScreenState = TimeScreenState.Leader;
+        TimingStats.TimingStatsState _timingStatsState = TimingStats.TimingStatsState.None;
 
         #region Init
 
@@ -36,11 +37,13 @@ namespace F1_Unity
         private void OnEnable()
         {
             GameManager.InputManager.PressedTimeInterval += ChangeTimingMode;
+            GameManager.InputManager.PressedTimeStatsState += ChangeTimingState;
         }
 
         private void OnDisable()
         {
             GameManager.InputManager.PressedTimeInterval -= ChangeTimingMode;
+            GameManager.InputManager.PressedTimeStatsState -= ChangeTimingState;
         }
 
         /// <summary>
@@ -148,6 +151,24 @@ namespace F1_Unity
         {
             for (int i = 0; i < _driverTemplates.Length; i++)
                 _driverTemplates[i].SetMode(timeScreenState);
+        }
+
+        /// <summary>
+        /// Called when changing timing stats state -> changes all templates to that state
+        /// </summary>
+        void ChangeTimingState()
+        {
+            _timingStatsState = (TimingStats.TimingStatsState)(((int)_timingStatsState + 1) % (int)TimingStats.TimingStatsState.Length);
+            SetStatsState(_timingStatsState);
+        }
+
+        /// <summary>
+        /// Updates all templates to this stats state
+        /// </summary>
+        void SetStatsState(TimingStats.TimingStatsState state)
+        {
+            for (int i = 0; i < _driverTemplates.Length; i++)
+                _driverTemplates[i].SetStatsState(state);
         }
 
         #endregion
@@ -363,6 +384,7 @@ namespace F1_Unity
     /// </summary>
     public enum TimeScreenState
     {
+        None,
         Leader,
         Interval,
         Fastest_Lap,

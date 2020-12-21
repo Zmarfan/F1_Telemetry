@@ -48,6 +48,7 @@ namespace F1_Unity
         [Header("Timing")]
 
         [SerializeField] Key _timingIntervalTypeKey = Key.Q;
+        [SerializeField] Key _timingStatsStateKey = Key.W;
 
         #endregion
 
@@ -58,6 +59,7 @@ namespace F1_Unity
         public event InputPressedDown PressedToggleHaloHud;
         //Timing
         public event InputPressedDown PressedTimeInterval;
+        public event InputPressedDown PressedTimeStatsState;
         //Lower
         public event InputPressedDown PressedToggleDriverName;
         public event InputPressedDown PressedToggleDetailDelta;
@@ -84,6 +86,7 @@ namespace F1_Unity
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_haloHudKey, ToggleHaloHud);
 
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_timingIntervalTypeKey, CheckTiming);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_timingStatsStateKey, CheckTiming);
 
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_driverNameKey, CheckLower);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
@@ -107,6 +110,7 @@ namespace F1_Unity
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_haloHudKey, ToggleHaloHud);
 
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_timingIntervalTypeKey, CheckTiming);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_timingStatsStateKey, CheckTiming);
 
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_driverNameKey, CheckLower);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
@@ -173,7 +177,7 @@ namespace F1_Unity
             //Is group key held down?
             if (GameManager.RawInputSystem.IsKeyDown(_rightKey))
             {
-                if (key == _liveSpeedKey) { PressedToggleLiveSpeed?.Invoke(); }
+                if (key == _liveSpeedKey)     { PressedToggleLiveSpeed?.Invoke(); }
                 else if (key == _tyreWearKey) { PressedToggleTyreWear?.Invoke(); }
                 else if (key == _pitTimerKey) { PressedTogglePitTimer?.Invoke(); }
                 else { throw new System.Exception("There exist no handling for this input key: " + key); }
@@ -189,7 +193,7 @@ namespace F1_Unity
             //Is group key held down?
             if (GameManager.RawInputSystem.IsKeyDown(_upperRightKey))
             {
-                if (key == _locationKey) { PressedToggleLocation?.Invoke(); }
+                if (key == _locationKey)     { PressedToggleLocation?.Invoke(); }
                 else if (key == _weatherKey) { PressedToggleWeather?.Invoke(); }
                 else { throw new System.Exception("There exist no handling for this input key: " + key); }
              }
@@ -204,7 +208,8 @@ namespace F1_Unity
             //Is group key held down?
             if (GameManager.RawInputSystem.IsKeyDown(_timingKey))
             {
-                if (key == _timingIntervalTypeKey) { PressedTimeInterval?.Invoke(); }
+                if (key == _timingIntervalTypeKey)    { PressedTimeInterval?.Invoke(); }
+                else if (key == _timingStatsStateKey) { PressedTimeStatsState?.Invoke(); }
                 else { throw new System.Exception("There exist no handling for this input key: " + key); }
             }
         }

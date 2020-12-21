@@ -141,29 +141,44 @@ namespace F1_Unity
         {
             switch (timeScreenState)
             {
+                case TimeScreenState.None:
+                    {
+                        _timeTextLeader.gameObject.SetActive(false);
+                        _timeTextInterval.gameObject.SetActive(false);
+                        _fastestLapText.gameObject.SetActive(false);
+                        break;
+                    }
                 case TimeScreenState.Leader:
                     {
-                        _timeTextLeader.enabled = true;
-                        _timeTextInterval.enabled = false;
-                        _fastestLapText.enabled = false;
+                        _timeTextLeader.gameObject.SetActive(true);
+                        _timeTextInterval.gameObject.SetActive(false);
+                        _fastestLapText.gameObject.SetActive(false);
                         break;
                     }
                 case TimeScreenState.Interval:
                     {
-                        _timeTextLeader.enabled = false;
-                        _timeTextInterval.enabled = true;
-                        _fastestLapText.enabled = false;
+                        _timeTextLeader.gameObject.SetActive(false);
+                        _timeTextInterval.gameObject.SetActive(true);
+                        _fastestLapText.gameObject.SetActive(false);
                         break;
                     }
                 case TimeScreenState.Fastest_Lap:
                     {
-                        _timeTextLeader.enabled = false;
-                        _timeTextInterval.enabled = false;
-                        _fastestLapText.enabled = true;
+                        _timeTextLeader.gameObject.SetActive(false);
+                        _timeTextInterval.gameObject.SetActive(false);
+                        _fastestLapText.gameObject.SetActive(true);
                         break;
                     }
                 default: { throw new Exception("Timing enum for changing state is not implemented properly: enum: " + timeScreenState); }
             }
+        }
+
+        /// <summary>
+        /// Changes stats state to specific state
+        /// </summary>
+        public void SetStatsState(TimingStats.TimingStatsState state)
+        {
+            _timingStats.ChangeState(state);
         }
 
         /// <summary>

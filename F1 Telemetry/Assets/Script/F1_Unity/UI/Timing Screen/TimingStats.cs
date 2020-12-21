@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using F1_Data_Management;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace F1_Unity
 {
@@ -21,7 +23,9 @@ namespace F1_Unity
 
         [Header("Drop")]
 
-        [SerializeField] RectTransform _holder;
+        [SerializeField] RectTransform _holderRectTransform;
+        [SerializeField] HorizontalLayoutGroup _layoutGroup;
+        [SerializeField] ContentSizeFitter _holderContentSizeFitter;
         [SerializeField] Image _positionChangedImage;
         [SerializeField] Image _tyreImage;
         [SerializeField] Image _penaltyImage;
@@ -30,12 +34,65 @@ namespace F1_Unity
         [SerializeField] Text _stopText;
         [SerializeField] Text _penaltyText;
 
+        [Header("GameObjects")]
+
+        [SerializeField] List<GameObject> _allStatsObjects;
+
+        [SerializeField] GameObject _positionChangedImageObj;
+        [SerializeField] GameObject _positionChangedTextObj;
+        [SerializeField] GameObject _startTyreObj;
+        [SerializeField] GameObject _tyreLapTextObj;
+        [SerializeField] GameObject _stopsObj;
+        [SerializeField] GameObject _penaltyAmountObj;
+        [SerializeField] GameObject _penaltyObj;
+
         //Used to keep track of when an update is needed -> no need to poll
         int _lastPositionChanged = int.MinValue;
         VisualTyreCompound _lastTyreCompound;
         int _lastAmountOfPenalties = int.MinValue;
         int _lastTyreLife = int.MinValue;
         int _lastAmountOfStops = int.MinValue;
+
+        /// <summary>
+        /// Changes timing state to show specific information
+        /// </summary>
+        /// <param name="state">What state to go to</param>
+        public void ChangeState(TimingStatsState state)
+        {
+            switch (state)
+            {
+                case TimingStatsState.None:             { SetObjectState(new List<GameObject>());                                                       break; }
+                case TimingStatsState.Position_Changed: { SetObjectState(new List<GameObject>() { _positionChangedImageObj, _positionChangedTextObj }); break; }
+                case TimingStatsState.Tyre:             { SetObjectState(new List<GameObject>() { _startTyreObj, _tyreLapTextObj });                    break; }
+                case TimingStatsState.Stop:             { SetObjectState(new List<GameObject>() { _stopsObj });                                         break; }
+                case TimingStatsState.Penalty:          { SetObjectState(new List<GameObject>() { _penaltyAmountObj });                                 break; }
+                case TimingStatsState.All:              { SetObjectState(_allStatsObjects);                                                             break; }
+                default: { throw new System.Exception("There is no implementation for TimingStateState: " + state); }                                   
+            }
+
+            UpdateLayoutGroup();
+        }
+
+        /// <summary>
+        /// Sets the activeObjects active and rest to inactive
+        /// </summary>
+        /// <param name="activeObjects">List of GameObjects to be activated</param>
+        void SetObjectState(List<GameObject> activeObjects)
+        {
+            for (int i = 0; i < _allStatsObjects.Count; i++)
+            {
+                //All but penalty
+                if (_allStatsObjects[i] != _penaltyObj)
+                {
+                    //Activate activeObjects and set all else inactive
+                    if (activeObjects.Any(item => item == _allStatsObjects[i]))
+                        _allStatsObjects[i].SetActive(true);
+                    //Disable 
+                    else
+                        _allStatsObjects[i].SetActive(false);
+                }
+            }
+        }
 
         /// <summary>
         /// Called from parent to update all the variables
@@ -50,10 +107,21 @@ namespace F1_Unity
 
             //Align everything correctly if changes have been made
             if (changed)
-                _holder.ForceUpdateRectTransforms();
+                UpdateLayoutGroup();
         }
 
         #region Update Functions
+
+        /// <summary>
+        /// Updates so all children in horizontal layout group are padded correctly
+        /// </summary>
+        void UpdateLayoutGroup()
+        {
+            _holderContentSizeFitter.enabled = false;
+            _layoutGroup.SetLayoutHorizontal();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_holderRectTransform);
+            _holderContentSizeFitter.enabled = true;
+        }
 
         /// <summary>
         /// Updates position change image sprite, color and value for display depending on drivers current position compared to starting position
@@ -153,12 +221,15 @@ namespace F1_Unity
         /// <summary>
         /// What sort of information should be displayed -> penalty symbol will always show
         /// </summary>
-        public enum TimingStateState
+        public enum TimingStatsState
         {
+            None,
             Position_Changed,
             Tyre,
             Stop,
             Penalty,
+            All,
+            Length,
         }
 
         #endregion
