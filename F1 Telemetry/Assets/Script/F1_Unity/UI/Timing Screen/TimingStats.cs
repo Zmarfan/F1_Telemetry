@@ -45,13 +45,16 @@ namespace F1_Unity
         [SerializeField] GameObject _stopsObj;
         [SerializeField] GameObject _penaltyAmountObj;
         [SerializeField] GameObject _penaltyObj;
+        [SerializeField] GameObject _stopGoObj;
 
         //Used to keep track of when an update is needed -> no need to poll
         int _lastPositionChanged = int.MinValue;
         VisualTyreCompound _lastTyreCompound;
         int _lastAmountOfPenalties = int.MinValue;
+        int _lastStopGoPenalties = int.MinValue;
         int _lastTyreLife = int.MinValue;
         int _lastAmountOfStops = int.MinValue;
+        bool _hasDriveThrough = false;
 
         /// <summary>
         /// Changes timing state to show specific information
@@ -82,7 +85,7 @@ namespace F1_Unity
             for (int i = 0; i < _allStatsObjects.Count; i++)
             {
                 //All but penalty
-                if (_allStatsObjects[i] != _penaltyObj)
+                if (_allStatsObjects[i] != _penaltyObj && _allStatsObjects[i] != _stopGoObj)
                 {
                     //Activate activeObjects and set all else inactive
                     if (activeObjects.Any(item => item == _allStatsObjects[i]))
@@ -203,9 +206,17 @@ namespace F1_Unity
             int totalPenalties = driverData.LapData.totalPenalties;
             if (totalPenalties == _lastAmountOfPenalties)
                 return;
+
+            byte stopGoPenalties = GameManager.LapManager.AmountOfStopGoPenalties(driverData.VehicleIndex);
+            bool driveThrough = GameManager.LapManager.HasDriveThrough(driverData.VehicleIndex);
+            if (stopGoPenalties == _lastStopGoPenalties && _hasDriveThrough == driveThrough)
+                return;
+
             changed = true;
 
-            _penaltyImage.gameObject.SetActive(totalPenalties != 0);
+            _penaltyObj.SetActive(totalPenalties != 0);
+            //Set investigation symbol for drivers with drive through or stop go penalties
+            _stopGoObj.SetActive(stopGoPenalties != 0 || driveThrough);
             if (totalPenalties > 0)
                 _penaltyText.text = totalPenalties.ToString() + _penaltyEndingString;
             else

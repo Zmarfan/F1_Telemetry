@@ -36,6 +36,28 @@ namespace F1_Unity
                 _storedDriverData[i] = new StoredDriverData();
         }
 
+        private void OnEnable()
+        {
+            GameManager.F1Info.PenaltyEvent += HandlePenaltyEvent;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.F1Info.PenaltyEvent -= HandlePenaltyEvent;           
+        }
+
+        /// <summary>
+        /// Stores stop and go penalties for a specific driver
+        /// </summary>
+        void HandlePenaltyEvent(Packet packet)
+        {
+            PenaltyEventPacket penaltyPacket = (PenaltyEventPacket)packet;
+            if (penaltyPacket.PenaltyType == PenaltyType.Stop_Go)
+                _storedDriverData[penaltyPacket.VehicleIndex].AddStopGoPenalty(penaltyPacket.Time);
+            else if (penaltyPacket.PenaltyType == PenaltyType.Drive_Through)
+                _storedDriverData[penaltyPacket.VehicleIndex].GotDriveThrough();
+        }
+
         /// <summary>
         /// Used to count pit stop a driver has made. Increment that drivers pitstop counter by one. 
         /// </summary>
@@ -49,11 +71,34 @@ namespace F1_Unity
         /// </summary>
         public byte TimesPitted(int vehicleIndex)
         {
-            //Invalid vehicle index
+            CheckVehicleIndex(vehicleIndex);
+            return _storedDriverData[vehicleIndex].TimesPitted;
+        }
+
+        /// <summary>
+        /// Returns how many stop go penalties driver has in seconds
+        /// </summary>
+        /// <param name="vehicleIndex">Which driver?</param>
+        /// <returns>Amount of stop go penalties in seconds</returns>
+        public byte AmountOfStopGoPenalties(int vehicleIndex)
+        {
+            CheckVehicleIndex(vehicleIndex);
+            return _storedDriverData[vehicleIndex].StopGoPenalties;
+        }
+
+        public bool HasDriveThrough(int vehicleIndex)
+        {
+            CheckVehicleIndex(vehicleIndex);
+            return _storedDriverData[vehicleIndex].HasDriveThrough;
+        }
+
+        /// <summary>
+        /// Throws exception if vehicle index is out of range
+        /// </summary>
+        void CheckVehicleIndex(int vehicleIndex)
+        {
             if (vehicleIndex < 0 || vehicleIndex >= F1Info.MAX_AMOUNT_OF_CARS)
                 throw new Exception("Vehicle index falls out of range! 0-22! Index: " + vehicleIndex);
-
-            return _storedDriverData[vehicleIndex].TimesPitted;
         }
 
         /// <summary>
@@ -203,6 +248,11 @@ namespace F1_Unity
     {
         List<StoredLapData> _lapDataList = new List<StoredLapData>();
         public byte TimesPitted { get; private set; } = 0;
+        /// <summary>
+        /// Amount of stop go penalties in seconds
+        /// </summary>
+        public byte  StopGoPenalties { get; private set; } = 0;
+        public bool HasDriveThrough { get; private set; } = false;
         public int CurrentLap { get { return _lapDataList.Count; } }
         public LapState LapState { get; private set; } = LapState.Unknown;
 
@@ -211,6 +261,7 @@ namespace F1_Unity
         /// </summary>
         public StoredLapData GetStoredLapData(int lapNumber)
         {
+            //Check if lapNumber exist
             if (lapNumber > 0 && lapNumber <= CurrentLap)
                 return _lapDataList[lapNumber - 1];
             else
@@ -223,6 +274,23 @@ namespace F1_Unity
         public void IncrementPitCounter()
         {
             TimesPitted++;
+        }
+
+        /// <summary>
+        /// Adds penalty to stop go penalty total count in seconds
+        /// </summary>
+        /// <param name="addValue">added penalty in seconds</param>
+        public void AddStopGoPenalty(byte addValue)
+        {
+            StopGoPenalties += addValue;
+        }
+
+        /// <summary>
+        /// The driver just received a drive through penalty
+        /// </summary>
+        public void GotDriveThrough()
+        {
+            HasDriveThrough = true;
         }
 
         /// <summary>
