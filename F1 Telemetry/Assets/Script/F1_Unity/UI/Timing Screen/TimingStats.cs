@@ -51,7 +51,7 @@ namespace F1_Unity
         int _lastPositionChanged = int.MinValue;
         VisualTyreCompound _lastTyreCompound;
         int _lastAmountOfPenalties = int.MinValue;
-        int _lastStopGoPenalties = int.MinValue;
+        int _lastStopGoPenalties = 0;
         int _lastTyreLife = int.MinValue;
         int _lastAmountOfStops = int.MinValue;
         bool _hasDriveThrough = false;
@@ -204,12 +204,9 @@ namespace F1_Unity
         {
             //No need to update values since they are the same
             int totalPenalties = driverData.LapData.totalPenalties;
-            if (totalPenalties == _lastAmountOfPenalties)
-                return;
-
             byte stopGoPenalties = GameManager.LapManager.AmountOfStopGoPenalties(driverData.VehicleIndex);
             bool driveThrough = GameManager.LapManager.HasDriveThrough(driverData.VehicleIndex);
-            if (stopGoPenalties == _lastStopGoPenalties && _hasDriveThrough == driveThrough)
+            if (stopGoPenalties == _lastStopGoPenalties && _hasDriveThrough == driveThrough && totalPenalties == _lastAmountOfPenalties)
                 return;
 
             changed = true;
@@ -223,6 +220,7 @@ namespace F1_Unity
                 _penaltyText.text = string.Empty;
 
             _lastAmountOfPenalties = totalPenalties;
+            _lastStopGoPenalties = stopGoPenalties;
         }
 
         #endregion

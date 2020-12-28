@@ -28,6 +28,11 @@ namespace F1_Data_Management
             _port = portNumber;
         }
 
+        ~UdpReceiver()
+        {
+            StopListening();
+        }
+
         /// <summary>
         /// Starts process of listening for Packets from F1 2020 and then processing and storing the data.
         /// </summary>

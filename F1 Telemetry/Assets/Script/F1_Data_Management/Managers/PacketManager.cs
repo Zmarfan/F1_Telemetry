@@ -7,6 +7,7 @@ namespace F1_Data_Management
         Participants _participants;
         EventManager _eventManager;
         SessionManager _sessionManager;
+        LobbyInfoManager _lobbyInfoManager;
 
         Queue<byte[]> _dataPackets = new Queue<byte[]>(); //Queue of all packets received since last frame
 
@@ -14,11 +15,12 @@ namespace F1_Data_Management
         public byte PlayerCarIndex { get; private set; } = F1Info.MAX_AMOUNT_OF_CARS - 1;
         public byte SecondaryPlayerCarIndex { get; private set; } = F1Info.MAX_AMOUNT_OF_CARS - 2;
 
-        public PacketManager(Participants participants, EventManager eventManager, SessionManager sessionManager)
+        public PacketManager(Participants participants, EventManager eventManager, SessionManager sessionManager, LobbyInfoManager lobbyInfoManager)
         {
             _participants = participants;
             _eventManager = eventManager;
             _sessionManager = sessionManager;
+            _lobbyInfoManager = lobbyInfoManager;
         }
 
         /// <summary>
@@ -68,6 +70,10 @@ namespace F1_Data_Management
             HandlePacket(packet);
         }
 
+        /// <summary>
+        /// Depending on packet type it stores or invokes event that packet has been recieved
+        /// </summary>
+        /// <param name="packet">The packet that is to be handled</param>
         void HandlePacket(Packet packet)
         {
             switch ((PacketType)packet.PacketID)
@@ -79,8 +85,9 @@ namespace F1_Data_Management
                 case PacketType.CAR_TELEMETRY: { _participants.SetTelemetryData((CarTelemetryPacket)packet); break; }
                 case PacketType.CAR_STATUS: { _participants.SetCarStatusData((CarStatusPacket)packet); break; }
                 case PacketType.SESSION: { _sessionManager.UpdateSessionData((SessionPacket)packet); break; }
-                case PacketType.LOBBY_INFO: { break; };
-                case PacketType.FINAL_CLASSIFICATION: { break; };
+                case PacketType.LOBBY_INFO: { _lobbyInfoManager.UpdateLobbyInfoData((LobbyInfoPacket)packet); break; };
+                //Final classification is treated as an event
+                case PacketType.FINAL_CLASSIFICATION: { _eventManager.InvokeFinalClassificationEvent(packet); break; };
                 case PacketType.EVENT:
                     {
                         //Id what type of event packet this is

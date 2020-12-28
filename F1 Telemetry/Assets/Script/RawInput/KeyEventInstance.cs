@@ -1,7 +1,8 @@
 ﻿namespace RawInput
 {
     /// <summary>
-    /// Holds events that trigger for input for that specific key
+    /// Converts raw input event for a specific key to key specific input events.
+    /// <para>Holds events that trigger for input for a specific key. Can check if currently being pressed down.</para>
     /// </summary>
     [System.Serializable]
     public class KeyEventInstance

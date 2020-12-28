@@ -14,6 +14,7 @@ namespace F1_Data_Management
         Participants _participants;
         EventManager _eventManager;
         SessionManager _sessionManager;
+        LobbyInfoManager _lobbyInfoManager;
 
         /// <summary>
         /// Amount of drivers actually competing -> Indexes can fall outside this value! Don't use for indexing! 0 if not in use
@@ -31,9 +32,10 @@ namespace F1_Data_Management
         public F1Info(int port = 20777)
         {
             _sessionManager = new SessionManager();
+            _lobbyInfoManager = new LobbyInfoManager();
             _eventManager = new EventManager();
             _participants = new Participants();
-            _packetManager = new PacketManager(_participants, _eventManager, _sessionManager);
+            _packetManager = new PacketManager(_participants, _eventManager, _sessionManager, _lobbyInfoManager);
             _udpReceiver = new UdpReceiver(_packetManager, port);
         }
 
@@ -62,6 +64,7 @@ namespace F1_Data_Management
             _packetManager.Reset();
             _participants.Clear();
             _sessionManager.Clear();
+            _lobbyInfoManager.Clear();
         }
 
         /// <summary>
@@ -70,6 +73,17 @@ namespace F1_Data_Management
         public Session ReadSession(out bool status)
         {
             return _sessionManager.GetSessionDataCopy(out status);
+        }
+
+        /// <summary>
+        /// Attempt to read data for vehicle lobby info data. status indicates if data is valid.
+        /// </summary>
+        /// <param name="vehicleIndex">What driver?</param>
+        /// <param name="status">Indicator if returned data is correct</param>
+        /// <returns>Holds lobby info data for specified driver</returns>
+        public LobbyInfoData ReadDriverLobbyInfoData(int vehicleIndex, out bool status)
+        {
+            return _lobbyInfoManager.GetDriverLobbyInfoData(vehicleIndex, SessionTime, out status);
         }
 
         /// <summary>
@@ -116,6 +130,15 @@ namespace F1_Data_Management
             return _participants.ReadCarData(sessionData.SpectatorCarIndex, out validData);
         }
         #region Events
+
+        /// <summary>
+        /// Invoked on race end -> holds final race result and info for each driver. Returns Packet which can be cast to FinalClassificationPacket.
+        /// </summary>
+        public event EventOccour FinalClassification
+        {
+            add => _eventManager.FinalClassification += value;
+            remove => _eventManager.FinalClassification -= value;
+        }
 
         /// <summary>
         /// Invoked on fastest lap event. Returns Packet which can be cast to FastestLapEventPacket.

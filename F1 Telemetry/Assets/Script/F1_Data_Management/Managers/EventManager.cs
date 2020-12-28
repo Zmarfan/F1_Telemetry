@@ -8,6 +8,11 @@
     public class EventManager
     {
         #region Events
+        //Final Classification
+        /// <summary>
+        /// Invoked on race end -> holds final race result and info for each driver. Returns Packet which can be cast to FinalClassificationPacket.
+        /// </summary>
+        public event EventOccour FinalClassification;
         //Complex Events
         /// <summary>
         /// Invoked on fastest lap event. Returns Packet which can be cast to FastestLapEventPacket.
@@ -57,6 +62,14 @@
         #endregion
 
         #region Invokers
+        /// <summary>
+        /// Called from PacketManager when final classification packet is sent out.
+        /// </summary>
+        public void InvokeFinalClassificationEvent(Packet packet)
+        {
+            FinalClassification?.Invoke(packet);
+        }
+
         /// <summary>
         /// Called from PacketManager when fastest lap event occour.
         /// </summary>

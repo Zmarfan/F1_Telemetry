@@ -18,7 +18,7 @@
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Lobby Info Packet");
 
             NumberOfPlayers = manager.GetByte();
-            AllLobbyInfoData = new LobbyInfoData[NumberOfPlayers];
+            AllLobbyInfoData = new LobbyInfoData[F1Info.MAX_AMOUNT_OF_CARS];
 
             for (int i = 0; i < AllLobbyInfoData.Length; i++)
             {
@@ -36,7 +36,10 @@
     /// </summary>
     public struct LobbyInfoData
     {
-        public bool AIControlled; //True if car is controlled by AI
+        /// <summary>
+        /// True if car is controlled by AI
+        /// </summary>
+        public bool AIControlled;
         public Team team;
         public Nationality nationality;
         public string name;
