@@ -1692,16 +1692,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04fe2290d7deaf541a6c568b15db304f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _raceNumberColorAlpha: 0.45
   _canvasGroup: {fileID: 4182913167844052371}
   _driver1PositionText: {fileID: 338831956413947418}
   _driver1NameText: {fileID: 8869804998710274634}
   _driver1NumberText: {fileID: 5072899885461121026}
+  _driver1Outline: {fileID: 1168150061606856182}
   _driver1TeamImage: {fileID: 1892373075006083961}
   _driver1PortraitImage: {fileID: 7443407802607350414}
   _driver1TeamStripeImage: {fileID: 29421970887856059}
   _driver2PositionText: {fileID: 3505861207595854057}
   _driver2NameText: {fileID: 8646833144773336220}
   _driver2NumberText: {fileID: 2869394774866707384}
+  _driver2Outline: {fileID: 7382170302493429091}
   _driver2TeamImage: {fileID: 70883901158364935}
   _driver2PortraitImage: {fileID: 5142561250360994852}
   _driver2TeamStripeImage: {fileID: 2321122600646075971}

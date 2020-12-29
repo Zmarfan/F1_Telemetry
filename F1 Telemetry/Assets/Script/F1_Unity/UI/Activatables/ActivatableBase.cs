@@ -6,6 +6,10 @@ namespace F1_Unity
 {
     public abstract class ActivatableBase : MonoBehaviour
     {
+        [Header("Settings")]
+
+        [SerializeField, Range(0.0f, 1.0f)] float _raceNumberColorAlpha = 0.45f;
+
         [Header("Drop")]
 
         [SerializeField] protected CanvasGroup _canvasGroup;
@@ -15,6 +19,7 @@ namespace F1_Unity
         [SerializeField] protected Text _driver1PositionText;
         [SerializeField] protected Text _driver1NameText;
         [SerializeField] protected Text _driver1NumberText;
+        [SerializeField] protected Shadow _driver1Outline;
         [SerializeField] protected Image _driver1TeamImage;
         [SerializeField] protected Image _driver1PortraitImage;
         [SerializeField] protected Image _driver1TeamStripeImage;
@@ -24,6 +29,7 @@ namespace F1_Unity
         [SerializeField] protected Text _driver2PositionText;
         [SerializeField] protected Text _driver2NameText;
         [SerializeField] protected Text _driver2NumberText;
+        [SerializeField] protected Shadow _driver2Outline;
         [SerializeField] protected Image _driver2TeamImage;
         [SerializeField] protected Image _driver2PortraitImage;
         [SerializeField] protected Image _driver2TeamStripeImage;
@@ -93,6 +99,7 @@ namespace F1_Unity
             _driver1TeamImage.sprite = GameManager.ParticipantManager.GetTeamSprite(d1Data.ParticipantData.team);
             _driver1PortraitImage.sprite = GameManager.ParticipantManager.GetPortraitFromNumber(d1Data.RaceNumber);
             _driver1TeamStripeImage.color = GameManager.F1Utility.GetColorByTeam(d1Data.ParticipantData.team);
+            SetRaceNumberColor(d1Data, _driver1Outline);
 
             _driver2PositionText.text = d2Data.LapData.carPosition.ToString();
             _driver2NameText.text = GameManager.ParticipantManager.GetNameFromNumber(d2Data.RaceNumber).ToUpper();
@@ -100,6 +107,19 @@ namespace F1_Unity
             _driver2TeamImage.sprite = GameManager.ParticipantManager.GetTeamSprite(d2Data.ParticipantData.team);
             _driver2PortraitImage.sprite = GameManager.ParticipantManager.GetPortraitFromNumber(d2Data.RaceNumber);
             _driver2TeamStripeImage.color = GameManager.F1Utility.GetColorByTeam(d2Data.ParticipantData.team);
+            SetRaceNumberColor(d2Data, _driver2Outline);
+        }
+
+        /// <summary>
+        /// Sets the color for racing number
+        /// </summary>
+        /// <param name="driverData">Data for this driver</param>
+        /// <param name="numberOutline">The outline component to set color</param>
+        void SetRaceNumberColor(DriverData driverData, Shadow numberOutline)
+        {
+            Color color = GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team);
+            color.a = _raceNumberColorAlpha;
+            numberOutline.effectColor = color;
         }
     }
 }
