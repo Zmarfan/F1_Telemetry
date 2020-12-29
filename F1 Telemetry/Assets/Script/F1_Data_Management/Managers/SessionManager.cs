@@ -7,6 +7,13 @@
     {
         public bool ReadyToReadFrom { get; private set; } = false;
         Session SessionData { get; set; }
+        //Used to send out event when session has changed
+        EventManager _eventManager;
+
+        public SessionManager(EventManager eventManager)
+        {
+            _eventManager = eventManager;
+        }
 
         /// <summary>
         /// Returns a copy of latest saved Session Data
@@ -59,6 +66,10 @@
         public void UpdateSessionData(SessionPacket sessionPacket)
         {
             ReadyToReadFrom = true;
+            //If the session has changed since last update -> invoke event
+            SessionType lastSessionType = SessionData.SessionType;
+            if (lastSessionType != sessionPacket.SessionType)
+                _eventManager.InvokeSessionChangeEvent(sessionPacket.SessionType);
 
             Session newSessionData = new Session();
             newSessionData.Weather = sessionPacket.Weather;

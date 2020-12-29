@@ -21,7 +21,7 @@ namespace F1_Data_Management
         /// </summary>
         public int ActiveDrivers { get { return _participants.ActiveDrivers; } }
         /// <summary>
-        /// Only read data when it's actually there
+        /// Indicator if all data in F1Info instance is valid. Each getter of data checks individually so no need for this other than debugging.
         /// </summary>
         public bool ReadyToReadFrom { get { return _participants.ReadyToReadFrom && _sessionManager.ReadyToReadFrom; } }
         /// <summary>
@@ -31,10 +31,10 @@ namespace F1_Data_Management
 
         public F1Info(int port = 20777)
         {
-            _sessionManager = new SessionManager();
             _lobbyInfoManager = new LobbyInfoManager();
             _eventManager = new EventManager();
             _participants = new Participants();
+            _sessionManager = new SessionManager(_eventManager);
             _packetManager = new PacketManager(_participants, _eventManager, _sessionManager, _lobbyInfoManager);
             _udpReceiver = new UdpReceiver(_packetManager, port);
         }
@@ -130,6 +130,16 @@ namespace F1_Data_Management
             return _participants.ReadCarData(sessionData.SpectatorCarIndex, out validData);
         }
         #region Events
+
+        /// <summary>
+        /// Called from SessionManager when session type has changed since last update.
+        /// </summary>
+        /// <param name="newSessionType">The new Session type when changing</param>
+        public event SessionChange SessionChange
+        {
+            add => _eventManager.SessionChange += value;
+            remove => _eventManager.SessionChange -= value;
+        }
 
         /// <summary>
         /// Invoked on race end -> holds final race result and info for each driver. Returns Packet which can be cast to FinalClassificationPacket.

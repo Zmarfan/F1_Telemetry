@@ -1,6 +1,7 @@
 ﻿namespace F1_Data_Management
 {
     public delegate void EventOccour(Packet packet);
+    public delegate void SessionChange(SessionType newSession);
 
     /// <summary>
     /// Holds events that trigger when certain events occour. Subscribe to them to react to those events.
@@ -8,6 +9,8 @@
     public class EventManager
     {
         #region Events
+        //Session Change
+        public event SessionChange SessionChange;
         //Final Classification
         /// <summary>
         /// Invoked on race end -> holds final race result and info for each driver. Returns Packet which can be cast to FinalClassificationPacket.
@@ -68,6 +71,15 @@
         public void InvokeFinalClassificationEvent(Packet packet)
         {
             FinalClassification?.Invoke(packet);
+        }
+
+        /// <summary>
+        /// Called from SessionManager when session type has changed since last update.
+        /// </summary>
+        /// <param name="newSessionType"></param>
+        public void InvokeSessionChangeEvent(SessionType newSessionType)
+        {
+            SessionChange?.Invoke(newSessionType);
         }
 
         /// <summary>
