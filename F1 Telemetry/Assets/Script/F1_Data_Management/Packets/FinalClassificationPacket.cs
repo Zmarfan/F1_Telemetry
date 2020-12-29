@@ -6,12 +6,15 @@
     /// </summary>
     public class FinalClassificationPacket : Packet
     {
+        //The max amount of tyre stints a driver can have in a race
+        static readonly byte TYRE_STINT_AMOUNT = 8;
+
         public byte NumberOfCars { get; private set; }
         public FinalClassificationData[] AllFinalClassificationData { get; private set; }
 
         public FinalClassificationPacket(byte[] data) : base(data) { }
 
-        public override void LoadBytes()
+        protected override void LoadBytes()
         {
             base.LoadBytes();
 
@@ -29,13 +32,14 @@
                 AllFinalClassificationData[i].points = manager.GetByte();
                 AllFinalClassificationData[i].numberOfPitStops = manager.GetByte();
                 AllFinalClassificationData[i].resultStatus = manager.GetEnumFromByte<ResultStatus>();
+
                 AllFinalClassificationData[i].bestLapTime = manager.GetFloat();
                 AllFinalClassificationData[i].totalRaceTime = manager.GetDouble();
                 AllFinalClassificationData[i].penaltiesTime = manager.GetByte();
                 AllFinalClassificationData[i].numberOfPenalties = manager.GetByte();
                 AllFinalClassificationData[i].numberOfTyreStints = manager.GetByte();
-                AllFinalClassificationData[i].tyreStintsActual = manager.GetEnumArrayFromBytes<ActualTyreCompound>(Wheel.WHEEL_COUNT);
-                AllFinalClassificationData[i].tyreStintsVisual = manager.GetEnumArrayFromBytes<VisualTyreCompound>(Wheel.WHEEL_COUNT);
+                AllFinalClassificationData[i].tyreStintsActual = manager.GetEnumArrayFromBytes<ActualTyreCompound>(TYRE_STINT_AMOUNT);
+                AllFinalClassificationData[i].tyreStintsVisual = manager.GetEnumArrayFromBytes<VisualTyreCompound>(TYRE_STINT_AMOUNT);
             }
         }
     }

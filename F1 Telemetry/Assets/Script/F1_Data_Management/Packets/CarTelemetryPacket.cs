@@ -20,7 +20,7 @@ namespace F1_Data_Management
 
         public CarTelemetryPacket(byte[] data) : base(data) { }
 
-        public override void LoadBytes()
+        protected override void LoadBytes()
         {
             base.LoadBytes();
 

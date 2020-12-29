@@ -14,7 +14,7 @@
         /// <summary>
         /// Loads in Header data and Participant data, must run before working on data
         /// </summary>
-        public override void LoadBytes()
+        protected override void LoadBytes()
         {
             base.LoadBytes();
             ByteManager manager = new ByteManager(Data, MOVE_PAST_HEADER_INDEX, "Participation packet");

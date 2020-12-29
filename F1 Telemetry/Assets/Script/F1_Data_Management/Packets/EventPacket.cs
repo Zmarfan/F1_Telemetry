@@ -27,7 +27,7 @@
 
         public EventPacket(byte[] data) : base(data) { }
 
-        public override void LoadBytes()
+        protected override void LoadBytes()
         {
             base.LoadBytes();
             //This has already been done with this data but is done again to keep structure across all packets

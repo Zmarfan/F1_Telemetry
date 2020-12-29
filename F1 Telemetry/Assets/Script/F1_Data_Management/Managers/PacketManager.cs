@@ -58,7 +58,6 @@ namespace F1_Data_Management
         void ReadPacket(byte[] packetData)
         {
             Packet packet = GetPacketType(packetData);
-            packet.LoadBytes();
 
             //Move time forward not backward
             if (packet.SessionTime > SessionTime)

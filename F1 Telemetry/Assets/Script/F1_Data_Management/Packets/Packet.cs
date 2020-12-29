@@ -51,6 +51,7 @@
         public Packet(byte[] data)
         {
             this.Data = data;
+            LoadBytes();
         }
 
         /// <summary>
@@ -66,7 +67,7 @@
         /// Reads data and set variables, can be overriden by inherited classes (other packet types).
         /// Base packet class read Packet Header only
         /// </summary>
-        public virtual void LoadBytes()
+        protected virtual void LoadBytes()
         {
             ByteManager manager = new ByteManager(Data, 0, "Header packet");
 
