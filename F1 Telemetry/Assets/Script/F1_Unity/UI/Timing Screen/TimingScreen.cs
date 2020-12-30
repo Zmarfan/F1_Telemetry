@@ -216,8 +216,13 @@ namespace F1_Unity
                 _driverTemplates[index].SetFastestLap(driverData);
                 //Update stats for driver
                 _driverTemplates[index].UpdateStats(driverData);
+
+                //Lock timing updates if car has finished with added penalties
+                if (driverData.LapData.resultStatus != ResultStatus.Finished)
+                    UpdateDriverTimingToLeader(leaderData, sessionData, driverData);
+
+                //Positioning can change after finish -> penalty added
                 Positioning(driverData);
-                UpdateDriverTimingToLeader(leaderData, sessionData, driverData);
             }
 
             //Set time text for each template and calculate interval
@@ -325,7 +330,11 @@ namespace F1_Unity
 
             //This is the leader!
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
+            {
+                //It is leader so delta to itself is 0
+                _driverTemplates[index].SetDeltaToLeader(0);
                 _driverTemplates[index].SetTimingState(DriverTimeState.Leader);
+            }
             else if (IsLapped(leaderLapCompletion, lapCompletion, leaderData, driverData, out int amountOfLaps))
             {
                 //It's lapped and in Leader mode -> show laps

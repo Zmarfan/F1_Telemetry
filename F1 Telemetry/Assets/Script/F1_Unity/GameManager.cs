@@ -85,12 +85,6 @@ namespace F1_Unity
         void StartListeningOnGame()
         {
             F1Info.Start();
-            F1Info.SessionChange += Test;
-        }
-
-        void Test(SessionType type)
-        {
-            Debug.Log(type);
         }
 
         /// <summary>

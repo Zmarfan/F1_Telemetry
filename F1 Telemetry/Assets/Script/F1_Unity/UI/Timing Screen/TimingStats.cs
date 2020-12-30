@@ -28,7 +28,6 @@ namespace F1_Unity
         [SerializeField] ContentSizeFitter _holderContentSizeFitter;
         [SerializeField] Image _positionChangedImage;
         [SerializeField] Image _tyreImage;
-        [SerializeField] Image _penaltyImage;
         [SerializeField] Text _positionChangedText;
         [SerializeField] Text _tyreLapText;
         [SerializeField] Text _stopText;
@@ -46,6 +45,7 @@ namespace F1_Unity
         [SerializeField] GameObject _penaltyAmountObj;
         [SerializeField] GameObject _penaltyObj;
         [SerializeField] GameObject _stopGoObj;
+        [SerializeField] GameObject _finishedFlagObj;
 
         //Used to keep track of when an update is needed -> no need to poll
         int _lastPositionChanged = int.MinValue;
@@ -55,6 +55,7 @@ namespace F1_Unity
         int _lastTyreLife = int.MinValue;
         int _lastAmountOfStops = int.MinValue;
         bool _hasDriveThrough = false;
+        bool _hasFinished = false;
 
         /// <summary>
         /// Changes timing state to show specific information
@@ -103,10 +104,15 @@ namespace F1_Unity
         public void UpdateValues(DriverData driverData)
         {
             bool changed = false;
-            UpdatePositionChange(driverData, ref changed);
-            UpdateTyre(driverData, ref changed);
-            UpdateStop(driverData, ref changed);
-            UpdatePenalty(driverData, ref changed);
+            if (driverData.LapData.resultStatus == ResultStatus.Finished)
+                SetFinished(ref changed);
+            else
+            {
+                UpdatePositionChange(driverData, ref changed);
+                UpdateTyre(driverData, ref changed);
+                UpdateStop(driverData, ref changed);
+                UpdatePenalty(driverData, ref changed);
+            }
 
             //Align everything correctly if changes have been made
             if (changed)
@@ -114,6 +120,22 @@ namespace F1_Unity
         }
 
         #region Update Functions
+
+        /// <summary>
+        /// Turn off all stats and shows finish flag
+        /// </summary>
+        /// <param name="changed">If a change from last update was made changed is true</param>
+        void SetFinished(ref bool changed)
+        {
+            if (!_hasFinished)
+            {
+                changed = true;
+                //Turn off all stats and turn on finish flag
+                for (int i = 0; i < _allStatsObjects.Count; i++)
+                    _allStatsObjects[i].SetActive(false);
+                _finishedFlagObj.SetActive(true);
+            }
+        }
 
         /// <summary>
         /// Updates so all children in horizontal layout group are padded correctly
@@ -213,7 +235,13 @@ namespace F1_Unity
 
             _penaltyObj.SetActive(totalPenalties != 0);
             //Set investigation symbol for drivers with drive through or stop go penalties
-            _stopGoObj.SetActive(stopGoPenalties != 0 || driveThrough);
+            //TEST 
+            if (stopGoPenalties > 0 || driveThrough)
+            {
+                Debug.Log("saved stop go: " + _lastStopGoPenalties + " current stop go: " + stopGoPenalties + ", saved drive through: " + _hasDriveThrough + " current drive through: " + driveThrough);
+            }
+            //TEST
+            _stopGoObj.SetActive(stopGoPenalties > 0 || driveThrough);
             if (totalPenalties > 0)
                 _penaltyText.text = totalPenalties.ToString() + _penaltyEndingString;
             else
@@ -221,6 +249,7 @@ namespace F1_Unity
 
             _lastAmountOfPenalties = totalPenalties;
             _lastStopGoPenalties = stopGoPenalties;
+            _hasDriveThrough = driveThrough;
         }
 
         #endregion

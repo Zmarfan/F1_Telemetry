@@ -39,10 +39,6 @@ namespace F1_Unity
         /// </summary>
         protected void Init()
         {
-            //This should never be possible but here as a safe guard
-            if (!GameManager.F1Info.ReadyToReadFrom)
-                End();
-
             //Correct position relative to anchor
             GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
         }
@@ -52,6 +48,11 @@ namespace F1_Unity
         /// </summary>
         public virtual void Begin()
         {
+            //This should never be possible but here as a safe guard 
+            //-> Can't be called on init since eventmanager hasn't subscribed to end event yet
+            if (!GameManager.F1Info.ReadyToReadFrom)
+                End();
+
             _eventStarted = true;
         }
 

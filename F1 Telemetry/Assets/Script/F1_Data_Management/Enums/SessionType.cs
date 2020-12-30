@@ -11,7 +11,7 @@
         Q2,
         Q3,
         Short_Q,
-        OSQ,
+        One_Shot_Q,
         Race,
         Race2,
         Time_Trial
