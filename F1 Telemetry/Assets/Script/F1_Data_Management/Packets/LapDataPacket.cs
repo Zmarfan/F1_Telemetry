@@ -65,6 +65,7 @@
     /// <summary>
     /// Holds LapData for one driver in the race
     /// </summary>
+    [System.Serializable]
     public struct LapData
     {
         /// <summary>

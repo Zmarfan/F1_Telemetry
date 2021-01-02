@@ -87,6 +87,7 @@
     /// <summary>
     /// Holds CarMotionData for one driver in the race
     /// </summary>
+    [System.Serializable]
     public struct CarMotionData
     {
         public float worldPositionX;

@@ -62,6 +62,7 @@
     /// Holds CarStatusData for one driver in the race.
     /// Restricted variables are not accessable if Player hasn't allowed so.
     /// </summary>
+    [System.Serializable]
     public struct CarStatusData
     {
         public TractionControlType tractionControl;

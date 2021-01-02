@@ -56,6 +56,7 @@ namespace F1_Data_Management
     /// <summary>
     /// Holds CarTelemetryData for one driver in the race.
     /// </summary>
+    [System.Serializable]
     public struct CarTelemetryData
     {
         /// <summary>

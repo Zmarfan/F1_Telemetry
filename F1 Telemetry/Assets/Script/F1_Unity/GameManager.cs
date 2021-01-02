@@ -53,11 +53,21 @@ namespace F1_Unity
         private void OnEnable()
         {
             RawInputSystem.BeginListening();
+            F1Info.SessionStartedEvent += SessionStarted;
         }
 
         private void OnDisable()
         {
             RawInputSystem.StopListening();
+            F1Info.SessionStartedEvent -= SessionStarted;
+        }
+
+        /// <summary>
+        /// Called when a session is started -> clear out old data
+        /// </summary>
+        void SessionStarted(Packet packet)
+        {
+            LapManager.Reset();
         }
 
         private void OnApplicationQuit()

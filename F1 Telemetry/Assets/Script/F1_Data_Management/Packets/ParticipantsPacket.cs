@@ -43,6 +43,7 @@
     /// <summary>
     /// Holds ParticipantData for one driver in the race
     /// </summary>
+    [System.Serializable]
     public struct ParticipantData
     {
         public ControlledStatus AIControlled;

@@ -59,9 +59,7 @@ namespace F1_Data_Management
         {
             Packet packet = GetPacketType(packetData);
 
-            //Move time forward not backward
-            if (packet.SessionTime > SessionTime)
-                SessionTime = packet.SessionTime;
+            SessionTime = packet.SessionTime;
 
             PlayerCarIndex = packet.PlayerCarIndex;
             SecondaryPlayerCarIndex = packet.SecondaryPlayerCarIndex;

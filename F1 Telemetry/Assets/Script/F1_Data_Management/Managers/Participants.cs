@@ -153,6 +153,7 @@ namespace F1_Data_Management
     /// <summary>
     /// Holds all data for one driver.
     /// </summary>
+    [System.Serializable]
     public struct DriverData
     {
         /// <summary>

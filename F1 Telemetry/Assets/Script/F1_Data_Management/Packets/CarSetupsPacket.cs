@@ -52,6 +52,7 @@
     /// Holds CarSetup for one driver in the race.
     /// Blank values for multiplayer cars.
     /// </summary>
+    [System.Serializable]
     public struct CarSetup
     {
         public byte frontWing;

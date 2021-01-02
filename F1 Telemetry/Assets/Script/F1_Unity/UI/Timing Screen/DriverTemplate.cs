@@ -244,9 +244,9 @@ namespace F1_Unity
         /// <summary>
         /// Updates visual stats for this driver
         /// </summary>
-        public void UpdateStats(DriverData driverData)
+        public void UpdateStats(DriverData driverData, TimingStats.TimingStatsState currentState)
         {
-            _timingStats.UpdateValues(driverData);
+            _timingStats.UpdateValues(driverData, currentState);
         }
 
         /// <summary>

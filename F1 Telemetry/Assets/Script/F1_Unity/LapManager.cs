@@ -32,6 +32,11 @@ namespace F1_Unity
 
         private void Awake()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
             for (int i = 0; i < _storedDriverData.Length; i++)
                 _storedDriverData[i] = new StoredDriverData();
         }
@@ -244,6 +249,7 @@ namespace F1_Unity
         }
     }
 
+    [System.Serializable]
     public class StoredDriverData
     {
         List<StoredLapData> _lapDataList = new List<StoredLapData>();
@@ -351,6 +357,7 @@ namespace F1_Unity
     /// <summary>
     /// Holds data for one lap
     /// </summary>
+    [System.Serializable]
     public struct StoredLapData
     {
         /// <summary>
