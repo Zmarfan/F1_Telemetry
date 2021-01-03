@@ -16,6 +16,9 @@ namespace RawInput
         private const int WM_KEYUP = 0x0101;
         private const int WM_SYSKEYUP = 0x0105;
 
+        private const int SCARY_CRASH_NUMBER_0 = 202;
+        private const int SCARY_CRASH_NUMBER_1 = 216;
+
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
@@ -28,6 +31,9 @@ namespace RawInput
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string IpModuleName);
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr LoadLibrary(string lpFileName);
 
         public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr IParam);
 
@@ -87,11 +93,14 @@ namespace RawInput
         /// <returns>IntPtr for that hook</returns>
         private IntPtr SetHook(LowLevelKeyboardProc proc)
         {
-            using (Process currentProcess = Process.GetCurrentProcess())
-            using (ProcessModule currentModule = currentProcess.MainModule)
-            {
-                return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(currentModule.ModuleName), 0);
-            }
+            //using (Process currentProcess = Process.GetCurrentProcess())
+            //using (ProcessModule currentModule = currentProcess.MainModule)
+            //{
+            //    return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(currentModule.ModuleName), 0);
+            //}
+
+            IntPtr hInstance = LoadLibrary("User32");
+            return SetWindowsHookEx(WH_KEYBOARD_LL, proc, hInstance, 0);
         }
 
         /// <summary>
@@ -108,19 +117,25 @@ namespace RawInput
             {
                 //Convert data to correct virtual key code
                 int virtualKeyCode = Marshal.ReadInt32(IParam);
-
-                //Key Up
-                if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
+                //Avoid scary numbers that makes program crash. What are they? Who knows but they scare me. 
+                //Are there more out there? Are we doomed? Like probably but not sure what to do besides this. (:
+                if (!(virtualKeyCode == SCARY_CRASH_NUMBER_0 || virtualKeyCode == SCARY_CRASH_NUMBER_1))
                 {
-                    //Invoke outer event that keypressed happened with key data
-                    OnKeyUp?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
-                }
-                //Key Down
-                else if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
-                {
-                    //Invoke outer event that keypressed happened with key data
-                    OnKeyDown?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
-                }
+                    //Key Up
+                    if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
+                    {
+                        //Invoke outer event that keypressed happened with key data
+                        UnityEngine.Debug.Log("key up: " + (Key)virtualKeyCode);
+                        OnKeyUp?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
+                    }
+                    //Key Down
+                    else if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
+                    {
+                        UnityEngine.Debug.Log("key down: " + (Key)virtualKeyCode);
+                        //Invoke outer event that keypressed happened with key data
+                        OnKeyDown?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
+                    }
+                }  
             }
             //Pass along data to other hooks
             return CallNextHookEx(_hookID, nCode, wParam, IParam);
