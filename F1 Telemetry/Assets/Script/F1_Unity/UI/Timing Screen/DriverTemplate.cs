@@ -59,17 +59,11 @@ namespace F1_Unity
         public float DeltaToLeader { get; private set; }
         public float DeltaToCarInFront { get; private set; }
 
-        public string CurrentDelta
-        {
-            get
-            {
-                return _timeTextInterval.text;
-            }
-        }
+        public string CurrentDelta { get { return _timeTextInterval.text; } }
 
-        int _position = 0;         //The position of this template -> static never changes
-        Timer _overtakeColorTimer;         //Timer for how long the positionImage shall flash
-        Timer _colorTimer;         //Timer for how long the color after event should last
+        int _position = 0;           //The position of this template -> static never changes
+        Timer _overtakeColorTimer;   //Timer for how long the positionImage shall flash
+        Timer _colorTimer;           //Timer for how long the color after event should last
         bool _resetColor = false;
 
         private void Update()
