@@ -47,12 +47,21 @@
     public struct ParticipantData
     {
         public ControlledStatus AIControlled;
-        public byte driverID;                  //100 if player
+        /// <summary>
+        /// 100 if player
+        /// </summary>
+        public byte driverID;
         public Team team;
         public byte raceNumber;
         public Nationality nationality;
-        public string name;                    //last name for AI, Player for players, (not to be used, good for debugging though)
-        public bool publicTelemetry;           //true if it is public
+        /// <summary>
+        /// last name for AI, Player for players, (not to be used, good for debugging though)
+        /// </summary>
+        public string name;
+        /// <summary>
+        /// true if it is public -> Can't read !restricted! values if false
+        /// </summary>
+        public bool publicTelemetry;
         public int vehicleIndex;
 
         public static readonly int AMOUNT_OF_CHARS_IN_NAME = 48; //Amount of bytes to make up name in ParticipantData / Packet
