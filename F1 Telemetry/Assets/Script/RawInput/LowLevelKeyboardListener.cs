@@ -125,17 +125,19 @@ namespace RawInput
                     if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
                     {
                         //Invoke outer event that keypressed happened with key data
-                        UnityEngine.Debug.Log("key up: " + (Key)virtualKeyCode);
                         OnKeyUp?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
                     }
                     //Key Down
                     else if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
                     {
-                        UnityEngine.Debug.Log("key down: " + (Key)virtualKeyCode);
                         //Invoke outer event that keypressed happened with key data
                         OnKeyDown?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
                     }
-                }  
+                }
+                //COMMENT OUT THIS LATER TESTING ONLY
+                else
+                    UnityEngine.Debug.Log("Illegal input: " + virtualKeyCode);
+                //COMMENT OUT THIS LATER TESTING ONLY
             }
             //Pass along data to other hooks
             return CallNextHookEx(_hookID, nCode, wParam, IParam);
