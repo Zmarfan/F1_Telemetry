@@ -57,12 +57,18 @@ namespace F1_Unity
         bool _hasDriveThrough = false;
         bool _hasFinished = false;
 
+        bool _out = false;
+
         /// <summary>
         /// Changes timing state to show specific information
         /// </summary>
         /// <param name="state">What state to go to</param>
         public void ChangeState(TimingStatsState state)
         {
+            //Don't show any stats if the driver is out
+            if (_out)
+                state = TimingStatsState.None;
+
             switch (state)
             {
                 case TimingStatsState.None:             { SetObjectState(new List<GameObject>());                                                       break; }
@@ -86,7 +92,7 @@ namespace F1_Unity
             for (int i = 0; i < _allStatsObjects.Count; i++)
             {
                 //All but penalty
-                if (_allStatsObjects[i] != _penaltyObj && _allStatsObjects[i] != _stopGoObj)
+                if (_out || (_allStatsObjects[i] != _penaltyObj && _allStatsObjects[i] != _stopGoObj))
                 {
                     //Activate activeObjects and set all else inactive
                     if (activeObjects.Any(item => item == _allStatsObjects[i]))
@@ -101,8 +107,28 @@ namespace F1_Unity
         /// <summary>
         /// Called from parent to update all the variables
         /// </summary>
-        public void UpdateValues(DriverData driverData)
+        public void UpdateValues(DriverData driverData, TimingStatsState currentState)
         {
+            //Driver is out
+            if (driverData.LapData.resultStatus == ResultStatus.Retired || driverData.LapData.resultStatus == ResultStatus.Disqualified)
+            {
+                //Only do this once
+                if (!_out)
+                {
+                    //Set penalties to min value to force penalty image update if needed when going from out to in
+                    _lastAmountOfPenalties = int.MinValue;
+                    ChangeState(TimingStatsState.None);
+                    _out = true;
+                }
+                return;
+            }
+            //DriverTemplate was out -> turn back
+            if (_out)
+            {
+                _out = false;
+                ChangeState(currentState);
+            }
+
             bool changed = false;
             if (driverData.LapData.resultStatus == ResultStatus.Finished)
                 SetFinished(ref changed);
@@ -180,7 +206,11 @@ namespace F1_Unity
             _positionChangedImage.sprite = sprite;
             _positionChangedImage.color = color;
             _positionChangedText.color = color;
-            _positionChangedText.text = Mathf.Abs(positionChange).ToString();
+            //single digit lead with space
+            string showNumber = Mathf.Abs(positionChange).ToString();
+            if (showNumber.Length == 1)
+                showNumber += " ";
+            _positionChangedText.text = showNumber;
         }
 
         /// <summary>
@@ -195,7 +225,13 @@ namespace F1_Unity
 
             _tyreImage.sprite = GameManager.ParticipantManager.GetVisualTyreCompoundSprite(driverData.StatusData.visualTyreCompound);
             if (driverData.ParticipantData.publicTelemetry)
-                _tyreLapText.text = driverData.StatusData.tyreAgeInLaps.ToString() + _tyreLapEndingString;
+            {
+                //Force to be 2 char long -> align better
+                string tyreLife = driverData.StatusData.tyreAgeInLaps.ToString();
+                if (tyreLife.Length == 1)
+                    tyreLife += " ";
+                _tyreLapText.text = tyreLife + _tyreLapEndingString;
+            }
             else
                 _tyreLapText.text = _tyreLapUnavailableDataString + _tyreLapEndingString;
 
@@ -235,12 +271,16 @@ namespace F1_Unity
 
             _penaltyObj.SetActive(totalPenalties != 0);
             //Set investigation symbol for drivers with drive through or stop go penalties
+
+
             //TEST 
             if (stopGoPenalties > 0 || driveThrough)
             {
                 Debug.Log("saved stop go: " + _lastStopGoPenalties + " current stop go: " + stopGoPenalties + ", saved drive through: " + _hasDriveThrough + " current drive through: " + driveThrough);
             }
             //TEST
+
+
             _stopGoObj.SetActive(stopGoPenalties > 0 || driveThrough);
             if (totalPenalties > 0)
                 _penaltyText.text = totalPenalties.ToString() + _penaltyEndingString;

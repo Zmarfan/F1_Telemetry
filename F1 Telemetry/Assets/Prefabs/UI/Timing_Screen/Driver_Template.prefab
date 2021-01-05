@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb83623fcf2e1fd4f86530591333a4c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tyreLapUnavailableDataString: '?'
+  _tyreLapUnavailableDataString: ' ?'
   _tyreLapEndingString: ' Laps'
   _stopEndingString: ' Stop'
   _penaltyEndingString: s
