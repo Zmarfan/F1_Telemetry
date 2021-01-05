@@ -10,6 +10,11 @@ namespace F1_Unity
     {
         [Header("Settings")]
 
+        [SerializeField] Gradient _intervalColorGradient;
+        /// <summary>
+        /// How close the car must be to car in front to go into gradient for interval text color
+        /// </summary>
+        [SerializeField] float _intervalColorMaxDistance;
         [SerializeField] AnimationCurve _changeBackColorCurve;
         [SerializeField] float _outAlpha = 0.75f;
         [SerializeField] Vector3 _driverHolderInPosition;
@@ -72,6 +77,32 @@ namespace F1_Unity
             {
                 UpdateOvertakeColor();
                 UpdateColor();
+            }
+        }
+
+        /// <summary>
+        /// Sets the color of interval text to point on gradient based on how close to car ahead it is
+        /// </summary>
+        void UpdateTimingColor()
+        {
+            //Set color for text while pitting
+            if (TimeState == DriverTimeState.Pit || TimeState == DriverTimeState.Pit_Area)
+            {
+                _timeTextLeader.color = _pittingColor;
+                _timeTextInterval.color = _pittingColor;
+            }
+            //Not leader and not pitting
+            else if (_position > 1 && !OutOfSession)
+            {
+                float point = 1 - Mathf.Clamp(DeltaToCarInFront / _intervalColorMaxDistance, 0, _intervalColorMaxDistance);
+                _timeTextInterval.color = _intervalColorGradient.Evaluate(point);
+                _timeTextLeader.color = _intervalColorGradient.Evaluate(point);
+            }
+            //Default color for leader or DNF/DSQ
+            else
+            {
+                _timeTextInterval.color = _intervalColorGradient.Evaluate(0);
+                _timeTextLeader.color = _intervalColorGradient.Evaluate(0);
             }
         }
 
@@ -251,21 +282,10 @@ namespace F1_Unity
         /// <param name="laps">laps lapped compared with leader</param>
         public void SetTiming()
         {
+            UpdateTimingColor();
+
             if (OutOfSession)
                 return;
-
-            //Set color for text while pitting
-            if (TimeState == DriverTimeState.Pit || TimeState == DriverTimeState.Pit_Area)
-            {
-                _timeTextLeader.color = _pittingColor;
-                _timeTextInterval.color = _pittingColor;
-            }
-            //Set color for text while timing
-            else
-            {
-                _timeTextLeader.color = _timingColor;
-                _timeTextInterval.color = _timingColor;
-            }
 
             switch (TimeState)
             {
