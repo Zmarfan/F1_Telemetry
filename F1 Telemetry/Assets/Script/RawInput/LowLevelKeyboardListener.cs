@@ -117,9 +117,8 @@ namespace RawInput
             {
                 //Convert data to correct virtual key code
                 int virtualKeyCode = Marshal.ReadInt32(IParam);
-                //Avoid scary numbers that makes program crash. What are they? Who knows but they scare me. 
-                //Are there more out there? Are we doomed? Like probably but not sure what to do besides this. (:
-                if (!(virtualKeyCode == SCARY_CRASH_NUMBER_0 || virtualKeyCode == SCARY_CRASH_NUMBER_1))
+                //Avoid undefined key codes 
+                if (!int.TryParse(((Key)virtualKeyCode).ToString(), out int test))
                 {
                     //Key Up
                     if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
