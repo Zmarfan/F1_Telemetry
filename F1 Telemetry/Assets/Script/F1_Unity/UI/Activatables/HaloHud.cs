@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using F1_Data_Management;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace F1_Unity
 {
@@ -14,6 +15,12 @@ namespace F1_Unity
 
         [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField] DriverTemplate[] _driverTemplates;
+
+        [Header("Mesh")]
+
+        [SerializeField] Transform _meshTransform;
+        [SerializeField] Vector3 _defaultHaloHudPosition;
+        [SerializeField] List<TeamPosition> _teamPositionsList;
 
         [Header("Display")]
 
@@ -59,9 +66,15 @@ namespace F1_Unity
         [SerializeField] Text _driverNameText;
 
         Timer _gForceTimer;
+        Team _currentTeam;
+        Dictionary<Team, Vector3> _teamToPositions = new Dictionary<Team, Vector3>();
 
         private void Awake()
         {
+            //Set team position dictionary
+            for (int i = 0; i < _teamPositionsList.Count; i++)
+                _teamToPositions.Add(_teamPositionsList[i].team, _teamPositionsList[i].position);
+
             _gForceTimer = new Timer(_gForceUpdateRate);
         }
 
@@ -84,6 +97,7 @@ namespace F1_Unity
                 _gForceTimer.Time += Time.deltaTime;
 
                 Show(true);
+                UpdatePositionBasedOnTeam(driverData);
                 UpdateSliders(driverData);
                 UpdateDisplay(driverData);
                 UpdateTiming(driverData);
@@ -92,6 +106,24 @@ namespace F1_Unity
             }
             else
                 Show(false);
+        }
+
+        /// <summary>
+        /// Tweak the positioning of the halohud to better match the car based on what team it is
+        /// </summary>
+        /// <param name=""></param>
+        void UpdatePositionBasedOnTeam(DriverData driverData)
+        {
+            Team team = driverData.ParticipantData.team;
+            //It is not set for current driver -> set position
+            if (_currentTeam != team)
+            {
+                _currentTeam = team;
+                if (_teamToPositions.ContainsKey(team))
+                    _meshTransform.position = _teamToPositions[team];
+                else
+                    _meshTransform.position = _defaultHaloHudPosition;
+            }
         }
 
         /// <summary>
@@ -229,6 +261,16 @@ namespace F1_Unity
             public GameObject level0;
             public GameObject level1;
             public GameObject level2;
+        }
+
+        /// <summary>
+        /// Maps a team with a certain position for the halo hud mesh
+        /// </summary>
+        [System.Serializable]
+        public struct TeamPosition
+        {
+            public Team team;
+            public Vector3 position;
         }
     }
 }
