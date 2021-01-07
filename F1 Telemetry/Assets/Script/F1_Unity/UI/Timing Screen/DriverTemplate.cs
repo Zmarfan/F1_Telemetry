@@ -86,19 +86,19 @@ namespace F1_Unity
         void UpdateTimingColor()
         {
             //Set color for text while pitting
-            if (TimeState == DriverTimeState.Pit || TimeState == DriverTimeState.Pit_Area)
+            if ((TimeState == DriverTimeState.Pit || TimeState == DriverTimeState.Pit_Area) && !OutOfSession)
             {
                 _timeTextLeader.color = _pittingColor;
                 _timeTextInterval.color = _pittingColor;
             }
-            //Not leader and not pitting
-            else if (_position > 1 && !OutOfSession)
+            //Not leader, not pitting, not lapped
+            else if (_position > 1 && !OutOfSession && TimeState != DriverTimeState.Lapped && TimeState != DriverTimeState.Starting)
             {
                 float point = 1 - Mathf.Clamp(DeltaToCarInFront / _intervalColorMaxDistance, 0, _intervalColorMaxDistance);
                 _timeTextInterval.color = _intervalColorGradient.Evaluate(point);
                 _timeTextLeader.color = _intervalColorGradient.Evaluate(point);
             }
-            //Default color for leader or DNF/DSQ
+            //Default color for leader or DNF/DSQ or lapped
             else
             {
                 _timeTextInterval.color = _intervalColorGradient.Evaluate(0);
