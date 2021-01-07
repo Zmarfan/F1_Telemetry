@@ -216,14 +216,6 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Activate/Deactivate fastest lap symbol next to player in timestandings
-        /// </summary>
-        public void SetFastestLap(bool state)
-        {
-            _fastestLap.gameObject.SetActive(state);
-        }
-
-        /// <summary>
         /// Called when a overtake just happened. Depending on if driver went up or down the color differ
         /// </summary>
         /// <param name="oldPosition"></param>
@@ -242,7 +234,10 @@ namespace F1_Unity
         {
             //Set color and lap value for fastest lap for this driver
             _fastestLapText.text = F1Utility.GetDeltaString(driverData.LapData.bestLapTime);
-            _fastestLapText.color = GameManager.LapManager.FastestLapTime == driverData.LapData.bestLapTime ? _fastestLapColor : _timingColor;
+            bool isFastestOverall = GameManager.LapManager.FastestLapTime == driverData.LapData.bestLapTime;
+
+            _fastestLapText.color = isFastestOverall ? _fastestLapColor : _timingColor;
+            _fastestLap.gameObject.SetActive(isFastestOverall);
         }
 
         /// <summary>

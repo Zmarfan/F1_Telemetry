@@ -24,10 +24,6 @@ namespace F1_Unity
         Dictionary<byte, int> _driverLastTimeSpot;
         Dictionary<byte, DriverFinishData> _deltaToLeaderFinish = new Dictionary<byte, DriverFinishData>();
 
-        //TEST
-        List<DriverFinishData> _testDeltaToLeaderFinishData = new List<DriverFinishData>();
-        //TEST
-
         TimingStation[] _timingData;
         int _leaderVehicleIndex;
         int _lastLeaderVehicleIndex = int.MinValue;
@@ -243,6 +239,7 @@ namespace F1_Unity
             //Set specific driver info to template
             _driverTemplates[index].SetDriverData(driverData);
             _driverTemplates[index].SetFastestLap(driverData);
+
             //Update stats for driver
             _driverTemplates[index].UpdateStats(driverData, _timingStatsState);
 
@@ -337,12 +334,6 @@ namespace F1_Unity
                         oldLeaderFinishData.TimeToLeader = deltaToLeader;
                         _deltaToLeaderFinish[oldLeaderData.ID] = oldLeaderFinishData;
                         _driverTemplates[GetTemplateIndex(oldLeaderData)].SetDeltaToLeader(oldLeaderFinishData.IntervalToLeader);
-
-                        //TESTING
-                        _testDeltaToLeaderFinishData.Add(oldLeaderFinishData);
-                        Debug.Log("Changed leader!");
-                        Debug.Log("Delta to new leader: " + oldLeaderFinishData.IntervalToLeader);
-                        //TESTING
                     }
                     //The new leaders finish data
                     _deltaToLeaderFinish.Add(driverData.ID, new DriverFinishData()
@@ -352,10 +343,6 @@ namespace F1_Unity
                         Penalties = driverData.LapData.totalPenalties,
                         VehicleIndex = driverData.VehicleIndex
                     });
-
-                    //TESTING
-                    _testDeltaToLeaderFinishData.Add(_deltaToLeaderFinish[driverData.ID]);
-                    //TESTING
 
                     _lastLeaderVehicleIndex = driverData.VehicleIndex;
                     UpdateAllFinishIntervalAfterLeader(_deltaToLeaderFinish[driverData.ID]); //If this is a new leader it updates delta after this
@@ -372,9 +359,6 @@ namespace F1_Unity
                         Penalties = driverData.LapData.totalPenalties,
                         VehicleIndex = driverData.VehicleIndex
                     });
-                    //TEST
-                    _testDeltaToLeaderFinishData.Add(_deltaToLeaderFinish[driverData.ID]);
-                    //TEST
                 }
 
                 //Set the correct interval to leader
@@ -400,9 +384,6 @@ namespace F1_Unity
                     DriverData driverData = GameManager.F1Info.ReadCarData(data.VehicleIndex, out bool status);
                     _deltaToLeaderFinish[driverData.ID] = data;
                     _driverTemplates[GetTemplateIndex(driverData)].SetDeltaToLeader(data.IntervalToLeader);
-                    //TEST
-                    Debug.Log("Fix interval: " + i + ": " + GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber));
-                    //TEST
                 }
             }
         }

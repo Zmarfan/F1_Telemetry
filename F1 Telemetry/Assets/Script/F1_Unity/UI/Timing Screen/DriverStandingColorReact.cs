@@ -31,13 +31,7 @@ namespace F1_Unity
             FastestLapEventPacket fastestPacket = (FastestLapEventPacket)packet;
             DriverData driverData = GameManager.F1Info.ReadCarData(fastestPacket.VehicleIndex, out bool valid);
             if (valid)
-            {
-                for (int i = 0; i < _driverTemplates.Length; i++)
-                    _driverTemplates[i].SetFastestLap(false);
-
-                _driverTemplates[driverData.LapData.carPosition - 1].SetFastestLap(true);
                 _driverTemplates[driverData.LapData.carPosition - 1].SetColor(_fastestLapColor);
-            }
         }
 
         /// <summary>
