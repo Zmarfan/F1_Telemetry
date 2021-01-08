@@ -15,6 +15,11 @@ namespace RawInput
     public class RawInputSystem
     {
         /// <summary>
+        /// Specifies if input is locked, toggled by pressing lockKey (lockKey is never locked)
+        /// </summary>
+        public bool InputLock { get; private set; }
+
+        /// <summary>
         /// The listeners that listens to low level input events
         /// </summary>
         LowLevelKeyboardListener _inputListener;
@@ -22,8 +27,15 @@ namespace RawInput
         //Maps Keys to KeyEventInstances that trigger events for each key -> subscribe to keys you want
         Dictionary<Key, KeyEventInstance> _keyStatus = new Dictionary<Key, KeyEventInstance>();
 
-        public RawInputSystem()
+        KeyEventInstance _lockKeyInstance;
+
+        /// <summary>
+        /// Creates new instance of RawInputSystem
+        /// </summary>
+        /// <param name="lockKey">The key that locks all input except this key when pressed (toggle). This key can't hold other inputs</param>
+        public RawInputSystem(Key lockKey)
         {
+            _lockKeyInstance = new KeyEventInstance(lockKey);
             Init();
         }
 
@@ -207,11 +219,18 @@ namespace RawInput
         /// <param name="argument">The key data</param>
         void KeyDown(object sender, KeyPressedArgs argument)
         {
-            //Should always be true -> Invokes event for KeyDown for that specific key
-            if (_keyStatus.ContainsKey(argument.KeyPressed))
-                _keyStatus[argument.KeyPressed].KeyDownEvent(argument.KeyPressed);
-            else
-                throw new System.Exception("There is no key event instance support for this key: " + argument.KeyPressed);
+            //Toggle Lock for input
+            if (_lockKeyInstance.Key == argument.KeyPressed)
+                InputLock = !InputLock;
+            //Listen for normal input if lock is not activated
+            else if (!InputLock)
+            {
+                //Should always be true -> Invokes event for KeyDown for that specific key
+                if (_keyStatus.ContainsKey(argument.KeyPressed))
+                    _keyStatus[argument.KeyPressed].KeyDownEvent(argument.KeyPressed);
+                else
+                    throw new System.Exception("There is no key event instance support for this key: " + argument.KeyPressed);
+            }  
         }
 
         /// <summary>
@@ -221,11 +240,19 @@ namespace RawInput
         /// <param name="argument">The key data</param>
         void KeyUp(object sender, KeyPressedArgs argument)
         {
-            //Should always be true -> Invokes event for KeyUp for that specific key
-            if (_keyStatus.ContainsKey(argument.KeyPressed))
-                _keyStatus[argument.KeyPressed].KeyUpEvent(argument.KeyPressed);
-            else
-                throw new System.Exception("There is no key event instance support for this key: " + argument.KeyPressed);
+            //Ignore lock key key up
+            if (_lockKeyInstance.Key == argument.KeyPressed)
+                return;
+
+            //Lock all input if lock is activated
+            if (!InputLock)
+            {
+                //Should always be true -> Invokes event for KeyUp for that specific key
+                if (_keyStatus.ContainsKey(argument.KeyPressed))
+                    _keyStatus[argument.KeyPressed].KeyUpEvent(argument.KeyPressed);
+                else
+                    throw new System.Exception("There is no key event instance support for this key: " + argument.KeyPressed);
+            }  
         }
 
         #endregion

@@ -8,6 +8,9 @@ namespace F1_Unity
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] GameObject _lockInputSymbol;
+        [SerializeField] Key _lockInputKey;
+
         //Used only to init the managers
         [SerializeField] ParticipantManager _participantManagerScript;
         [SerializeField] DriverDataManager _driverDataManagerScript;
@@ -48,7 +51,7 @@ namespace F1_Unity
         /// <summary>
         /// RawInputSystem that allows subscribtion and read of inputs on a low level (application not in focus). Use InputManager instead for reading input
         /// </summary>
-        public static RawInputSystem RawInputSystem { get; private set; } = new RawInputSystem();
+        public static RawInputSystem RawInputSystem { get; private set; } 
 
         private void OnEnable()
         {
@@ -82,6 +85,8 @@ namespace F1_Unity
         {
             _singleton = this;
 
+            RawInputSystem = new RawInputSystem(_singleton._lockInputKey);
+
             _participantManagerScript.Init(data.Select(item => item.numberName).ToList(), portraitSprites);
             _driverDataManagerScript.Init(data.Select(item => item.championshipEntry).ToList());
 
@@ -108,6 +113,7 @@ namespace F1_Unity
         private void Update()
         {
             ReadCollectPackets();
+            _singleton._lockInputSymbol.SetActive(RawInputSystem.InputLock);
         }
 
         /// <summary>

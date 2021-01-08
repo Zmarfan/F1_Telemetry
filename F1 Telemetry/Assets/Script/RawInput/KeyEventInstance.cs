@@ -10,7 +10,7 @@
         /// <summary>
         /// What key is this keyEventInstance for
         /// </summary>
-        public Key _key { get; private set; }
+        public Key Key { get; private set; }
         /// <summary>
         /// Current status of key. true = held down, false = not active
         /// </summary>
@@ -27,7 +27,7 @@
 
         public KeyEventInstance(Key key)
         {
-            this._key = key;
+            this.Key = key;
         }
 
         /// <summary>
