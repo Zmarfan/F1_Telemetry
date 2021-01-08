@@ -239,6 +239,7 @@ namespace F1_Unity
             //Set specific driver info to template
             _driverTemplates[index].SetDriverData(driverData);
             _driverTemplates[index].SetFastestLap(driverData);
+            _driverTemplates[index].SetSpectator(driverData);
 
             //Update stats for driver
             _driverTemplates[index].UpdateStats(driverData, _timingStatsState);

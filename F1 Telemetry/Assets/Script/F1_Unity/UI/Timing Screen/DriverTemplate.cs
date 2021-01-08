@@ -41,6 +41,7 @@ namespace F1_Unity
         [SerializeField] Image _positionImage;        //The white image under position number -> flashes red/green during overtakes
         [SerializeField] Text _positionText;          //Only used on init on Awake, never changes
         [SerializeField] Transform _fastestLap;       //transform for fastest lap image, deactivated on default
+        [SerializeField] Transform _spectatorIcon;
         [SerializeField] Image _teamColorImage;
         [SerializeField] Text _initialsText;
         [SerializeField] Text _timeTextLeader;        //Time text against leader
@@ -238,6 +239,15 @@ namespace F1_Unity
 
             _fastestLapText.color = isFastestOverall ? _fastestLapColor : _timingColor;
             _fastestLap.gameObject.SetActive(isFastestOverall);
+        }
+
+        /// <summary>
+        /// Activates spectator icon for this driver if it is the one being spectated
+        /// </summary>
+        public void SetSpectator(DriverData driverData)
+        {
+            DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool valid);
+            _spectatorIcon.gameObject.SetActive(valid && driverData.ID == spectatorDriverData.ID);
         }
 
         /// <summary>
