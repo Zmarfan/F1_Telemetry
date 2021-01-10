@@ -117,7 +117,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 50
 --- !u!1 &259007603079967356
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,7 +1705,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 179
 --- !u!1 &7481768054354760532
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,9 +2279,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textureLength: 10
   _testColor: {r: 0.6037736, g: 0.44491273, b: 0.15606974, a: 1}
-  _previewImage: {fileID: 7357918948733721386}
   _filterMode: 1
   _colorState: 0
+  _hslName: HSL
+  _hsvName: HSV
+  _rgbName: RGB
+  _rgbRName: R
+  _rgbGName: G
+  _rgbBName: B
+  _hslHName: H
+  _hslSName: S
+  _hslLName: L
+  _hsvHName: H
+  _hsvSName: S
+  _hsvVName: V
+  _previewImage: {fileID: 7357918948733721386}
+  _changeStateText: {fileID: 51648206131342033}
+  _bar0Value: {fileID: 6096424505204538271}
+  _bar1Value: {fileID: 5748341293278715724}
+  _bar2Value: {fileID: 411381100281786539}
+  _bar0Name: {fileID: 933435090546867737}
+  _bar1Name: {fileID: 2457127093288641579}
+  _bar2Name: {fileID: 1689427899920332996}
   _bar0Image: {fileID: 4845991391744906372}
   _bar1Image: {fileID: 2226813108874812093}
   _bar2Image: {fileID: 2660484337795309106}
@@ -2445,7 +2464,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 50
 --- !u!1 &9177885235670500010
 GameObject:
   m_ObjectHideFlags: 0

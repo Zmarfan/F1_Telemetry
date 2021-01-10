@@ -8,12 +8,42 @@ namespace F1_Unity
     /// </summary>
     public class ColorPicker : MonoBehaviour
     {
+        [Header("Settings")]
+
         [SerializeField, Range(0, 1000)] int _textureLength;
 
         [SerializeField] Color _testColor;
-        [SerializeField] Image _previewImage;
         [SerializeField] FilterMode _filterMode;
         [SerializeField] ColorPickerState _colorState = ColorPickerState.HSL;
+
+        [SerializeField] string _hslName = "HSL";
+        [SerializeField] string _hsvName = "HSV";
+        [SerializeField] string _rgbName = "RGB";
+
+        [SerializeField] string _rgbRName = "R";
+        [SerializeField] string _rgbGName = "G";
+        [SerializeField] string _rgbBName = "B";
+
+        [SerializeField] string _hslHName = "H";
+        [SerializeField] string _hslSName = "S";
+        [SerializeField] string _hslLName = "L";
+
+        [SerializeField] string _hsvHName = "H";
+        [SerializeField] string _hsvSName = "S";
+        [SerializeField] string _hsvVName = "V";
+
+        [Header("Drop")]
+
+        [SerializeField] Image _previewImage;
+        [SerializeField] Text _changeStateText;
+
+        [SerializeField] Text _bar0Value;
+        [SerializeField] Text _bar1Value;
+        [SerializeField] Text _bar2Value;
+
+        [SerializeField] Text _bar0Name;
+        [SerializeField] Text _bar1Name;
+        [SerializeField] Text _bar2Name;
 
         [SerializeField] Image _bar0Image;
         [SerializeField] Image _bar1Image;
@@ -23,6 +53,9 @@ namespace F1_Unity
         [SerializeField] Slider _bar1Slider;
         [SerializeField] Slider _bar2Slider;
 
+        const int RGB_MAX_VALUE = 255;
+        const int HSL_HSV_MAX_HUE_VALUE = 359;
+        const int HSL_HSV_MAX_S_L_VALUE = 100;
 
         HSLColor _hslColor;
         HSVColor _hsvColor;
@@ -42,8 +75,11 @@ namespace F1_Unity
             _hsvColor = HSVColor.HSVFromRGB(startColor);
             _rgbColor = startColor;
 
+            SetBarNameFromState();
+            SetStateName();
             UpdateSliderValues();
             UpdateImages();
+            UpdateValues();
             UpdatePreview();
         }
 
@@ -63,6 +99,22 @@ namespace F1_Unity
         /// Changes state for color picker (HSL -> HSV -> RGB)
         /// </summary>
         public void ChangeState()
+        {
+            UpdateAllValuesAfterCurrentState();
+
+            _colorState = (ColorPickerState)(((int)_colorState + 1) % (int)ColorPickerState.Length);
+
+            SetBarNameFromState();
+            SetStateName();
+            UpdateSliderValues();
+            UpdateImages();
+            UpdatePreview();
+        }
+
+        /// <summary>
+        /// With a specific color as reference copy that color to other representations
+        /// </summary>
+        void UpdateAllValuesAfterCurrentState()
         {
             switch (_colorState)
             {
@@ -86,12 +138,44 @@ namespace F1_Unity
                     }
                 default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
             }
+        }
 
-            _colorState = (ColorPickerState)(((int)_colorState + 1) % (int)ColorPickerState.Length);
+        /// <summary>
+        /// Sets the state name from state
+        /// </summary>
+        void SetStateName()
+        {
+            switch (_colorState)
+            {
+                case ColorPickerState.HSL: _changeStateText.text = _hslName; break;
+                case ColorPickerState.HSV: _changeStateText.text = _hsvName; break;
+                case ColorPickerState.RGB: _changeStateText.text = _rgbName; break;
+                default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
+            }
+        }
 
-            UpdateSliderValues();
-            UpdateImages();
-            UpdatePreview();
+        /// <summary>
+        /// Sets the name for each bar depending on current state
+        /// </summary>
+        void SetBarNameFromState()
+        {
+            switch (_colorState)
+            {
+                case ColorPickerState.HSL: SetBarNames(_hslHName, _hslSName, _hslLName); break;
+                case ColorPickerState.HSV: SetBarNames(_hsvHName, _hsvSName, _hsvVName); break;
+                case ColorPickerState.RGB: SetBarNames(_rgbRName, _rgbGName, _rgbBName); break;
+                default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
+            }
+        }
+
+        /// <summary>
+        /// Sets all bar names
+        /// </summary>
+        void SetBarNames(string bar0, string bar1, string bar2)
+        {
+            _bar0Name.text = bar0;
+            _bar1Name.text = bar1;
+            _bar2Name.text = bar2;
         }
 
         /// <summary>
@@ -127,6 +211,7 @@ namespace F1_Unity
             }
 
             UpdateImages();
+            UpdateValues();
             UpdatePreview();
         }
 
@@ -231,9 +316,37 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Updates the visual values for end user after state and color values
+        /// </summary>
+        void UpdateValues()
+        {
+            if (_colorState == ColorPickerState.RGB)
+            {
+                SetValue(_bar0Value, _bar0Slider, RGB_MAX_VALUE);
+                SetValue(_bar1Value, _bar1Slider, RGB_MAX_VALUE);
+                SetValue(_bar2Value, _bar2Slider, RGB_MAX_VALUE);
+            }
+            //HSL and HSV are handled in the same way
+            else
+            {
+                SetValue(_bar0Value, _bar0Slider, HSL_HSV_MAX_HUE_VALUE);
+                SetValue(_bar1Value, _bar1Slider, HSL_HSV_MAX_S_L_VALUE);
+                SetValue(_bar2Value, _bar2Slider, HSL_HSV_MAX_S_L_VALUE);
+            }
+        }
+
+        /// <summary>
+        /// Gets display value from current value and max value
+        /// </summary>
+        void SetValue(Text text, Slider slider, int maxValue)
+        {
+            text.text = ((int)(slider.value * maxValue)).ToString();
+        }
+
+        /// <summary>
         /// Sets bar values from hsl, hsv or rgb depending on state
         /// </summary>
-        public void SetBarValuesFromState(out float bar_0, out float bar_1, out float bar_2)
+        void SetBarValuesFromState(out float bar_0, out float bar_1, out float bar_2)
         {
             switch (_colorState)
             {
