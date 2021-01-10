@@ -8,6 +8,8 @@ namespace F1_Unity
     /// </summary>
     public class ColorPicker : MonoBehaviour
     {
+        #region Fields
+
         [Header("Settings")]
 
         [SerializeField, Range(0, 1000)] int _textureLength;
@@ -61,10 +63,16 @@ namespace F1_Unity
         HSVColor _hsvColor;
         Color _rgbColor;
 
+        #endregion
+
+        //TEST
         private void Awake()
         {
             Init(_testColor);
         }
+        //TEST
+
+        #region Init & Change State
 
         /// <summary>
         /// Initilized textures and _hslVector from sliders
@@ -84,18 +92,6 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Sets the value for the sliders
-        /// </summary>
-        void UpdateSliderValues()
-        {
-            SetBarValuesFromState(out float bar_0, out float bar_1, out float bar_2);
-
-            _bar0Slider.value = bar_0;
-            _bar1Slider.value = bar_1;
-            _bar2Slider.value = bar_2;
-        }
-
-        /// <summary>
         /// Changes state for color picker (HSL -> HSV -> RGB)
         /// </summary>
         public void ChangeState()
@@ -109,6 +105,63 @@ namespace F1_Unity
             UpdateSliderValues();
             UpdateImages();
             UpdatePreview();
+        }
+
+        #endregion
+
+        #region Public Functions
+
+        /// <summary>
+        /// Update _hslVector from slider value change indicated by which slider
+        /// </summary>
+        /// <param name="sliderType">What slider</param>
+        public void SliderChange()
+        {
+            switch (_colorState)
+            {
+                case ColorPickerState.HSL:
+                    {
+                        _hslColor.h = _bar0Slider.value;
+                        _hslColor.s = _bar1Slider.value;
+                        _hslColor.l = _bar2Slider.value;
+                        break;
+                    }
+                case ColorPickerState.HSV:
+                    {
+                        _hsvColor.h = _bar0Slider.value;
+                        _hsvColor.s = _bar1Slider.value;
+                        _hsvColor.v = _bar2Slider.value;
+                        break;
+                    }
+                case ColorPickerState.RGB:
+                    {
+                        _rgbColor.r = _bar0Slider.value;
+                        _rgbColor.g = _bar1Slider.value;
+                        _rgbColor.b = _bar2Slider.value;
+                        break;
+                    }
+                default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
+            }
+
+            UpdateImages();
+            UpdateValues();
+            UpdatePreview();
+        }
+
+        #endregion
+
+        #region Modify Methods
+
+        /// <summary>
+        /// Sets the value for the sliders
+        /// </summary>
+        void UpdateSliderValues()
+        {
+            SetBarValuesFromState(out float bar_0, out float bar_1, out float bar_2);
+
+            _bar0Slider.value = bar_0;
+            _bar1Slider.value = bar_1;
+            _bar2Slider.value = bar_2;
         }
 
         /// <summary>
@@ -179,43 +232,6 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Update _hslVector from slider value change indicated by which slider
-        /// </summary>
-        /// <param name="sliderType">What slider</param>
-        public void SliderChange()
-        {
-            switch (_colorState)
-            {
-                case ColorPickerState.HSL:
-                    {
-                        _hslColor.h = _bar0Slider.value;
-                        _hslColor.s = _bar1Slider.value;
-                        _hslColor.l = _bar2Slider.value;
-                        break;
-                    }
-                case ColorPickerState.HSV:
-                    {
-                        _hsvColor.h = _bar0Slider.value;
-                        _hsvColor.s = _bar1Slider.value;
-                        _hsvColor.v = _bar2Slider.value;
-                        break;
-                    }
-                case ColorPickerState.RGB:
-                    {
-                        _rgbColor.r = _bar0Slider.value;
-                        _rgbColor.g = _bar1Slider.value;
-                        _rgbColor.b = _bar2Slider.value;
-                        break;
-                    }
-                default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
-            }
-
-            UpdateImages();
-            UpdateValues();
-            UpdatePreview();
-        }
-
-        /// <summary>
         /// Updates all textures from current _hslVector
         /// </summary>
         void UpdateImages()
@@ -234,10 +250,56 @@ namespace F1_Unity
             {
                 case ColorPickerState.HSL: _previewImage.color = _hslColor.RGBColor(); break;
                 case ColorPickerState.HSV: _previewImage.color = _hsvColor.RGBColor(); break;
-                case ColorPickerState.RGB: _previewImage.color = _rgbColor;            break;
+                case ColorPickerState.RGB: _previewImage.color = _rgbColor; break;
                 default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
             }
         }
+
+        /// <summary>
+        /// Updates the visual values for end user after state and color values
+        /// </summary>
+        void UpdateValues()
+        {
+            if (_colorState == ColorPickerState.RGB)
+            {
+                SetValue(_bar0Value, _bar0Slider, RGB_MAX_VALUE);
+                SetValue(_bar1Value, _bar1Slider, RGB_MAX_VALUE);
+                SetValue(_bar2Value, _bar2Slider, RGB_MAX_VALUE);
+            }
+            //HSL and HSV are handled in the same way
+            else
+            {
+                SetValue(_bar0Value, _bar0Slider, HSL_HSV_MAX_HUE_VALUE);
+                SetValue(_bar1Value, _bar1Slider, HSL_HSV_MAX_S_L_VALUE);
+                SetValue(_bar2Value, _bar2Slider, HSL_HSV_MAX_S_L_VALUE);
+            }
+        }
+
+        /// <summary>
+        /// Gets display value from current value and max value
+        /// </summary>
+        void SetValue(Text text, Slider slider, int maxValue)
+        {
+            text.text = ((int)(slider.value * maxValue)).ToString();
+        }
+
+        /// <summary>
+        /// Sets bar values from hsl, hsv or rgb depending on state
+        /// </summary>
+        void SetBarValuesFromState(out float bar_0, out float bar_1, out float bar_2)
+        {
+            switch (_colorState)
+            {
+                case ColorPickerState.HSL: { bar_0 = _hslColor.h; bar_1 = _hslColor.s; bar_2 = _hslColor.l; break; }
+                case ColorPickerState.HSV: { bar_0 = _hsvColor.h; bar_1 = _hsvColor.s; bar_2 = _hsvColor.v; break; }
+                case ColorPickerState.RGB: { bar_0 = _rgbColor.r; bar_1 = _rgbColor.g; bar_2 = _rgbColor.b; break; }
+                default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
+            }
+        }
+
+        #endregion
+
+        #region Texture
 
         /// <summary>
         /// Generates a sprite from _hslVector based on hue, saturation or lightness
@@ -315,47 +377,9 @@ namespace F1_Unity
             }
         }
 
-        /// <summary>
-        /// Updates the visual values for end user after state and color values
-        /// </summary>
-        void UpdateValues()
-        {
-            if (_colorState == ColorPickerState.RGB)
-            {
-                SetValue(_bar0Value, _bar0Slider, RGB_MAX_VALUE);
-                SetValue(_bar1Value, _bar1Slider, RGB_MAX_VALUE);
-                SetValue(_bar2Value, _bar2Slider, RGB_MAX_VALUE);
-            }
-            //HSL and HSV are handled in the same way
-            else
-            {
-                SetValue(_bar0Value, _bar0Slider, HSL_HSV_MAX_HUE_VALUE);
-                SetValue(_bar1Value, _bar1Slider, HSL_HSV_MAX_S_L_VALUE);
-                SetValue(_bar2Value, _bar2Slider, HSL_HSV_MAX_S_L_VALUE);
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Gets display value from current value and max value
-        /// </summary>
-        void SetValue(Text text, Slider slider, int maxValue)
-        {
-            text.text = ((int)(slider.value * maxValue)).ToString();
-        }
-
-        /// <summary>
-        /// Sets bar values from hsl, hsv or rgb depending on state
-        /// </summary>
-        void SetBarValuesFromState(out float bar_0, out float bar_1, out float bar_2)
-        {
-            switch (_colorState)
-            {
-                case ColorPickerState.HSL: { bar_0 = _hslColor.h; bar_1 = _hslColor.s; bar_2 = _hslColor.l; break; }
-                case ColorPickerState.HSV: { bar_0 = _hsvColor.h; bar_1 = _hsvColor.s; bar_2 = _hsvColor.v; break; }
-                case ColorPickerState.RGB: { bar_0 = _rgbColor.r; bar_1 = _rgbColor.g; bar_2 = _rgbColor.b; break; }
-                default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
-            }
-        }
+        #region Enums
 
         enum ColorPickerState
         {
@@ -383,5 +407,7 @@ namespace F1_Unity
             /// </summary>
             Bar_2
         }
+
+        #endregion
     }
 }

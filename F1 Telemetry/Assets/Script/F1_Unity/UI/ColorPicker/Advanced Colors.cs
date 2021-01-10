@@ -81,6 +81,7 @@ public struct HSLColor
     /// </summary>
     public Color RGBColor()
     {
+        //Generate a HSV vector from HSL -> takes less code and can utilize Unity function 
         HSVColor hsvColor = HSVColor();
         return Color.HSVToRGB(hsvColor.h, hsvColor.s, hsvColor.v);
     }
@@ -96,7 +97,6 @@ public struct HSLColor
         float modL = l * 2;
         float modS = s * ((modL <= 1) ? modL : 2 - modL);
 
-        //Generate a HSV vector from HSL vector -> takes less code and can utilize Unity function 
         float hsvH = modH;
         float hsvS = 2 * modS / (modL + modS != 0 ? modL + modS : 1);
         float hsvV = (modL + modS) / 2;
