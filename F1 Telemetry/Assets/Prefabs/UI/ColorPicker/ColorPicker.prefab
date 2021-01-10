@@ -938,7 +938,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5512444000389790787}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6410141421144876315}
+        m_TargetAssemblyTypeName: F1_Unity.ColorPicker, Assembly-CSharp
+        m_MethodName: EndColorPicker
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3742797368574686316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,7 +1951,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3593141610260222423}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6410141421144876315}
+        m_TargetAssemblyTypeName: F1_Unity.ColorPicker, Assembly-CSharp
+        m_MethodName: EndColorPicker
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &7909819314136709354
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,8 +2301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2bf9397a0699b40918057026a65842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textureLength: 10
   _testColor: {r: 0.6037736, g: 0.44491273, b: 0.15606974, a: 1}
+  _textureLength: 10
   _filterMode: 1
   _colorState: 0
   _hslName: HSL

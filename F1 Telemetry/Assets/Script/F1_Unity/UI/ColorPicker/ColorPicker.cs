@@ -8,13 +8,15 @@ namespace F1_Unity
     /// </summary>
     public class ColorPicker : MonoBehaviour
     {
+        public delegate void ColorPicked(Color color);
+
         #region Fields
 
         [Header("Settings")]
 
-        [SerializeField, Range(0, 1000)] int _textureLength;
-
         [SerializeField] Color _testColor;
+
+        [SerializeField, Range(0, 1000)] int _textureLength;
         [SerializeField] FilterMode _filterMode;
         [SerializeField] ColorPickerState _colorState = ColorPickerState.HSL;
 
@@ -59,26 +61,29 @@ namespace F1_Unity
         const int HSL_HSV_MAX_HUE_VALUE = 359;
         const int HSL_HSV_MAX_S_L_VALUE = 100;
 
+        /// <summary>
+        /// Invoked when a user confirm new color or cancel. Chosen color or start color as parameter
+        /// </summary>
+        public event ColorPicked PickedColor;
+
+        Color _currentColor;
+        Color _startColor;
+
         HSLColor _hslColor;
         HSVColor _hsvColor;
         Color _rgbColor;
 
         #endregion
 
-        //TEST
-        private void Awake()
-        {
-            Init(_testColor);
-        }
-        //TEST
-
-        #region Init & Change State
+        #region Init, End & Change State
 
         /// <summary>
         /// Initilized textures and _hslVector from sliders
         /// </summary>
         public void Init(Color startColor)
         {
+            _startColor = startColor;
+
             _hslColor = HSLColor.HSLFromRGB(startColor);
             _hsvColor = HSVColor.HSVFromRGB(startColor);
             _rgbColor = startColor;
@@ -88,7 +93,16 @@ namespace F1_Unity
             UpdateSliderValues();
             UpdateImages();
             UpdateValues();
-            UpdatePreview();
+            UpdateColor();
+        }
+
+        /// <summary>
+        /// Called from confirm/cancel button to invoke ColorPicked Event.
+        /// </summary>
+        /// <param name="useNewColor">If invoke colorpicked with start color or picked color</param>
+        public void EndColorPicker(bool useNewColor)
+        {
+            PickedColor?.Invoke(useNewColor ? _currentColor : _startColor);
         }
 
         /// <summary>
@@ -104,7 +118,7 @@ namespace F1_Unity
             SetStateName();
             UpdateSliderValues();
             UpdateImages();
-            UpdatePreview();
+            UpdateColor();
         }
 
         #endregion
@@ -145,7 +159,7 @@ namespace F1_Unity
 
             UpdateImages();
             UpdateValues();
-            UpdatePreview();
+            UpdateColor();
         }
 
         #endregion
@@ -242,17 +256,19 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Sets the color of the preview based on current HSL values
+        /// Sets the color of the preview based on current HSL values and saves current color to RGB storage
         /// </summary>
-        void UpdatePreview()
+        void UpdateColor()
         {
             switch (_colorState)
             {
-                case ColorPickerState.HSL: _previewImage.color = _hslColor.RGBColor(); break;
-                case ColorPickerState.HSV: _previewImage.color = _hsvColor.RGBColor(); break;
-                case ColorPickerState.RGB: _previewImage.color = _rgbColor; break;
+                case ColorPickerState.HSL: _currentColor = _hslColor.RGBColor(); break;
+                case ColorPickerState.HSV: _currentColor = _hsvColor.RGBColor(); break;
+                case ColorPickerState.RGB: _currentColor = _rgbColor;            break;
                 default: throw new System.Exception("This ColorState is not implemented yet: " + _colorState);
             }
+
+            _previewImage.color = _currentColor;
         }
 
         /// <summary>
