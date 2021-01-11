@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace F1_Unity
+namespace F1_Options
 {
     /// <summary>
     /// Allows user to choose specific color, sends out event when closing and/or saving
@@ -65,6 +65,10 @@ namespace F1_Unity
         /// Invoked when a user confirm new color or cancel. Chosen color or start color as parameter
         /// </summary>
         public event ColorPicked PickedColor;
+        /// <summary>
+        /// Ivoked when user changes color in colorpicker (not confirmed color)
+        /// </summary>
+        public event ColorPicked ChangedColor;
 
         Color _currentColor;
         Color _startColor;
@@ -269,6 +273,8 @@ namespace F1_Unity
             }
 
             _previewImage.color = _currentColor;
+            //Let's outward listeners know the color currently viewing
+            ChangedColor?.Invoke(_currentColor);
         }
 
         /// <summary>
