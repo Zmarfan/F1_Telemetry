@@ -30,7 +30,7 @@
         Carlin,
         Charouz_Racing_System,
         DAMS,
-        Russian_Time,
+        Virtuosi_Racing,
         MP_Motorsport,
         Pertamina,
         McLaren_1990,

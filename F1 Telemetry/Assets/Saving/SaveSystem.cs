@@ -1,73 +1,76 @@
-﻿using UnityEngine;
-using System.IO;
+﻿using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using UnityEngine;
 
 namespace FileExplorer
 {
-    /// <summary>
-    /// Different things saved for application
-    /// </summary>
-    public enum SaveTypes
-    {
-        ParticipantData,
-        Portrait,
-        ChampionshipData
-    }
-
     public static class SaveSystem
     {
-        static readonly string PARTICIPANT_DATA_NAME = "/ParticipantData.pog";
-        static readonly string PORTRAIT_DATA_NAME = "/PortraitData.pog";
-        static readonly string CHAMPIONSHIP_DATA_NAME = "/ChampionshipData.pog";
+        public static readonly string SAVE_FOLDER_PATH = Application.persistentDataPath + "/SaveData";
+        public static readonly string DATA_ENDING = ".save";
 
         /// <summary>
-        /// Returns filename for a specific save type
+        /// Saves specified data indexed by specified name
         /// </summary>
-        static string GetTypeName(SaveTypes type)
+        /// <param name="saveName">Name to save and load this data</param>
+        /// <param name="data">Data to save</param>
+        /// <returns>Returns true when done saving</returns>
+        public static bool Save(string saveName, object data)
         {
-            switch (type)
-            {
-                case SaveTypes.ParticipantData:  return PARTICIPANT_DATA_NAME;
-                case SaveTypes.Portrait:         return PORTRAIT_DATA_NAME;
-                case SaveTypes.ChampionshipData: return CHAMPIONSHIP_DATA_NAME;
-                default: throw new System.Exception("This save type is not implemented yet!");
-            }
+            BinaryFormatter formatter = CreateBinaryFormatter();
+
+            //Create folder for saving if one doesn't exist
+            if (!Directory.Exists(SAVE_FOLDER_PATH))
+                Directory.CreateDirectory(SAVE_FOLDER_PATH);
+
+            string path = SAVE_FOLDER_PATH + "/" + saveName + DATA_ENDING;
+            FileStream file = File.Create(path);
+            formatter.Serialize(file, data);
+            file.Close();
+            return true;
         }
 
         /// <summary>
-        /// Saves the selected filepath for participant data .txt for easy access in future
+        /// Returns loaded data indexed by saveName. Null if data don't exist or is damaged
         /// </summary>
-        /// <param name="filePath">Filepath for text file</param>
-        public static void SaveFilePath(string saveData, SaveTypes type)
+        /// <param name="saveName">Name to save and load this data</param>
+        /// <returns>Cast return data to expected type</returns>
+        public static object Load(string saveName)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            string filePath = Application.persistentDataPath + GetTypeName(type);
-            FileStream stream = new FileStream(filePath, FileMode.Create);
+            string path = SAVE_FOLDER_PATH + "/" + saveName + DATA_ENDING;
+            if (!File.Exists(path))
+                return null;
 
-            formatter.Serialize(stream, saveData);
-            stream.Close();
-        }
+            BinaryFormatter formatter = CreateBinaryFormatter();
+            FileStream file = File.Open(path, FileMode.Open);
 
-        /// <summary>
-        /// Loads in filepath for participant data text file.
-        /// </summary>
-        /// <returns></returns>
-        public static string LoadFilePath(SaveTypes type)
-        {
-            string filePath = Application.persistentDataPath + GetTypeName(type);
-            if (File.Exists(filePath))
+            try
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                FileStream stream = new FileStream(filePath, FileMode.Open);
-                string returnValue = (string)formatter.Deserialize(stream);
-                stream.Close();
-                return returnValue;
+                object data = formatter.Deserialize(file);
+                file.Close();
+                return data;
             }
-            else
+            catch
             {
-                Debug.LogWarning(type + " save file not found in: " + filePath);
+                file.Close();
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Returns a binary formatter that can handle custom non serilized data types
+        /// </summary>
+        public static BinaryFormatter CreateBinaryFormatter()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            SurrogateSelector selector = new SurrogateSelector();
+
+            //Insert surrogates
+
+            formatter.SurrogateSelector = selector;
+            return formatter;
         }
     }
 }

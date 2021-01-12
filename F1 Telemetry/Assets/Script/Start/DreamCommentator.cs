@@ -11,6 +11,9 @@ using F1_Unity;
 /// </summary>
 public class DreamCommentator : MonoBehaviour
 {
+    static readonly string PARTICIPANT_DATA_NAME = "ParticipantData";
+    static readonly string PORTRAIT_DATA_NAME = "PortraitData";
+
     static readonly int PORTRAIT_MIN_NUMBER = 1;
     static readonly int PORTRAIT_MAX_NUMBER = 99;
 
@@ -72,13 +75,13 @@ public class DreamCommentator : MonoBehaviour
     void LoadInAllData()
     {
         //ParticipantData
-        string participantFilePath = SaveSystem.LoadFilePath(SaveTypes.ParticipantData);
+        string participantFilePath = (string)SaveSystem.Load(PARTICIPANT_DATA_NAME);
         if (participantFilePath != null)
             LoadInParticipantData(participantFilePath);
         else
             HandleInvalidParticipantData();
         //Portraits
-        string portraitFilePath = SaveSystem.LoadFilePath(SaveTypes.Portrait);
+        string portraitFilePath = (string)SaveSystem.Load(PORTRAIT_DATA_NAME);
         if (portraitFilePath != null)
             LoadInPortraitData(portraitFilePath);
     }
@@ -148,6 +151,7 @@ public class DreamCommentator : MonoBehaviour
         try
         {
             string stringData = File.ReadAllText(filePath);
+
             string[] lines = stringData.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             //The finished data set
             var data = new List<ParticipantData>();
@@ -183,7 +187,7 @@ public class DreamCommentator : MonoBehaviour
     {
         _participantData = data;
         //Save this filepath for future use as it gave valid data
-        SaveSystem.SaveFilePath(filePath, SaveTypes.ParticipantData);
+        SaveSystem.Save(PARTICIPANT_DATA_NAME, filePath);
         _participantDataStatusText.text = _validData;
         _participantDataStatusText.color = _validDataColor;
         _participantDataFilePathText.text = filePath;
@@ -340,7 +344,7 @@ public class DreamCommentator : MonoBehaviour
     {
         _portraitData = data;
         //Save this filepath for future use as it gave valid data
-        SaveSystem.SaveFilePath(filePath, SaveTypes.Portrait);
+        SaveSystem.Save(PORTRAIT_DATA_NAME, filePath);
         _portraitDataStatusText.text = _validData;
         _portraitDataStatusText.color = _validDataColor;
         _portraitDataFilePathText.text = filePath;
