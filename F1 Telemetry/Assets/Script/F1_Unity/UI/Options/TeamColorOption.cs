@@ -29,18 +29,17 @@ namespace F1_Options
         /// </summary>
         public event TeamColorChangeDelegate NewColor;
 
-        Team _team;
-        Color _teamColor;
+        TeamColorPair _teamColorPair;
 
         /// <summary>
         /// Initilizes the prefab with specific team and color
         /// </summary>
         public void Init(TeamColorPair teamColorPair)
         {
-            _team = teamColorPair.team;
-            _teamText.text = ConvertEnumToString.Convert<Team>(_team);
-            _teamColor = teamColorPair.color;
-            _teamColorImage.color = _teamColor;
+            _teamColorPair = teamColorPair;
+
+            _teamText.text = ConvertEnumToString.Convert<Team>(_teamColorPair.team);
+            _teamColorPair.currentColor = teamColorPair.currentColor;
         }
 
         /// <summary>
@@ -50,9 +49,26 @@ namespace F1_Options
         {
             GameObject obj = Instantiate(_colorPickerPrefab, GetComponentInParent<Canvas>().transform);
             _colorPicker = obj.GetComponent<ColorPicker>();
-            _colorPicker.Init(_teamColor);
+            _colorPicker.Init(_teamColorPair.currentColor);
             _colorPicker.ChangedColor += ChangeColor;
             _colorPicker.PickedColor += PickedColor;
+        }
+
+        /// <summary>
+        /// Called when user wants default color -> set the default color as given from Init
+        /// </summary>
+        public void SetDefaultColor()
+        {
+            SetColor(_teamColorPair.DefaultColor);
+        }
+
+        /// <summary>
+        /// Sets the current color of this team to memory and interface
+        /// </summary>
+        void SetColor(Color color)
+        {
+            _teamColorImage.color = color;
+            _teamColorPair.currentColor = color;
         }
 
         #region Listeners
@@ -72,8 +88,7 @@ namespace F1_Options
         /// <param name="color">Either new or old color</param>
         void PickedColor(Color color)
         {
-            _teamColorImage.color = color;
-            _teamColor = color;
+            SetColor(color);
 
             //Remove colorpicker listeners and remove it
             _colorPicker.ChangedColor -= ChangeColor;

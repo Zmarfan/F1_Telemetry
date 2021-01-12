@@ -70,6 +70,14 @@ namespace F1_Options
     public struct TeamColorPair
     {
         public Team team;
-        public Color color;
+        public Color currentColor;
+        public Color DefaultColor { get; private set; }
+
+        public TeamColorPair(Team team, Color currentColor, Color defaultColor)
+        {
+            this.team = team;
+            this.currentColor = currentColor;
+            this.DefaultColor = defaultColor;
+        }
     }
 }
