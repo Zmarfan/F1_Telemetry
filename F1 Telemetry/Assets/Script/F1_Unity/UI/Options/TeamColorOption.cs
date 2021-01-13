@@ -10,37 +10,39 @@ namespace F1_Options
     /// </summary>
     public class TeamColorOption : MonoBehaviour
     {
-        public delegate void TeamColorChangeDelegate(TeamColorPair teamColorPair);
-
         [Header("Settings")]
 
         [SerializeField] GameObject _colorPickerPrefab;
+        [SerializeField, Range(0, 1)] float _dullBackgroundColorAmount = 0.5f;
 
         [Header("Drop")]
 
         [SerializeField] Text _teamText;
         [SerializeField] Image _teamColorImage;
+        [SerializeField] Image _background;
 
         //The color picker for this team option
         ColorPicker _colorPicker;
 
-        /// <summary>
-        /// Invoked when a new color is confirmed for new team by user
-        /// </summary>
-        public event TeamColorChangeDelegate NewColor;
-
-        TeamColorPair _teamColorPair;
+        TeamColorData _teamColorPair;
 
         /// <summary>
         /// Initilizes the prefab with specific team and color
         /// </summary>
-        public void Init(TeamColorPair teamColorPair)
+        public void Init(TeamColorData teamColorPair)
         {
             _teamColorPair = teamColorPair;
 
             _teamText.text = ConvertEnumToString.Convert<Team>(_teamColorPair.team);
             _teamColorPair.currentColor = teamColorPair.currentColor;
+
+            SetColor(_teamColorPair.currentColor, true);
         }
+
+        /// <summary>
+        /// Returns this options stored team color data
+        /// </summary>
+        public TeamColorData TeamColor { get { return _teamColorPair; } }
 
         /// <summary>
         /// Called when user presses button to change color for this specific team
@@ -59,16 +61,28 @@ namespace F1_Options
         /// </summary>
         public void SetDefaultColor()
         {
-            SetColor(_teamColorPair.DefaultColor);
+            SetColor(_teamColorPair.defaultColor, true);
         }
 
         /// <summary>
         /// Sets the current color of this team to memory and interface
         /// </summary>
-        void SetColor(Color color)
+        void SetColor(Color color, bool save)
         {
             _teamColorImage.color = color;
-            _teamColorPair.currentColor = color;
+            _background.color = DullColor(color);
+            if (save)
+                _teamColorPair.currentColor = color;
+        }
+
+        /// <summary>
+        /// Returns color but with lowered HSL saturation mode
+        /// </summary>
+        Color DullColor(Color color)
+        {
+            HSLColor hslColor = HSLColor.HSLFromRGB(color);
+            hslColor.s *= _dullBackgroundColorAmount;
+            return hslColor.RGBColor();
         }
 
         #region Listeners
@@ -79,7 +93,7 @@ namespace F1_Options
         /// <param name="color">Currently viewed color</param>
         void ChangeColor(Color color)
         {
-            _teamColorImage.color = color;
+            SetColor(color, false);
         }
 
         /// <summary>
@@ -88,7 +102,7 @@ namespace F1_Options
         /// <param name="color">Either new or old color</param>
         void PickedColor(Color color)
         {
-            SetColor(color);
+            SetColor(color, true);
 
             //Remove colorpicker listeners and remove it
             _colorPicker.ChangedColor -= ChangeColor;

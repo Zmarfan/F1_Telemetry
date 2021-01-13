@@ -3,28 +3,23 @@ using System.Collections.Generic;
 using F1_Data_Management;
 using System;
 using System.Text;
+using F1_Options;
 
 namespace F1_Unity
 {
     public class F1Utility : MonoBehaviour
     {
         [SerializeField] Color _defaultColor = new Color(40, 40, 40);
-        [SerializeField] TeamColorStruct[] _teamColors;
 
-        Dictionary<Team, Color> teamColor = new Dictionary<Team, Color>();
-
-        private void Awake()
-        {
-            Init();
-        }
+        Dictionary<Team, TeamColorData> _teamColor = new Dictionary<Team, TeamColorData>();
 
         /// <summary>
-        /// Makes list into dictionary for easy access
+        /// Sets the team color corrolation the application will run after
         /// </summary>
-        void Init()
+        /// <param name=""></param>
+        public void SetTeamColors(Dictionary<Team, TeamColorData> data)
         {
-            for (int i = 0; i < _teamColors.Length; i++)
-                teamColor.Add(_teamColors[i].team, _teamColors[i].color);
+            _teamColor = data;
         }
 
         /// <summary>
@@ -32,8 +27,8 @@ namespace F1_Unity
         /// </summary>
         public Color GetColorByTeam(Team team)
         {
-            if (teamColor.ContainsKey(team))
-                return teamColor[team];
+            if (_teamColor.ContainsKey(team))
+                return _teamColor[team].currentColor;
             else
                 return _defaultColor;
         }

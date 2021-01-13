@@ -90,6 +90,8 @@ GameObject:
   - component: {fileID: 8294634636259688110}
   - component: {fileID: 3069069948572961632}
   - component: {fileID: 4114671652245408532}
+  - component: {fileID: 2782389878155755665}
+  - component: {fileID: 111498766374493050}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -137,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5372549, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -158,6 +160,36 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Mercedes AMG Petronas
+--- !u!114 &2782389878155755665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757918086172096870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
+--- !u!114 &111498766374493050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757918086172096870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1989864423350257337
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9716981, g: 0.83786047, b: 0.83786047, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -634,8 +666,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colorPickerPrefab: {fileID: 8903463877030853471, guid: 676f15574df299d4398dffbfc2dbd82f, type: 3}
+  _dullBackgroundColorAmount: 0.2
   _teamText: {fileID: 4114671652245408532}
   _teamColorImage: {fileID: 2981732362161923299}
+  _background: {fileID: 2344076559779738863}
 --- !u!1 &5405013881146434897
 GameObject:
   m_ObjectHideFlags: 0

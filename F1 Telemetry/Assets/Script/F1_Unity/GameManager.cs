@@ -3,6 +3,7 @@ using UnityEngine;
 using RawInput;
 using System.Collections.Generic;
 using System.Linq;
+using F1_Options;
 
 namespace F1_Unity
 {
@@ -81,14 +82,15 @@ namespace F1_Unity
         /// <summary>
         /// Called from Start window to init GameManager before it's activated
         /// </summary>
-        public void Init(List<DreamCommentator.ParticipantData> data, List<ParticipantManager.NumberSpriteStruct> portraitSprites)
+        public void Init(DreamCommentator.DreamCommentatorInitPackage package)
         {
             _singleton = this;
 
             RawInputSystem = new RawInputSystem(_singleton._lockInputKey);
 
-            _participantManagerScript.Init(data.Select(item => item.numberName).ToList(), portraitSprites);
-            _driverDataManagerScript.Init(data.Select(item => item.championshipEntry).ToList());
+            _participantManagerScript.Init(package.participantData.Select(item => item.numberName).ToList(), package.portraitData);
+            _driverDataManagerScript.Init(package.participantData.Select(item => item.championshipEntry).ToList());
+            _F1UtilityScript.SetTeamColors(package.optionData.teamColorData);
 
             StartListeningOnGame();
         }

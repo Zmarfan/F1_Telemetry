@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using F1_Data_Management;
 
 namespace F1_Options
 {
@@ -9,15 +10,35 @@ namespace F1_Options
         [SerializeField] Color _openTabColor;
         [SerializeField] Color _closedTabColor;
         //Indexed through OptionTabs enum
+        [SerializeField] ColorSettings _colorSettings;
         [SerializeField] OptionTab[] _optionTabs;
         [SerializeField] GameObject[] _optionTabsArea;
 
         OptionTabs _currentTabOpen = OptionTabs.None;
 
+        #region Start
+
         private void Awake()
         {
             CloseAllTabsOpenOne(null);
+            _colorSettings.Init();
         }
+
+        #endregion
+
+        #region OptionData
+
+        /// <summary>
+        /// Creates OptionData from current settings to send to main application
+        /// </summary>
+        public OptionData OptionData
+        {
+            get { return new OptionData() { teamColorData = _colorSettings.GetData }; }
+        }
+
+        #endregion
+
+        #region Tabs
 
         /// <summary>
         /// Open area for specified area and close all other -> change color on option tabs
@@ -69,5 +90,15 @@ namespace F1_Options
             Color,
             None
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Package full of data from options
+    /// </summary>
+    public struct OptionData
+    {
+        public Dictionary<Team, TeamColorData> teamColorData;
     }
 }
