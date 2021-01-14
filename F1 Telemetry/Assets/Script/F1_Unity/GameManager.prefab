@@ -367,28 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884c12e121d2a964fa394cc4dcf8e07c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultColor: {r: 40, g: 40, b: 40, a: 1}
-  _teamColors:
-  - team: 0
-    color: {r: 0.03137255, g: 0.80784315, b: 0.69803923, a: 1}
-  - team: 1
-    color: {r: 0.8352941, g: 0.003921569, b: 0.023529412, a: 1}
-  - team: 2
-    color: {r: 0.14117648, g: 0.2509804, b: 0.9647059, a: 1}
-  - team: 5
-    color: {r: 0.94509804, g: 0.9372549, b: 0.0627451, a: 1}
-  - team: 8
-    color: {r: 0.9882353, g: 0.50980395, b: 0.023529412, a: 1}
-  - team: 4
-    color: {r: 0.9137255, g: 0.57254905, b: 0.73333335, a: 1}
-  - team: 7
-    color: {r: 0.4745098, g: 0.47058824, b: 0.46666667, a: 1}
-  - team: 3
-    color: {r: 0.003921569, g: 0.4862745, b: 0.9607843, a: 1}
-  - team: 9
-    color: {r: 0.5882353, g: 0, b: 0.047058824, a: 1}
-  - team: 6
-    color: {r: 0.9764706, g: 0.972549, b: 0.9607843, a: 1}
+  _defaultColor: {r: 0.81056064, g: 0.8113208, b: 0.661303, a: 1}
 --- !u!1 &2931149420952710795
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,14 +534,8 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: da6e603a3c7c85145872f326a6935772, type: 3}
   - compound: 10
     sprite: {fileID: 21300000, guid: a598e3e274eb85b43975fd6892244d9d, type: 3}
-  - compound: 11
-    sprite: {fileID: 21300000, guid: 50c2151f9d4014240bc55df180011231, type: 3}
-  - compound: 12
-    sprite: {fileID: 21300000, guid: fade1262833a10f41b1a2dc65a2a9783, type: 3}
-  - compound: 13
-    sprite: {fileID: 21300000, guid: b14d73d449570a149af44227fd64d50a, type: 3}
   - compound: 14
-    sprite: {fileID: 21300000, guid: f39389d2dac17b2468c82813b5af1055, type: 3}
+    sprite: {fileID: 21300000, guid: f23fe3bb30782414494ed411459be5ba, type: 3}
   - compound: 15
     sprite: {fileID: 21300000, guid: f23fe3bb30782414494ed411459be5ba, type: 3}
   - compound: 16
@@ -570,6 +543,22 @@ MonoBehaviour:
   - compound: 17
     sprite: {fileID: 21300000, guid: b14d73d449570a149af44227fd64d50a, type: 3}
   - compound: 18
+    sprite: {fileID: 21300000, guid: f39389d2dac17b2468c82813b5af1055, type: 3}
+  - compound: 19
+    sprite: {fileID: 21300000, guid: 50c2151f9d4014240bc55df180011231, type: 3}
+  - compound: 20
+    sprite: {fileID: 21300000, guid: fade1262833a10f41b1a2dc65a2a9783, type: 3}
+  - compound: 21
+    sprite: {fileID: 21300000, guid: b14d73d449570a149af44227fd64d50a, type: 3}
+  - compound: 22
+    sprite: {fileID: 21300000, guid: f39389d2dac17b2468c82813b5af1055, type: 3}
+  - compound: 23
+    sprite: {fileID: 21300000, guid: 50c2151f9d4014240bc55df180011231, type: 3}
+  - compound: 24
+    sprite: {fileID: 21300000, guid: fade1262833a10f41b1a2dc65a2a9783, type: 3}
+  - compound: 25
+    sprite: {fileID: 21300000, guid: b14d73d449570a149af44227fd64d50a, type: 3}
+  - compound: 26
     sprite: {fileID: 21300000, guid: f39389d2dac17b2468c82813b5af1055, type: 3}
 --- !u!1 &2952481834466914567
 GameObject:

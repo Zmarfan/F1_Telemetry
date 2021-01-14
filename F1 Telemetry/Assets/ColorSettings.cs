@@ -31,8 +31,8 @@ namespace F1_Options
 
         public void Init()
         {
-            LoadFromMemory();
             SetupDictionary();
+            LoadFromMemory();
             SpawnWorkArea();
         }
 
@@ -79,11 +79,14 @@ namespace F1_Options
             Array array = Enum.GetValues(typeof(Team));
             for (int i = 0; i < array.Length; i++)
             {
-                object data = SaveSystem.Load(array.GetValue(i).ToString());
+                Team team = (Team)array.GetValue(i);
+                object data = SaveSystem.Load(team.ToString());
                 if (data != null)
                 {
                     Color color = (Color)data;
-                    _teamColors[i].currentColor = color;
+                    TeamColorData colorData = _teamColorsDictionary[team];
+                    colorData.currentColor = color;
+                    _teamColorsDictionary[team] = colorData;
                 }
             }
         }
@@ -127,7 +130,17 @@ namespace F1_Options
                 List<TeamColorData> data = new List<TeamColorData>();
 
                 for (int j = 0; j < _teamColorAreas[i].teams.Length; j++)
-                    data.Add(_teamColorsDictionary[_teamColorAreas[i].teams[j]]);
+                {
+                    Team team = _teamColorAreas[i].teams[j];
+                    try
+                    {
+                        data.Add(_teamColorsDictionary[team]);
+                    }
+                    catch
+                    {
+                        throw new Exception(team.ToString());
+                    }
+                }
 
                 area.SetUpTeams(data);
             }
