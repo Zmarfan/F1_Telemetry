@@ -2,6 +2,7 @@
 
 namespace F1_Data_Management
 {
+    [System.Serializable]
     public class PacketManager
     {
         Participants _participants;

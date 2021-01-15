@@ -5,9 +5,9 @@ namespace F1_Unity
 {
     public class DriverStandingColorReact : MonoBehaviour
     {
-        [SerializeField] UnityEngine.Color _fastestLapColor;
-        [SerializeField] UnityEngine.Color _warningColor;
-        [SerializeField] UnityEngine.Color _penaltyColor;
+        [SerializeField] Color _fastestLapColor;
+        [SerializeField] Color _warningColor;
+        [SerializeField] Color _penaltyColor;
         [SerializeField] DriverTemplate[] _driverTemplates;
 
         private void OnEnable()

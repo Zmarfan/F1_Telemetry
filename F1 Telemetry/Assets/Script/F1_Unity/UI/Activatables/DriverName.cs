@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace F1_Unity
 {
-    public class DriverName : MonoBehaviour
+    public class DriverName : MonoBehaviour, IActivatableReset
     {
         [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField, Range(0.0f, 1.0f)] float _raceNumberColorAlpha = 0.45f;
@@ -18,6 +18,12 @@ namespace F1_Unity
 
         protected byte _currentDriverId = byte.MaxValue;
         protected byte _currentDriverPosition = byte.MaxValue;
+
+        public void ClearActivatable()
+        {
+            _currentDriverId = byte.MaxValue;
+            _currentDriverPosition = byte.MaxValue;
+        }
 
         private void Update()
         {

@@ -4,7 +4,7 @@ using F1_Data_Management;
 
 namespace F1_Unity
 {
-    public abstract class ActivatableBase : MonoBehaviour
+    public abstract class ActivatableBase : MonoBehaviour, IActivatableReset
     {
         [Header("Settings")]
 
@@ -37,6 +37,15 @@ namespace F1_Unity
         //Used to check if it needs to update anything but Delta
         protected byte _driver1ID = byte.MaxValue;
         protected byte _driver2ID = byte.MaxValue;
+
+        /// <summary>
+        /// Called when clearing all stored data
+        /// </summary>
+        public void ClearActivatable()
+        {
+            _driver1ID = byte.MaxValue;
+            _driver2ID = byte.MaxValue;
+        }
 
         protected virtual void Update()
         {

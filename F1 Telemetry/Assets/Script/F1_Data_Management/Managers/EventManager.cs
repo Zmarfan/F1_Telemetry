@@ -6,6 +6,7 @@
     /// <summary>
     /// Holds events that trigger when certain events occour. Subscribe to them to react to those events.
     /// </summary>
+    [System.Serializable]
     public class EventManager
     {
         #region Events

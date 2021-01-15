@@ -19,6 +19,9 @@ namespace F1_Unity
         [SerializeField] F1Utility _F1UtilityScript;
         [SerializeField] FlagManager _flagManagerScript;
         [SerializeField] InputManager _inputManager;
+        [SerializeField] ActivationManager _activationManager;
+
+        [SerializeField] TimingScreen _raceTimingScreen;
 
         static GameManager _singleton;
         public static F1Info F1Info { get; private set; } = new F1Info();
@@ -58,20 +61,34 @@ namespace F1_Unity
         {
             RawInputSystem.BeginListening();
             F1Info.SessionStartedEvent += SessionStarted;
+            F1Info.SessionEndedEvent += SessionEnded;
         }
 
         private void OnDisable()
         {
             RawInputSystem.StopListening();
             F1Info.SessionStartedEvent -= SessionStarted;
+            F1Info.SessionEndedEvent -= SessionEnded;
         }
 
         /// <summary>
-        /// Called when a session is started -> clear out old data
+        /// Called when a session is started -> clear out old data (visuals)
         /// </summary>
         void SessionStarted(Packet packet)
         {
+            //clear old stored data
             LapManager.Reset();
+            _raceTimingScreen.CompleteReset();
+        }
+
+        /// <summary>
+        /// Called when session is ended -> Clear out stored data (not visuals)
+        /// </summary>
+        /// <param name="packet"></param>
+        void SessionEnded(Packet packet)
+        {
+            F1Info.Clear();
+            _activationManager.ClearData();
         }
 
         private void OnApplicationQuit()

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace F1_Unity
 {
-    public class PitTimer : MonoBehaviour
+    public class PitTimer : MonoBehaviour, IActivatableReset
     {
         [SerializeField] GameObject _driverPitStopPrefab;
         [SerializeField] Transform _holder;
@@ -34,6 +34,14 @@ namespace F1_Unity
         }
 
         #endregion
+
+        public void ClearActivatable()
+        {
+            List<DriverPitStop> list = _driverPitStopDictionary.Values.ToList();
+            for (int i = 0; i < list.Count; i++)
+                Destroy(list[i].gameObject);
+            _driverPitStopDictionary = new Dictionary<int, DriverPitStop>();
+        }
 
         private void Update()
         {

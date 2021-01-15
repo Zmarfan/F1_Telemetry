@@ -3,6 +3,7 @@
     /// <summary>
     /// Holds session data read from Session packets.
     /// </summary>
+    [System.Serializable]
     public class SessionManager
     {
         public bool ReadyToReadFrom { get; private set; } = false;
@@ -96,6 +97,7 @@
         }
     }
 
+    [System.Serializable]
     public struct Session
     {
         /// <summary>

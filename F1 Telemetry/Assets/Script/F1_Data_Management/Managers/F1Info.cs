@@ -5,6 +5,7 @@ namespace F1_Data_Management
     /// <summary>
     /// User entry to use the functions of F1_Data_Management library.
     /// </summary>
+    [Serializable]
     public class F1Info
     {
         public const int MAX_AMOUNT_OF_CARS = 22;
@@ -61,6 +62,14 @@ namespace F1_Data_Management
         public void Reset()
         {
             _udpReceiver.StopListening();
+            Clear();
+        }
+
+        /// <summary>
+        /// Empties all collected data and clear queue for incoming data
+        /// </summary>
+        public void Clear()
+        {
             _packetManager.Reset();
             _participants.Clear();
             _sessionManager.Clear();

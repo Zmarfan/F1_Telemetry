@@ -7,6 +7,7 @@ namespace F1_Data_Management
     /// <summary>
     /// Holds participant data to be reached from entire project. Entry point for outside scripts to gain access to F1 UDP data for all cars.
     /// </summary>
+    [System.Serializable]
     public class Participants
     {
         DriverData[] _data = new DriverData[F1Info.MAX_AMOUNT_OF_CARS];

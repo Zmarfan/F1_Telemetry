@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 1318685186555502649}
   - component: {fileID: 5597402471397005792}
   m_Layer: 5
-  m_Name: Timing_Screen
+  m_Name: Race_Timing_Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

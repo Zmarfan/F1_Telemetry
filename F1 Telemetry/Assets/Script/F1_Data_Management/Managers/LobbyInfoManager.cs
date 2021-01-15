@@ -5,6 +5,7 @@ namespace F1_Data_Management
     /// <summary>
     /// Holds lobby info data for all drivers read from Lobby Info packets.
     /// </summary>
+    [System.Serializable]
     public class LobbyInfoManager
     {
         /// <summary>

@@ -65,6 +65,30 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Clear out all lingering data each activatable holds
+        /// </summary>
+        public void ClearData()
+        {
+            ClearList(_lowerSlot);
+            ClearList(_rightSlot);
+            ClearList(_upperRightSlot);
+        }
+
+        /// <summary>
+        /// Clears data from a specific range of activatables
+        /// </summary>
+        /// <param name="list"></param>
+        void ClearList(ToggleActivatable[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                IActivatableReset reset = list[i].gameObject.GetComponent<IActivatableReset>();
+                if (reset != null)
+                    reset.ClearActivatable();
+            }
+        }
+
+        /// <summary>
         /// Turns off all activatables in a list except for an exception
         /// </summary>
         void TurnOffActivatableArray(ToggleActivatable exception, ToggleActivatable[] array)

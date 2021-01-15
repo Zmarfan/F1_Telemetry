@@ -7,7 +7,7 @@ namespace F1_Unity
     /// <summary>
     /// Displays tyre wear and wing damage for spectating car if telemetry is public
     /// </summary>
-    public class WearDamage : MonoBehaviour
+    public class WearDamage : MonoBehaviour, IActivatableReset
     {
         [Header("Settings")]
 
@@ -33,6 +33,11 @@ namespace F1_Unity
         [SerializeField] Text _tyreTypeText;
 
         byte _driverID = byte.MaxValue;
+
+        public void ClearActivatable()
+        {
+            _driverID = byte.MaxValue;
+        }
 
         private void Update()
         {

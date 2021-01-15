@@ -62,6 +62,25 @@ namespace F1_Unity
             _canvasGroup.alpha = status ? 1.0f : 0.0f;
         }
 
+        /// <summary>
+        /// Completely resets to original prefab state -> used when changing between sessions
+        /// </summary>
+        public void CompleteReset()
+        {
+            _driverPosition = null;
+            _driverLastTimeSpot = null;
+            _deltaToLeaderFinish = new Dictionary<byte, DriverFinishData>();
+
+            _timingData = null;
+            _lastLeaderVehicleIndex = int.MinValue;
+            _initValues = true;
+
+            _timeScreenState = TimeScreenState.Leader;
+            _timingStatsState = TimingStats.TimingStatsState.None;
+
+            Init();
+        }
+
         #endregion
 
         #region Init Functions
@@ -188,8 +207,6 @@ namespace F1_Unity
         //Updates standing
         private void Update()
         {
-            //ONLY IN RACE!
-
             //Only update standings when data can be read safely and correctly
             if (GameManager.F1Info.ReadyToReadFrom)
             {

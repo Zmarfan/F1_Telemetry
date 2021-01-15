@@ -9,6 +9,7 @@ namespace F1_Data_Management
     /// Receiver of UDP packets sent from F1 2020 by codemasters into port 20777.
     /// After receive -> transmit data to PacketManager that handles it further.
     /// </summary>
+    [System.Serializable]
     public class UdpReceiver
     {
         PacketManager _packetManager;

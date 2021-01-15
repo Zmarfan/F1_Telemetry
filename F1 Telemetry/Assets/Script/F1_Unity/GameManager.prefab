@@ -324,6 +324,8 @@ MonoBehaviour:
   _F1UtilityScript: {fileID: 8424133487733396468}
   _flagManagerScript: {fileID: 4936379151388851755}
   _inputManager: {fileID: 3193525254642038260}
+  _activationManager: {fileID: 7978941367164169833}
+  _raceTimingScreen: {fileID: 5818185556009229571}
 --- !u!1 &2783539569257772824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,7 +1369,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &775702041360068435
@@ -5274,7 +5276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4683069805508572733, guid: 0f157171c6d26814d893d57108e9c06b, type: 3}
       propertyPath: m_Name
-      value: Timing_Screen
+      value: Race_Timing_Screen
       objectReference: {fileID: 0}
     - target: {fileID: 4757499932686544998, guid: 0f157171c6d26814d893d57108e9c06b, type: 3}
       propertyPath: m_AnchoredPosition.x
