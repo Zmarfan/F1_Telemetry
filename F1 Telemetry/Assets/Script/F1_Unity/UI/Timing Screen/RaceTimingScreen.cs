@@ -5,80 +5,37 @@ using System.Linq;
 
 namespace F1_Unity
 {
-    public class TimingScreen : MonoBehaviour
+    public class RaceTimingScreen : TimingScreenBase
     {
         #region Fields
 
-        public static readonly float LEADER_LAP_EPSILON = 0.01f;
+        static readonly float LEADER_LAP_EPSILON = 0.01f;
 
         [SerializeField, Range(10, 400)] int _amountOfTimingStations = 100;
-        [SerializeField, Range(0.01f, 5f)] float _flashColorDuration = 1.0f;
-        [SerializeField, Range(0.01f, 50f)] float _changeBackColorDuration = 4.5f;
-        [SerializeField] Color _movedUpColor = Color.green;
-        [SerializeField] Color _movedDownColor = Color.red;
-        [SerializeField] CanvasGroup _canvasGroup;
-        [SerializeField] DriverTemplate[] _driverTemplates;
 
-        //Reach driver position by their ID
-        Dictionary<byte, int> _driverPosition;
         Dictionary<byte, int> _driverLastTimeSpot;
         Dictionary<byte, DriverFinishData> _deltaToLeaderFinish = new Dictionary<byte, DriverFinishData>();
 
         TimingStation[] _timingData;
-        int _leaderVehicleIndex;
         int _lastLeaderVehicleIndex = int.MinValue;
         int _lastPassedTimingIndex;
-        bool _initValues = true;
-
-        TimeScreenState _timeScreenState = TimeScreenState.Leader;
-        TimingStats.TimingStatsState _timingStatsState = TimingStats.TimingStatsState.None;
 
         #endregion
 
-        #region Start / End Methods
-
-        private void Awake()
-        {
-            Init();
-        }
-
-        private void OnEnable()
-        {
-            GameManager.InputManager.PressedTimeInterval += ChangeTimingMode;
-            GameManager.InputManager.PressedTimeStatsState += ChangeTimingState;
-        }
-
-        private void OnDisable()
-        {
-            GameManager.InputManager.PressedTimeInterval -= ChangeTimingMode;
-            GameManager.InputManager.PressedTimeStatsState -= ChangeTimingState;
-        }
-
-        /// <summary>
-        /// Shows or not show timing screen (will still be active in background)
-        /// </summary>
-        public void SetActive(bool status)
-        {
-            _canvasGroup.alpha = status ? 1.0f : 0.0f;
-        }
+        #region public methods
 
         /// <summary>
         /// Completely resets to original prefab state -> used when changing between sessions
         /// </summary>
-        public void CompleteReset()
-        {
-            _driverPosition = null;
+        public override void CompleteReset()
+        { 
             _driverLastTimeSpot = null;
             _deltaToLeaderFinish = new Dictionary<byte, DriverFinishData>();
 
             _timingData = null;
             _lastLeaderVehicleIndex = int.MinValue;
-            _initValues = true;
 
-            _timeScreenState = TimeScreenState.Leader;
-            _timingStatsState = TimingStats.TimingStatsState.None;
-
-            Init();
+            base.CompleteReset();
         }
 
         #endregion
@@ -88,7 +45,7 @@ namespace F1_Unity
         /// <summary>
         /// Assign correct number to each placement and create singleton
         /// </summary>
-        void Init()
+        override protected void Init()
         {
             _timingData = new TimingStation[_amountOfTimingStations];
 
@@ -100,7 +57,7 @@ namespace F1_Unity
         /// <summary>
         /// Maps driver IDs to position on track. Used to compare old position to current
         /// </summary>
-        void InitDrivers()
+        override protected void InitDrivers()
         {
             _initValues = false;
 
@@ -162,65 +119,12 @@ namespace F1_Unity
 
         #endregion
 
-        #region Modes
-
-        /// <summary>
-        /// Changes betwen interval mode and to leader
-        /// </summary>
-        void ChangeTimingMode()
-        {
-            _timeScreenState = (TimeScreenState)(((int)_timeScreenState + 1) % (int)TimeScreenState.Length);
-            SetMode(_timeScreenState);
-        }
-
-        /// <summary>
-        /// Sets mode to interval or to leader
-        /// </summary>
-        void SetMode(TimeScreenState timeScreenState)
-        {
-            for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].SetMode(timeScreenState);
-        }
-
-        /// <summary>
-        /// Called when changing timing stats state -> changes all templates to that state
-        /// </summary>
-        void ChangeTimingState()
-        {
-            _timingStatsState = (TimingStats.TimingStatsState)(((int)_timingStatsState + 1) % (int)TimingStats.TimingStatsState.Length);
-            SetStatsState(_timingStatsState);
-        }
-
-        /// <summary>
-        /// Updates all templates to this stats state
-        /// </summary>
-        void SetStatsState(TimingStats.TimingStatsState state)
-        {
-            for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].SetStatsState(state);
-        }
-
-        #endregion
-
         #region Update Methods
-
-        //Updates standing
-        private void Update()
-        {
-            //Only update standings when data can be read safely and correctly
-            if (GameManager.F1Info.ReadyToReadFrom)
-            {
-                if (_initValues)
-                    InitDrivers();
-                else
-                    DoTimingScreen();
-            }
-        }
 
         /// <summary>
         /// Updates positions in standing and checks stability, also updates driver stats
         /// </summary>
-        void DoTimingScreen()
+        override protected void MainUpdate()
         {
             //Will be valid -> checked earlier
             Session sessionData = GameManager.F1Info.ReadSession(out bool status);
@@ -411,25 +315,9 @@ namespace F1_Unity
         #region Positioning
 
         /// <summary>
-        /// Takes care of positioning and coloring of overtakes
-        /// </summary>
-        void Positioning(DriverData driverData, Session sessionData, int index)
-        {
-            byte carPosition = driverData.LapData.carPosition;
-
-            //If this driver doesn't exist, it has just joined the session, recalculate everything!
-            if (!_driverPosition.ContainsKey(driverData.ID) || !_driverLastTimeSpot.ContainsKey(driverData.ID))
-                InitDrivers();
-
-            //Drivers position has changed! Update!
-            if (_driverPosition[driverData.ID] != carPosition)
-                ChangeDriverPosition(carPosition, driverData, sessionData, index);
-        }
-
-        /// <summary>
         /// Change driver position and exchange values between templates -> update leader values if leader changed
         /// </summary>
-        void ChangeDriverPosition(byte carPosition, DriverData driverData, Session sessionData, int index)
+        override protected void ChangeDriverPosition(byte carPosition, DriverData driverData, Session sessionData, int index)
         {
             //Update indexes for leader
             if (carPosition == 1)
@@ -477,20 +365,6 @@ namespace F1_Unity
         #endregion
 
         #region Driver Update
-
-        /// <summary>
-        /// Checks if driver is currently in pit and sets it so 
-        /// </summary>
-        bool IsDriverInPit(DriverData driverData, int index)
-        {
-            if (driverData.LapData.pitStatus == PitStatus.Pitting)
-                _driverTemplates[index].SetTimingState(DriverTimeState.Pit);
-            else if (driverData.LapData.pitStatus == PitStatus.In_Pit_Area)
-                _driverTemplates[index].SetTimingState(DriverTimeState.Pit_Area);
-            else
-                return false;
-            return true;
-        }
 
         /// <summary>
         /// Sets the time text for a driver depending on distance to leader.
@@ -564,44 +438,6 @@ namespace F1_Unity
 
         #endregion
 
-        #region Help Methods
-
-        /// <summary>
-        /// How far along a lap is a driver? (0.0f - 1.0f)
-        /// </summary>
-        float LapCompletion(Session sessionData, DriverData driverData)
-        {
-            return Mathf.Clamp01(driverData.LapData.lapDistance / sessionData.TrackLength);
-        }
-
-        /// <summary>
-        /// Returns current lap for a driver clamped to amount of lap in session
-        /// </summary>
-        /// <returns></returns>
-        int GetCurrentLapClamped(DriverData driverData, Session sessionData)
-        {
-            return Mathf.Clamp(driverData.LapData.currentLapNumber, 0, sessionData.TotalLaps);
-        }
-
-        /// <summary>
-        /// Return the index for template based on driver position
-        /// </summary>
-        int GetTemplateIndex(DriverData driverData)
-        {
-            return driverData.LapData.carPosition - 1;
-        }    
-
-        /// <summary>
-        /// Better modulo than % with only giving positive values
-        /// </summary>
-        int Modulo(int x, int m)
-        {
-            int r = x % m;
-            return r < 0 ? r + m : r;
-        }
-
-        #endregion
-
         #region Structs
 
         /// <summary>
@@ -646,20 +482,4 @@ namespace F1_Unity
 
         #endregion
     }
-
-    #region Enums
-
-    /// <summary>
-    /// Used to tell what state timing screen is in
-    /// </summary>
-    public enum TimeScreenState
-    {
-        None,
-        Leader,
-        Interval,
-        Fastest_Lap,
-        Length
-    }
-
-    #endregion
 }

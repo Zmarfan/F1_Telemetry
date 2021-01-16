@@ -9,7 +9,7 @@ namespace F1_Unity
         [SerializeField] Transform _canvas;
 
         [SerializeField] GameObject _all;
-        [SerializeField] TimingScreen _timingScreen;
+        [SerializeField] RaceTimingScreen _timingScreen;
         [SerializeField] ToggleActivatable _liveSpeed;
         [SerializeField] ToggleActivatable _driverName;
         [SerializeField] ToggleActivatable _detailDelta;

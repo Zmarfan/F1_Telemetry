@@ -21,7 +21,7 @@ namespace F1_Unity
         [SerializeField] InputManager _inputManager;
         [SerializeField] ActivationManager _activationManager;
 
-        [SerializeField] TimingScreen _raceTimingScreen;
+        [SerializeField] RaceTimingScreen _raceTimingScreen;
 
         static GameManager _singleton;
         public static F1Info F1Info { get; private set; } = new F1Info();
