@@ -97,6 +97,16 @@ namespace F1_Unity
         #region Public methods
 
         /// <summary>
+        /// Get the driver template for specific index (Used to read delta for each driver)
+        /// </summary>
+        /// <param name="index">Position - 1</param>
+        /// <returns>Access to a driver's delta, state and info</returns>
+        public DriverTemplate GetDriverTemplate(int index)
+        {
+            return _driverTemplates[index];
+        }
+
+        /// <summary>
         /// Shows or not show timing screen (will still be active in background)
         /// </summary>
         public void SetActive(bool status)
@@ -123,7 +133,7 @@ namespace F1_Unity
         #region Update Methods
 
         //Updates standing
-        private void Update()
+        public void UpdateTimingScreen()
         {
             //Only update standings when data can be read safely and correctly
             if (GameManager.F1Info.ReadyToReadFrom)

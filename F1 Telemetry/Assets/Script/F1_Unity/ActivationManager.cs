@@ -9,7 +9,6 @@ namespace F1_Unity
         [SerializeField] Transform _canvas;
 
         [SerializeField] GameObject _all;
-        [SerializeField] RaceTimingScreen _timingScreen;
         [SerializeField] ToggleActivatable _liveSpeed;
         [SerializeField] ToggleActivatable _driverName;
         [SerializeField] ToggleActivatable _detailDelta;
@@ -104,7 +103,7 @@ namespace F1_Unity
         {
             bool current = !_all.activeSelf;
             _all.SetActive(current);
-            _timingScreen.SetActive(current);
+            GameManager.TimingScreenManager.SetActive(current);
         }
 
         void ToggleDriverName()

@@ -19,8 +19,6 @@ namespace F1_Unity
         [Header("Drop")]
 
         [SerializeField] Text _deltaText;
-        //Only used to get Delta as it is calculated and stored there -> no need to calculate again
-        [SerializeField] DriverTemplate[] _driverTemplates;
         [SerializeField] Image _driver1CarImage;
         [SerializeField] Image _driver2CarImage;
 
@@ -62,11 +60,16 @@ namespace F1_Unity
         {
             _deltaTimer.Reset();
 
+            DriverTemplate template = GameManager.TimingScreenManager.GetDriverTemplate(index, out bool status);
+            //Data not ready to read yet
+            if (!status)
+                return;
+
             //We don't want to set anything if the delta isn't yet correct
-            DriverTimeState state = _driverTemplates[index].TimeState;
+            DriverTimeState state = template.TimeState;
             if (state != DriverTimeState.Starting && state != DriverTimeState.Pit && state != DriverTimeState.Pit_Area && state != DriverTimeState.Lapped)
             {
-                float delta = _driverTemplates[index].DeltaToCarInFront;
+                float delta = template.DeltaToCarInFront;
 
                 _deltaText.text = F1Utility.GetDeltaString(delta);
 

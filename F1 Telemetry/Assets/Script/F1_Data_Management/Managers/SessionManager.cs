@@ -70,7 +70,7 @@
             //If the session has changed since last update -> invoke event
             SessionType lastSessionType = SessionData.SessionType;
             if (lastSessionType != sessionPacket.SessionType)
-                _eventManager.InvokeSessionChangeEvent(sessionPacket.SessionType);
+                _eventManager.InvokeSessionChangeEvent(lastSessionType, sessionPacket.SessionType);
 
             Session newSessionData = new Session();
             newSessionData.Weather = sessionPacket.Weather;

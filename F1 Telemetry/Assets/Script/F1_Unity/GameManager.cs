@@ -9,6 +9,8 @@ namespace F1_Unity
 {
     public class GameManager : MonoBehaviour
     {
+        #region Fields
+
         [SerializeField] GameObject _lockInputSymbol;
         [SerializeField] Key _lockInputKey;
 
@@ -21,7 +23,7 @@ namespace F1_Unity
         [SerializeField] InputManager _inputManager;
         [SerializeField] ActivationManager _activationManager;
 
-        [SerializeField] RaceTimingScreen _raceTimingScreen;
+        [SerializeField] TimingScreenManager _timingScreenManager;
 
         static GameManager _singleton;
         public static F1Info F1Info { get; private set; } = new F1Info();
@@ -49,19 +51,28 @@ namespace F1_Unity
         /// </summary>
         public static DriverDataManager DriverDataManager { get { return _singleton._driverDataManagerScript; } }
         /// <summary>
+        /// Access to delta for each driver
+        /// </summary>
+        public static TimingScreenManager TimingScreenManager { get { return _singleton._timingScreenManager; } }
+        /// <summary>
         /// Way to read input from user. Subscribe to correct event.
         /// </summary>
         public static InputManager InputManager { get { return _singleton._inputManager; } }
         /// <summary>
         /// RawInputSystem that allows subscribtion and read of inputs on a low level (application not in focus). Use InputManager instead for reading input
         /// </summary>
-        public static RawInputSystem RawInputSystem { get; private set; } 
+        public static RawInputSystem RawInputSystem { get; private set; }
+
+        #endregion
+
+        #region Start/Awake
 
         private void OnEnable()
         {
             RawInputSystem.BeginListening();
             F1Info.SessionStartedEvent += SessionStarted;
             F1Info.SessionEndedEvent += SessionEnded;
+            F1Info.SessionChange += SessionChange;
         }
 
         private void OnDisable()
@@ -69,7 +80,17 @@ namespace F1_Unity
             RawInputSystem.StopListening();
             F1Info.SessionStartedEvent -= SessionStarted;
             F1Info.SessionEndedEvent -= SessionEnded;
+            F1Info.SessionChange -= SessionChange;
         }
+
+        private void OnApplicationQuit()
+        {
+            RawInputSystem.StopListening();
+        }
+
+        #endregion
+
+        #region Session Events
 
         /// <summary>
         /// Called when a session is started -> clear out old data (visuals)
@@ -78,7 +99,7 @@ namespace F1_Unity
         {
             //clear old stored data
             LapManager.Reset();
-            _raceTimingScreen.CompleteReset();
+            _timingScreenManager.CompleteReset();
         }
 
         /// <summary>
@@ -91,10 +112,46 @@ namespace F1_Unity
             _activationManager.ClearData();
         }
 
-        private void OnApplicationQuit()
+        /// <summary>
+        /// Called when session is changing state (will be called on startup aswell if mid session) -> use to change session dependant UI
+        /// </summary>
+        /// <param name="oldType">What session it was before</param>
+        /// <param name="newType">What session it has turned in to</param>
+        void SessionChange(SessionType oldType, SessionType newType)
         {
-            RawInputSystem.StopListening();
+            switch (newType)
+            {
+                //Q mode
+                case SessionType.P1: case SessionType.P2: case SessionType.P3: case SessionType.Short_P:
+                case SessionType.Q1: case SessionType.Q2: case SessionType.Q3: case SessionType.Short_Q:
+                    {
+                        _timingScreenManager.SetMode(TimingScreenManager.TimingScreenType.Qualifying);
+                        break;
+                    }
+                //One shot Q mode
+                case SessionType.One_Shot_Q:
+                    {
+                        _timingScreenManager.SetMode(TimingScreenManager.TimingScreenType.One_Shot_Q);
+                        break;
+                    }
+                //Race mode
+                case SessionType.Race: case SessionType.Race2:
+                    {
+                        _timingScreenManager.SetMode(TimingScreenManager.TimingScreenType.Race);
+                        break;
+                    }
+                //Time trial mode
+                case SessionType.Time_Trial:
+                    {
+                        _timingScreenManager.SetMode(TimingScreenManager.TimingScreenType.Time_Trial);
+                        break;
+                    }
+                default:
+                    throw new System.Exception("There is no current implementation to handle this session: " + newType);
+            }
         }
+
+        #endregion 
 
         /// <summary>
         /// Called from Start window to init GameManager before it's activated

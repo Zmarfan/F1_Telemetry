@@ -14,7 +14,6 @@ namespace F1_Unity
         [Header("Drop")]
 
         [SerializeField] CanvasGroup _canvasGroup;
-        [SerializeField] DriverTemplate[] _driverTemplates;
 
         [Header("Mesh")]
 
@@ -224,10 +223,16 @@ namespace F1_Unity
 
             //Sets delta if possible -> copy from timing screen
             if (infrontStatus)
+            {
                 //Set delta to show the spectating cars delta! -> replace + for - to show it's in front!
-                _driverAheadDeltaText.text = _driverTemplates[driverData.LapData.carPosition - 1].CurrentDelta.Replace('+', '-');
+                DriverTemplate driverTemplate = GameManager.TimingScreenManager.GetDriverTemplate(driverData.LapData.carPosition - 1, out bool driverStatus);
+                _driverAheadDeltaText.text = driverStatus ? driverTemplate.CurrentDelta.Replace('+', '-') : string.Empty;
+            }
             if (behindStatus)
-                _driverBehindDeltaText.text = _driverTemplates[behind.LapData.carPosition - 1].CurrentDelta;
+            {
+                DriverTemplate behindTemplate = GameManager.TimingScreenManager.GetDriverTemplate(behind.LapData.carPosition - 1, out bool behindStatus2);
+                _driverBehindDeltaText.text = behindStatus2 ? behindTemplate.CurrentDelta : string.Empty;
+            }
         }
 
         /// <summary>

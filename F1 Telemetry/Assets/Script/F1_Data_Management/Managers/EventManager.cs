@@ -1,7 +1,7 @@
 ﻿namespace F1_Data_Management
 {
     public delegate void EventOccour(Packet packet);
-    public delegate void SessionChange(SessionType newSession);
+    public delegate void SessionChange(SessionType oldSession, SessionType newSession);
 
     /// <summary>
     /// Holds events that trigger when certain events occour. Subscribe to them to react to those events.
@@ -78,9 +78,9 @@
         /// Called from SessionManager when session type has changed since last update.
         /// </summary>
         /// <param name="newSessionType"></param>
-        public void InvokeSessionChangeEvent(SessionType newSessionType)
+        public void InvokeSessionChangeEvent(SessionType oldSessionType, SessionType newSessionType)
         {
-            SessionChange?.Invoke(newSessionType);
+            SessionChange?.Invoke(oldSessionType, newSessionType);
         }
 
         /// <summary>

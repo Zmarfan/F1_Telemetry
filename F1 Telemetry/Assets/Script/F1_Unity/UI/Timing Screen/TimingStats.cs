@@ -272,15 +272,6 @@ namespace F1_Unity
             _penaltyObj.SetActive(totalPenalties != 0);
             //Set investigation symbol for drivers with drive through or stop go penalties
 
-
-            //TEST 
-            if (stopGoPenalties > 0 || driveThrough)
-            {
-                Debug.Log("saved stop go: " + _lastStopGoPenalties + " current stop go: " + stopGoPenalties + ", saved drive through: " + _hasDriveThrough + " current drive through: " + driveThrough);
-            }
-            //TEST
-
-
             _stopGoObj.SetActive(stopGoPenalties > 0 || driveThrough);
             if (totalPenalties > 0)
                 _penaltyText.text = totalPenalties.ToString() + _penaltyEndingString;
