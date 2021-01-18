@@ -12,12 +12,13 @@ namespace F1_Unity
     {
         #region Fields
 
+        [SerializeField] protected TimingStats.TimingStatsState[] _availableStatsState;
         [SerializeField, Range(0.01f, 5f)] protected float _flashColorDuration = 1.0f;
         [SerializeField, Range(0.01f, 50f)] protected float _changeBackColorDuration = 4.5f;
         [SerializeField] protected Color _movedUpColor = Color.green;
         [SerializeField] protected Color _movedDownColor = Color.red;
         [SerializeField] protected CanvasGroup _canvasGroup;
-        [SerializeField] protected DriverTemplate[] _driverTemplates;
+        [SerializeField] protected TimingScreenEntry[] _driverEntries;
 
         //Reach driver position by their ID
         protected Dictionary<byte, int> _driverPosition;
@@ -26,7 +27,7 @@ namespace F1_Unity
         protected bool _initValues = true;
 
         protected TimeScreenState _timeScreenState = TimeScreenState.Leader;
-        protected TimingStats.TimingStatsState _timingStatsState = TimingStats.TimingStatsState.None;
+        protected int _timingStatsStateIndex = 0;
 
         #endregion
 
@@ -37,19 +38,27 @@ namespace F1_Unity
             Init();
         }
 
-        protected abstract void Init();
+        /// <summary>
+        /// Called on awake to initilize timing screen
+        /// </summary>
+        protected virtual void Init()
+        {
+            for (int i = 0; i < _driverEntries.Length; i++)
+                _driverEntries[i].Init(i + 1, _flashColorDuration, _changeBackColorDuration);
+        }
+
         protected abstract void InitDrivers();
 
         private void OnEnable()
         {
             GameManager.InputManager.PressedTimeInterval += ChangeTimingMode;
-            GameManager.InputManager.PressedTimeStatsState += ChangeTimingState;
+            GameManager.InputManager.PressedTimeStatsState += ChangeTimingStatsState;
         }
 
         private void OnDisable()
         {
             GameManager.InputManager.PressedTimeInterval -= ChangeTimingMode;
-            GameManager.InputManager.PressedTimeStatsState -= ChangeTimingState;
+            GameManager.InputManager.PressedTimeStatsState -= ChangeTimingStatsState;
         }
 
         #endregion
@@ -70,17 +79,17 @@ namespace F1_Unity
         /// </summary>
         protected virtual void SetMode(TimeScreenState timeScreenState)
         {
-            for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].SetMode(timeScreenState);
+            for (int i = 0; i < _driverEntries.Length; i++)
+                _driverEntries[i].SetMode(timeScreenState);
         }
 
         /// <summary>
-        /// Called when changing timing stats state -> changes all templates to that state
+        /// Called when changing timing stats state -> changes all entries to that state
         /// </summary>
-        protected void ChangeTimingState()
+        protected void ChangeTimingStatsState()
         {
-            _timingStatsState = (TimingStats.TimingStatsState)(((int)_timingStatsState + 1) % (int)TimingStats.TimingStatsState.Length);
-            SetStatsState(_timingStatsState);
+            _timingStatsStateIndex = (_timingStatsStateIndex + 1) % _availableStatsState.Length;
+            SetStatsState(_availableStatsState[_timingStatsStateIndex]);
         }
 
         /// <summary>
@@ -88,8 +97,8 @@ namespace F1_Unity
         /// </summary>
         protected virtual void SetStatsState(TimingStats.TimingStatsState state)
         {
-            for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].SetStatsState(state);
+            for (int i = 0; i < _driverEntries.Length; i++)
+                _driverEntries[i].SetStatsState(state);
         }
 
         #endregion
@@ -101,9 +110,9 @@ namespace F1_Unity
         /// </summary>
         /// <param name="index">Position - 1</param>
         /// <returns>Access to a driver's delta, state and info</returns>
-        public DriverTemplate GetDriverTemplate(int index)
+        public TimingScreenEntry GetDriverTemplate(int index)
         {
-            return _driverTemplates[index];
+            return _driverEntries[index];
         }
 
         /// <summary>
@@ -123,7 +132,7 @@ namespace F1_Unity
             _initValues = true;
 
             _timeScreenState = TimeScreenState.Leader;
-            _timingStatsState = TimingStats.TimingStatsState.None;
+            _timingStatsStateIndex = 0;
 
             Init();
         }
@@ -149,6 +158,25 @@ namespace F1_Unity
         /// Does all updating for timing screen. Called once per frame.
         /// </summary>
         protected abstract void MainUpdate();
+
+        /// <summary>
+        /// Sets all aspect of timing for specific driver
+        /// </summary>
+        protected abstract void DoDriver(DriverData driverData, DriverData leaderData, Session sessionData);
+
+        /// <summary>
+        /// //Set time text for each template and calculate interval based on DeltaToLeader
+        /// </summary>
+        protected void CalculateDriverIntervals()
+        {
+            _driverEntries[0].SetTiming(); //Leader
+            for (int i = 1; i < _driverEntries.Length; i++)
+            {
+                float previousCarDeltaToLeader = _driverEntries[i - 1].DeltaToLeader;
+                _driverEntries[i].SetCarAheadDelta(previousCarDeltaToLeader);
+                _driverEntries[i].SetTiming();
+            }
+        }
 
         #endregion
 
@@ -180,18 +208,9 @@ namespace F1_Unity
         #region Driver Update
 
         /// <summary>
-        /// Checks if driver is currently in pit and sets it so 
+        /// Checks if driver is currently in pit and sets it so in entry
         /// </summary>
-        protected bool IsDriverInPit(DriverData driverData, int index)
-        {
-            if (driverData.LapData.pitStatus == PitStatus.Pitting)
-                _driverTemplates[index].SetTimingState(DriverTimeState.Pit);
-            else if (driverData.LapData.pitStatus == PitStatus.In_Pit_Area)
-                _driverTemplates[index].SetTimingState(DriverTimeState.Pit_Area);
-            else
-                return false;
-            return true;
-        }
+        protected abstract bool IsDriverInPit(DriverData driverData, int index);
 
         #endregion
 
@@ -217,7 +236,7 @@ namespace F1_Unity
         /// <summary>
         /// Return the index for template based on driver position
         /// </summary>
-        protected int GetTemplateIndex(DriverData driverData)
+        protected int GetEntryIndex(DriverData driverData)
         {
             return driverData.LapData.carPosition - 1;
         }

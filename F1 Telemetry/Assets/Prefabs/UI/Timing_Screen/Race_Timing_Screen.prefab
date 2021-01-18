@@ -499,35 +499,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0e7d40422dc704e86a4347f6a780b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amountOfTimingStations: 100
+  _availableStatsState: 000000000100000002000000030000000400000005000000
   _flashColorDuration: 3.5
   _changeBackColorDuration: 6.5
   _movedUpColor: {r: 0, g: 1, b: 0, a: 1}
   _movedDownColor: {r: 1, g: 0, b: 0, a: 1}
   _canvasGroup: {fileID: 2378231660550451984}
-  _driverTemplates:
-  - {fileID: 4852992858340161814}
-  - {fileID: 4087291742522916603}
-  - {fileID: 1237583918727370965}
-  - {fileID: 7081269588076592393}
-  - {fileID: 8239616010961356284}
-  - {fileID: 8895566689859682320}
-  - {fileID: 3199497063073753542}
-  - {fileID: 8440704699137635724}
-  - {fileID: 432590147238051191}
-  - {fileID: 6482026397793734064}
-  - {fileID: 7009178812660058251}
-  - {fileID: 767586639568754050}
-  - {fileID: 3173849630835206976}
-  - {fileID: 7090183334243939408}
-  - {fileID: 2072579537543263326}
-  - {fileID: 3535261109652043148}
-  - {fileID: 1987727791105578299}
-  - {fileID: 8389343096992168251}
-  - {fileID: 1632812184848066642}
-  - {fileID: 6722648243954688304}
-  - {fileID: 641339208006083219}
-  - {fileID: 3517944393628473757}
+  _driverEntries: []
+  _amountOfTimingStations: 100
 --- !u!114 &5597402471397005792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6d88b99431b82b439379bb04fd621be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fastestLap: 1
+  _penaltyWarning: 1
   _fastestLapColor: {r: 0.29084966, g: 0.10973653, b: 0.4245283, a: 1}
   _warningColor: {r: 0.34901962, g: 0.27095404, b: 0.14117648, a: 1}
   _penaltyColor: {r: 0.5471698, g: 0.20531711, b: 0.17241009, a: 1}

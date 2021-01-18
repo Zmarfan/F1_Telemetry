@@ -2061,6 +2061,8 @@ MonoBehaviour:
   _dnfString: OUT
   _dsqString: DSQ
   _startingString: '-'
+  _noTimeString: NO TIME
+  _outLapString: OUT LAP
   _leaderString: Leader
   _intervalString: Interval
   _lappedString: LAP

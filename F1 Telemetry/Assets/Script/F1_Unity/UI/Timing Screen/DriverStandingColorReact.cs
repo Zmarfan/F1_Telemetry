@@ -5,21 +5,27 @@ namespace F1_Unity
 {
     public class DriverStandingColorReact : MonoBehaviour
     {
+        [SerializeField] bool _fastestLap = true;
+        [SerializeField] bool _penaltyWarning = true;
         [SerializeField] Color _fastestLapColor;
         [SerializeField] Color _warningColor;
         [SerializeField] Color _penaltyColor;
-        [SerializeField] DriverTemplate[] _driverTemplates;
+        [SerializeField] TimingScreenEntry[] _driverTemplates;
 
         private void OnEnable()
         {
-            GameManager.F1Info.FastestLapEvent += FastestLapEvent;
-            GameManager.F1Info.PenaltyEvent += PenaltyEvent;
+            if (_fastestLap)
+                GameManager.F1Info.FastestLapEvent += FastestLapEvent;
+            if (_penaltyWarning)
+                GameManager.F1Info.PenaltyEvent += PenaltyEvent;
         }
 
         private void OnDisable()
         {
-            GameManager.F1Info.FastestLapEvent -= FastestLapEvent;     
-            GameManager.F1Info.PenaltyEvent -= PenaltyEvent;     
+            if (_fastestLap)
+                GameManager.F1Info.FastestLapEvent -= FastestLapEvent;
+            if (_penaltyWarning)
+                GameManager.F1Info.PenaltyEvent -= PenaltyEvent;     
         }
 
         /// <summary>

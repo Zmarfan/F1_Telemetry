@@ -74,7 +74,7 @@ namespace F1_Unity
         /// </summary>
         /// <param name="index">Position - 1</param>
         /// <returns>Access to a driver's delta, state and info</returns>
-        public DriverTemplate GetDriverTemplate(int index, out bool status)
+        public TimingScreenEntry GetDriverTemplate(int index, out bool status)
         {
             if (index >= 0 && index < F1Info.MAX_AMOUNT_OF_CARS)
             {

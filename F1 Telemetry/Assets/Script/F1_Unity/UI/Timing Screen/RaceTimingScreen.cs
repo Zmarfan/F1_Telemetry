@@ -49,8 +49,7 @@ namespace F1_Unity
         {
             _timingData = new TimingStation[_amountOfTimingStations];
 
-            for (int i = 0; i < _driverTemplates.Length; i++)
-                _driverTemplates[i].Init(i + 1, _flashColorDuration, _changeBackColorDuration);
+            base.Init();
         }
 
 
@@ -80,17 +79,17 @@ namespace F1_Unity
                 if (validDriver && status)
                 {
                     _driverPosition.Add(driverData.ID, driverData.LapData.carPosition + 1);
-                    _driverTemplates[i].SetTimingState(DriverTimeState.Starting);
-                    _driverTemplates[i].SetTiming();
+                    _driverEntries[i].SetTimingState(DriverTimeState.Starting);
+                    _driverEntries[i].SetTiming();
                     //Sets driverdata if it's usage is needed
-                    _driverTemplates[GetTemplateIndex(driverData)].SetDriverData(driverData);
+                    _driverEntries[GetEntryIndex(driverData)].SetDriverData(driverData);
 
                     //If the car is already retired -> set it so
                     resultStatus = driverData.LapData.resultStatus;
                     if (resultStatus == ResultStatus.Retired || resultStatus == ResultStatus.Disqualified)
-                        _driverTemplates[i].Out(resultStatus);
+                        _driverEntries[i].Out(resultStatus);
                     else
-                        _driverTemplates[i].NotOut();
+                        _driverEntries[i].NotOut();
                     //Init leader
                     if (driverData.LapData.carPosition == 1)
                     {
@@ -104,7 +103,7 @@ namespace F1_Unity
 
                 //Only enable so many positions in time standing as there are active drivers
                 //If they DNF/DSQ later they will only gray out, not be removed
-                _driverTemplates[i].SetActive(!(resultStatus == ResultStatus.Inactive || resultStatus == ResultStatus.Invalid));
+                _driverEntries[i].SetActive(!(resultStatus == ResultStatus.Inactive || resultStatus == ResultStatus.Invalid));
             }
 
             //Need to loop again to set timing index same as leader -> Will make sure no odd times are displayed if restarting mid race!
@@ -141,29 +140,22 @@ namespace F1_Unity
                 DoDriver(driverData, leaderData, sessionData);
             }
 
-            //Set time text for each template and calculate interval based on DeltaToLeader
-            _driverTemplates[0].SetTiming(); //Leader
-            for (int i = 1; i < _driverTemplates.Length; i++)
-            {
-                float previousCarDeltaToLeader = _driverTemplates[i - 1].DeltaToLeader;
-                _driverTemplates[i].SetCarAheadDelta(previousCarDeltaToLeader);
-                _driverTemplates[i].SetTiming();
-            }
+            CalculateDriverIntervals();
         }
 
         /// <summary>
         /// Sets all aspect of timing for specific driver
         /// </summary>
-        void DoDriver(DriverData driverData, DriverData leaderData, Session sessionData)
+        override protected void DoDriver(DriverData driverData, DriverData leaderData, Session sessionData)
         {
-            int index = GetTemplateIndex(driverData);
-            //Set specific driver info to template
-            _driverTemplates[index].SetDriverData(driverData);
-            _driverTemplates[index].SetFastestLap(driverData);
-            _driverTemplates[index].SetSpectator(driverData);
+            int index = GetEntryIndex(driverData);
+            //Set specific driver info to entry
+            _driverEntries[index].SetDriverData(driverData);
+            _driverEntries[index].SetFastestLap(driverData);
+            _driverEntries[index].SetSpectator(driverData);
 
             //Update stats for driver
-            _driverTemplates[index].UpdateStats(driverData, _timingStatsState);
+            _driverEntries[index].UpdateStats(driverData, _availableStatsState[_timingStatsStateIndex]);
 
             Positioning(driverData, sessionData, index);
             //Need to read leaderData again in case this driver overtook him
@@ -176,7 +168,8 @@ namespace F1_Unity
             else if (driverData.LapData.currentLapNumber <= sessionData.TotalLaps)
             {
                 bool inPit = IsDriverInPit(driverData, index);
-                UpdateDriverTimingToLeader(leaderData, sessionData, driverData, inPit);
+                _driverEntries[index].SetInPit(inPit);
+                UpdateDriverTimingToLeader(leaderData, sessionData, driverData, inPit, index);
             }
         }
 
@@ -248,14 +241,14 @@ namespace F1_Unity
                     if (_lastLeaderVehicleIndex != int.MinValue)
                     {
                         DriverData oldLeaderData = GameManager.F1Info.ReadCarData(_lastLeaderVehicleIndex, out bool status);
-                        _driverTemplates[GetTemplateIndex(oldLeaderData)].SetTimingState(DriverTimeState.Delta);
-                        _driverTemplates[GetTemplateIndex(driverData)].SetTimingState(DriverTimeState.Leader);
+                        _driverEntries[GetEntryIndex(oldLeaderData)].SetTimingState(DriverTimeState.Delta);
+                        _driverEntries[GetEntryIndex(driverData)].SetTimingState(DriverTimeState.Leader);
 
                         DriverFinishData oldLeaderFinishData = _deltaToLeaderFinish[oldLeaderData.ID];
                         float deltaToLeader =  oldLeaderFinishData.TimeStamp - GameManager.F1Info.SessionTime;
                         oldLeaderFinishData.TimeToLeader = deltaToLeader;
                         _deltaToLeaderFinish[oldLeaderData.ID] = oldLeaderFinishData;
-                        _driverTemplates[GetTemplateIndex(oldLeaderData)].SetDeltaToLeader(oldLeaderFinishData.IntervalToLeader);
+                        _driverEntries[GetEntryIndex(oldLeaderData)].SetDeltaToLeader(oldLeaderFinishData.IntervalToLeader);
                     }
                     //The new leaders finish data
                     _deltaToLeaderFinish.Add(driverData.ID, new DriverFinishData()
@@ -284,7 +277,7 @@ namespace F1_Unity
                 }
 
                 //Set the correct interval to leader
-                _driverTemplates[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
+                _driverEntries[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
             }
         }
 
@@ -305,7 +298,7 @@ namespace F1_Unity
                     data.TimeToLeader = deltaToLeader;
                     DriverData driverData = GameManager.F1Info.ReadCarData(data.VehicleIndex, out bool status);
                     _deltaToLeaderFinish[driverData.ID] = data;
-                    _driverTemplates[GetTemplateIndex(driverData)].SetDeltaToLeader(data.IntervalToLeader);
+                    _driverEntries[GetEntryIndex(driverData)].SetDeltaToLeader(data.IntervalToLeader);
                 }
             }
         }
@@ -315,7 +308,7 @@ namespace F1_Unity
         #region Positioning
 
         /// <summary>
-        /// Change driver position and exchange values between templates -> update leader values if leader changed
+        /// Change driver position and exchange values between entries -> update leader values if leader changed
         /// </summary>
         override protected void ChangeDriverPosition(byte carPosition, DriverData driverData, Session sessionData, int index)
         {
@@ -323,25 +316,25 @@ namespace F1_Unity
             if (carPosition == 1)
                 ChangeLeader(driverData, sessionData);
 
-            _driverTemplates[index].SetInitials(GameManager.ParticipantManager.GetDriverInitials(driverData.RaceNumber)); //Set initals for that position
-            _driverTemplates[index].SetTeamColor(GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
+            _driverEntries[index].SetInitials(GameManager.ParticipantManager.GetDriverInitials(driverData.RaceNumber)); //Set initals for that position
+            _driverEntries[index].SetTeamColor(GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
 
             //Set delta to leader if finished
             if (_deltaToLeaderFinish.ContainsKey(driverData.ID))
-                _driverTemplates[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
+                _driverEntries[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
 
             //if the car is retired, set it to out
             ResultStatus resultStatus = driverData.LapData.resultStatus;
             if (resultStatus == ResultStatus.Retired || resultStatus == ResultStatus.Disqualified)
-                _driverTemplates[index].Out(resultStatus);
+                _driverEntries[index].Out(resultStatus);
             else
             {
                 //If it was previously out make it not
-                if (_driverTemplates[index].OutOfSession)
-                    _driverTemplates[index].NotOut();
+                if (_driverEntries[index].OutOfSession)
+                    _driverEntries[index].NotOut();
 
                 //Change color wether driver GAINED or LOST to this position -> compare old position with this one
-                _driverTemplates[index].UpdatePositionColor(_driverPosition[driverData.ID], _movedUpColor, _movedDownColor);
+                _driverEntries[index].UpdatePositionColor(_driverPosition[driverData.ID], _movedUpColor, _movedDownColor);
             }
 
             //save this position to compare in future
@@ -359,7 +352,7 @@ namespace F1_Unity
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
             _lastPassedTimingIndex = timingIndex;
 
-            _leaderVehicleIndex = driverData.ParticipantData.vehicleIndex;
+            _leaderVehicleIndex = driverData.VehicleIndex;
         }
 
         #endregion
@@ -369,10 +362,8 @@ namespace F1_Unity
         /// <summary>
         /// Sets the time text for a driver depending on distance to leader.
         /// </summary>
-        void UpdateDriverTimingToLeader(DriverData leaderData, Session sessionData, DriverData driverData, bool inPit)
+        void UpdateDriverTimingToLeader(DriverData leaderData, Session sessionData, DriverData driverData, bool inPit, int index)
         {
-            int index = GetTemplateIndex(driverData);
-
             float lapCompletion = LapCompletion(sessionData, driverData);
             float leaderLapCompletion = LapCompletion(sessionData, leaderData);
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
@@ -388,30 +379,43 @@ namespace F1_Unity
             float currentTime = GameManager.F1Info.SessionTime;
             float deltaToLeader = currentTime - _timingData[timingIndex].Time;
 
-            _driverTemplates[index].SetDeltaToLeader(deltaToLeader);
+            _driverEntries[index].SetDeltaToLeader(deltaToLeader);
             bool passedLeader = _timingData[timingIndex].PassedByLeader;
 
             //This is the leader!
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
             {
                 //It is leader so delta to itself is 0
-                _driverTemplates[index].SetDeltaToLeader(0);
+                _driverEntries[index].SetDeltaToLeader(0);
                 if (!inPit)
-                    _driverTemplates[index].SetTimingState(DriverTimeState.Leader);
+                    _driverEntries[index].SetTimingState(DriverTimeState.Leader);
             }
             else if (IsLapped(leaderLapCompletion, lapCompletion, leaderData, driverData, sessionData, out int amountOfLaps))
             {
                 if (!inPit)
-                    _driverTemplates[index].SetTimingState(DriverTimeState.Lapped);
-                _driverTemplates[index].SetLapsLapped(amountOfLaps);
+                    _driverEntries[index].SetTimingState(DriverTimeState.Lapped);
+                _driverEntries[index].SetLapsLapped(amountOfLaps);
             }
             else if (!passedLeader && !inPit)
-                _driverTemplates[index].SetTimingState(DriverTimeState.Starting);
+                _driverEntries[index].SetTimingState(DriverTimeState.Starting);
             //If nothing else -> Show delta
             else if (!inPit)
-                _driverTemplates[index].SetTimingState(DriverTimeState.Delta);
+                _driverEntries[index].SetTimingState(DriverTimeState.Delta);
+        }
 
-        } 
+        /// <summary>
+        /// Checks if driver is currently in pit and sets it so in entry
+        /// </summary>
+        override protected bool IsDriverInPit(DriverData driverData, int index)
+        {
+            if (driverData.LapData.pitStatus == PitStatus.Pitting)
+                _driverEntries[index].SetTimingState(DriverTimeState.Pit);
+            else if (driverData.LapData.pitStatus == PitStatus.In_Pit_Area)
+                _driverEntries[index].SetTimingState(DriverTimeState.Pit_Area);
+            else
+                return false;
+            return true;
+        }
 
         /// <summary>
         /// Returns weather a car is lapped by a leader

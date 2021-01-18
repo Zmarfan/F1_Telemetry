@@ -6,10 +6,11 @@ using F1_Data_Management;
 
 namespace F1_Unity
 {
-    public class DriverTemplate : MonoBehaviour
+    public class TimingScreenEntry : MonoBehaviour
     {
         [Header("Settings")]
 
+        [SerializeField] bool _useColorIntervals = true;
         [SerializeField] Gradient _intervalColorGradient;
         /// <summary>
         /// How close the car must be to car in front to go into gradient for interval text color
@@ -25,6 +26,9 @@ namespace F1_Unity
         [SerializeField] string _dnfString = "OUT";
         [SerializeField] string _dsqString = "DSQ";
         [SerializeField] string _startingString = "-";
+        [SerializeField] string _noTimeString = "NO TIME";
+        [SerializeField] string _outLapString = "OUT LAP";
+        [SerializeField] string _inLapString = "IN LAP";
         [SerializeField] string _leaderString = "Leader";
         [SerializeField] string _intervalString = "Interval";
         [SerializeField] string _lappedString = "LAP";
@@ -64,6 +68,7 @@ namespace F1_Unity
         public int LapsLapped { get; private set; }
         public float DeltaToLeader { get; private set; }
         public float DeltaToCarInFront { get; private set; }
+        public bool InPit { get; private set; }
 
         public string CurrentDelta { get { return _timeTextInterval.text; } }
 
@@ -84,16 +89,16 @@ namespace F1_Unity
         /// <summary>
         /// Sets the color of interval text to point on gradient based on how close to car ahead it is
         /// </summary>
-        public void UpdateTimingColor(bool finished = false)
+        public void UpdateTimingColor()
         {
             //Set color for text while pitting
-            if ((TimeState == DriverTimeState.Pit || TimeState == DriverTimeState.Pit_Area) && !OutOfSession)
+            if (InPit && !OutOfSession)
             {
                 _timeTextLeader.color = _pittingColor;
                 _timeTextInterval.color = _pittingColor;
             }
             //Not leader, not pitting, not lapped
-            else if (_position > 1 && !OutOfSession && TimeState != DriverTimeState.Lapped && TimeState != DriverTimeState.Starting && !finished)
+            else if (_position > 1 && !OutOfSession && TimeState != DriverTimeState.Lapped && TimeState != DriverTimeState.Starting && _useColorIntervals)
             {
                 float point = 1 - Mathf.Clamp(DeltaToCarInFront / _intervalColorMaxDistance, 0, _intervalColorMaxDistance);
                 _timeTextInterval.color = _intervalColorGradient.Evaluate(point);
@@ -270,6 +275,10 @@ namespace F1_Unity
         /// Calculates and sets car in front delta
         /// </summary>
         public void SetCarAheadDelta(float carAheadTimeToLeader) { DeltaToCarInFront = DeltaToLeader - carAheadTimeToLeader; }
+        /// <summary>
+        /// Sets the car in pit or not
+        /// </summary>
+        public void SetInPit(bool inPit) { InPit = inPit; }
 
         /// <summary>
         /// Updates visual stats for this driver
@@ -294,6 +303,40 @@ namespace F1_Unity
 
             switch (TimeState)
             {
+                //Shared between Q and Race
+                case DriverTimeState.Delta:
+                    {
+                        _timeTextLeader.text = F1Utility.GetDeltaStringSigned(DeltaToLeader);
+                        _timeTextInterval.text = F1Utility.GetDeltaStringSigned(DeltaToCarInFront);
+                        break;
+                    }
+                //Q specific
+                case DriverTimeState.Leader_Q:
+                    {
+                        _timeTextLeader.text = F1Utility.GetDeltaString(DriverData.LapData.bestLapTime);
+                        _timeTextInterval.text = F1Utility.GetDeltaString(DriverData.LapData.bestLapTime);
+                        break;
+                    }
+                case DriverTimeState.No_Time_Q:
+                    {
+                        _timeTextLeader.text = _noTimeString;
+                        _timeTextInterval.text = _noTimeString;
+                        break;
+                    }
+                case DriverTimeState.Out_Lap_Q:
+                    {
+                        _timeTextLeader.text = _outLapString;
+                        _timeTextInterval.text = _outLapString;
+                        break;
+                    }
+                case DriverTimeState.In_Lap_Q:
+                    {
+                        _timeTextLeader.text = _inLapString;
+                        _timeTextInterval.text = _inLapString;
+                        break;
+                    }
+                case DriverTimeState.Pit_Q: break; // Do nothing -> it will only change color when pitting but not the text
+                //Race specific
                 case DriverTimeState.Pit:
                     {
                         _timeTextLeader.text = _pitString;
@@ -317,12 +360,6 @@ namespace F1_Unity
                         string text = "+" + LapsLapped + " " + _lappedString;
                         _timeTextLeader.text = text;
                         _timeTextInterval.text = text;
-                        break;
-                    }
-                case DriverTimeState.Delta:
-                    {
-                        _timeTextLeader.text = F1Utility.GetDeltaStringSigned(DeltaToLeader);
-                        _timeTextInterval.text = F1Utility.GetDeltaStringSigned(DeltaToCarInFront);
                         break;
                     }
                 case DriverTimeState.Starting:
@@ -425,9 +462,17 @@ namespace F1_Unity
     /// </summary>
     public enum DriverTimeState
     {
+        //Shared
+        Delta,
+        //Q
+        Leader_Q,
+        No_Time_Q,
+        Out_Lap_Q,
+        In_Lap_Q,
+        Pit_Q,
+        //Race
         Leader,
         Lapped,
-        Delta,
         Starting,
         Pit_Area,
         Pit

@@ -225,12 +225,12 @@ namespace F1_Unity
             if (infrontStatus)
             {
                 //Set delta to show the spectating cars delta! -> replace + for - to show it's in front!
-                DriverTemplate driverTemplate = GameManager.TimingScreenManager.GetDriverTemplate(driverData.LapData.carPosition - 1, out bool driverStatus);
+                TimingScreenEntry driverTemplate = GameManager.TimingScreenManager.GetDriverTemplate(driverData.LapData.carPosition - 1, out bool driverStatus);
                 _driverAheadDeltaText.text = driverStatus ? driverTemplate.CurrentDelta.Replace('+', '-') : string.Empty;
             }
             if (behindStatus)
             {
-                DriverTemplate behindTemplate = GameManager.TimingScreenManager.GetDriverTemplate(behind.LapData.carPosition - 1, out bool behindStatus2);
+                TimingScreenEntry behindTemplate = GameManager.TimingScreenManager.GetDriverTemplate(behind.LapData.carPosition - 1, out bool behindStatus2);
                 _driverBehindDeltaText.text = behindStatus2 ? behindTemplate.CurrentDelta : string.Empty;
             }
         }

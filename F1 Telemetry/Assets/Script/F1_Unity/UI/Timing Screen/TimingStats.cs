@@ -298,7 +298,6 @@ namespace F1_Unity
             Stop,
             Penalty,
             All,
-            Length,
         }
 
         #endregion

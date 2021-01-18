@@ -60,7 +60,7 @@ namespace F1_Unity
         {
             _deltaTimer.Reset();
 
-            DriverTemplate template = GameManager.TimingScreenManager.GetDriverTemplate(index, out bool status);
+            TimingScreenEntry template = GameManager.TimingScreenManager.GetDriverTemplate(index, out bool status);
             //Data not ready to read yet
             if (!status)
                 return;
