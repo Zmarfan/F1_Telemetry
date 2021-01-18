@@ -92,7 +92,7 @@ namespace F1_Unity
         public void UpdateTimingColor()
         {
             //Set color for text while pitting
-            if (InPit && !OutOfSession)
+            if (InPit && !OutOfSession && DriverData.LapData.resultStatus != ResultStatus.Finished)
             {
                 _timeTextLeader.color = _pittingColor;
                 _timeTextInterval.color = _pittingColor;

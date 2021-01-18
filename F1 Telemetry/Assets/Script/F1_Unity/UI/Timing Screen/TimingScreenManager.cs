@@ -49,8 +49,8 @@ namespace F1_Unity
             {
                 case TimingScreenType.Qualifying: { SpawnTimingScreen(_qTimingScreenPrefab);     break; }
                 case TimingScreenType.Race:       { SpawnTimingScreen(_raceTimingScreenPrefab);  break; }
-                case TimingScreenType.One_Shot_Q: throw new System.NotImplementedException("One shot Q timing screen doesn't exist");
-                case TimingScreenType.Time_Trial: throw new System.NotImplementedException("Time_Trial timing screen doesn't exist");
+                case TimingScreenType.One_Shot_Q: { Debug.LogWarning("One shot Q timing screen doesn't exist"); break; }
+                case TimingScreenType.Time_Trial: { Debug.LogWarning("Time_Trial timing screen doesn't exist"); break; }
                 default:
                     throw new System.Exception("There is no current implementation to handle this session: " + type);
             }

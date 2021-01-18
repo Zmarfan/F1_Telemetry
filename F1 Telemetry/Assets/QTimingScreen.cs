@@ -93,8 +93,7 @@ namespace F1_Unity
             leaderData = GameManager.F1Info.ReadCarData(_leaderVehicleIndex, out bool status3);
 
             bool inPit = IsDriverInPit(driverData, index);
-            //Use pit color if the driver hasn't finished and is in pit (makes it white when finishing)
-            _driverEntries[index].SetInPit(inPit && driverData.LapData.resultStatus != ResultStatus.Finished);
+            _driverEntries[index].SetInPit(inPit);
             UpdateDriverTimingToLeader(leaderData, sessionData, driverData, index);
         }
 
