@@ -143,15 +143,17 @@ namespace F1_Unity
 
             _driverEntries[index].SetDeltaToLeader(deltaToLeader);
 
+            bool setALap = driverData.LapData.bestLapTime != 0;
+
             //Leader
             if (leaderData.VehicleIndex == driverData.VehicleIndex)
             {
                 //It is leader so delta to itself is 0
                 _driverEntries[index].SetDeltaToLeader(0);
-                _driverEntries[index].SetTimingState(DriverTimeState.Leader_Q);
+                _driverEntries[index].SetTimingState(setALap ? DriverTimeState.Leader_Q : DriverTimeState.No_Time_Q);
             }
             //Hasn't done a time yet
-            else if (driverData.LapData.bestLapTime == 0)
+            else if (!setALap)
                 _driverEntries[index].SetTimingState(DriverTimeState.No_Time_Q);
             //If nothing else -> Show delta
             else

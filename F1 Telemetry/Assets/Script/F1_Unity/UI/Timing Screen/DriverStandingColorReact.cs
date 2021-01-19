@@ -5,6 +5,7 @@ namespace F1_Unity
 {
     public class DriverStandingColorReact : MonoBehaviour
     {
+        [SerializeField, Tooltip("Used in Q to always show fastest lap animation on P1")] bool _fastestLapOnLeader = false;
         [SerializeField] bool _fastestLap = true;
         [SerializeField] bool _penaltyWarning = true;
         [SerializeField] Color _fastestLapColor;
@@ -36,8 +37,9 @@ namespace F1_Unity
         {
             FastestLapEventPacket fastestPacket = (FastestLapEventPacket)packet;
             DriverData driverData = GameManager.F1Info.ReadCarData(fastestPacket.VehicleIndex, out bool valid);
+            //Do it on P1 if in Q mode or on current place if in race
             if (valid)
-                _driverTemplates[driverData.LapData.carPosition - 1].SetColor(_fastestLapColor);
+                _driverTemplates[_fastestLapOnLeader ? 0 : driverData.LapData.carPosition - 1].SetColor(_fastestLapColor);
         }
 
         /// <summary>
