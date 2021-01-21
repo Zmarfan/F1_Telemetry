@@ -6,14 +6,19 @@ namespace F1_Unity
 {
     public class DriverName : MonoBehaviour, IActivatableReset
     {
+        [Header("Settings")]
+
         [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField, Range(0.0f, 1.0f)] float _raceNumberColorAlpha = 0.45f;
         [SerializeField] Text _positionText;
         [SerializeField] Image _teamColorImage;
         [SerializeField] Text _driverNameText;
-        [SerializeField] Text _teamNameText;
         [SerializeField] Text _raceNumberText;
         [SerializeField] Shadow _raceNumberShadow;
+
+        [Header("Optional")]
+
+        [SerializeField] Text _teamNameText;
         [SerializeField] Image _flagImage;
 
         protected byte _currentDriverId = byte.MaxValue;
@@ -33,6 +38,9 @@ namespace F1_Unity
                 Show(false);
         }
 
+        /// <summary>
+        /// Runs once per frame -> is used to set one time things and for frame operations if needed
+        /// </summary>
         protected virtual void UpdateVisuals()
         {
             DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
@@ -63,8 +71,12 @@ namespace F1_Unity
 
             _driverNameText.text = GameManager.ParticipantManager.GetNameFromNumber(spectatorDriverData.RaceNumber);
             _raceNumberText.text = "<i>" + spectatorDriverData.RaceNumber + "</i>"; //Puts it in italics
-            _teamNameText.text = ConvertEnumToString.Convert<Team>(spectatorDriverData.ParticipantData.team);
-            _flagImage.sprite = GameManager.FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);
+
+            //Seperated for children that don't have these
+            if (_teamNameText != null)
+                _teamNameText.text = ConvertEnumToString.Convert<Team>(spectatorDriverData.ParticipantData.team);
+            if (_flagImage != null)
+                _flagImage.sprite = GameManager.FlagManager.GetFlag(spectatorDriverData.ParticipantData.nationality);
         }
 
         /// <summary>

@@ -30,6 +30,20 @@ namespace F1_Unity
         float _currentFastestSector2 = float.MaxValue;
         float _currentFastestSector3 = float.MaxValue;
 
+        /// <summary>
+        /// Float maxvalue if not done any, in seconds
+        /// </summary>
+        public float CurrentFastestSector1 { get { return _currentFastestSector1; } private set { _currentFastestSector1 = value; } }
+        /// <summary>
+        /// Float maxvalue if not done any, in seconds
+        /// </summary>
+        public float CurrentFastestSector2 { get { return _currentFastestSector2; } private set { _currentFastestSector2 = value; } }
+        /// <summary>
+        /// Float maxvalue if not done any, in seconds
+        /// </summary>
+        public float CurrentFastestSector3 { get { return _currentFastestSector3; } private set { _currentFastestSector3 = value; } }
+
+
         private void Awake()
         {
             Reset();
@@ -203,19 +217,19 @@ namespace F1_Unity
                         if (sector == LapState.Sector_1 && storedSector == LapState.Sector_2)
                         {
                             _storedDriverData[i].FinishLap(driverData);
-                            CheckForFastestSector(driverData, LapState.Sector_3, driverData.LapData.bestLapSector3Time, ref _currentFastestSector3);
+                            CheckForFastestSector(driverData, LapState.Sector_3, driverData.LapData.bestOverallSector3Time, ref _currentFastestSector3);
                         }
                         //The Car just completed sector 1 -> Can add sector 1
                         else if (sector == LapState.Sector_2 && storedSector == LapState.Sector_3)
                         {
                             _storedDriverData[i].AddSector1(driverData.LapData);
-                            CheckForFastestSector(driverData, LapState.Sector_1, driverData.LapData.bestLapSector1Time, ref _currentFastestSector1);
+                            CheckForFastestSector(driverData, LapState.Sector_1, driverData.LapData.bestOverallSector1Time, ref _currentFastestSector1);
                         }
                         //The car just completed sector 2 -> Can add sector 2
                         else if (sector == LapState.Sector_3 && storedSector == LapState.Sector_1)
                         {
                             _storedDriverData[i].AddSector2(driverData.LapData);
-                            CheckForFastestSector(driverData, LapState.Sector_2, driverData.LapData.bestLapSector2Time, ref _currentFastestSector2);
+                            CheckForFastestSector(driverData, LapState.Sector_2, driverData.LapData.bestOverallSector2Time, ref _currentFastestSector2);
                         }
                     }
                     //Car has completed first sector and can start recording all laps now! 

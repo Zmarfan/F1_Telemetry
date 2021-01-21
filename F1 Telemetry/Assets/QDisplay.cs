@@ -14,6 +14,7 @@ namespace F1_Unity
         [SerializeField] float _updateFrequency = 0.5f;
         [SerializeField] string _shortQText = "Q";
         [SerializeField] string _shortPText = "P";
+        [SerializeField] string _notSupportedText = "?";
         [SerializeField] Text _displayText;
         [SerializeField] Text _sessionTypeText;
 
@@ -58,7 +59,12 @@ namespace F1_Unity
                     case SessionType.Q3:         { _sessionTypeText.text = type.ToString(); _sessionMaxTime = Q3_LENGTH;       break; }
                     case SessionType.Short_Q:    { _sessionTypeText.text = _shortQText;     _sessionMaxTime = SHORT_Q_LENGTH;  break; }
                     default:
-                        throw new System.Exception("There is currently no implementation for this session type: " + type);
+                        {
+                            Debug.LogWarning(type + " QDisplay is not supported!");
+                            _sessionTypeText.text = _notSupportedText;
+                            _countUp = true;
+                            break;
+                        }
                 }
             }
         }

@@ -109,27 +109,27 @@
 
         //Must be in this weird order when reading from data :(
         /// <summary>
-        /// The fastest car in the session best Sector1 time in millieseconds
+        /// This driver's current personal best sector 1 time across all laps in millieseconds
         /// </summary>
         public ushort bestOverallSector1Time;
         /// <summary>
-        /// The fastest car in the session best Sector1 time, what lap it was set on 
+        /// The lap this driver's did it's current personal best sector 1 time across all laps
         /// </summary>
         public byte bestOverallSector1LapNumber;
         /// <summary>
-        /// The fastest car in the session best Sector2 time in millieseconds
+        /// This driver's current personal best sector 2 time across all laps in millieseconds
         /// </summary>
         public ushort bestOverallSector2Time;
         /// <summary>
-        /// The fastest car in the session best Sector2 time, what lap it was set on 
+        /// The lap this driver's did it's current personal best sector 2 time across all laps
         /// </summary>
         public byte bestOverallSector2LapNumber;
         /// <summary>
-        /// The fastest car in the session best Sector3 time in millieseconds
+        /// This driver's current personal best sector 3 time across all laps in millieseconds
         /// </summary>
         public ushort bestOverallSector3Time;
         /// <summary>
-        /// The fastest car in the session best Sector3 time, what lap it was set on 
+        /// The lap this driver's did it's current personal best sector 3 time across all laps
         /// </summary>
         public byte bestOverallSector3LapNumber;
 

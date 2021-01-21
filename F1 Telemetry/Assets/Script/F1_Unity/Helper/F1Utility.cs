@@ -47,7 +47,7 @@ namespace F1_Unity
         /// <summary>
         /// Converts seconds to minute:seconds:millieseconds
         /// </summary>
-        public static string GetDeltaString(float time)
+        public static string GetDeltaString(float time, byte amountOfDecimals = 3)
         {
             TimeSpan span = TimeSpan.FromSeconds(time);
             StringBuilder builder = new StringBuilder();
@@ -61,7 +61,12 @@ namespace F1_Unity
                 builder.Append(span.Seconds);
 
             builder.Append('.');
-            builder.Append(span.Milliseconds.ToString("000")); //Appends with 3 decimals
+
+            string milli = span.Milliseconds.ToString();
+            StringBuilder decimals = new StringBuilder();
+            for (int i = 0; i < amountOfDecimals; i++)
+                decimals.Append(i < milli.Length ? milli[i].ToString() : "0");
+            builder.Append(decimals.ToString());
 
             return builder.ToString();
         }
