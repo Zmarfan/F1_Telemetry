@@ -31,13 +31,16 @@ public class DragWindow : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 newPosition = _dragRectTransform.anchoredPosition + eventData.delta / _canvas.scaleFactor;
-        float maxX = (_canvasRectTransform.rect.width / 2) - (_dragRectTransform.rect.width / 2 * _dragRectTransform.localScale.x);
-        float maxY = (_canvasRectTransform.rect.height / 2) - (_dragRectTransform.rect.height / 2 * _dragRectTransform.localScale.y);
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            Vector2 newPosition = _dragRectTransform.anchoredPosition + eventData.delta / _canvas.scaleFactor;
+            float maxX = (_canvasRectTransform.rect.width / 2) - (_dragRectTransform.rect.width / 2 * _dragRectTransform.localScale.x);
+            float maxY = (_canvasRectTransform.rect.height / 2) - (_dragRectTransform.rect.height / 2 * _dragRectTransform.localScale.y);
 
-        newPosition.x = Mathf.Clamp(newPosition.x, -maxX, maxX);
-        newPosition.y = Mathf.Clamp(newPosition.y, -maxY, maxY);
+            newPosition.x = Mathf.Clamp(newPosition.x, -maxX, maxX);
+            newPosition.y = Mathf.Clamp(newPosition.y, -maxY, maxY);
 
-        _dragRectTransform.anchoredPosition = newPosition;
+            _dragRectTransform.anchoredPosition = newPosition;
+        }    
     }
 }
