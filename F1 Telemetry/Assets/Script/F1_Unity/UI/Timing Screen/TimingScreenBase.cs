@@ -13,6 +13,10 @@ namespace F1_Unity
         #region Fields
 
         [SerializeField] protected TimingStats.TimingStatsState[] _availableStatsState;
+        [SerializeField, Range(0, 5000)] protected float _initialsNameWidth = 480.2f;
+        [SerializeField, Range(0, 5000)] protected float _fullNameWidth = 960f;
+        [SerializeField, Range(0, 500)] int _initialsModeFontSize = 280;
+        [SerializeField, Range(0, 500)] int _fullNameModeFontSize = 225;
         [SerializeField, Range(0.01f, 5f)] protected float _flashColorDuration = 1.0f;
         [SerializeField, Range(0.01f, 50f)] protected float _changeBackColorDuration = 4.5f;
         [SerializeField] protected Color _movedUpColor = Color.green;
@@ -27,6 +31,10 @@ namespace F1_Unity
         protected bool _initValues = true;
 
         protected TimeScreenState _timeScreenState = TimeScreenState.Leader;
+        /// <summary>
+        /// Shows driver intials if true or full names if false
+        /// </summary>
+        protected bool _initialsMode;
         protected int _timingStatsStateIndex = 0;
 
         #endregion
@@ -44,7 +52,10 @@ namespace F1_Unity
         protected virtual void Init()
         {
             for (int i = 0; i < _driverEntries.Length; i++)
+            {
                 _driverEntries[i].Init(i + 1, _flashColorDuration, _changeBackColorDuration);
+                _driverEntries[i].ChangeInitialMode(_initialsMode, _initialsNameWidth, _fullNameWidth, _initialsModeFontSize, _fullNameModeFontSize);
+            }
         }
 
         protected abstract void InitDrivers();
@@ -53,12 +64,14 @@ namespace F1_Unity
         {
             GameManager.InputManager.PressedTimeInterval += ChangeTimingMode;
             GameManager.InputManager.PressedTimeStatsState += ChangeTimingStatsState;
+            GameManager.InputManager.PressedTimingNameMode += ChangeDriverNameMode;
         }
 
         private void OnDisable()
         {
             GameManager.InputManager.PressedTimeInterval -= ChangeTimingMode;
             GameManager.InputManager.PressedTimeStatsState -= ChangeTimingStatsState;
+            GameManager.InputManager.PressedTimingNameMode -= ChangeDriverNameMode;
         }
 
         #endregion
@@ -72,6 +85,16 @@ namespace F1_Unity
         {
             _timeScreenState = (TimeScreenState)(((int)_timeScreenState + 1) % (int)TimeScreenState.Length);
             SetMode(_timeScreenState);
+        }
+
+        /// <summary>
+        /// Changes to show driver initials or full name (resize for full name, downsize for initials)
+        /// </summary>
+        protected void ChangeDriverNameMode()
+        {
+            _initialsMode = !_initialsMode;
+            for (int i = 0; i < _driverEntries.Length; i++)
+                _driverEntries[i].ChangeInitialMode(_initialsMode, _initialsNameWidth, _fullNameWidth, _initialsModeFontSize, _fullNameModeFontSize);
         }
 
         /// <summary>

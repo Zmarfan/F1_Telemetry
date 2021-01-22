@@ -40,6 +40,7 @@ namespace F1_Unity
         [SerializeField] TimingStats _timingStats;
         [SerializeField] CanvasGroup _alphaHolder;
 
+        [SerializeField] RectTransform _darkBackgroundRectTransform;
         [SerializeField] Transform _positionTransform;
         [SerializeField] RectTransform _driverHolder;
         [SerializeField] Image _positionImage;        //The white image under position number -> flashes red/green during overtakes
@@ -47,7 +48,7 @@ namespace F1_Unity
         [SerializeField] Transform _fastestLap;       //transform for fastest lap image, deactivated on default
         [SerializeField] Transform _spectatorIcon;
         [SerializeField] Image _teamColorImage;
-        [SerializeField] Text _initialsText;
+        [SerializeField] Text _nameText;
         [SerializeField] Text _timeTextLeader;        //Time text against leader
         [SerializeField] Text _timeTextInterval;      //Time text against guy ahead
         [SerializeField] Text _fastestLapText;        //Fastest lap for this guy
@@ -76,6 +77,8 @@ namespace F1_Unity
         Timer _overtakeColorTimer;   //Timer for how long the positionImage shall flash
         Timer _colorTimer;           //Timer for how long the color after event should last
         bool _resetColor = false;
+
+        bool _initialsMode;
 
         private void Update()
         {
@@ -202,6 +205,20 @@ namespace F1_Unity
                     }
                 default: { throw new Exception("Timing enum for changing state is not implemented properly: enum: " + timeScreenState); }
             }
+        }
+
+        /// <summary>
+        /// Resize dark area for initial or fullname mode, save mode to write either initals or fullname
+        /// </summary>
+        /// <param name="initialsMode">true if initials mode</param>
+        /// <param name="initialsWidth">Width of dark area in initials mode</param>
+        /// <param name="fullNameWidth">Width of dark area in fullname mode</param>
+        public void ChangeInitialMode(bool initialsMode, float initialsWidth, float fullNameWidth, int initialsFontSize, int fullNameFontSize)
+        {
+            _initialsMode = initialsMode;
+            _darkBackgroundRectTransform.sizeDelta = new Vector2(_initialsMode ? initialsWidth : fullNameWidth, _darkBackgroundRectTransform.sizeDelta.y);
+            _nameText.fontSize = _initialsMode ? initialsFontSize : fullNameFontSize;
+            SetName(DriverData.RaceNumber);
         }
 
         /// <summary>
@@ -383,9 +400,9 @@ namespace F1_Unity
         /// <summary>
         /// Sets the 3 letter initials for driver in time standings
         /// </summary>
-        public void SetInitials(string initials)
+        public void SetName(byte raceNumber)
         {
-            _initialsText.text = initials;
+            _nameText.text = _initialsMode ? GameManager.ParticipantManager.GetDriverInitials(raceNumber) : GameManager.ParticipantManager.GetNameFromNumber(raceNumber);
         }
 
         /// <summary>

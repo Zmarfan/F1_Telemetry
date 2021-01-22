@@ -50,6 +50,7 @@ namespace F1_Unity
 
         [SerializeField] Key _timingIntervalTypeKey = Key.Q;
         [SerializeField] Key _timingStatsStateKey = Key.W;
+        [SerializeField] Key _timingNameMode = Key.E;
 
         #endregion
 
@@ -58,9 +59,10 @@ namespace F1_Unity
         //Misc
         public event InputPressedDown PressedToggleAll;
         public event InputPressedDown PressedToggleHaloHud;
-        //Timing
+        //Timing 
         public event InputPressedDown PressedTimeInterval;
         public event InputPressedDown PressedTimeStatsState;
+        public event InputPressedDown PressedTimingNameMode;
         //Lower
         public event InputPressedDown PressedToggleDriverName;
         public event InputPressedDown PressedToggleDetailDelta;
@@ -89,6 +91,7 @@ namespace F1_Unity
 
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_timingIntervalTypeKey, CheckTiming);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_timingStatsStateKey, CheckTiming);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_timingNameMode, CheckTiming);
 
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_driverNameKey, CheckLower);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
@@ -114,6 +117,7 @@ namespace F1_Unity
 
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_timingIntervalTypeKey, CheckTiming);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_timingStatsStateKey, CheckTiming);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_timingNameMode, CheckTiming);
 
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_driverNameKey, CheckLower);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
@@ -215,6 +219,7 @@ namespace F1_Unity
             {
                 if (key == _timingIntervalTypeKey)    { PressedTimeInterval?.Invoke(); }
                 else if (key == _timingStatsStateKey) { PressedTimeStatsState?.Invoke(); }
+                else if (key == _timingNameMode)      { PressedTimingNameMode?.Invoke(); }
                 else { throw new System.Exception("There exist no handling for this input key: " + key); }
             }
         }

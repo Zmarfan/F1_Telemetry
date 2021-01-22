@@ -110,7 +110,7 @@ namespace F1_Unity
             if (carPosition == 1)
                 _leaderVehicleIndex = driverData.VehicleIndex;
 
-            _driverEntries[index].SetInitials(GameManager.ParticipantManager.GetDriverInitials(driverData.RaceNumber)); //Set initals for that position
+            _driverEntries[index].SetName(driverData.RaceNumber); //Set initals for that position
             _driverEntries[index].SetTeamColor(GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
 
             //if the car is retired, set it to out
