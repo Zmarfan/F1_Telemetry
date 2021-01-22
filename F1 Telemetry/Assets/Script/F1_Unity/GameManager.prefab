@@ -3620,9 +3620,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3297381453554072229}
     m_Modifications:
+    - target: {fileID: 504494763396688452, guid: 6f900655c6ec25e40ba52e360aab5b10, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 567.2093
+      objectReference: {fileID: 0}
     - target: {fileID: 4137811850501173954, guid: 6f900655c6ec25e40ba52e360aab5b10, type: 3}
       propertyPath: m_Name
       value: QTimingUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4137811850501173954, guid: 6f900655c6ec25e40ba52e360aab5b10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7201924231412175873, guid: 6f900655c6ec25e40ba52e360aab5b10, type: 3}
       propertyPath: m_LocalPosition.x
