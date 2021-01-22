@@ -55,6 +55,9 @@ namespace F1_Unity
         float _savedSector2 = 0;
         float _savedSector3 = 0;
 
+        bool _outLap = false;
+        bool _inPit = false;
+
         //Used to update tyre image if driver changes tyres while this is active
         VisualTyreCompound _currentDriverTyre;
 
@@ -90,7 +93,15 @@ namespace F1_Unity
             //CHANGE TO SPECTATOR
             DriverData spectatorDriverData = GameManager.F1Info.ReadPlayerData(out bool statusDriver);
 
-            if (statusDriver && (_currentDriverId != spectatorDriverData.ID || _currentDriverPosition != spectatorDriverData.LapData.carPosition || _currentDriverTyre != spectatorDriverData.StatusData.visualTyreCompound))
+            //Has to be seperated as a position change doesn't need to flush data
+            if (statusDriver && spectatorDriverData.LapData.carPosition != _currentDriverPosition)
+            {
+                _currentDriverPosition = spectatorDriverData.LapData.carPosition;
+                _positionText.text = spectatorDriverData.LapData.carPosition.ToString();
+            }
+
+            //Flush data
+            if (statusDriver && (_currentDriverId != spectatorDriverData.ID || _currentDriverTyre != spectatorDriverData.StatusData.visualTyreCompound))
             {
                 Show(true);
                 SetVisuals(spectatorDriverData);
@@ -127,13 +138,13 @@ namespace F1_Unity
             HandleFinishedLap(driverData, leaderData);
             HandleFinishedSector();
 
-            bool inPit = driverData.LapData.driverStatus == DriverStatus.In_Garage;
-            bool outLap = driverData.LapData.driverStatus == DriverStatus.Out_Lap;
+            _inPit = driverData.LapData.driverStatus == DriverStatus.In_Garage;
+            _outLap = driverData.LapData.driverStatus == DriverStatus.Out_Lap;
 
-            if (inPit || outLap)
+            if (_inPit || _outLap)
                 BlankSectorsResetValues();
 
-            UpdateDisplay(driverData, inPit, outLap, leaderData);
+            UpdateDisplay(driverData, leaderData);
         }
 
         #region Handle finished states
@@ -145,7 +156,7 @@ namespace F1_Unity
         void HandleFinishedLap(DriverData driverData, DriverData leaderData)
         {
             bool finishedLap = _currentLapTime > driverData.LapData.currentLapTime;
-            if (finishedLap)
+            if (finishedLap && !_outLap)
             {
                 HandleSector(_sectors[SECTOR_3_INDEX], driverData.LapData.lastLapTime * CONVERT_SECONDS_TO_MILLISECONDS, leaderData.LapData.bestLapTime * CONVERT_SECONDS_TO_MILLISECONDS, driverData.LapData.lastLapTime * CONVERT_SECONDS_TO_MILLISECONDS - _savedSector1 - _savedSector2, driverData.LapData.bestLapSector3Time, GameManager.LapManager.CurrentFastestSector3, ref _savedSector3);
                 _finishedLap = true;
@@ -184,11 +195,11 @@ namespace F1_Unity
         /// Activate/Deactivate sectors and color according to driver performance
         /// </summary>
         /// <param name="driverData"></param>
-        void UpdateDisplay(DriverData driverData, bool pit, bool outLap, DriverData leaderData)
+        void UpdateDisplay(DriverData driverData, DriverData leaderData)
         {
             //Gray out sectors -> no values to show -> reset sectors
-            if (pit || outLap)
-                Display(pit ? DisplayMode.Pit : DisplayMode.Out_Lap, driverData, leaderData);
+            if (_inPit || _outLap)
+                Display(_inPit ? DisplayMode.Pit : DisplayMode.Out_Lap, driverData, leaderData);
             //Finished sector mode
             else if (_finishedSector)
                 Display(DisplayMode.Finished_Sector, driverData, leaderData);
@@ -369,6 +380,7 @@ namespace F1_Unity
         {
             ActivateState(_statesObjects[FINISHED_LAP_INDEX]);
             _finishedLapText.text = F1Utility.GetDeltaString(driverData.LapData.lastLapTime);
+            _finishedLapText.color = _invalidLap ? _invalidDisplayLapColor : _standardDisplayLapColor;
         }
 
         #endregion

@@ -22,6 +22,7 @@ namespace F1_Unity
         [SerializeField] ToggleActivatable _weather;
         [SerializeField] ToggleActivatablePit _pitTimer;
         [SerializeField] ToggleActivatable _driverNameChampionship;
+        [SerializeField] ToggleActivatable _qTimingUI;
 
         [SerializeField] ToggleActivatable[] _lowerSlot;
         [SerializeField] ToggleActivatable[] _rightSlot;
@@ -43,6 +44,7 @@ namespace F1_Unity
             GameManager.InputManager.PressedToggleWeather += ToggleWeather;
             GameManager.InputManager.PressedTogglePitTimer += TogglePitTimer;
             GameManager.InputManager.PressedToggleDriverNameChampionship += ToggleDriverNameChampionship;
+            GameManager.InputManager.PressedQTimingUI += ToggleQTimingUI;
         }
 
         private void OnDisable()
@@ -61,6 +63,7 @@ namespace F1_Unity
             GameManager.InputManager.PressedToggleWeather -= ToggleWeather;
             GameManager.InputManager.PressedTogglePitTimer -= TogglePitTimer;
             GameManager.InputManager.PressedToggleDriverNameChampionship -= ToggleDriverNameChampionship;
+            GameManager.InputManager.PressedQTimingUI -= ToggleQTimingUI;
         }
 
         /// <summary>
@@ -181,6 +184,12 @@ namespace F1_Unity
         {
             _driverNameChampionship.Toggle(!_driverNameChampionship.gameObject.activeSelf);
             TurnOffActivatableArray(_driverNameChampionship, _lowerSlot);
+        }
+
+        void ToggleQTimingUI()
+        {
+            _qTimingUI.Toggle(!_qTimingUI.gameObject.activeSelf);
+            TurnOffActivatableArray(_qTimingUI, _rightSlot);
         }
     }
 }

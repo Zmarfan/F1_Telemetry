@@ -39,6 +39,7 @@ namespace F1_Unity
         [SerializeField] Key _liveSpeedKey = Key.Q;
         [SerializeField] Key _tyreWearKey = Key.W;
         [SerializeField] Key _pitTimerKey = Key.E;
+        [SerializeField] Key _qTimingUI = Key.R;
 
         [Header("Upper Right")]
 
@@ -72,6 +73,7 @@ namespace F1_Unity
         public event InputPressedDown PressedToggleLiveSpeed;
         public event InputPressedDown PressedToggleTyreWear;
         public event InputPressedDown PressedTogglePitTimer;
+        public event InputPressedDown PressedQTimingUI;
         //Upper Right
         public event InputPressedDown PressedToggleLocation;
         public event InputPressedDown PressedToggleWeather;
@@ -99,6 +101,7 @@ namespace F1_Unity
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_liveSpeedKey, CheckRight);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_tyreWearKey, CheckRight);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_pitTimerKey, CheckRight);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_qTimingUI, CheckRight);
 
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_locationKey, CheckUpperRight);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_weatherKey, CheckUpperRight);
@@ -123,6 +126,7 @@ namespace F1_Unity
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_liveSpeedKey, CheckRight);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_tyreWearKey, CheckRight);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_pitTimerKey, CheckRight);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_qTimingUI, CheckRight);
 
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_locationKey, CheckUpperRight);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_weatherKey, CheckUpperRight);
@@ -180,6 +184,7 @@ namespace F1_Unity
                 if (key == _liveSpeedKey)     { PressedToggleLiveSpeed?.Invoke(); }
                 else if (key == _tyreWearKey) { PressedToggleTyreWear?.Invoke(); }
                 else if (key == _pitTimerKey) { PressedTogglePitTimer?.Invoke(); }
+                else if (key == _qTimingUI)   { PressedQTimingUI?.Invoke(); }
                 else { throw new System.Exception("There exist no handling for this input key: " + key); }
             }
         }

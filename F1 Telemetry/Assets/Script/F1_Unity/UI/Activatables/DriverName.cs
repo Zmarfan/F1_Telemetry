@@ -8,18 +8,18 @@ namespace F1_Unity
     {
         [Header("Settings")]
 
-        [SerializeField] CanvasGroup _canvasGroup;
-        [SerializeField, Range(0.0f, 1.0f)] float _raceNumberColorAlpha = 0.45f;
-        [SerializeField] Text _positionText;
-        [SerializeField] Image _teamColorImage;
-        [SerializeField] Text _driverNameText;
-        [SerializeField] Text _raceNumberText;
-        [SerializeField] Shadow _raceNumberShadow;
+        [SerializeField] protected CanvasGroup _canvasGroup;
+        [SerializeField, Range(0.0f, 1.0f)] protected float _raceNumberColorAlpha = 0.45f;
+        [SerializeField] protected Text _positionText;
+        [SerializeField] protected Image _teamColorImage;
+        [SerializeField] protected Text _driverNameText;
+        [SerializeField] protected Text _raceNumberText;
+        [SerializeField] protected Shadow _raceNumberShadow;
 
         [Header("Optional")]
 
-        [SerializeField] Text _teamNameText;
-        [SerializeField] Image _flagImage;
+        [SerializeField] protected Text _teamNameText;
+        [SerializeField] protected Image _flagImage;
 
         protected byte _currentDriverId = byte.MaxValue;
         protected byte _currentDriverPosition = byte.MaxValue;
