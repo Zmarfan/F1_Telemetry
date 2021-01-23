@@ -599,7 +599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -1.4, y: 0.000032424927}
+  m_AnchoredPosition: {x: -1.4, y: 0.000030517578}
   m_SizeDelta: {x: 477.98206, y: 233.13518}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2525287382126228852
@@ -623,14 +623,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96f7780d4d8484e4784df26f5a4eaaf3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b5488e4c9094279478f92f6609e772b0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -895,6 +895,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLapText: {fileID: 1038481080531250258}
   _totalLapText: {fileID: 1812579980443987507}
+  _displayImage: {fileID: 2552809964838967554}
+  _defaultDisplaySprite: {fileID: 21300000, guid: b5488e4c9094279478f92f6609e772b0, type: 3}
+  _raceFinishedDisplaySprite: {fileID: 21300000, guid: 303171fe1161f154890c6a0b2db8d5d2, type: 3}
 --- !u!1 &5436900070793708918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,7 +1214,7 @@ MonoBehaviour:
     changeBackColor: {r: 1, g: 1, b: 1, a: 1}
   - graphic: {fileID: 4029433259491519177}
     changeBackColor: {r: 1, g: 1, b: 1, a: 1}
-  _lapsToGoFrequency: 2
+  _lapsToGoFrequency: 5
   _showInfoTime: 5
   _greenFlagString: TRACK CLEAR
   _sectorString: 'SECTOR '

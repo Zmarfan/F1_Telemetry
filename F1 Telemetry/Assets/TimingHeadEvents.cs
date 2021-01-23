@@ -150,7 +150,7 @@ namespace F1_Unity
             _up = true;
             _wasYellowFlag = true;
             _mainImage.color = _yellowFlagColor;
-
+            SetAffectedUIColor(AffectedUIState.Yellow);
             SetActiveState(_statesObj[FLAG_INDEX]);
         }
 

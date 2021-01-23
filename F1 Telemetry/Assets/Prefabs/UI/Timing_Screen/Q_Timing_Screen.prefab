@@ -624,7 +624,7 @@ MonoBehaviour:
     changeBackColor: {r: 0, g: 0, b: 0, a: 0}
   - graphic: {fileID: 8897856487949261344}
     changeBackColor: {r: 0, g: 0, b: 0, a: 0}
-  _lapsToGoFrequency: 2
+  _lapsToGoFrequency: 5
   _showInfoTime: 5
   _greenFlagString: TRACK CLEAR
   _sectorString: 'SECTOR '

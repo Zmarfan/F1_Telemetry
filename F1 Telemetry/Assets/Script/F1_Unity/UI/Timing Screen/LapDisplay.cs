@@ -11,6 +11,9 @@ namespace F1_Unity
     {
         [SerializeField] Text _currentLapText;
         [SerializeField] Text _totalLapText;
+        [SerializeField] Image _displayImage;
+        [SerializeField] Sprite _defaultDisplaySprite;
+        [SerializeField] Sprite _raceFinishedDisplaySprite;
 
         byte _currentLap = 0;
         byte _totalLap = 0;
@@ -48,10 +51,16 @@ namespace F1_Unity
         {
             byte lap = GameManager.DriverDataManager.GetDriverFromPosition(1, out bool status).LapData.currentLapNumber;
             //Change lap if new lap and it's not larger than total laps
-            if (status && lap != _currentLap && lap <= _totalLap)
+            if (status && lap != _currentLap)
             {
                 _currentLap = lap;
-                _currentLapText.text = lap.ToString();
+                if (lap <= _totalLap)
+                    _currentLapText.text = lap.ToString();
+
+                if (_currentLap > _totalLap)
+                    _displayImage.sprite = _raceFinishedDisplaySprite;
+                else
+                    _displayImage.sprite = _defaultDisplaySprite;
             }
         }
     }
