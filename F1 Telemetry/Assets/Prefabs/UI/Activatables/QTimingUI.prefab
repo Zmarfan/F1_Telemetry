@@ -391,7 +391,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0:00.0
+  m_Text: 0:00.000
 --- !u!1 &1012208544921094036
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,6 +1497,7 @@ MonoBehaviour:
   _showCompletedLapTime: 5
   _showCompletedSectorTime: 5
   _displayLapDecimalCount: 1
+  _provisionalPoleText: Pole
   _standardDisplayLapColor: {r: 1, g: 1, b: 1, a: 1}
   _invalidDisplayLapColor: {r: 1, g: 0.3372549, b: 0.3372549, a: 1}
   _yellowSectorColor: {r: 1, g: 1, b: 0, a: 1}

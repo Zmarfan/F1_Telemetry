@@ -14,6 +14,7 @@ namespace F1_Unity
         [SerializeField, Range(0.01f, 100f)] float _showCompletedLapTime = 4f;
         [SerializeField, Range(0.01f, 100f)] float _showCompletedSectorTime = 2f;
         [SerializeField, Range(1, 3)] byte _displayLapDecimalCount = 1;
+        [SerializeField] string _provisionalPoleText = "FASTEST TIME";
         [SerializeField] Color _standardDisplayLapColor;
         [SerializeField] Color _invalidDisplayLapColor;
         [SerializeField] Color _yellowSectorColor;
@@ -362,15 +363,24 @@ namespace F1_Unity
         private void DisplayFinishedSector()
         {
             ActivateState(_statesObjects[NORMAL_DISPLAY_INDEX]);
-            _displayLapText.text = F1Utility.GetDeltaStringSigned(_currentDelta);
-
-            //Set color depending on delta
-            if (_currentDelta > 0)
-                _displayLapText.color = _yellowSectorColor;
-            else if (_currentDelta < 0)
+            //if lap is over and delta is 0 it means improved on pole
+            if (_currentDelta == 0 && _finishedLap)
+            {
                 _displayLapText.color = _greenSectorColor;
+                _displayLapText.text = _provisionalPoleText;
+            }
             else
-                _displayLapText.color = _standardDisplayLapColor;
+            {
+                _displayLapText.text = F1Utility.GetDeltaStringSigned(_currentDelta);
+
+                //Set color depending on delta
+                if (_currentDelta > 0)
+                    _displayLapText.color = _yellowSectorColor;
+                else if (_currentDelta < 0)
+                    _displayLapText.color = _greenSectorColor;
+                else
+                    _displayLapText.color = _standardDisplayLapColor;
+            }  
         }
 
         /// <summary>
