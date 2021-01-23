@@ -90,6 +90,8 @@
             newSessionData.SliProNativeSupport = sessionPacket.SliProNativeSupport;
             newSessionData.SafetyCarStatus = sessionPacket.SafetyCarStatus;
             newSessionData.IsOnline = sessionPacket.IsOnline;
+            newSessionData.NumberOfMarshalZones = sessionPacket.NumberOfMarshalZones;
+            newSessionData.NumberWeatherForeCastSamples = sessionPacket.NumberWeatherForeCastSamples;
             newSessionData.MarshalZones = sessionPacket.MarshalZones;
             newSessionData.WeatherForecastSamples = sessionPacket.WeatherForecastSamples;
 
@@ -141,6 +143,14 @@
         public bool SliProNativeSupport { get; set; }
         public SafetyCarStatus SafetyCarStatus { get; set; }
         public bool IsOnline { get; set; }
+        /// <summary>
+        /// Amount of active marshal zones
+        /// </summary>
+        public byte NumberOfMarshalZones { get; set; }
+        /// <summary>
+        /// Amount of active weather forecast samples
+        /// </summary>
+        public byte NumberWeatherForeCastSamples { get; set; }
         /// <summary>
         /// Holds info about marshalZones. Zone Position and flag status.
         /// </summary>

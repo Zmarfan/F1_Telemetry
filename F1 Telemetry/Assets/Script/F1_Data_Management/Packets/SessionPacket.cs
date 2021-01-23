@@ -49,6 +49,8 @@
         public byte NumberWeatherForeCastSamples { get; private set; }
         public WeatherForecastSample[] WeatherForecastSamples { get; private set; }
 
+        readonly int AMOUNT_OF_MARSHAL_ZONES = 21;
+        readonly int AMOUNT_OF_WEATHER_FORECAST_SAMPLES = 20;
 
         public SessionPacket(byte[] data) : base(data) { }
 
@@ -74,7 +76,7 @@
             SliProNativeSupport = manager.GetBool();
             NumberOfMarshalZones = manager.GetByte();
 
-            MarshalZones = new MarshalZone[NumberOfMarshalZones];
+            MarshalZones = new MarshalZone[AMOUNT_OF_MARSHAL_ZONES];
 
             //Read all instances of MarshalZone[] in the data -> It's all linear
             for (int i = 0; i < MarshalZones.Length; i++)
@@ -88,7 +90,7 @@
             IsOnline = manager.GetBool();
             NumberWeatherForeCastSamples = manager.GetByte();
 
-            WeatherForecastSamples = new WeatherForecastSample[NumberWeatherForeCastSamples];
+            WeatherForecastSamples = new WeatherForecastSample[AMOUNT_OF_WEATHER_FORECAST_SAMPLES];
 
             //Read all instances of WeatherForecastSamples[] in the data -> It's all linear
             for (int i = 0; i < WeatherForecastSamples.Length; i++)
