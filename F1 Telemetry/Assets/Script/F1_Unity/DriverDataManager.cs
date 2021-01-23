@@ -16,6 +16,8 @@ namespace F1_Unity
         /// </summary>
         Dictionary<int, ChampionshipEntry> _championshipDictionary = new Dictionary<int, ChampionshipEntry>();
 
+        int _fastestLapDriverVehicleIndex = int.MaxValue;
+
         /// <summary>
         /// Sets all lists that user have control over, is called before Awake is called
         /// </summary>
@@ -55,6 +57,16 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Will return driverData for the driver with the fastest lap.
+        /// </summary>
+        /// <param name="status">Indicates if returned data is valid. If no driver have > 0 laptime this will be false</param>
+        /// <returns></returns>
+        public DriverData GetFastestLapDriverData(out bool status)
+        {
+            return GameManager.F1Info.ReadCarData(_fastestLapDriverVehicleIndex, out status);
+        }
+
+        /// <summary>
         /// Returns driverData given a position. Will not check if it's a valid position so make sure it is.
         /// </summary>
         /// <param name="position">position of driver</param>
@@ -84,12 +96,24 @@ namespace F1_Unity
         /// </summary>
         void UpdatePositionToData()
         {
+            _fastestLapDriverVehicleIndex = 0;
+            float fastestLap = float.MaxValue;
+
             _positionToData.Clear();
             for (int i = 0; i < F1Info.MAX_AMOUNT_OF_CARS; i++)
             {
                 DriverData driverData = GameManager.F1Info.ReadCarData(i, out bool status);
                 if (status)
+                {
+                    float fLap = driverData.LapData.bestLapTime;
+                    if (fLap != 0 && fLap < fastestLap)
+                    {
+                        fastestLap = fLap;
+                        _fastestLapDriverVehicleIndex = driverData.VehicleIndex;
+                    }
+
                     _positionToData.Add(driverData.LapData.carPosition, driverData);
+                }
             }
         }
 

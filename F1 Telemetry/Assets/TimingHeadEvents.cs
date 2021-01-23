@@ -18,6 +18,7 @@ namespace F1_Unity
         [Header("Settings")]
 
         [SerializeField, Range(1, 20)] int _lapsToGoFrequency = 5;
+        [SerializeField, Range(1, 20)] int _lapsInBeforeLapsToGo = 3;
         [SerializeField, Range(0.01f, 100)] float _showInfoTime = 5f;
         [SerializeField] string _greenFlagString = "TRACK CLEAR";
         [SerializeField] string _sectorString = "SECTOR ";
@@ -216,9 +217,13 @@ namespace F1_Unity
             if (leaderData.LapData.currentLapNumber == sessionData.TotalLaps && !_doneFinalLap && !_showingInfo)
                 StartLastLap();
 
-            bool lapUpdateTime = ((sessionData.TotalLaps - leaderData.LapData.currentLapNumber + 1) % _lapsToGoFrequency == 0) && leaderData.LapData.currentLapNumber <= sessionData.TotalLaps && !_showingInfo;
+            byte lapNumber = leaderData.LapData.currentLapNumber;
+            byte totalLaps = sessionData.TotalLaps;
+
+            bool lapUpdateTime = ((totalLaps - lapNumber + 1) % _lapsToGoFrequency == 0) && lapNumber <= totalLaps;
+            lapUpdateTime = lapUpdateTime && lapNumber > _lapsInBeforeLapsToGo && !_showingInfo && _lastLapsLeftLap != lapNumber;
             //Laps to go display time
-            if (lapUpdateTime && _lastLapsLeftLap != leaderData.LapData.currentLapNumber)
+            if (lapUpdateTime)
             {
                 _lastLapsLeftLap = leaderData.LapData.currentLapNumber;
                 StartDisplayLapsToGo(sessionData.TotalLaps -  leaderData.LapData.currentLapNumber + 1);
