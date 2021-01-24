@@ -34,11 +34,13 @@ namespace F1_Unity
         }
 
         /// <summary>
-        /// Converts seconds to +/-minute:seconds:millieseconds. If time is positive it will treat it as + 
+        /// Converts seconds to +/-minute:seconds:millieseconds. If time is positive it will treat it as +
+        /// <param name="time">Time in seconds</param>
+        /// <param name="amountOfDecimals">How many decimals milliseconds will be represented as. Max 3</param>
         /// </summary>
-        public static string GetDeltaStringSigned(float time)
+        public static string GetDeltaStringSigned(float time, byte amountOfDecimals = 3)
         {
-            string deltaString = GetDeltaString(Mathf.Abs(time));
+            string deltaString = GetDeltaString(Mathf.Abs(time), amountOfDecimals);
             if (time > 0)
                 return "+" + deltaString;
             return "-" + deltaString;
@@ -47,6 +49,9 @@ namespace F1_Unity
         /// <summary>
         /// Converts seconds to minute:seconds:millieseconds
         /// </summary>
+        /// <param name="time">Time in seconds</param>
+        /// <param name="amountOfDecimals">How many decimals milliseconds will be represented as. Max 3</param>
+        /// <returns></returns>
         public static string GetDeltaString(float time, byte amountOfDecimals = 3)
         {
             TimeSpan span = TimeSpan.FromSeconds(time);
@@ -61,12 +66,9 @@ namespace F1_Unity
                 builder.Append(span.Seconds);
 
             builder.Append('.');
-
-            string milli = span.Milliseconds.ToString();
-            StringBuilder decimals = new StringBuilder();
+            string milli = span.Milliseconds.ToString("00#");
             for (int i = 0; i < amountOfDecimals; i++)
-                decimals.Append(i < milli.Length ? milli[i].ToString() : "0");
-            builder.Append(decimals.ToString());
+                builder.Append(milli[i].ToString());
 
             return builder.ToString();
         }

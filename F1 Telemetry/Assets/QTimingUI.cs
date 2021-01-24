@@ -14,7 +14,6 @@ namespace F1_Unity
         [SerializeField, Range(0.01f, 100f)] float _showCompletedLapTime = 4f;
         [SerializeField, Range(0.01f, 100f)] float _showCompletedSectorTime = 2f;
         [SerializeField, Range(1, 3)] byte _displayLapDecimalCount = 1;
-        [SerializeField] string _provisionalPoleText = "FASTEST TIME";
         [SerializeField] Color _standardDisplayLapColor;
         [SerializeField] Color _invalidDisplayLapColor;
         [SerializeField] Color _yellowSectorColor;
@@ -34,6 +33,7 @@ namespace F1_Unity
         [SerializeField] GameObject[] _invalidObjs;
 
         readonly float CONVERT_SECONDS_TO_MILLISECONDS = 1000;
+        readonly float SECTOR_3_EPSILON = 2.5f; //25 hundreds of a second
 
         readonly int SECTOR_1_INDEX = 0;
         readonly int SECTOR_2_INDEX = 1;
@@ -52,6 +52,7 @@ namespace F1_Unity
         bool _finishedSector = false;
         bool _leaderDoneLap = false;
         bool _invalidLap = false;
+        float _leaderFastestLapTime;
         float _savedSector1 = 0;
         float _savedSector2 = 0;
         float _savedSector3 = 0;
@@ -83,7 +84,8 @@ namespace F1_Unity
             _currentDriverTyre = spectatorDriverData.StatusData.visualTyreCompound;
             _currentLapTime = spectatorDriverData.LapData.currentLapTime;
 
-            BlankSectorsResetValues();
+            DriverData leaderData = GameManager.DriverDataManager.GetFastestLapDriverData(out bool status);
+            BlankSectorsResetValues(leaderData);
         }
 
         /// <summary>
@@ -91,8 +93,7 @@ namespace F1_Unity
         /// </summary>
         protected override void UpdateVisuals()
         {
-            //DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
-            DriverData spectatorDriverData = GameManager.F1Info.ReadPlayerData(out bool statusDriver);
+            DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
 
             //Has to be seperated as a position change doesn't need to flush data
             if (statusDriver && spectatorDriverData.LapData.carPosition != _currentDriverPosition)
@@ -123,17 +124,14 @@ namespace F1_Unity
         void MainUpdate(DriverData driverData)
         {
             DriverData leaderData = GameManager.DriverDataManager.GetFastestLapDriverData(out bool status);
-            //Used to know if this is the first driver to set a lap
-            //If true delta should be ignored
-            _leaderDoneLap = leaderData.LapData.bestLapTime != 0;
-
+            
             //Handle sector 1
-            HandleSector(_sectors[SECTOR_1_INDEX], driverData.LapData.sector1Time, leaderData.LapData.bestLapSector1Time, driverData.LapData.sector1Time, driverData.LapData.bestLapSector1Time, GameManager.LapManager.CurrentFastestSector1 * CONVERT_SECONDS_TO_MILLISECONDS, ref _savedSector1);
+            HandleSector(0, _sectors[SECTOR_1_INDEX], driverData.LapData.sector1Time, leaderData.LapData.bestLapSector1Time, driverData.LapData.sector1Time, driverData.LapData.bestLapSector1Time, GameManager.LapManager.CurrentFastestSector1 * CONVERT_SECONDS_TO_MILLISECONDS, ref _savedSector1);
             //Handle sector 2
-            HandleSector(_sectors[SECTOR_2_INDEX], driverData.LapData.sector1Time + driverData.LapData.sector2Time, leaderData.LapData.bestLapSector1Time + leaderData.LapData.bestLapSector2Time, driverData.LapData.sector2Time, driverData.LapData.bestLapSector2Time, GameManager.LapManager.CurrentFastestSector2 * CONVERT_SECONDS_TO_MILLISECONDS * CONVERT_SECONDS_TO_MILLISECONDS, ref _savedSector2);
+            HandleSector(0, _sectors[SECTOR_2_INDEX], driverData.LapData.sector1Time + driverData.LapData.sector2Time, leaderData.LapData.bestLapSector1Time + leaderData.LapData.bestLapSector2Time, driverData.LapData.sector2Time, driverData.LapData.bestLapSector2Time, GameManager.LapManager.CurrentFastestSector2 * CONVERT_SECONDS_TO_MILLISECONDS, ref _savedSector2);
 
             //Keep invalid status until finish lap resets it
-            if (driverData.LapData.currentLapInvalid)
+            if (driverData.LapData.currentLapInvalid && !_finishedLap)
                 _invalidLap = true;
 
             HandleFinishedLap(driverData, leaderData);
@@ -142,8 +140,12 @@ namespace F1_Unity
             _inPit = driverData.LapData.driverStatus == DriverStatus.In_Garage;
             _outLap = driverData.LapData.driverStatus == DriverStatus.Out_Lap;
 
+            //Used to know if this is the first driver to set a lap
+            //If true delta should be ignored
+            _leaderDoneLap = leaderData.LapData.bestLapTime != 0;
+
             if (_inPit || _outLap)
-                BlankSectorsResetValues();
+                BlankSectorsResetValues(leaderData);
 
             UpdateDisplay(driverData, leaderData);
         }
@@ -159,12 +161,13 @@ namespace F1_Unity
             bool finishedLap = _currentLapTime > driverData.LapData.currentLapTime;
             if (finishedLap && !_outLap)
             {
-                HandleSector(_sectors[SECTOR_3_INDEX], driverData.LapData.lastLapTime * CONVERT_SECONDS_TO_MILLISECONDS, leaderData.LapData.bestLapTime * CONVERT_SECONDS_TO_MILLISECONDS, driverData.LapData.lastLapTime * CONVERT_SECONDS_TO_MILLISECONDS - _savedSector1 - _savedSector2, driverData.LapData.bestLapSector3Time, GameManager.LapManager.CurrentFastestSector3, ref _savedSector3);
+                HandleSector(SECTOR_3_EPSILON, _sectors[SECTOR_3_INDEX], driverData.LapData.lastLapTime * CONVERT_SECONDS_TO_MILLISECONDS, _leaderFastestLapTime * CONVERT_SECONDS_TO_MILLISECONDS, driverData.LapData.lastLapTime * CONVERT_SECONDS_TO_MILLISECONDS - _savedSector1 - _savedSector2, driverData.LapData.bestLapSector3Time, GameManager.LapManager.CurrentFastestSector3 * CONVERT_SECONDS_TO_MILLISECONDS, ref _savedSector3);
                 _finishedLap = true;
                 _showCompletedLapTimer.Reset();
             }
 
             _currentLapTime = driverData.LapData.currentLapTime;
+            _leaderFastestLapTime = leaderData.LapData.bestLapTime;
 
             //Driver has finished a lap -> keep it finished status until timer is out
             //Finished sector takes priority to finished lap (Makes finished sector go first then finished lap state)
@@ -172,7 +175,7 @@ namespace F1_Unity
             {
                 _showCompletedLapTimer.Time += Time.deltaTime;
                 if (_showCompletedLapTimer.Expired())
-                    BlankSectorsResetValues();
+                    BlankSectorsResetValues(leaderData);
             }
         }
 
@@ -216,7 +219,7 @@ namespace F1_Unity
         /// Resets values related to other states and display pit if true or out lap if false
         /// </summary>
         /// <param name="pit"></param>
-        void BlankSectorsResetValues()
+        void BlankSectorsResetValues(DriverData leaderData)
         {
             for (int i = 0; i < _sectors.Length; i++)
                 _sectors[i].gameObject.SetActive(false);
@@ -225,6 +228,7 @@ namespace F1_Unity
             _savedSector1 = 0;
             _savedSector2 = 0;
             _savedSector3 = 0;
+            _leaderFastestLapTime = leaderData.LapData.bestLapTime;
             _finishedSector = false;
             _finishedLap = false;
             _invalidLap = false;
@@ -235,6 +239,7 @@ namespace F1_Unity
         /// <summary>
         /// Sets the sector to active/not active and color -> also calculates delta relative to leader lap
         /// </summary>
+        /// <param name="epsilon">Only needed when doing sector 3, calculation of sector 3 time is estimate -> epsilon needed</param>
         /// <param name="sectorImage">What sector image is being manipulated</param>
         /// <param name="elapsedTime">(in millieseconds) Sum of previous sector and this one (sector 1 + sector 2 in sector 2) Used to calculate delta</param>
         /// <param name="leaderElapsedTime">(in millieseconds) Sum of previous sector to this one for the leader(The combined sector time up to and including this sector (handling sector2 => sector1 + sector2)) Used to calculate delta to leader</param>
@@ -242,7 +247,7 @@ namespace F1_Unity
         /// <param name="bestLapSectorTime">(in millieseconds) Sector time for best lap for this driver</param>
         /// <param name="overallBestSectorTime">(in millieseconds) Sector time for overall session best sector time for this sector</param>
         /// <param name="savedSectorTime">reference variable that store current/previous lap sector -> used to calculate Sector 3 and final display. Is set here</param>
-        void HandleSector(Image sectorImage, float elapsedTime, float leaderElapsedTime, float sectorTime, float bestLapSectorTime, float overallBestSectorTime, ref float savedSectorTime)
+        void HandleSector(float epsilon, Image sectorImage, float elapsedTime, float leaderElapsedTime, float sectorTime, float bestLapSectorTime, float overallBestSectorTime, ref float savedSectorTime)
         {
             //fixes color setting to not display yellow sector on first lap out
             if (bestLapSectorTime == 0)
@@ -263,14 +268,15 @@ namespace F1_Unity
                     _finishedSector = true;
 
                 _showCompletedSectorTimer.Reset();
-                SetSectorColor(sectorImage, bestLapSectorTime, overallBestSectorTime, savedSectorTime);
+
+                SetSectorColor(sectorImage, bestLapSectorTime, overallBestSectorTime, epsilon, savedSectorTime);
             }
             //Sector not yet completed
             else if (savedSectorTime == 0)
                 sectorImage.gameObject.SetActive(false);
             //Sector is done set color
             else
-                SetSectorColor(sectorImage, bestLapSectorTime, overallBestSectorTime, savedSectorTime);
+                SetSectorColor(sectorImage, bestLapSectorTime, overallBestSectorTime, epsilon, savedSectorTime);
         }
 
         /// <summary>
@@ -280,17 +286,18 @@ namespace F1_Unity
         /// <param name="bestLapSectorTime">This drivers best lap's best sector time for this sector</param>
         /// <param name="overallBestSectorTime">Best sector time in session</param>
         /// <param name="savedSectorTime">What sector time has this driver done</param>
-        void SetSectorColor(Image sectorImage, float bestLapSectorTime, float overallBestSectorTime, in float savedSectorTime)
+        /// <param name="epsilon">Only needed when doing sector 3, calculation of sector 3 time is estimate -> epsilon needed</param>
+        void SetSectorColor(Image sectorImage, float bestLapSectorTime, float overallBestSectorTime, float epsilon, in float savedSectorTime)
         {
-            //yellow sector
-            if (savedSectorTime > bestLapSectorTime)
-                sectorImage.color = _yellowSectorColor;
             //purple sector
-            else if (savedSectorTime <= overallBestSectorTime)
+            if (savedSectorTime <= overallBestSectorTime + epsilon)
                 sectorImage.color = _purpleSectorColor;
             //green sector
-            else if (savedSectorTime < bestLapSectorTime)
+            else if (savedSectorTime < bestLapSectorTime + epsilon)
                 sectorImage.color = _greenSectorColor;
+            //yellow sector
+            else
+                sectorImage.color = _yellowSectorColor;     
         }
 
         #region Display
@@ -363,24 +370,15 @@ namespace F1_Unity
         private void DisplayFinishedSector()
         {
             ActivateState(_statesObjects[NORMAL_DISPLAY_INDEX]);
-            //if lap is over and delta is 0 it means improved on pole
-            if (_currentDelta == 0 && _finishedLap)
-            {
-                _displayLapText.color = _greenSectorColor;
-                _displayLapText.text = _provisionalPoleText;
-            }
-            else
-            {
-                _displayLapText.text = F1Utility.GetDeltaStringSigned(_currentDelta);
+            _displayLapText.text = F1Utility.GetDeltaStringSigned(_currentDelta);
 
-                //Set color depending on delta
-                if (_currentDelta > 0)
-                    _displayLapText.color = _yellowSectorColor;
-                else if (_currentDelta < 0)
-                    _displayLapText.color = _greenSectorColor;
-                else
-                    _displayLapText.color = _standardDisplayLapColor;
-            }  
+            //Set color depending on delta
+            if (_currentDelta > 0)
+                _displayLapText.color = _yellowSectorColor;
+            else if (_currentDelta < 0)
+                _displayLapText.color = _greenSectorColor;
+            else
+                _displayLapText.color = _standardDisplayLapColor;
         }
 
         /// <summary>
