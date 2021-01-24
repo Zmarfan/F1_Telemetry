@@ -30,6 +30,7 @@ namespace F1_Unity
         [SerializeField] Text _displayLapText;
         [SerializeField] Text _leaderNameText;
         [SerializeField] Text _leaderLapTimeText;
+        [SerializeField] Text _finishedText;
         [SerializeField] GameObject[] _invalidObjs;
 
         readonly float CONVERT_SECONDS_TO_MILLISECONDS = 1000;
@@ -43,6 +44,7 @@ namespace F1_Unity
         readonly int OUT_LAP_INDEX = 1;
         readonly int FINISHED_LAP_INDEX = 2;
         readonly int NORMAL_DISPLAY_INDEX = 3;
+        readonly int FINISHED_INDEX = 4;
 
         Timer _showCompletedLapTimer;
         Timer _showCompletedSectorTimer;
@@ -59,6 +61,7 @@ namespace F1_Unity
 
         bool _outLap = false;
         bool _inPit = false;
+        bool _finished = false;
 
         //Used to update tyre image if driver changes tyres while this is active
         VisualTyreCompound _currentDriverTyre;
@@ -139,12 +142,14 @@ namespace F1_Unity
 
             _inPit = driverData.LapData.driverStatus == DriverStatus.In_Garage;
             _outLap = driverData.LapData.driverStatus == DriverStatus.Out_Lap;
+            ResultStatus s = driverData.LapData.resultStatus;
+            _finished = s == ResultStatus.Finished || s == ResultStatus.Disqualified || s == ResultStatus.Retired;
 
             //Used to know if this is the first driver to set a lap
             //If true delta should be ignored
             _leaderDoneLap = leaderData.LapData.bestLapTime != 0;
 
-            if (_inPit || _outLap)
+            if (_inPit || _outLap || _finished)
                 BlankSectorsResetValues(leaderData);
 
             UpdateDisplay(driverData, leaderData);
@@ -202,7 +207,9 @@ namespace F1_Unity
         void UpdateDisplay(DriverData driverData, DriverData leaderData)
         {
             //Gray out sectors -> no values to show -> reset sectors
-            if (_inPit || _outLap)
+            if (_finished)
+                Display(DisplayMode.Finished, driverData, leaderData);
+            else if (_inPit || _outLap)
                 Display(_inPit ? DisplayMode.Pit : DisplayMode.Out_Lap, driverData, leaderData);
             //Finished sector mode
             else if (_finishedSector)
@@ -313,8 +320,13 @@ namespace F1_Unity
 
             switch (mode)
             {
-                case DisplayMode.Pit:              { ActivateState(_statesObjects[PIT_INDEX]);     break; }
-                case DisplayMode.Out_Lap:          { ActivateState(_statesObjects[OUT_LAP_INDEX]); break; }
+                case DisplayMode.Pit:              { ActivateState(_statesObjects[PIT_INDEX]);      break; }
+                case DisplayMode.Out_Lap:          { ActivateState(_statesObjects[OUT_LAP_INDEX]);  break; }
+                case DisplayMode.Finished:
+                    {
+                        DisplayFinished(driverData);
+                        break;
+                    }
                 case DisplayMode.Counting:
                     {
                         DisplayCounting();
@@ -365,6 +377,15 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Displays the driver's best lap time
+        /// </summary>
+        void DisplayFinished(DriverData driverData)
+        {
+            ActivateState(_statesObjects[FINISHED_INDEX]);
+            _finishedText.text = F1Utility.GetDeltaString(driverData.LapData.bestLapTime);
+        }
+
+        /// <summary>
         /// Displays delta so far through the lap compared to leader and color it
         /// </summary>
         private void DisplayFinishedSector()
@@ -404,6 +425,7 @@ namespace F1_Unity
 
         enum DisplayMode
         {
+            Finished,
             Pit,
             Out_Lap,
             Counting,
