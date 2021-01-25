@@ -237,8 +237,10 @@ namespace F1_Unity
                 //Leader just crossed the line (could be new leader after penalties)
                 if (leaderData.ID == driverData.ID)
                 {
+                    bool firstLeader = _lastLeaderVehicleIndex != int.MinValue;
+
                     //First time skip this -> it switches leader target for finish
-                    if (_lastLeaderVehicleIndex != int.MinValue)
+                    if (firstLeader)
                     {
                         DriverData oldLeaderData = GameManager.F1Info.ReadCarData(_lastLeaderVehicleIndex, out bool status);
                         _driverEntries[GetEntryIndex(oldLeaderData)].SetTimingState(DriverTimeState.Delta);
@@ -261,6 +263,14 @@ namespace F1_Unity
 
                     _lastLeaderVehicleIndex = driverData.VehicleIndex;
                     UpdateAllFinishIntervalAfterLeader(_deltaToLeaderFinish[driverData.ID]); //If this is a new leader it updates delta after this
+
+                    //Set the correct interval to leader
+                    //First guy to cross line has 0 delta to itself
+                    if (firstLeader)
+                        _driverEntries[index].SetDeltaToLeader(0);
+                    //If someone overtake leader on penalties, delta to leader will not be 0
+                    else
+                        _driverEntries[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
                 }
                 //Driver finish behind leader
                 else
@@ -274,10 +284,10 @@ namespace F1_Unity
                         Penalties = driverData.LapData.totalPenalties,
                         VehicleIndex = driverData.VehicleIndex
                     });
-                }
 
-                //Set the correct interval to leader
-                _driverEntries[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
+                    //Set the correct interval to leader
+                    _driverEntries[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);
+                }
             }
         }
 
@@ -298,6 +308,7 @@ namespace F1_Unity
                     data.TimeToLeader = deltaToLeader;
                     DriverData driverData = GameManager.F1Info.ReadCarData(data.VehicleIndex, out bool status);
                     _deltaToLeaderFinish[driverData.ID] = data;
+
                     _driverEntries[GetEntryIndex(driverData)].SetDeltaToLeader(data.IntervalToLeader);
                 }
             }
