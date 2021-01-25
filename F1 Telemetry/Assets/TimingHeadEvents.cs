@@ -11,6 +11,8 @@ namespace F1_Unity
     /// </summary>
     public class TimingHeadEvents : MonoBehaviour
     {
+        #region Fields
+
         [Header("Affected UI")]
 
         [SerializeField, Tooltip("UI that gets colored to flag color on info shown")] AffectedByFlagElement[] _affectedUI;
@@ -34,10 +36,13 @@ namespace F1_Unity
         [SerializeField] GameObject[] _statesObj;
         [SerializeField] Text _flagText;
         [SerializeField] Text _lapsToGoText;
+        [SerializeField] GameObject _safetyCarObj;
+        [SerializeField] GameObject _virtualSafetyCarObj;
 
         static readonly int FINAL_LAP_INDEX = 0;
         static readonly int FLAG_INDEX = 1;
         static readonly int LAPS_TO_GO_INDEX = 2;
+        static readonly int SAFETY_CAR_INDEX = 3;
 
         Timer _showInfoTimer;
         int _lastLapsLeftLap = 0;
@@ -45,6 +50,11 @@ namespace F1_Unity
         bool _showingInfo = false;
         bool _up = false;
         bool _wasYellowFlag = false;
+        SafetyCarStatus _scStatus = SafetyCarStatus.No_Safety_Car;
+
+        #endregion
+
+        #region UnityFunctions
 
         private void Awake()
         {
@@ -52,6 +62,16 @@ namespace F1_Unity
         }
 
         private void Update()
+        {
+            MainUpdate();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Main update runs every frame
+        /// </summary>
+        void MainUpdate()
         {
             Session sessionData = GameManager.F1Info.ReadSession(out bool sessionStatus);
             DriverData leaderData = GameManager.DriverDataManager.GetDriverFromPosition(1, out bool status);
@@ -62,6 +82,8 @@ namespace F1_Unity
 
             if (sessionStatus && status)
             {
+                //SC has priority over flags but info has priority over SC AND flags
+                CheckSafetyCars(sessionData);
                 CheckFlags(sessionData);
                 CheckEvents(leaderData, sessionData);
             }
@@ -72,6 +94,8 @@ namespace F1_Unity
             UpdateTimers();
             _activeObj.SetActive(_up);
         }
+
+        #region Helper Methods
 
         /// <summary>
         /// Turn off all except active
@@ -103,13 +127,28 @@ namespace F1_Unity
             }
         }
 
+        #endregion
+
+        #region Flags & SC
+
+        /// <summary>
+        /// If there is a SC and no info playing -> show SC info header
+        /// </summary>
+        void CheckSafetyCars(Session sessionData)
+        {
+            _scStatus = sessionData.SafetyCarStatus;
+            //SC is currently out and no info is currently being displayed
+            if (!_showingInfo && _scStatus != SafetyCarStatus.No_Safety_Car)
+                DoSafetyCar();
+        }
+
         /// <summary>
         /// Activate flag mode if no other info is displayed if there are flag waved
         /// </summary>
         void CheckFlags(Session sessionData)
         {
             //Show info as long as it is there, no timer for flags
-            if (!_showingInfo)
+            if (!_showingInfo && _scStatus == SafetyCarStatus.No_Safety_Car)
             {
                 //True if yellow flag in that zone
                 bool[] sectors = new bool[3];
@@ -124,7 +163,7 @@ namespace F1_Unity
                 if (!yellow && _wasYellowFlag)
                     StartGreenFlag();
                 else if (yellow)
-                    YellowFlag(sectors);
+                    DoYellowFlag(sectors);
             }
         }
 
@@ -142,10 +181,33 @@ namespace F1_Unity
         }
 
         /// <summary>
+        /// Activate SC info and activate VSC or SC, set color
+        /// </summary>
+        void DoSafetyCar()
+        {
+            SetCorrectSC(_scStatus == SafetyCarStatus.Full_Safety_Car);
+            _up = true;
+            _wasYellowFlag = true;
+            _mainImage.color = _yellowFlagColor;
+            SetAffectedUIColor(AffectedUIState.Yellow);
+            SetActiveState(_statesObj[SAFETY_CAR_INDEX]);
+        }
+
+        /// <summary>
+        /// Activate and deactivate SC and/or VSC
+        /// </summary>
+        /// <param name="fullSC">true if activate SC and deactivate VSC</param>
+        void SetCorrectSC(bool fullSC)
+        {
+            _safetyCarObj.SetActive(fullSC);
+            _virtualSafetyCarObj.SetActive(!fullSC);
+        }
+
+        /// <summary>
         /// Activate yellow flag state and write correct sectors
         /// </summary>
         /// <param name="sectorStates"></param>
-        void YellowFlag(bool[] sectorStates)
+        void DoYellowFlag(bool[] sectorStates)
         {
             _flagText.text = GetYellowFlagString(sectorStates);
             _up = true;
@@ -208,6 +270,10 @@ namespace F1_Unity
             return builder.ToString();
         }
 
+        #endregion
+
+        #region Events
+
         /// <summary>
         /// Check for events and start them if possible
         /// </summary>
@@ -229,6 +295,10 @@ namespace F1_Unity
                 StartDisplayLapsToGo(sessionData.TotalLaps -  leaderData.LapData.currentLapNumber + 1);
             }
         }
+
+        #endregion
+
+        #region Start Methods
 
         /// <summary>
         /// Activate green flag info and start timer for it's uptime -> set color and string
@@ -272,6 +342,10 @@ namespace F1_Unity
             SetActiveState(_statesObj[stateIndex]);
         }
 
+        #endregion
+
+        #region Structs & Enums
+
         enum AffectedUIState
         {
             Yellow,
@@ -285,5 +359,7 @@ namespace F1_Unity
             public Graphic graphic;
             public Color changeBackColor;
         }
+
+        #endregion
     }
 }
