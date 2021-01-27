@@ -21,14 +21,14 @@ namespace F1_Unity
         /// <summary>
         /// Index of the driver with fastest lap
         /// </summary>
-        public float FastestLapTime { get; private set; } = float.MaxValue;
+        public float FastestLapTime { get; private set; }
 
         //Index represent vehicle index. Stores all lap data for every driver
         StoredDriverData[] _storedDriverData = new StoredDriverData[F1Info.MAX_AMOUNT_OF_CARS];
 
-        float _currentFastestSector1 = float.MaxValue;
-        float _currentFastestSector2 = float.MaxValue;
-        float _currentFastestSector3 = float.MaxValue;
+        float _currentFastestSector1;
+        float _currentFastestSector2;
+        float _currentFastestSector3;
 
         /// <summary>
         /// Float maxvalue if not done any, in seconds
@@ -46,11 +46,17 @@ namespace F1_Unity
 
         private void Awake()
         {
-            Reset();
+            ResetManager();
         }
 
-        public void Reset()
+        public void ResetManager()
         {
+            FastestLapTime = float.MaxValue;
+
+            _currentFastestSector1 = float.MaxValue;
+            _currentFastestSector2 = float.MaxValue;
+            _currentFastestSector3 = float.MaxValue;
+
             for (int i = 0; i < _storedDriverData.Length; i++)
                 _storedDriverData[i] = new StoredDriverData();
         }

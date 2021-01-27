@@ -98,7 +98,7 @@ namespace F1_Unity
         void SessionStarted(Packet packet)
         {
             //clear old stored data
-            LapManager.Reset();
+            LapManager.ResetManager();
             _timingScreenManager.CompleteReset();
         }
 
