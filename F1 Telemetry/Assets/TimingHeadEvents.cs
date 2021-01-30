@@ -36,13 +36,13 @@ namespace F1_Unity
         [SerializeField] GameObject[] _statesObj;
         [SerializeField] Text _flagText;
         [SerializeField] Text _lapsToGoText;
-        [SerializeField] GameObject _safetyCarObj;
-        [SerializeField] GameObject _virtualSafetyCarObj;
 
         static readonly int FINAL_LAP_INDEX = 0;
         static readonly int FLAG_INDEX = 1;
         static readonly int LAPS_TO_GO_INDEX = 2;
         static readonly int SAFETY_CAR_INDEX = 3;
+        static readonly int VIRTUA_SAFETY_CAR_INDEX = 4;
+        static readonly int FORMATION_LAP_INDEX = 5;
 
         Timer _showInfoTimer;
         int _lastLapsLeftLap = 0;
@@ -185,22 +185,26 @@ namespace F1_Unity
         /// </summary>
         void DoSafetyCar()
         {
-            SetCorrectSC(_scStatus == SafetyCarStatus.Full_Safety_Car);
             _up = true;
             _wasYellowFlag = true;
             _mainImage.color = _yellowFlagColor;
             SetAffectedUIColor(AffectedUIState.Yellow);
-            SetActiveState(_statesObj[SAFETY_CAR_INDEX]);
+            SetActiveState(_statesObj[GetSCTypeIndex()]);
         }
 
         /// <summary>
-        /// Activate and deactivate SC and/or VSC
+        /// Returns the correct index corresponding to SC type
         /// </summary>
-        /// <param name="fullSC">true if activate SC and deactivate VSC</param>
-        void SetCorrectSC(bool fullSC)
+        /// <returns></returns>
+        int GetSCTypeIndex()
         {
-            _safetyCarObj.SetActive(fullSC);
-            _virtualSafetyCarObj.SetActive(!fullSC);
+            switch (_scStatus)
+            {
+                case SafetyCarStatus.Full_Safety_Car: return SAFETY_CAR_INDEX;
+                case SafetyCarStatus.Virtual_Safety_Car: return VIRTUA_SAFETY_CAR_INDEX;
+                case SafetyCarStatus.Formation_Lap: return FORMATION_LAP_INDEX;
+                default: throw new System.Exception("There is no support for this SC type: " + _scStatus);
+            }
         }
 
         /// <summary>
