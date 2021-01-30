@@ -20,6 +20,7 @@ namespace F1_Unity
         [Header("Settings")]
 
         [SerializeField, Range(1, 20)] int _lapsToGoFrequency = 5;
+        [SerializeField, Range(1, 20)] int _lapsToGoEveryLapCount = 3;
         [SerializeField, Range(1, 20)] int _lapsInBeforeLapsToGo = 3;
         [SerializeField, Range(0.01f, 100)] float _showInfoTime = 5f;
         [SerializeField] string _greenFlagString = "TRACK CLEAR";
@@ -283,21 +284,25 @@ namespace F1_Unity
         /// </summary>
         void CheckEvents(DriverData leaderData, Session sessionData)
         {
-            //Last lap and not done yet
-            if (leaderData.LapData.currentLapNumber == sessionData.TotalLaps && !_doneFinalLap && !_showingInfo)
-                StartLastLap();
-
             byte lapNumber = leaderData.LapData.currentLapNumber;
             byte totalLaps = sessionData.TotalLaps;
-
-            bool lapUpdateTime = ((totalLaps - lapNumber + 1) % _lapsToGoFrequency == 0) && lapNumber <= totalLaps;
-            lapUpdateTime = lapUpdateTime && lapNumber > _lapsInBeforeLapsToGo && !_showingInfo && _lastLapsLeftLap != lapNumber;
-            //Laps to go display time
-            if (lapUpdateTime)
+            //Last lap and not done yet
+            if (lapNumber == totalLaps && !_doneFinalLap && !_showingInfo)
+                StartLastLap();
+            else
             {
-                _lastLapsLeftLap = leaderData.LapData.currentLapNumber;
-                StartDisplayLapsToGo(sessionData.TotalLaps -  leaderData.LapData.currentLapNumber + 1);
-            }
+                //Frequency check
+                int lapsToGo = totalLaps - lapNumber;
+                bool doLapFrequency = ((lapsToGo + 1) % _lapsToGoFrequency == 0) && lapNumber > _lapsInBeforeLapsToGo;
+                bool doLastLaps = lapsToGo < _lapsToGoEveryLapCount;
+
+                //Show laps to go if no info showing, not done this lap and on a valid lap + conditional
+                if ((doLastLaps || doLapFrequency) && !_showingInfo && _lastLapsLeftLap != lapNumber && lapNumber <= totalLaps)
+                {
+                    _lastLapsLeftLap = leaderData.LapData.currentLapNumber;
+                    StartDisplayLapsToGo(sessionData.TotalLaps - leaderData.LapData.currentLapNumber + 1);
+                }
+            }  
         }
 
         #endregion

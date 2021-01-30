@@ -379,6 +379,29 @@ namespace F1_Unity
             float leaderLapCompletion = LapCompletion(sessionData, leaderData);
             int timingIndex = (int)(lapCompletion * (_amountOfTimingStations - 1));
 
+            bool passedLeader = _timingData[timingIndex].PassedByLeader;
+
+            //This is the leader!
+            if (leaderData.VehicleIndex == driverData.VehicleIndex)
+            {
+                //It is leader so delta to itself is 0
+                _driverEntries[index].SetDeltaToLeader(0);
+                if (!inPit)
+                    _driverEntries[index].SetTimingState(DriverTimeState.Leader);
+            }
+            else if (IsLapped(timingIndex, driverData, sessionData, out int amountOfLaps))
+            {
+                Debug.Log("Lapped");
+                if (!inPit)
+                    _driverEntries[index].SetTimingState(DriverTimeState.Lapped);
+                _driverEntries[index].SetLapsLapped(amountOfLaps);
+            }
+            else if (!passedLeader && !inPit)
+                _driverEntries[index].SetTimingState(DriverTimeState.Starting);
+            //If nothing else -> Show delta
+            else if (!inPit)
+                _driverEntries[index].SetTimingState(DriverTimeState.Delta);
+
             //No need to update since it hasn't passed a new station
             if (_driverLastTimeSpot[driverData.ID] == timingIndex)
                 return;
@@ -391,27 +414,6 @@ namespace F1_Unity
             float deltaToLeader = currentTime - _timingData[timingIndex].Time;
 
             _driverEntries[index].SetDeltaToLeader(deltaToLeader);
-            bool passedLeader = _timingData[timingIndex].PassedByLeader;
-
-            //This is the leader!
-            if (leaderData.VehicleIndex == driverData.VehicleIndex)
-            {
-                //It is leader so delta to itself is 0
-                _driverEntries[index].SetDeltaToLeader(0);
-                if (!inPit)
-                    _driverEntries[index].SetTimingState(DriverTimeState.Leader);
-            }
-            else if (IsLapped(leaderLapCompletion, lapCompletion, leaderData, driverData, sessionData, out int amountOfLaps))
-            {
-                if (!inPit)
-                    _driverEntries[index].SetTimingState(DriverTimeState.Lapped);
-                _driverEntries[index].SetLapsLapped(amountOfLaps);
-            }
-            else if (!passedLeader && !inPit)
-                _driverEntries[index].SetTimingState(DriverTimeState.Starting);
-            //If nothing else -> Show delta
-            else if (!inPit)
-                _driverEntries[index].SetTimingState(DriverTimeState.Delta);
         }
 
         /// <summary>
@@ -428,6 +430,9 @@ namespace F1_Unity
             return true;
         }
 
+        /*OLD ISLAPPED FUNCTION
+         * 
+         * 
         /// <summary>
         /// Returns weather a car is lapped by a leader
         /// </summary>
@@ -449,6 +454,29 @@ namespace F1_Unity
             if (lapCompletion > leaderLapCompletion)
                 amountOfLaps--;
             return amountOfLaps > 0;
+        }
+        */
+
+        /// <summary>
+        /// Determine if a car is lapped based on timing stations the leader have passed.
+        /// </summary>
+        /// <param name="amountOfLaps">How many laps the car is lapped if any</param>
+        /// <returns>True if it is lapped</returns> 
+        bool IsLapped(int timingIndex, DriverData driverData, Session sessionData, out int amountOfLaps)
+        {
+            //Leader must have passed it to be able to determine
+            if (_timingData[timingIndex].PassedByLeader)
+            {
+                int lapsBehind = _timingData[timingIndex].Lap - driverData.LapData.currentLapNumber;
+                //Is lapped then
+                if (lapsBehind > 0)
+                {
+                    amountOfLaps = lapsBehind;
+                    return true;
+                }
+            }
+            amountOfLaps = 0;
+            return false;
         }
 
         #endregion

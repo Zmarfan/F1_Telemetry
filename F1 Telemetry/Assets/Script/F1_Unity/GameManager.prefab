@@ -1382,6 +1382,7 @@ MonoBehaviour:
   _weatherKey: 87
   _timingIntervalTypeKey: 81
   _timingStatsStateKey: 87
+  _timingNameMode: 69
 --- !u!1 &3974230159464256220
 GameObject:
   m_ObjectHideFlags: 0

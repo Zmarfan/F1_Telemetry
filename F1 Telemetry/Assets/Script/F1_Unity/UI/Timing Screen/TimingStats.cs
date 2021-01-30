@@ -55,7 +55,6 @@ namespace F1_Unity
         int _lastTyreLife = int.MinValue;
         int _lastAmountOfStops = int.MinValue;
         bool _hasDriveThrough = false;
-        bool _hasFinished = false;
 
         bool _out = false;
 
@@ -153,14 +152,11 @@ namespace F1_Unity
         /// <param name="changed">If a change from last update was made changed is true</param>
         void SetFinished(ref bool changed)
         {
-            if (!_hasFinished)
-            {
-                changed = true;
-                //Turn off all stats and turn on finish flag
-                for (int i = 0; i < _allStatsObjects.Count; i++)
-                    _allStatsObjects[i].SetActive(false);
-                _finishedFlagObj.SetActive(true);
-            }
+            changed = true;
+            //Turn off all stats and turn on finish flag
+            for (int i = 0; i < _allStatsObjects.Count; i++)
+                _allStatsObjects[i].SetActive(false);
+            _finishedFlagObj.SetActive(true);
         }
 
         /// <summary>

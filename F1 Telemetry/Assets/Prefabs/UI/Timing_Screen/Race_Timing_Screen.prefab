@@ -491,8 +491,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00012207, y: 0.000015258789}
-  m_SizeDelta: {x: 477.23273, y: 63.015137}
+  m_AnchoredPosition: {x: -7.8, y: 0.000015258789}
+  m_SizeDelta: {x: 461.68585, y: 63.015137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3463258136795903906
 GameObject:
@@ -972,8 +972,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60.019825, y: -0.000066757}
-  m_SizeDelta: {x: 901.8623, y: 157.5376}
+  m_AnchoredPosition: {x: 59.132, y: -0}
+  m_SizeDelta: {x: 897.4226, y: 227.35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5516429408988529759
 CanvasRenderer:
@@ -1009,14 +1009,14 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 5
-    m_MaxSize: 102
+    m_MaxSize: 171
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: TEXT
+  m_Text: SECTOR 1
 --- !u!1 &4388186912745257626
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1751,7 @@ MonoBehaviour:
   - graphic: {fileID: 1812579980443987507}
     changeBackColor: {r: 1, g: 1, b: 1, a: 1}
   _lapsToGoFrequency: 5
+  _lapsToGoEveryLapCount: 3
   _lapsInBeforeLapsToGo: 3
   _showInfoTime: 5
   _greenFlagString: TRACK CLEAR
