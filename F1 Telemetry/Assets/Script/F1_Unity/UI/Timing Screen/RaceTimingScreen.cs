@@ -391,7 +391,6 @@ namespace F1_Unity
             }
             else if (IsLapped(timingIndex, driverData, sessionData, out int amountOfLaps))
             {
-                Debug.Log("Lapped");
                 if (!inPit)
                     _driverEntries[index].SetTimingState(DriverTimeState.Lapped);
                 _driverEntries[index].SetLapsLapped(amountOfLaps);
@@ -464,6 +463,12 @@ namespace F1_Unity
         /// <returns>True if it is lapped</returns> 
         bool IsLapped(int timingIndex, DriverData driverData, Session sessionData, out int amountOfLaps)
         {
+            //Compare one behind current as to not have it flicker
+            if (timingIndex == 0)
+                timingIndex = _amountOfTimingStations - 1;
+            else
+                timingIndex--;
+
             //Leader must have passed it to be able to determine
             if (_timingData[timingIndex].PassedByLeader)
             {
