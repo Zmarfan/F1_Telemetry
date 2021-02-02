@@ -113,6 +113,8 @@ namespace F1_Unity
             _driverEntries[index].SetName(driverData.RaceNumber); //Set initals for that position
             _driverEntries[index].SetTeamColor(GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
 
+            ChangeColorData(_driverEntries[index], _driverEntries[_driverPosition[driverData.ID] - 1]);
+
             //if the car is retired, set it to out
             ResultStatus resultStatus = driverData.LapData.resultStatus;
             if (resultStatus == ResultStatus.Retired || resultStatus == ResultStatus.Disqualified)

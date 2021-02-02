@@ -226,6 +226,17 @@ namespace F1_Unity
         /// </summary>
         protected abstract void ChangeDriverPosition(byte carPosition, DriverData driverData, Session sessionData, int index);
 
+        /// <summary>
+        /// Copy color values between two entries (done in overtakes to make event color stick to driver)
+        /// </summary>
+        protected virtual void ChangeColorData(TimingScreenEntry entry1, TimingScreenEntry entry2)
+        {
+            entry1.GetColorValues(out Color currentFromDarkColor1, out Color currentFromLightColor1, out Color currentDarkColor1, out Color currentLightColor1,  out float colorTime1);
+            entry2.GetColorValues(out Color currentFromDarkColor2, out Color currentFromLightColor2, out Color currentDarkColor2, out Color currentLightColor2, out float colorTime2);
+            entry1.SetColorValues(currentFromDarkColor2, currentFromLightColor2, currentDarkColor2, currentLightColor2, colorTime2);
+            entry2.SetColorValues(currentFromDarkColor1, currentFromLightColor1, currentDarkColor1, currentLightColor1, colorTime1);
+        }
+
         #endregion
 
         #region Driver Update

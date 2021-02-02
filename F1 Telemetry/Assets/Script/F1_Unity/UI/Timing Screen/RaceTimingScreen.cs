@@ -330,6 +330,10 @@ namespace F1_Unity
             _driverEntries[index].SetName(driverData.RaceNumber); //Set initals for that position
             _driverEntries[index].SetTeamColor(GameManager.F1Utility.GetColorByTeam(driverData.ParticipantData.team)); //Set team color
 
+            //Makes it so this line only runs once over pair of drivers swapping position
+            if (index < _driverPosition[driverData.ID] - 1)
+                ChangeColorData(_driverEntries[index], _driverEntries[_driverPosition[driverData.ID] - 1]);
+
             //Set delta to leader if finished
             if (_deltaToLeaderFinish.ContainsKey(driverData.ID))
                 _driverEntries[index].SetDeltaToLeader(_deltaToLeaderFinish[driverData.ID].IntervalToLeader);

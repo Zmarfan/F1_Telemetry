@@ -62,7 +62,7 @@ namespace F1_Unity
         Color _currentFromColorLight;
 
 
-        public F1_Data_Management.DriverData DriverData { get; private set; }
+        public DriverData DriverData { get; private set; }
         public bool IsActive { get; private set; }
         public bool OutOfSession { get; private set; }
         public DriverTimeState TimeState { get; private set; } = DriverTimeState.Starting;
@@ -87,6 +87,31 @@ namespace F1_Unity
                 UpdateOvertakeColor();
                 UpdateColor();
             }
+        }
+
+        /// <summary>
+        /// Return this entries color status (used to copy between entries)
+        /// </summary>
+        public void GetColorValues(out Color currentFromDarkColor, out Color currentFromLightColor, out Color currentDarkColor, out Color currentLightColor, out float colorTime)
+        {
+            currentFromDarkColor = _currentFromColorDark;
+            currentFromLightColor = _currentFromColorLight;
+            currentDarkColor = _darkBackground.color;
+            currentLightColor = _lightBackground.color;
+            colorTime = _colorTimer.Time;
+        }
+
+        /// <summary>
+        /// Set Color values (used to copy between entries)
+        /// </summary>
+        public void SetColorValues(Color currentFromDarkColor, Color currentFromLightColor, Color currentDarkColor, Color currentLightColor, float colorTime)
+        {
+            _currentFromColorDark = currentFromDarkColor;
+            _currentFromColorLight = currentFromLightColor;
+            _darkBackground.color = currentDarkColor;
+            _lightBackground.color = currentLightColor;
+            _colorTimer.Reset();
+            _colorTimer.Time = colorTime;
         }
 
         /// <summary>
