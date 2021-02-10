@@ -119,24 +119,25 @@ namespace F1_Unity
         /// </summary>
         public void UpdateTimingColor()
         {
+            ResultStatus rStatus = DriverData.LapData.resultStatus;
             //Set color for text while pitting
-            if (InPit && !OutOfSession && DriverData.LapData.resultStatus != ResultStatus.Finished)
+            if (InPit && !OutOfSession && rStatus != ResultStatus.Finished)
             {
                 _timeTextLeader.color = _pittingColor;
                 _timeTextInterval.color = _pittingColor;
             }
+            //Default color for leader or DNF/DSQ or lapped or finished
+            else if (_position == 1 || OutOfSession || rStatus == ResultStatus.Finished || TimeState == DriverTimeState.Lapped || TimeState == DriverTimeState.Starting)
+            {
+                _timeTextInterval.color = _intervalColorGradient.Evaluate(0);
+                _timeTextLeader.color = _intervalColorGradient.Evaluate(0);
+            }
             //Not leader, not pitting, not lapped
-            else if (_position > 1 && !OutOfSession && TimeState != DriverTimeState.Lapped && TimeState != DriverTimeState.Starting && _useColorIntervals)
+            else if (_useColorIntervals)
             {
                 float point = 1 - Mathf.Clamp(DeltaToCarInFront / _intervalColorMaxDistance, 0, _intervalColorMaxDistance);
                 _timeTextInterval.color = _intervalColorGradient.Evaluate(point);
                 _timeTextLeader.color = _intervalColorGradient.Evaluate(point);
-            }
-            //Default color for leader or DNF/DSQ or lapped or finished
-            else
-            {
-                _timeTextInterval.color = _intervalColorGradient.Evaluate(0);
-                _timeTextLeader.color = _intervalColorGradient.Evaluate(0);
             }
         }
 
@@ -280,10 +281,13 @@ namespace F1_Unity
         /// <param name="driverData"></param>
         public void SetFastestLap(DriverData driverData)
         {
-            //Set color and lap value for fastest lap for this driver
-            _fastestLapText.text = F1Utility.GetDeltaString(driverData.LapData.bestLapTime);
-            bool isFastestOverall = GameManager.LapManager.FastestLapTime == driverData.LapData.bestLapTime;
+            if (driverData.LapData.bestLapTime == 0)
+                _fastestLapText.text = _startingString;
+            else
+                //Set color and lap value for fastest lap for this driver
+                _fastestLapText.text = F1Utility.GetDeltaString(driverData.LapData.bestLapTime);
 
+            bool isFastestOverall = GameManager.LapManager.FastestLapTime == driverData.LapData.bestLapTime;
             _fastestLapText.color = isFastestOverall ? _fastestLapColor : _timingColor;
             _fastestLap.gameObject.SetActive(isFastestOverall);
         }

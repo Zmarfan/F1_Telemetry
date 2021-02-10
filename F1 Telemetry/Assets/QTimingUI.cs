@@ -96,7 +96,8 @@ namespace F1_Unity
         /// </summary>
         protected override void UpdateVisuals()
         {
-            DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
+            //DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
+            DriverData spectatorDriverData = GameManager.F1Info.ReadPlayerData(out bool statusDriver);
 
             //Has to be seperated as a position change doesn't need to flush data
             if (statusDriver && spectatorDriverData.LapData.carPosition != _currentDriverPosition)
@@ -383,6 +384,7 @@ namespace F1_Unity
         {
             ActivateState(_statesObjects[FINISHED_INDEX]);
             _finishedText.text = F1Utility.GetDeltaString(driverData.LapData.bestLapTime);
+            _finishedText.color = driverData.LapData.bestLapTime == GameManager.LapManager.FastestLapTime ? _purpleSectorColor : _standardDisplayLapColor;
         }
 
         /// <summary>
@@ -409,7 +411,13 @@ namespace F1_Unity
         {
             ActivateState(_statesObjects[FINISHED_LAP_INDEX]);
             _finishedLapText.text = F1Utility.GetDeltaString(driverData.LapData.lastLapTime);
-            _finishedLapText.color = _invalidLap ? _invalidDisplayLapColor : _standardDisplayLapColor;
+
+            if (_invalidLap)
+                _finishedLapText.color = _invalidDisplayLapColor;
+            else if (driverData.LapData.bestLapTime == GameManager.LapManager.FastestLapTime)
+                _finishedLapText.color = _purpleSectorColor;
+            else
+                _finishedLapText.color = _standardDisplayLapColor;
         }
 
         #endregion

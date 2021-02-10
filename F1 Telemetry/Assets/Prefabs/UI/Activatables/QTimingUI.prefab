@@ -1538,7 +1538,7 @@ MonoBehaviour:
   _invalidDisplayLapColor: {r: 1, g: 0.3372549, b: 0.3372549, a: 1}
   _yellowSectorColor: {r: 1, g: 1, b: 0, a: 1}
   _greenSectorColor: {r: 0, g: 1, b: 0, a: 1}
-  _purpleSectorColor: {r: 0.49682343, g: 0.15656, b: 0.824, a: 1}
+  _purpleSectorColor: {r: 0.6117647, g: 0.30980393, b: 0.83137256, a: 1}
   _sectors:
   - {fileID: 2069954232638114684}
   - {fileID: 2350464083234362393}

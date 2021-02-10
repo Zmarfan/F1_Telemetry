@@ -297,7 +297,7 @@ namespace F1_Unity
                 bool doLastLaps = lapsToGo < _lapsToGoEveryLapCount;
 
                 //Show laps to go if no info showing, not done this lap and on a valid lap + conditional
-                if ((doLastLaps || doLapFrequency) && !_showingInfo && _lastLapsLeftLap != lapNumber && lapNumber <= totalLaps)
+                if ((doLastLaps || doLapFrequency) && !_showingInfo && _lastLapsLeftLap != lapNumber && lapNumber < totalLaps)
                 {
                     _lastLapsLeftLap = leaderData.LapData.currentLapNumber;
                     StartDisplayLapsToGo(sessionData.TotalLaps - leaderData.LapData.currentLapNumber + 1);

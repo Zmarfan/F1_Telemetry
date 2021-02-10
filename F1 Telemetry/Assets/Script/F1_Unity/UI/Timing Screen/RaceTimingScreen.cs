@@ -9,7 +9,7 @@ namespace F1_Unity
     {
         #region Fields
 
-        static readonly float LEADER_LAP_EPSILON = 0.01f;
+        //static readonly float LEADER_LAP_EPSILON = 0.01f;
 
         [SerializeField, Range(10, 400)] int _amountOfTimingStations = 100;
 

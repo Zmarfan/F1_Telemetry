@@ -51,6 +51,7 @@ namespace F1_Data_Management
         {
             CurrentlyListening = false;
             _thread.Abort();
+            _udp.Close();
         }
 
         /// <summary>
