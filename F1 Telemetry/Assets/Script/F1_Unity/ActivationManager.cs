@@ -12,6 +12,7 @@ namespace F1_Unity
         [SerializeField] ToggleActivatable _liveSpeed;
         [SerializeField] ToggleActivatable _driverName;
         [SerializeField] ToggleActivatable _detailDelta;
+        [SerializeField] ToggleActivatable _detailDeltaLeader;
         [SerializeField] ToggleActivatable _tyreWear;
         [SerializeField] ToggleActivatable _speedCompare;
         [SerializeField] ToggleActivatable _location;
@@ -34,6 +35,7 @@ namespace F1_Unity
             GameManager.InputManager.PressedToggleLiveSpeed += ToggleLiveSpeed;
             GameManager.InputManager.PressedToggleDriverName += ToggleDriverName;
             GameManager.InputManager.PressedToggleDetailDelta += ToggleDetailDelta;
+            GameManager.InputManager.PressedToggleDetailDeltaLeader += ToggleDetailDeltaLeader;
             GameManager.InputManager.PressedToggleTyreWear += ToggleTyreWear;
             GameManager.InputManager.PressedToggleSpeedCompare += ToggleSpeedCompare;
             GameManager.InputManager.PressedToggleLocation += ToggleLocation;
@@ -53,6 +55,7 @@ namespace F1_Unity
             GameManager.InputManager.PressedToggleLiveSpeed -= ToggleLiveSpeed;
             GameManager.InputManager.PressedToggleDriverName -= ToggleDriverName;
             GameManager.InputManager.PressedToggleDetailDelta -= ToggleDetailDelta;
+            GameManager.InputManager.PressedToggleDetailDeltaLeader -= ToggleDetailDeltaLeader;
             GameManager.InputManager.PressedToggleTyreWear -= ToggleTyreWear;
             GameManager.InputManager.PressedToggleSpeedCompare -= ToggleSpeedCompare;
             GameManager.InputManager.PressedToggleLocation -= ToggleLocation;
@@ -119,6 +122,12 @@ namespace F1_Unity
         {
             _detailDelta.Toggle(!_detailDelta.gameObject.activeSelf);
             TurnOffActivatableArray(_detailDelta, _lowerSlot);
+        }
+
+        void ToggleDetailDeltaLeader()
+        {
+            _detailDeltaLeader.Toggle(!_detailDeltaLeader.gameObject.activeSelf);
+            TurnOffActivatableArray(_detailDeltaLeader, _lowerSlot);
         }
 
         void ToggleSpeedCompare()

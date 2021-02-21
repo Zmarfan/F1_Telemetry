@@ -28,6 +28,7 @@ namespace F1_Unity
 
         [SerializeField] Key _driverNameKey = Key.Q;
         [SerializeField] Key _detailDeltaKey = Key.W;
+        [SerializeField] Key _detailDeltaLeaderKey = Key.E;
         [SerializeField] Key _speedCompareKey = Key.E;
         [SerializeField] Key _lapComparisionKey = Key.R;
         [SerializeField] Key _ersCompareKey = Key.T;
@@ -66,6 +67,7 @@ namespace F1_Unity
         //Lower
         public event InputPressedDown PressedToggleDriverName;
         public event InputPressedDown PressedToggleDetailDelta;
+        public event InputPressedDown PressedToggleDetailDeltaLeader;
         public event InputPressedDown PressedToggleSpeedCompare;
         public event InputPressedDown PressedToggleLapComparision;
         public event InputPressedDown PressedToggleERSCompare;
@@ -95,6 +97,7 @@ namespace F1_Unity
 
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_driverNameKey, CheckLower);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
+            GameManager.RawInputSystem.SubscribeToKeyEventDown(_detailDeltaLeaderKey, CheckLower);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_speedCompareKey, CheckLower);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_lapComparisionKey, CheckLower);
             GameManager.RawInputSystem.SubscribeToKeyEventDown(_ersCompareKey, CheckLower);
@@ -121,6 +124,7 @@ namespace F1_Unity
 
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_driverNameKey, CheckLower);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_detailDeltaKey, CheckLower);
+            GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_detailDeltaLeaderKey, CheckLower);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_speedCompareKey, CheckLower);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_lapComparisionKey, CheckLower);
             GameManager.RawInputSystem.UnsubscribeToKeyEventDown(_ersCompareKey, CheckLower);

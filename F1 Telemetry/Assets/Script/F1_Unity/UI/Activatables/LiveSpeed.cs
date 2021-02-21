@@ -10,39 +10,17 @@ namespace F1_Unity
         [SerializeField] Color _fastColor;
         [SerializeField] int _transitionToFastColorSpeedKMH = 200;
 
+        [SerializeField] CanvasGroup _canvasGroup;
         [SerializeField] Text _driverText;
         [SerializeField] Text _kmhSpeedText;
         [SerializeField] Text _mphSpeedText;
 
-        //int turn = 1;
-        //float startPoint = 0;
-
         private void Update()
         {
             if (GameManager.F1Info.ReadyToReadFrom)
-            {
                 UpdateValues();
-
-                bool start = Input.GetKeyDown(KeyCode.T);
-                bool end = Input.GetKeyDown(KeyCode.Y);
-
-                //REMOVE
-                //DriverData playerDriverData = GameManager.F1Info.ReadPlayerData(out bool valid);
-                //if (valid)
-                //{
-                //    //Debug.Log(TrackTurns.GetTurn(Track.Abu_Dhabi, playerDriverData.LapData.lapDistance));
-
-                //    if (start)
-                //        startPoint = playerDriverData.LapData.lapDistance;
-
-                //    if (end)
-                //    {
-                //        Debug.Log("Turn: " + turn + ", start: " + startPoint + ", end: " + playerDriverData.LapData.lapDistance);
-                //        turn++;
-                //    }
-                //}
-                //REMOVE
-            }
+            else
+                Show(false);
         }
 
         /// <summary>
@@ -53,6 +31,7 @@ namespace F1_Unity
             DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool status);
             if (status)
             {
+                Show(true);
                 //Speed is in kmh so convert to mph as well
                 ushort speedInKMH = spectatorDriverData.TelemetryData.speed;
                 ushort speedInMPH = (ushort)(speedInKMH * Constants.CONVERT_KMH_TO_MPH);
@@ -65,6 +44,8 @@ namespace F1_Unity
 
                 SetColor(speedInKMH);
             }
+            else
+                Show(false);
         }
 
         /// <summary>
@@ -82,6 +63,14 @@ namespace F1_Unity
                 _kmhSpeedText.color = _slowColor;
                 _mphSpeedText.color = _slowColor;
             }
+        }
+
+        /// <summary>
+        /// Show or hide activatable
+        /// </summary>
+        protected void Show(bool status)
+        {
+            _canvasGroup.alpha = status ? 1.0f : 0.0f;
         }
     }
 }

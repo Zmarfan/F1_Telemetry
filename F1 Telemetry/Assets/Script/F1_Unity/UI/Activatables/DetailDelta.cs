@@ -10,17 +10,17 @@ namespace F1_Unity
     {
         [Header("Settings")]
 
-        [SerializeField, Range(0.01f, 10f)] float _timeBetweenDeltaUpdates = 1.0f; 
-        [SerializeField] string _defaultDeltaString = "---";
-        [SerializeField] Color _startingDeltaColor = Color.grey;
-        [SerializeField] Color _slowerColor = Color.red;
-        [SerializeField] Color _fasterColor = Color.green;
+        [SerializeField, Range(0.01f, 10f)] protected float _timeBetweenDeltaUpdates = 1.0f; 
+        [SerializeField] protected string _defaultDeltaString = "---";
+        [SerializeField] protected Color _startingDeltaColor = Color.grey;
+        [SerializeField] protected Color _slowerColor = Color.red;
+        [SerializeField] protected Color _fasterColor = Color.green;
 
         [Header("Drop")]
 
-        [SerializeField] Text _deltaText;
-        [SerializeField] Image _driver1CarImage;
-        [SerializeField] Image _driver2CarImage;
+        [SerializeField] protected Text _deltaText;
+        [SerializeField] protected Image _driver1CarImage;
+        [SerializeField] protected Image _driver2CarImage;
 
         Timer _deltaTimer;
         float _lastDelta;

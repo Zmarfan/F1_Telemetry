@@ -1369,11 +1369,12 @@ MonoBehaviour:
   _haloHudKey: 72
   _driverNameKey: 81
   _detailDeltaKey: 87
-  _speedCompareKey: 69
-  _lapComparisionKey: 82
-  _ersCompareKey: 84
-  _circuitInfoKey: 89
-  _driverNameChampionshipKey: 85
+  _detailDeltaLeaderKey: 69
+  _speedCompareKey: 82
+  _lapComparisionKey: 84
+  _ersCompareKey: 89
+  _circuitInfoKey: 85
+  _driverNameChampionshipKey: 73
   _liveSpeedKey: 81
   _tyreWearKey: 87
   _pitTimerKey: 69
@@ -1762,6 +1763,7 @@ MonoBehaviour:
   _liveSpeed: {fileID: 1903043400944191412}
   _driverName: {fileID: 6068850229520678794}
   _detailDelta: {fileID: 4687828132533511252}
+  _detailDeltaLeader: {fileID: -4395046856981050589, guid: 2afe0ea899f2f1d4c89979fc34df8a9d, type: 3}
   _tyreWear: {fileID: 7842148603723720823}
   _speedCompare: {fileID: 7825119172746440004}
   _location: {fileID: 2009437411835949350}
@@ -1781,6 +1783,7 @@ MonoBehaviour:
   - {fileID: 4315067411055476063}
   - {fileID: 4524356689688684026}
   - {fileID: 47634677822057508}
+  - {fileID: -4395046856981050589, guid: 2afe0ea899f2f1d4c89979fc34df8a9d, type: 3}
   _rightSlot:
   - {fileID: 1903043400944191412}
   - {fileID: 7842148603723720823}
