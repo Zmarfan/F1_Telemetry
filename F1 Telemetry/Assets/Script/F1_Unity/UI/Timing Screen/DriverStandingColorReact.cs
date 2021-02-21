@@ -16,7 +16,7 @@ namespace F1_Unity
         private void OnEnable()
         {
             if (_fastestLap)
-                GameManager.F1Info.FastestLapEvent += FastestLapEvent;
+                GameManager.LapManager.FastestLapEvent += FastestLapEvent;
             if (_penaltyWarning)
                 GameManager.F1Info.PenaltyEvent += PenaltyEvent;
         }
@@ -24,7 +24,7 @@ namespace F1_Unity
         private void OnDisable()
         {
             if (_fastestLap)
-                GameManager.F1Info.FastestLapEvent -= FastestLapEvent;
+                GameManager.LapManager.FastestLapEvent -= FastestLapEvent;
             if (_penaltyWarning)
                 GameManager.F1Info.PenaltyEvent -= PenaltyEvent;     
         }
@@ -33,13 +33,9 @@ namespace F1_Unity
         /// Called when fastest lap is set
         /// </summary>
         /// <param name="packet"></param>
-        public void FastestLapEvent(Packet packet)
+        public void FastestLapEvent(DriverData driverData, float time)
         {
-            FastestLapEventPacket fastestPacket = (FastestLapEventPacket)packet;
-            DriverData driverData = GameManager.F1Info.ReadCarData(fastestPacket.VehicleIndex, out bool valid);
-            //Do it on P1 if in Q mode or on current place if in race
-            if (valid)
-                _driverTemplates[_fastestLapOnLeader ? 0 : driverData.LapData.carPosition - 1].SetColor(_fastestLapColor);
+            _driverTemplates[_fastestLapOnLeader ? 0 : driverData.LapData.carPosition - 1].SetColor(_fastestLapColor);
         }
 
         /// <summary>

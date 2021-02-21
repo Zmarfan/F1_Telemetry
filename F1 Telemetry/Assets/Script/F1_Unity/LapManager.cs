@@ -7,6 +7,7 @@ using System.IO;
 namespace F1_Unity
 {
     public delegate void FastestSectorDelegate(DriverData driverData, LapState sector, float time);
+    public delegate void FastestLapDelegate(DriverData driverData, float time);
 
     /// <summary>
     /// Singleton class that hold all laps and their sector times for every lap of every driver.
@@ -17,6 +18,10 @@ namespace F1_Unity
         /// Invoked whenever a new fastest sector is set.
         /// </summary>
         public event FastestSectorDelegate FastestSectorEvent;
+        /// <summary>
+        /// Invoked whenever a new fastest lap is set.
+        /// </summary>
+        public event FastestLapDelegate FastestLapEvent;
 
         /// <summary>
         /// Index of the driver with fastest lap
@@ -212,7 +217,10 @@ namespace F1_Unity
                 {
                     //Also updates current fastest lap if it's faster than latest fastest lap
                     if (driverData.LapData.bestLapTime < FastestLapTime && driverData.LapData.bestLapTime != 0)
+                    {
                         FastestLapTime = driverData.LapData.bestLapTime;
+                        FastestLapEvent?.Invoke(driverData, FastestLapTime);
+                    }
 
                     LapState sector = driverData.LapData.currentSector;
                     LapState storedSector = _storedDriverData[i].LapState;

@@ -22,25 +22,15 @@ namespace F1_Unity
         /// <summary>
         /// Init fastest lap with correct settings. time in seconds is converted to display format
         /// </summary>
-        public override void Init(Packet packet)
+        public void Init(DriverData driverData, float time)
         {
-            base.Init(packet);
+            Init();
 
-            //Cast to correct type
-            FastestLapEventPacket fastestLapPacket = (FastestLapEventPacket)packet;
-
-            DriverData data = GameManager.F1Info.ReadCarData(fastestLapPacket.VehicleIndex, out bool status);
             string fullName = string.Empty;
             Sprite teamSprite = GameManager.ParticipantManager.GetTeamSprite(Team.My_Team_Or_Unknown);
 
-            //If data is valid (99.99 % of the time it is valid but hey for that 0.01 boi :3)
-            if (status)
-            {
-                fullName = GameManager.ParticipantManager.GetNameFromNumber(data.RaceNumber);
-                teamSprite = GameManager.ParticipantManager.GetTeamSprite(data.ParticipantData.team);
-            }
-            
-            float time = fastestLapPacket.LapTime;
+            fullName = GameManager.ParticipantManager.GetNameFromNumber(driverData.RaceNumber);
+            teamSprite = GameManager.ParticipantManager.GetTeamSprite(driverData.ParticipantData.team);
 
             InitTime(time);
             InitName(fullName);

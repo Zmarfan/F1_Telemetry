@@ -23,7 +23,6 @@ public class UnityEventManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.F1Info.FastestLapEvent += FastestLapEvent;
         GameManager.F1Info.DRSEnabledEvent += DRSEnabledEvent;
         GameManager.F1Info.DRSDisabledEvent += DRSDisabledEvent;
         GameManager.F1Info.ChequeredFlagEvent += ChequeredFlagEvent;
@@ -33,12 +32,12 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.RaceWinnerEvent += RaceWinnerEvent;
         GameManager.F1Info.SpeedTrapEvent += SpeedTrapEvent;
 
+        GameManager.LapManager.FastestLapEvent += FastestLapEvent;
         GameManager.LapManager.FastestSectorEvent += FastestSectorEvent;
     }
 
     private void OnDisable()
     {
-        GameManager.F1Info.FastestLapEvent -= FastestLapEvent;
         GameManager.F1Info.DRSEnabledEvent -= DRSEnabledEvent;
         GameManager.F1Info.DRSDisabledEvent -= DRSDisabledEvent;
         GameManager.F1Info.ChequeredFlagEvent -= ChequeredFlagEvent;
@@ -48,6 +47,7 @@ public class UnityEventManager : MonoBehaviour
         GameManager.F1Info.RaceWinnerEvent -= RaceWinnerEvent;
         GameManager.F1Info.SpeedTrapEvent -= SpeedTrapEvent;
 
+        GameManager.LapManager.FastestLapEvent -= FastestLapEvent;
         GameManager.LapManager.FastestSectorEvent -= FastestSectorEvent;
     }
 
@@ -97,15 +97,6 @@ public class UnityEventManager : MonoBehaviour
     }
 
     #region DifferentEvents
-
-    /// <summary>
-    /// Called when fastest lap event occour. Spawns fastest lap prefab.
-    /// </summary>
-    void FastestLapEvent(Packet packet)
-    {
-        EventBase thisEvent = SpawnPacketEventPrefab(_fastestLapPrefab, packet);
-        AddToEventQueue(thisEvent);
-    }
 
     /// <summary>
     /// Called when DRS enabled event occour. Spawns DRS enabled prefab.
@@ -167,6 +158,17 @@ public class UnityEventManager : MonoBehaviour
     void SpeedTrapEvent(Packet packet)
     {
         EventBase thisEvent = SpawnPacketEventPrefab(_speedTrapPrefab, packet);
+        AddToEventQueue(thisEvent);
+    }
+
+    /// <summary>
+    /// Called when fastest lap event occour. Spawns fastest lap prefab.
+    /// </summary>
+    void FastestLapEvent(DriverData driverData, float time)
+    {
+        GameObject obj = Instantiate(_fastestLapPrefab, Vector3.zero, Quaternion.identity, _canvas) as GameObject;
+        FastestLap thisEvent = obj.GetComponent<FastestLap>();
+        thisEvent.Init(driverData, time);
         AddToEventQueue(thisEvent);
     }
 
