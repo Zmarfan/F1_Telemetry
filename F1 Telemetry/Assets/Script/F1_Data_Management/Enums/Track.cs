@@ -2,7 +2,6 @@
 {
     public enum Track
     {
-        UNKNOWN = -1,
         Albert_Park_Circuit,
         Circuit_Paul_Ricard,
         Shanghai_International_Circuit,

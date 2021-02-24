@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using F1_Data_Management;
 using System.Collections.Generic;
+using F1_Options;
 
 namespace F1_Unity
 {
@@ -30,7 +31,7 @@ namespace F1_Unity
             for (int i = 0; i < _flagsByTrack.Length; i++)
                 _flagSpritesByTrack.Add(_flagsByTrack[i].track, _flagsByTrack[i].flagSprite);
             for (int i = 0; i < _stringByTrack.Length; i++)
-                _grandPrixStringByTrack.Add(_stringByTrack[i].track, _stringByTrack[i].text);
+                _grandPrixStringByTrack.Add(_stringByTrack[i].track, _stringByTrack[i].defaultText);
             for (int i = 0; i < _circuitInfoData.Length; i++)
                 _circuitInfoByTrack.Add(_circuitInfoData[i].track, _circuitInfoData[i]);
             for (int i = 0; i < _weatherSpriteList.Length; i++)
@@ -99,16 +100,6 @@ namespace F1_Unity
         {
             public Track track;
             public Sprite flagSprite;
-        }
-
-        /// <summary>
-        /// Used to initilize dictionary of string in inspector with tracks as keys
-        /// </summary>
-        [System.Serializable]
-        public struct StringTrackStruct
-        {
-            public Track track;
-            public string text;
         }
 
         /// <summary>

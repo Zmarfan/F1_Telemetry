@@ -11,6 +11,7 @@ namespace F1_Options
         [SerializeField] Color _closedTabColor;
         //Indexed through OptionTabs enum
         [SerializeField] ColorSettings _colorSettings;
+        [SerializeField] GeneralSettings _generalSettings;
         [SerializeField] OptionTab[] _optionTabs;
         [SerializeField] GameObject[] _optionTabsArea;
 
@@ -22,6 +23,7 @@ namespace F1_Options
         {
             CloseAllTabsOpenOne(null);
             _colorSettings.Init();
+            _generalSettings.Init();
         }
 
         #endregion
