@@ -171,6 +171,7 @@ namespace F1_Unity
             {
                 if (key == _driverNameKey)                      { PressedToggleDriverName?.Invoke(); }
                 else if (key == _detailDeltaKey)                { PressedToggleDetailDelta?.Invoke(); }
+                else if (key == _detailDeltaLeaderKey)          { PressedToggleDetailDeltaLeader?.Invoke(); }
                 else if (key == _speedCompareKey)               { PressedToggleSpeedCompare?.Invoke(); }
                 else if (key == _lapComparisionKey)             { PressedToggleLapComparision?.Invoke(); }
                 else if (key == _ersCompareKey)                 { PressedToggleERSCompare?.Invoke(); }

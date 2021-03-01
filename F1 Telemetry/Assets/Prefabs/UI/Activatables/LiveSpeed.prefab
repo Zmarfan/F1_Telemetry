@@ -568,6 +568,7 @@ MonoBehaviour:
   _slowColor: {r: 1, g: 1, b: 1, a: 1}
   _fastColor: {r: 0.7372549, g: 0.16078432, b: 0.16078432, a: 1}
   _transitionToFastColorSpeedKMH: 200
+  _canvasGroup: {fileID: 4182913167844052371}
   _driverText: {fileID: 6916613146815479831}
   _kmhSpeedText: {fileID: 2619343184108771885}
   _mphSpeedText: {fileID: 2922303015352680279}

@@ -126,7 +126,7 @@ namespace RawInput
                         //Invoke outer event that keypressed happened with key data
                         OnKeyUp?.Invoke(this, new KeyPressedArgs((Key)virtualKeyCode));
                     }
-                    //Key Down
+                    //Key Downp
                     else if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
                     {
                         //Invoke outer event that keypressed happened with key data

@@ -96,8 +96,7 @@ namespace F1_Unity
         /// </summary>
         protected override void UpdateVisuals()
         {
-            //DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
-            DriverData spectatorDriverData = GameManager.F1Info.ReadPlayerData(out bool statusDriver);
+            DriverData spectatorDriverData = GameManager.F1Info.ReadSpectatingCarData(out bool statusDriver);
 
             //Has to be seperated as a position change doesn't need to flush data
             if (statusDriver && spectatorDriverData.LapData.carPosition != _currentDriverPosition)
